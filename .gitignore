@@ -1,33 +1,37 @@
-# Created by https://www.gitignore.io/api/netbeans
 
-### NetBeans ###
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
+# Created by https://www.gitignore.io/api/java,macos,windows,netbeans
 
-# End of https://www.gitignore.io/api/netbeans
-
+### Java ###
+# Compiled class file
 *.class
 
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
 # Mobile Tools for Java (J2ME)
-@@ -10,3 +22,54 @@
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-# =========================
-# Operating System Files
-# =========================
-
-# OSX
-# =========================
-
-.DS_Store
+### macOS ###
+*.DS_Store
 .AppleDouble
 .LSOverride
+
+# Icon must end with two \r
+Icon
 
 # Thumbnails
 ._*
@@ -39,6 +43,7 @@ hs_err_pid*
 .TemporaryItems
 .Trashes
 .VolumeIcon.icns
+.com.apple.timemachine.donotpresent
 
 # Directories potentially created on remote AFP share
 .AppleDB
@@ -47,12 +52,19 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-# Windows
-# =========================
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
 
-# Windows image file caches
+### Windows ###
+# Windows thumbnail cache files
 Thumbs.db
 ehthumbs.db
+ehthumbs_vista.db
 
 # Folder config file
 Desktop.ini
@@ -68,3 +80,5 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# End of https://www.gitignore.io/api/java,macos,windows,netbeans
