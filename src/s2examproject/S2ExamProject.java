@@ -6,7 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import DAL.ConnectionManager;
+import DAL.*;
 /**
  *
  * @author meng
@@ -23,8 +23,8 @@ public class S2ExamProject extends Application
 
         stage.setScene(scene);
         stage.show();
-        ConnectionManager con = new ConnectionManager();
-        con.getConnection();
+        DataManager dm = new DataManager();
+        dm.test();
       }
 
     /**

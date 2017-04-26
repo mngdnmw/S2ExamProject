@@ -45,7 +45,7 @@ public class ConnectionManager
         System.out.println("Connection Established to database");
     }
     
-    public Connection getConnection() throws SQLServerException
+    protected Connection getConnection() throws SQLServerException
     {
         return ds.getConnection();
     }
