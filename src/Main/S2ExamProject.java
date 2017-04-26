@@ -1,3 +1,5 @@
+package Main;
+
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +19,7 @@ public class S2ExamProject extends Application
     @Override
     public void start(Stage stage) throws Exception
       {
-        Parent root = FXMLLoader.load(getClass().getResource("GUI/View/HourLoginView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/GUI/View/HourLoginView.fxml"));
 
         Scene scene = new Scene(root);
 
