@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 public class ConnectionManager
   {
 
-    private static final String CONFIG_FILE_NAME = "Connection.cfg";
+    private static final String CONFIG_FILE_NAME = "Resources/Connection.cfg";
     private final SQLServerDataSource ds;
 
     public ConnectionManager()
