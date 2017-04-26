@@ -14,7 +14,7 @@ import javafx.fxml.Initializable;
  *
  * @author Mecaa
  */
-public class MainViewController implements Initializable
+public class HourLoginController implements Initializable
   {
 
     /**
