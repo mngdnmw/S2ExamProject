@@ -12,12 +12,12 @@
    <children>
       <Label layoutX="14.0" layoutY="22.0" text="Logged In as: " />
       <Label fx:id="lblUserName" layoutX="88.0" layoutY="22.0" text="Label" />
-      <JFXButton fx:id="btnSearch" layoutX="14.0" layoutY="57.0" text="Search" />
-      <JFXButton fx:id="btnCopyEmail" layoutX="102.0" layoutY="57.0" text="Copy All Emails" />
+      <JFXButton fx:id="btnSearch" layoutX="14.0" layoutY="57.0" style="-fx-background-color: #00c4ad;" text="Search" />
+      <JFXButton fx:id="btnCopyEmail" layoutX="102.0" layoutY="57.0" style="-fx-background-color: #00c4ad;" text="Copy All Emails" />
       <JFXTextArea fx:id="txtNotes" focusColor="#4e6fc9" layoutX="372.0" layoutY="120.0" prefHeight="215.0" prefWidth="220.0" />
-      <JFXButton fx:id="btnAddHours" layoutX="14.0" layoutY="352.0" text="Add Hours" />
-      <JFXButton fx:id="btnEditInfo" layoutX="90.0" layoutY="352.0" text="Edit Information" />
-      <JFXButton fx:id="btnLogOut" layoutX="375.0" layoutY="352.0" prefHeight="25.0" prefWidth="220.0" text="Log Out" />
+      <JFXButton fx:id="btnAddHours" layoutX="14.0" layoutY="352.0" style="-fx-background-color: #00c4ad;" text="Add Hours" />
+      <JFXButton fx:id="btnEditInfo" layoutX="90.0" layoutY="352.0" style="-fx-background-color: #00c4ad;" text="Edit Information" />
+      <JFXButton fx:id="btnLogOut" layoutX="375.0" layoutY="352.0" onAction="#onLogOutClicked" prefHeight="25.0" prefWidth="220.0" style="-fx-background-color: #00c4ad;" text="Log Out" />
       <TableView fx:id="tblVolunteers" layoutX="16.0" layoutY="94.0" prefHeight="247.0" prefWidth="338.0">
         <columns>
           <TableColumn fx:id="colName" prefWidth="75.0" text="Name" />
