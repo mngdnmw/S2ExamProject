@@ -5,8 +5,8 @@
  */
 package BLL;
 
+import BE.EnumCache.Lang;
 import DAL.LanguageManager;
-import DAL.LanguageManager.Lang;
 import java.util.Properties;
 
 /**
@@ -14,17 +14,18 @@ import java.util.Properties;
  * @author Kristof
  */
 public class Translation extends LanguageManager {
-    Properties language;
+    protected Properties language;
     
-    public Translation(Lang lang){
+    protected Translation(Lang lang){
         language = super.getLanguageFile(lang);
     }
     
-    public String get(String key) {
+    protected String get(String key) {
         return language.getProperty(key);
     }
     
-    public void set(Lang lang) {
+    protected void set(Lang lang) {
         language = super.getLanguageFile(lang);
     }
+    
 }

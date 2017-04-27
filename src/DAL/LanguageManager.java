@@ -5,6 +5,7 @@
  */
 package DAL;
 
+import BE.EnumCache.Lang;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
@@ -17,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class LanguageManager {
 
-    public static enum Lang {ENG, DAN};
+    //public static enum Lang {ENG, DAN};
     private static String file;
     public static Properties language = new Properties();
 

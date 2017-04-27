@@ -5,8 +5,8 @@
  */
 package GUI.Controller;
 
-import BLL.Translation;
-import DAL.LanguageManager;
+import BE.EnumCache.Lang;
+import GUI.Model.LanguageModel;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -27,7 +27,7 @@ public class TestController implements Initializable {
     @FXML
     private Label lab2;
 
-    Translation translation = new Translation(LanguageManager.Lang.ENG);
+    LanguageModel translation = new LanguageModel(Lang.ENG);
     @FXML
     private Button btnDan;
     @FXML
@@ -43,9 +43,9 @@ public class TestController implements Initializable {
     @FXML
     private void btnPress(ActionEvent event) {
         if(event.getSource().equals(btneng))
-            translation.set(LanguageManager.Lang.ENG);
+            translation.set(Lang.ENG);
         if(event.getSource().equals(btnDan))
-            translation.set(LanguageManager.Lang.DAN);
+            translation.set(Lang.DAN);
         setTransationText();
     }
     
