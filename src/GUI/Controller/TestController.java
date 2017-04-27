@@ -27,7 +27,7 @@ public class TestController implements Initializable {
     @FXML
     private Label lab2;
 
-    LanguageModel translation = new LanguageModel(Lang.ENG);
+    LanguageModel translation = new LanguageModel();
     @FXML
     private Button btnDan;
     @FXML

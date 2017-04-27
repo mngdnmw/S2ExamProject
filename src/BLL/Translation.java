@@ -16,8 +16,8 @@ import java.util.Properties;
 public class Translation extends LanguageManager {
     protected Properties language;
     
-    protected Translation(Lang lang){
-        language = super.getLanguageFile(lang);
+    protected Translation(){
+        language = super.getLanguageFile();
     }
     
     protected String get(String key) {

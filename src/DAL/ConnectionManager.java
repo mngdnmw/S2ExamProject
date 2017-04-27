@@ -9,15 +9,15 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ConnectionManager
+public class ConnectionManager extends ConfigManager
   {
 
-    private static final String CONFIG_FILE_NAME = "src//Resources//Connection.cfg";
+    //private static final String CONFIG_FILE_NAME = "src//Resources//Connection.cfg";
     private final SQLServerDataSource ds;
 
     public ConnectionManager()
       {
-        Properties props = new Properties();
+        /*Properties props = new Properties();
         try
           {
             props.load(new FileReader(CONFIG_FILE_NAME));
@@ -26,7 +26,7 @@ public class ConnectionManager
           {
             Logger.getLogger(ConnectionManager.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Connection Manager: Missing config file.");
-          }
+          }*/
 
         ds = new SQLServerDataSource();
         ds.setServerName(props.getProperty("SERVER"));
