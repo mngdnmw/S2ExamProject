@@ -1,6 +1,8 @@
 package GUI.Controller;
 
+import BE.EnumCache;
 import GUI.Model.AnimationModel;
+import GUI.Model.LanguageModel;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
@@ -66,6 +68,7 @@ public class HourLoginController implements Initializable
     private String strLanguage = "English";
     //Models used by this Controller
     private static AnimationModel ANIM_MODEL = new AnimationModel();
+    private static LanguageModel lm = new LanguageModel();
     private Image iconDK, iconENG;
     private ImageView imgViewLngBut = new ImageView();
 
@@ -306,32 +309,25 @@ public class HourLoginController implements Initializable
         ANIM_MODEL.fadeInTransition(Duration.millis(500), popup);
         popup.setTranslateY((root.getHeight() / 1.5));
         popup.setTranslateX(root.getWidth() / 6);
-        btnDanish.setOnAction(new EventHandler<ActionEvent>()
-          {
+        
+        EventHandler changeLanguageHandler = new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent e)
-              {
-                changeLanguage(btnDanish, "Dansk");
-
+            public void handle(ActionEvent event) {
+                if(event.getSource().equals(btnDanish)) {
+                    changeLanguage("Dansk");
+                } else if(event.getSource().equals(btnEnglish)) {
+                    changeLanguage("English");
+                }
+                setTextAll();
                 ANIM_MODEL.fadeOutTransition(Duration.millis(500), popup)
-                        .setOnFinished(
-                                ev -> removePopup(popup)
-                        );
-              }
-          });
-        btnEnglish.setOnAction(new EventHandler<ActionEvent>()
-          {
-            @Override
-            public void handle(ActionEvent e)
-              {
-                changeLanguage(btnEnglish, "English");
-
-                ANIM_MODEL.fadeOutTransition(Duration.millis(500), popup)
-                        .setOnFinished(
-                                ev -> removePopup(popup)
-                        );
-              }
-          });
+                .setOnFinished(
+                        ev -> removePopup(popup)
+                );
+            }  
+        };
+        
+        btnDanish.setOnAction(changeLanguageHandler);
+        btnEnglish.setOnAction(changeLanguageHandler);
 
       }
 
@@ -368,7 +364,7 @@ public class HourLoginController implements Initializable
 
       }
 
-    public void changeLanguage(JFXButton btn, String str)
+    public void changeLanguage(String str)
       {
         if (!str.equals(btnLanguage.getText()))
           {
@@ -377,10 +373,12 @@ public class HourLoginController implements Initializable
             if (strLanguage.equals("Dansk"))
               {
                 imgViewLngBut.setImage(iconDK);
+                lm.set(EnumCache.Lang.DAN);
               }
             else if (strLanguage.equals("English"))
               {
                 imgViewLngBut.setImage(iconENG);
+                lm.set(EnumCache.Lang.ENG);
               }
           }
       }
@@ -390,4 +388,18 @@ public class HourLoginController implements Initializable
         iconDK = new Image(getClass().getResourceAsStream("/GUI/Images/danish.png"));
         iconENG = new Image(getClass().getResourceAsStream("/GUI/Images/english.png"));
       }
+    
+    private void setTextAll() {
+        lblUsernameTag.setText(lm.get("USERNAME_TAG"));
+        txtUser.setPromptText(lm.get("TXT_USERNAME_PROMPT"));
+        lblHourTag.setText(lm.get("HOUR_TAG"));
+        txtHours.setPromptText(lm.get("TXT_HOURS_PROMPT"));
+        lblHourTagTwo.setText(lm.get("HOUR_TAG_TWO"));
+        lblGuildTag.setText(lm.get("GUILD_TAG"));
+        cmbGuildChooser.setPromptText(lm.get("CMB_GUILD_CHOOSER_PROMPT"));
+        lblGuildTagTwo.setText(lm.get("GUILD_TAG_TWO"));
+        btnLogHours.setText(lm.get("BTN_LOG_HOURS"));
+        btnSeeInfo.setText(lm.get("BTN_SEE_INFO"));
+        
+    }
   }

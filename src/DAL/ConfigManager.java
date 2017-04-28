@@ -24,13 +24,14 @@ public class ConfigManager {
             props.load(new FileReader(file));
         } catch(IOException e) {
             Logger.getLogger(ConfigManager.class.getName()).log(Level.SEVERE, null, e);
+            System.out.println("couldn't load config file idk y check if exists or somethin'");
         }
     }
     
     protected void saveConfig(Properties props) {
         if(props != null) {
             try {
-                props.store(new FileWriter(file),null);
+                props.store(new FileWriter(file),"Atomic Choice config file");
             } catch(IOException e) {
                 Logger.getLogger(ConfigManager.class.getName()).log(Level.SEVERE, null, e);
                 System.out.println("file not found or something?");

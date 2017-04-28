@@ -1,2 +1,19 @@
 TEST = This is english!
 TEST2 = Hi
+#Login screeen buttons
+LOG_THANKS = Thanks!
+LOG_CONTRIB = You have helped shape this community!
+BTN_LOGIN = Log in
+BTN_CANCEL = Cancel
+BTN_LOG_HOURS = Log hours
+BTN_SEE_INFO = See info
+
+#Login screen labels
+USERNAME_TAG = My username is
+TXT_USERNAME_PROMPT = Phone No. or Email
+HOUR_TAG = I have contributed
+TXT_HOURS_PROMPT = Number
+HOUR_TAG_TWO = hours
+GUILD_TAG = to the
+CMB_GUILDCHOOSER_PROMPT = Choose a guild
+GUILD_TAG_TWO = guild
