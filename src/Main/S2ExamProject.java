@@ -26,16 +26,7 @@ public class S2ExamProject extends Application
         stage.setScene(scene);
         stage.show();
 
-        DataManager dm = new DataManager();
-        dm.getUserInfo(10);
-        dm.getUserInfo(36);
-        dm.getUserInfo(46);
-        //dm.getAllUsers();
-        
-        LoginManager lm = new LoginManager();
-        String date = "20170427";
-        //id, date, hours, guildid
-        lm.logHours(45, date, 2, 1);
+
       }
 
     /**
