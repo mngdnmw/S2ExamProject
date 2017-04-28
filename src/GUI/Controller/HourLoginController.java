@@ -1,6 +1,6 @@
 package GUI.Controller;
 
-import BE.EnumCache;
+import BE.EnumCache.*;
 import GUI.Model.AnimationModel;
 import GUI.Model.LanguageModel;
 import com.jfoenix.controls.JFXButton;
@@ -373,12 +373,12 @@ public class HourLoginController implements Initializable
             if (strLanguage.equals("Dansk"))
               {
                 imgViewLngBut.setImage(iconDK);
-                lm.set(EnumCache.Lang.DAN);
+                lm.set(Lang.DAN);
               }
             else if (strLanguage.equals("English"))
               {
                 imgViewLngBut.setImage(iconENG);
-                lm.set(EnumCache.Lang.ENG);
+                lm.set(Lang.ENG);
               }
           }
       }
