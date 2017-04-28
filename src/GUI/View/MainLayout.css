@@ -2,12 +2,14 @@
     -fx-background-color: white;
 
 }
+
 .JFXRoundedButton
 {
+
     -fx-background-radius: 50%;
     -fx-orientation: vertical;
     -fx-content-display: top;
-    
+
     -fx-background-color: #00c4ad; 
 }
 .JFXButtonLogHours
@@ -21,19 +23,15 @@
 
     /*#00d8bf;*/
 }
-.JFXButtonEnglish
-{
-    -fx-graphic:url("../Images/english.png");
-}
-.JFXButtonDanish
-{
-    -fx-graphic:url("../Images/danish.png");
-}
-.JFXButtonGerman
-{
-    -fx-graphic:url("../Images/german.png");
+.popup{
 
+    -fx-border-style: solid inside;
+    -fx-border-width: 3px;
+    -fx-border-color: Black;
+    -fx-border-radius:20px;
+    -fx-background-radius:20px
 }
+
 
 
 
