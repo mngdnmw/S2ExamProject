@@ -20,7 +20,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="365.0" prefWidth="517.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
+<AnchorPane id="AnchorPane" prefHeight="365.0" prefWidth="517.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
     <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="129.0" layoutX="13.0" layoutY="11.0" stroke="TRANSPARENT" strokeType="INSIDE" width="491.0">
          <effect>
@@ -227,7 +227,7 @@
             <Image url="@../Images/tick.png" />
          </image>
       </ImageView>
-      <TextArea fx:id="TextAreaBenefits" layoutX="374.0" layoutY="201.0" prefHeight="49.0" prefWidth="119.0" style="-fx-background-color: #ffffff; -fx-border-color: #ffffff;" text="Congradulations! &#10;You have earnt &#10;benefits for this year" wrapText="true">
+      <TextArea fx:id="TextAreaBenefits" layoutX="374.0" layoutY="201.0" prefHeight="49.0" prefWidth="119.0" style="-fx-background-color: #ffffff; -fx-border-color: #ffffff;" text="Congratulations! &#10;You have earnt &#10;benefits for this year" wrapText="true">
          <font>
             <Font size="10.0" />
          </font>
