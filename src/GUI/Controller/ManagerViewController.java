@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 
 public class ManagerViewController implements Initializable
 {
+
     @FXML
     private Label lblName;
     @FXML
@@ -23,6 +24,14 @@ public class ManagerViewController implements Initializable
     private Label lblAddress;
     @FXML
     private JFXButton btnNameEdit;
+    @FXML
+    private Label lblHrsAll;
+    @FXML
+    private Label lblHrsYr;
+    @FXML
+    private Label lblHrsMth;
+    @FXML
+    private Label lblHrsDay;
     @FXML
     private JFXTextArea JFXTxtAreaNotes;
     @FXML
@@ -35,20 +44,10 @@ public class ManagerViewController implements Initializable
     private TextArea textAreaGuilds;
     @FXML
     private JFXButton JFXBtnUpdatePhoto;
-    @FXML
-    private Label lblHrsYr;
-    @FXML
-    private Label lblHrsAll;
-    @FXML
-    private Label lblHrsMth;
-    @FXML
-    private Label lblHrsDay;
-
- 
+    
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-      
+        
     }    
-    
 }
