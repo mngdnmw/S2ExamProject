@@ -1,6 +1,7 @@
 package GUI.Controller;
 
 import GUI.Model.AnimationModel;
+import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
@@ -8,23 +9,20 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -65,10 +63,10 @@ public class HourLoginController implements Initializable
     private String strLogin = "Log In";
     private String strCancel = "Cancel";
     private String strLanguage = "English";
-    //Models used by this Controller
-    private static AnimationModel ANIM_MODEL = new AnimationModel();
     private Image iconDK, iconENG;
     private ImageView imgViewLngBut = new ImageView();
+    //Models used by this Controller
+    private final static ModelFacade MOD_FACADE = new ModelFacade();
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -169,11 +167,11 @@ public class HourLoginController implements Initializable
         root.getChildren().add(popup);
         popup.setTranslateY((root.getHeight() / 3));
         popup.setTranslateX(root.getWidth() / 4.2);
-        ANIM_MODEL.fadeInTransition(Duration.millis(500), popup);
+        MOD_FACADE.fadeInTransition(Duration.millis(500), popup);
 
         PauseTransition pause = new PauseTransition(Duration.millis(1500));
         pause.setOnFinished(
-                e -> ANIM_MODEL.fadeOutTransition(Duration.millis(500), popup).setOnFinished(ev -> removePopup(popup))
+                e -> MOD_FACADE.fadeOutTransition(Duration.millis(500), popup).setOnFinished(ev -> removePopup(popup))
         );
         pause.play();
 
@@ -191,7 +189,7 @@ public class HourLoginController implements Initializable
         popup.setSpacing(20);
         popup.setPadding(new Insets(20, 20, 20, 20));
         popup.getStyleClass().add("popup");
-        popup.setStyle("-fx-background-color: #AAAAAA;");
+        popup.setStyle("-fx-background-color: #BBBBBB;");
 
         //CSS to be added to both labels
         String styleText = "-fx-font:italic bold 20px/30px System;"
@@ -254,13 +252,13 @@ public class HourLoginController implements Initializable
         root.getChildren().add(popup);
         popup.setTranslateY((root.getHeight() / 3));
         popup.setTranslateX(root.getWidth() / 4.2);
-        ANIM_MODEL.fadeInTransition(Duration.millis(500), popup);
+        MOD_FACADE.fadeInTransition(Duration.millis(500), popup);
         btnCancel.setOnAction(new EventHandler<ActionEvent>()
           {
             @Override
             public void handle(ActionEvent e)
               {
-                ANIM_MODEL.fadeOutTransition(Duration.millis(500), popup)
+                MOD_FACADE.fadeOutTransition(Duration.millis(500), popup)
                         .setOnFinished(
                                 ev -> removePopup(popup)
                         );
@@ -271,7 +269,14 @@ public class HourLoginController implements Initializable
             @Override
             public void handle(ActionEvent e)
               {
-                lblWrongPw.setText("Wrong Password");
+                MOD_FACADE.getUserFromLogin(txtUsername.getText());
+                if (MOD_FACADE.getCurrentUser() != null)
+                  {
+                  }
+                else
+                  {
+                    lblWrongPw.setText("Wrong Password");
+                  }
               }
 
           });
@@ -307,7 +312,7 @@ public class HourLoginController implements Initializable
         root.getChildren().add(popup);
         popup.getChildren().addAll(btnDanish, btnEnglish);
         popup.setTranslateX(0);
-        ANIM_MODEL.fadeInTransition(Duration.millis(500), popup);
+        MOD_FACADE.fadeInTransition(Duration.millis(500), popup);
         popup.setTranslateY((root.getHeight() / 1.5));
         popup.setTranslateX(root.getWidth() / 6);
         btnDanish.setOnAction(new EventHandler<ActionEvent>()
@@ -317,7 +322,7 @@ public class HourLoginController implements Initializable
               {
                 changeLanguage(btnDanish, "Dansk");
 
-                ANIM_MODEL.fadeOutTransition(Duration.millis(500), popup)
+                MOD_FACADE.fadeOutTransition(Duration.millis(500), popup)
                         .setOnFinished(
                                 ev -> removePopup(popup)
                         );
@@ -330,7 +335,7 @@ public class HourLoginController implements Initializable
               {
                 changeLanguage(btnEnglish, "English");
 
-                ANIM_MODEL.fadeOutTransition(Duration.millis(500), popup)
+                MOD_FACADE.fadeOutTransition(Duration.millis(500), popup)
                         .setOnFinished(
                                 ev -> removePopup(popup)
                         );
@@ -394,4 +399,5 @@ public class HourLoginController implements Initializable
         iconDK = new Image(getClass().getResourceAsStream("/GUI/Images/danish.png"));
         iconENG = new Image(getClass().getResourceAsStream("/GUI/Images/english.png"));
       }
+
   }
