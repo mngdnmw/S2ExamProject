@@ -2,6 +2,7 @@ package GUI.Controller;
 
 import GUI.Model.AnimationModel;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
@@ -179,8 +180,8 @@ public class HourLoginController implements Initializable
       }
 
     /**
-     * Pops up a login view that plays a short fade in transition.
-     *
+     * Pops up a login view that plays a short fade in transition. Contains
+     * event for the buttons that are within.
      */
     public void loginPopup()
       {
@@ -189,7 +190,6 @@ public class HourLoginController implements Initializable
         //Styles that will be used
         popup.setSpacing(20);
         popup.setPadding(new Insets(20, 20, 20, 20));
-
         popup.getStyleClass().add("popup");
         popup.setStyle("-fx-background-color: #AAAAAA;");
 
@@ -233,7 +233,11 @@ public class HourLoginController implements Initializable
         txtPassword.setStyle(styleTextField);
 
         passwordArea.getChildren().addAll(lblPassword, txtPassword);
+        //A checkbox with the word Remember Me!
+        JFXCheckBox bxRemPassword = new JFXCheckBox("Remember Me");
+        bxRemPassword.setStyle(styleText);
         //Two buttons to confirm wether or not to log in and a label to say if it is wrong password
+
         HBox confirmArea = new HBox();
         confirmArea.alignmentProperty().set(Pos.CENTER_RIGHT);
         confirmArea.setSpacing(10);
@@ -246,7 +250,7 @@ public class HourLoginController implements Initializable
         btnCancel.setStyle(styleText + styleButtons);
         confirmArea.getChildren().addAll(lblWrongPw, btnLogin, btnCancel);
 
-        popup.getChildren().addAll(usernameArea, passwordArea, confirmArea);
+        popup.getChildren().addAll(usernameArea, passwordArea, bxRemPassword, confirmArea);
         root.getChildren().add(popup);
         popup.setTranslateY((root.getHeight() / 3));
         popup.setTranslateX(root.getWidth() / 4.2);
