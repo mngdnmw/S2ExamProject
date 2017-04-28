@@ -1,6 +1,6 @@
 package GUI.Controller;
 
-import GUI.Model.AnimationModel;
+import BE.EnumCache.*;
 import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
@@ -63,6 +63,7 @@ public class HourLoginController implements Initializable
     private String strLogin = "Log In";
     private String strCancel = "Cancel";
     private String strLanguage = "English";
+
     private Image iconDK, iconENG;
     private ImageView imgViewLngBut = new ImageView();
     //Models used by this Controller
@@ -315,32 +316,30 @@ public class HourLoginController implements Initializable
         MOD_FACADE.fadeInTransition(Duration.millis(500), popup);
         popup.setTranslateY((root.getHeight() / 1.5));
         popup.setTranslateX(root.getWidth() / 6);
-        btnDanish.setOnAction(new EventHandler<ActionEvent>()
+
+        EventHandler changeLanguageHandler = new EventHandler<ActionEvent>()
           {
             @Override
-            public void handle(ActionEvent e)
+            public void handle(ActionEvent event)
               {
-                changeLanguage(btnDanish, "Dansk");
-
+                if (event.getSource().equals(btnDanish))
+                  {
+                    changeLanguage("Dansk");
+                  }
+                else if (event.getSource().equals(btnEnglish))
+                  {
+                    changeLanguage("English");
+                  }
+                setTextAll();
                 MOD_FACADE.fadeOutTransition(Duration.millis(500), popup)
                         .setOnFinished(
                                 ev -> removePopup(popup)
                         );
               }
-          });
-        btnEnglish.setOnAction(new EventHandler<ActionEvent>()
-          {
-            @Override
-            public void handle(ActionEvent e)
-              {
-                changeLanguage(btnEnglish, "English");
+          };
 
-                MOD_FACADE.fadeOutTransition(Duration.millis(500), popup)
-                        .setOnFinished(
-                                ev -> removePopup(popup)
-                        );
-              }
-          });
+        btnDanish.setOnAction(changeLanguageHandler);
+        btnEnglish.setOnAction(changeLanguageHandler);
 
       }
 
@@ -377,7 +376,7 @@ public class HourLoginController implements Initializable
 
       }
 
-    public void changeLanguage(JFXButton btn, String str)
+    public void changeLanguage(String str)
       {
         if (!str.equals(btnLanguage.getText()))
           {
@@ -386,10 +385,12 @@ public class HourLoginController implements Initializable
             if (strLanguage.equals("Dansk"))
               {
                 imgViewLngBut.setImage(iconDK);
+                lm.set(Lang.DAN);
               }
             else if (strLanguage.equals("English"))
               {
                 imgViewLngBut.setImage(iconENG);
+                lm.set(Lang.ENG);
               }
           }
       }
@@ -400,4 +401,18 @@ public class HourLoginController implements Initializable
         iconENG = new Image(getClass().getResourceAsStream("/GUI/Images/english.png"));
       }
 
+    private void setTextAll()
+      {
+        lblUsernameTag.setText(lm.get("USERNAME_TAG"));
+        txtUser.setPromptText(lm.get("TXT_USERNAME_PROMPT"));
+        lblHourTag.setText(lm.get("HOUR_TAG"));
+        txtHours.setPromptText(lm.get("TXT_HOURS_PROMPT"));
+        lblHourTagTwo.setText(lm.get("HOUR_TAG_TWO"));
+        lblGuildTag.setText(lm.get("GUILD_TAG"));
+        cmbGuildChooser.setPromptText(lm.get("CMB_GUILD_CHOOSER_PROMPT"));
+        lblGuildTagTwo.setText(lm.get("GUILD_TAG_TWO"));
+        btnLogHours.setText(lm.get("BTN_LOG_HOURS"));
+        btnSeeInfo.setText(lm.get("BTN_SEE_INFO"));
+
+      }
   }
