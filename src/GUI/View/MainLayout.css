@@ -32,8 +32,8 @@
     -fx-background-radius:20px
 }
 
-
-
-
-
+.text-area .content
+{
+      -fx-background-color: #FAFAFA;
+}
 

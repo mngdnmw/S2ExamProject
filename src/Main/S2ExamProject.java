@@ -6,12 +6,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import DAL.DataManager;
+import DAL.LoginManager;
+import GUI.Controller.ManagerViewController;
+
 public class S2ExamProject extends Application
   {
 
     @Override
     public void start(Stage stage) throws Exception
       {
+
 
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/View/HourLoginView.fxml"));
 
@@ -20,6 +25,17 @@ public class S2ExamProject extends Application
 
         stage.setScene(scene);
         stage.show();
+
+        DataManager dm = new DataManager();
+        dm.getUserInfo(10);
+        dm.getUserInfo(36);
+        dm.getUserInfo(46);
+        //dm.getAllUsers();
+        
+        LoginManager lm = new LoginManager();
+        String date = "20170427";
+        //id, date, hours, guildid
+        lm.logHours(45, date, 2, 1);
       }
 
     /**
