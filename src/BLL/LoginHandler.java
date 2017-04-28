@@ -1,5 +1,6 @@
 package BLL;
 
+import DAL.LoginManager;
 
 public class LoginHandler
 {
