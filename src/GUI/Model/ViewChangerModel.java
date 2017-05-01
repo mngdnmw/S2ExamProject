@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI.Model;
 
 import Main.S2ExamProject;
@@ -10,10 +5,6 @@ import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 
-/**
- *
- * @author Mecaa
- */
 public class ViewChangerModel
   {
 
@@ -23,7 +14,6 @@ public class ViewChangerModel
     private String ManagerString = "ManageView.fxml";
     private String UserInfoString = "UserInfoView.fxml";
 
-    
 
     public void changeView(int GUINumb) throws IOException
       {

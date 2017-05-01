@@ -3,7 +3,6 @@ package GUI.Model;
 import BE.EnumCache.Lang;
 import BLL.Translation;
 
-
 public class LanguageModel extends Translation
 {
     public String getLang(String key) {
