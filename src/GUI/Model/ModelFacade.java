@@ -97,4 +97,8 @@ public class ModelFacade
     public void setLang(EnumCache.Lang lang) {
         LANG_MOD.setLang(lang);
     }
+    
+    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence) {
+        DATA_MOD.updateUserInfo(userId, name, email, type, phone, note, residence);
+    }
   }

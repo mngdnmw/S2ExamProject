@@ -242,4 +242,8 @@ public class GeneralInfoManager extends ConnectionManager
         
         return admins;
     }
+    
+    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence) {
+        //TODO
+    }
 }
