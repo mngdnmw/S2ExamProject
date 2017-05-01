@@ -1,7 +1,7 @@
 package GUI.Controller;
 
 import BE.User;
-import GUI.Model.DataModel;
+import GUI.Model.GeneralInfoModel;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
@@ -46,7 +46,7 @@ public class ManagerEditViewController implements Initializable
     private TableColumn<User, String> colGuild;
 
     
-    DataModel dataModel = new DataModel();
+    GeneralInfoModel dataModel = new GeneralInfoModel();
     
     /**
      * Initializes the controller class.

@@ -6,9 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import DAL.DataManager;
-import DAL.LoginManager;
-import GUI.Controller.ManagerViewController;
 
 public class S2ExamProject extends Application
   {
@@ -17,15 +14,12 @@ public class S2ExamProject extends Application
     public void start(Stage stage) throws Exception
       {
 
-
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/View/HourLoginView.fxml"));
-
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/View/UserInfoView.fxml"));
 
         Scene scene = new Scene(root);
 
         stage.setScene(scene);
         stage.show();
-
 
       }
 

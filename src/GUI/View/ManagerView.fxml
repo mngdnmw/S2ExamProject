@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -11,7 +10,6 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Reflection?>
-<?import javafx.scene.effect.SepiaTone?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -46,7 +44,7 @@
             <Label fx:id="lblName" prefHeight="17.0" prefWidth="102.0" text="lblName" GridPane.columnIndex="1" />
             <Label fx:id="lblPh" prefHeight="17.0" prefWidth="102.0" text="lblPh" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label fx:id="lblEmail" prefHeight="17.0" prefWidth="102.0" text="lblEmail" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label fx:id="lblAddress" prefHeight="17.0" prefWidth="102.0" text="lblAddress" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="lblResidence" prefHeight="17.0" prefWidth="102.0" text="lblResidence" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <JFXButton fx:id="btnNameEdit" style="-fx-background-color: #00c4ad;" text="Edit" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -59,9 +57,6 @@
                <image>
                   <Image url="@../Images/person.png" />
                </image>
-               <effect>
-                  <SepiaTone />
-               </effect>
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>
@@ -70,9 +65,6 @@
                <image>
                   <Image url="@../Images/phone.png" />
                </image>
-               <effect>
-                  <SepiaTone />
-               </effect>
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>
@@ -81,9 +73,6 @@
                <image>
                   <Image url="@../Images/email.png" />
                </image>
-               <effect>
-                  <SepiaTone />
-               </effect>
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>
@@ -92,9 +81,6 @@
                <image>
                   <Image url="@../Images/location.png" />
                </image>
-               <effect>
-                  <SepiaTone />
-               </effect>
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>
