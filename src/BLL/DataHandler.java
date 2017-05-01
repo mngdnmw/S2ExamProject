@@ -6,7 +6,7 @@
 package BLL;
 
 import BE.User;
-import DAL.DataManager;
+import DAL.GeneralInfoManager;
 import java.util.List;
 
 /**
@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class DataHandler
 {
-    DataManager dataManager = new DataManager();
+    GeneralInfoManager dataManager = new GeneralInfoManager();
     
     public User getUserInfo(int userId)
     {

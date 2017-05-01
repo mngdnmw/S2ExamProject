@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI.Model;
 
 import BE.EnumCache;
@@ -12,14 +7,10 @@ import javafx.animation.FadeTransition;
 import javafx.scene.Node;
 import javafx.util.Duration;
 
-/**
- *
- * @author Mecaa
- */
 public class ModelFacade
   {
 
-    private final static DataModel DATA_MOD = new DataModel();
+    private final static GeneralInfoModel DATA_MOD = new GeneralInfoModel();
     private final static LoginModel LOG_MOD = new LoginModel();
     private final static AnimationModel ANIM_MOD = new AnimationModel();
     private final static LanguageModel LANG_MOD = new LanguageModel();

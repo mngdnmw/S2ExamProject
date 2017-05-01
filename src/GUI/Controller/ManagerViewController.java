@@ -21,7 +21,7 @@ public class ManagerViewController implements Initializable
     @FXML
     private Label lblEmail;
     @FXML
-    private Label lblAddress;
+    private Label lblResidence;
     @FXML
     private JFXButton btnNameEdit;
     @FXML
@@ -44,6 +44,7 @@ public class ManagerViewController implements Initializable
     private TextArea textAreaGuilds;
     @FXML
     private JFXButton JFXBtnUpdatePhoto;
+    
     
     @Override
     public void initialize(URL url, ResourceBundle rb)

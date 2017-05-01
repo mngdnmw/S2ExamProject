@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class DataManager extends ConnectionManager
+public class GeneralInfoManager extends ConnectionManager
 {
     
     /**
@@ -41,6 +41,7 @@ public class DataManager extends ConnectionManager
                 int type = rs.getInt("type");
                 int phone = rs.getInt("phone");
                 String note = rs.getString("note");
+                String residence =rs.getString("residence");
                 
                 //If it's a volunteer
                 if(type == 0)
@@ -48,7 +49,7 @@ public class DataManager extends ConnectionManager
                     System.out.println("type0");
                     Volunteer volunteer = null;
                     //(id, name, email, password, type, phone, note);
-                    volunteer = new Volunteer(id, name, email, type, phone, note);
+                    volunteer = new Volunteer(id, name, email, type, phone, note, residence);
                     
                     System.out.println("Volunteer info: " +volunteer.getName());
                     
@@ -61,7 +62,7 @@ public class DataManager extends ConnectionManager
                     System.out.println("type1");
                     Manager manager = null; 
                     //(id, name, email, password, type, phone, note);
-                    manager = new Manager(id, name, email, type, phone, note);
+                    manager = new Manager(id, name, email, type, phone, note, residence);
                     
                     System.out.println("Manager info: " +manager.getName());
                     
@@ -74,7 +75,7 @@ public class DataManager extends ConnectionManager
                     System.out.println("type2");
                     Admin admin = null;
                     //(id, name, email, password, type, phone, note);
-                    admin = new Admin(id, name, email, type, phone, note);
+                    admin = new Admin(id, name, email, type, phone, note, residence);
                     
                     System.out.println("Admin info: " +admin.getName());
                     
@@ -104,6 +105,7 @@ public class DataManager extends ConnectionManager
                 int type = rs.getInt("type");
                 int phone = rs.getInt("phone");
                 String note = rs.getString("note");
+                String residence = rs.getString("residence");
                 
 
                 switch (type)
@@ -112,7 +114,7 @@ public class DataManager extends ConnectionManager
                         System.out.println("type0");
                         Volunteer volunteer = null;
                         //(id, name, email, password, type, phone, note);
-                        volunteer = new Volunteer(id, name, email, type, phone, note);
+                        volunteer = new Volunteer(id, name, email, type, phone, note, residence);
                         users.add(volunteer);
                         System.out.println("Volunteer " + volunteer.getName()+" added to the list");
                         break;
@@ -121,7 +123,7 @@ public class DataManager extends ConnectionManager
                         System.out.println("type1");
                         Manager manager = null;
                         //(id, name, email, password, type, phone, note);
-                        manager = new Manager(id, name, email, type, phone, note);
+                        manager = new Manager(id, name, email, type, phone, note, residence);
                         users.add(manager);
                         System.out.println("Manager " +manager.getName()+" added to the list");
                         break;
@@ -130,7 +132,7 @@ public class DataManager extends ConnectionManager
                         System.out.println("type2"); 
                         Admin admin = null;
                         //(id, name, email, password, type, phone, note);
-                        admin = new Admin(id, name, email, type, phone, note);
+                        admin = new Admin(id, name, email, type, phone, note, residence);
                         users.add(admin);
                         System.out.println("Admin "+admin.getName()+" added to the list");
                         break;
@@ -163,10 +165,11 @@ public class DataManager extends ConnectionManager
                 int type = rs.getInt("type");
                 int phone = rs.getInt("phone");
                 String note = rs.getString("note");
+                String residence = rs.getString("residence");
 
                 Volunteer volunteer = null;
                 //(id, name, email, password, type, phone, note);
-                volunteers.add(new Volunteer(id, name, email, type, phone, note));
+                volunteers.add(new Volunteer(id, name, email, type, phone, note, residence));
                 System.out.println("Volunteer " + volunteer.getName()+" added to the list");
 
             }
@@ -193,10 +196,11 @@ public class DataManager extends ConnectionManager
                 int type = rs.getInt("type");
                 int phone = rs.getInt("phone");
                 String note = rs.getString("note");
+                String residence = rs.getString("residence");
 
                 Manager manager = null;
                 //(id, name, email, password, type, phone, note);
-                managers.add(new Manager(id, name, email, type, phone, note));
+                managers.add(new Manager(id, name, email, type, phone, note, residence));
                 System.out.println("Volunteer " + manager.getName()+" added to the list");
 
             }
@@ -223,10 +227,11 @@ public class DataManager extends ConnectionManager
                 int type = rs.getInt("type");
                 int phone = rs.getInt("phone");
                 String note = rs.getString("note");
+                String residence = rs.getString("residence");
 
                 Admin admin = null;
                 //(id, name, email, password, type, phone, note);
-                admins.add(new Admin(id, name, email, type, phone, note));
+                admins.add(new Admin(id, name, email, type, phone, note, residence));
                 System.out.println("Volunteer " + admin.getName()+" added to the list");
 
             }
