@@ -5,6 +5,7 @@
  */
 package GUI.Model;
 
+import BE.EnumCache;
 import BE.User;
 import java.util.List;
 import javafx.animation.FadeTransition;
@@ -96,4 +97,13 @@ public class ModelFacade
       {
         return DATA_MOD.getAllAdmins();
       }
+    
+    //Language Model
+    public String getLang(String key) {
+        return LANG_MOD.getLang(key);
+    }
+    
+    public void setLang(EnumCache.Lang lang) {
+        LANG_MOD.setLang(lang);
+    }
   }

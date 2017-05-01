@@ -15,13 +15,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -385,12 +382,12 @@ public class HourLoginController implements Initializable
             if (strLanguage.equals("Dansk"))
               {
                 imgViewLngBut.setImage(iconDK);
-                lm.set(Lang.DAN);
+                MOD_FACADE.setLang(Lang.DAN);
               }
             else if (strLanguage.equals("English"))
               {
                 imgViewLngBut.setImage(iconENG);
-                lm.set(Lang.ENG);
+                MOD_FACADE.setLang(Lang.ENG);
               }
           }
       }
@@ -403,16 +400,16 @@ public class HourLoginController implements Initializable
 
     private void setTextAll()
       {
-        lblUsernameTag.setText(lm.get("USERNAME_TAG"));
-        txtUser.setPromptText(lm.get("TXT_USERNAME_PROMPT"));
-        lblHourTag.setText(lm.get("HOUR_TAG"));
-        txtHours.setPromptText(lm.get("TXT_HOURS_PROMPT"));
-        lblHourTagTwo.setText(lm.get("HOUR_TAG_TWO"));
-        lblGuildTag.setText(lm.get("GUILD_TAG"));
-        cmbGuildChooser.setPromptText(lm.get("CMB_GUILD_CHOOSER_PROMPT"));
-        lblGuildTagTwo.setText(lm.get("GUILD_TAG_TWO"));
-        btnLogHours.setText(lm.get("BTN_LOG_HOURS"));
-        btnSeeInfo.setText(lm.get("BTN_SEE_INFO"));
+        lblUsernameTag.setText(MOD_FACADE.getLang("USERNAME_TAG"));
+        txtUser.setPromptText(MOD_FACADE.getLang("TXT_USERNAME_PROMPT"));
+        lblHourTag.setText(MOD_FACADE.getLang("HOUR_TAG"));
+        txtHours.setPromptText(MOD_FACADE.getLang("TXT_HOURS_PROMPT"));
+        lblHourTagTwo.setText(MOD_FACADE.getLang("HOUR_TAG_TWO"));
+        lblGuildTag.setText(MOD_FACADE.getLang("GUILD_TAG"));
+        cmbGuildChooser.setPromptText(MOD_FACADE.getLang("CMB_GUILD_CHOOSER_PROMPT"));
+        lblGuildTagTwo.setText(MOD_FACADE.getLang("GUILD_TAG_TWO"));
+        btnLogHours.setText(MOD_FACADE.getLang("BTN_LOG_HOURS"));
+        btnSeeInfo.setText(MOD_FACADE.getLang("BTN_SEE_INFO"));
 
       }
   }
