@@ -11,7 +11,6 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Reflection?>
-<?import javafx.scene.effect.SepiaTone?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -23,7 +22,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="365.0" prefWidth="517.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerViewController">
+<AnchorPane id="AnchorPane" prefHeight="365.0" prefWidth="517.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerViewController">
     <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="129.0" layoutX="13.0" layoutY="11.0" stroke="TRANSPARENT" strokeType="INSIDE" width="491.0">
          <effect>
@@ -55,46 +54,34 @@
                   <Insets left="15.0" />
                </GridPane.margin>
             </JFXButton>
-            <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="25.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Images/person.png" />
                </image>
-               <effect>
-                  <SepiaTone />
-               </effect>
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>
             </ImageView>
-            <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+            <ImageView fitHeight="25.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
                <image>
                   <Image url="@../Images/phone.png" />
                </image>
-               <effect>
-                  <SepiaTone />
-               </effect>
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>
             </ImageView>
-            <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+            <ImageView fitHeight="25.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
                <image>
                   <Image url="@../Images/email.png" />
                </image>
-               <effect>
-                  <SepiaTone />
-               </effect>
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>
             </ImageView>
-            <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
+            <ImageView fitHeight="25.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
                <image>
                   <Image url="@../Images/location.png" />
                </image>
-               <effect>
-                  <SepiaTone />
-               </effect>
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>

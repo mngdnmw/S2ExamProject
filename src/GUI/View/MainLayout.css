@@ -10,12 +10,13 @@
     -fx-orientation: vertical;
     -fx-content-display: top;
 
-    -fx-background-color: #00c4ad; 
+    -fx-background-color: #00e2c7; 
+    /*#00c4ad*/
 }
 .JFXButtonLogHours
 {
     -fx-graphic:url("../Images/save-white.png");
-    -fx-background-color: #00e2c7;
+    -fx-background-color: #00c4ad;
 }
 .JFXButtonSeeInfo
 {
