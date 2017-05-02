@@ -3,7 +3,7 @@ package DAL;
 public class DALFacade
   {
 
-    private final static DataManager DATA_MAN = new DataManager();
+    private final static GeneralInfoManager DATA_MAN = new GeneralInfoManager();
     private final static LoginManager LOGIN_MAN = new LoginManager();
 
     public void logHours(String str, String date, int hours, int guildId)

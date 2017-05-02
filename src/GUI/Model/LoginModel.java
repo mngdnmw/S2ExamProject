@@ -1,6 +1,7 @@
 package GUI.Model;
 
 import BE.User;
+import BE.Volunteer;
 import BLL.BLLFacade;
 
 
@@ -9,7 +10,10 @@ public class LoginModel
   {
 
     private final static BLLFacade BLL_FAC = new BLLFacade();
-    private User currentUser;
+    
+    //Stand in until we have the user passed through
+    private User currentUser = new Volunteer(1, "Daniel", "LOL@EMAIL.DK", 0, 9329329, "There is a note", "2131 dskhhkdfs road");;
+    
     public void logHours(int userId, int hours, int guildId)
       {
 
@@ -28,6 +32,7 @@ public class LoginModel
     public void setCurrentUser(User currentUser)
       {
         this.currentUser = currentUser;
+          
       }
     
     

@@ -8,8 +8,9 @@ public abstract class User
     int type;
     int phone;
     String note;
+    String residence;
 
-    public User(int id, String name, String email, int type, int phone, String note)
+    public User(int id, String name, String email, int type, int phone, String note, String residence)
     {
         this.id = id;
         this.name = name;
@@ -17,6 +18,7 @@ public abstract class User
         this.type = type;
         this.phone = phone;
         this.note = note;
+        this.residence=residence;
     }
 
     public int getId()
@@ -78,5 +80,15 @@ public abstract class User
     public void setNote(String note)
     {
         this.note = note;
+    }
+    
+       public String getResidence()
+    {
+        return residence;
+    }
+
+    public void setResidence(String address)
+    {
+        this.residence = address;
     }
 }
