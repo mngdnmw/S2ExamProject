@@ -1,11 +1,14 @@
 package GUI.Model;
 
+import BE.Guild;
 import BE.User;
+import BLL.BLLFacade;
 import BLL.DataHandler;
 import java.util.List;
 
 public class GeneralInfoModel
 {
+    private final static BLLFacade BLL_FAC = new BLLFacade();
     DataHandler dataHandler = new DataHandler();
     
     public User getUserInfo(int userId)
@@ -32,4 +35,8 @@ public class GeneralInfoModel
     {
         return dataHandler.getAllAdmins();
     }
+    public List<Guild> getAllGuilds()
+      {
+      return BLL_FAC.getAllGuilds();
+      }
 }

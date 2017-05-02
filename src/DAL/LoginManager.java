@@ -15,7 +15,7 @@ public class LoginManager extends ConnectionManager
      * @param hours
      * @param guildId
      */
-    public void logHours(String username, String date, int hours, int guildId)
+    public void logHours(int userId, String date, int hours, int guildId) throws SQLException
       {
         //int userid = 
         try (Connection con = super.getConnection())
@@ -23,18 +23,12 @@ public class LoginManager extends ConnectionManager
             String sqlCommand
                     = "INSERT into [hour](userid, date, hours, guildid) values (?, ?, ?, ?)";
             PreparedStatement pstat = con.prepareStatement(sqlCommand);
-            //  pstat.setInt(1, userid);
+            pstat.setInt(1, userId);
             pstat.setString(2, date);
             pstat.setInt(3, hours);
             pstat.setInt(4, guildId);
             pstat.executeUpdate();
-          }
-        catch (SQLException sqle)
-          {
-            System.out.println("Exception in: LoginManager: logHours method");
-            System.err.println(sqle);
+            
           }
       }
-
-    
   }

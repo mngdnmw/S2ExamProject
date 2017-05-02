@@ -1,6 +1,7 @@
 package GUI.Model;
 
 import BE.EnumCache;
+import BE.Guild;
 import BE.User;
 import java.util.List;
 import javafx.animation.FadeTransition;
@@ -10,14 +11,15 @@ import javafx.util.Duration;
 public class ModelFacade
   {
 
-    private final static GeneralInfoModel DATA_MOD = new GeneralInfoModel();
+    private final static GeneralInfoModel GEN_INFO_MOD = new GeneralInfoModel();
     private final static LoginModel LOG_MOD = new LoginModel();
     private final static AnimationModel ANIM_MOD = new AnimationModel();
     private final static LanguageModel LANG_MOD = new LanguageModel();
-    //Login Model
-    public void logHours(int userId, int hours, int guildId)
-      {
 
+    //Login Model
+    public Boolean logHours(String username, int hours, int guildId)
+      {
+        return LOG_MOD.logHours(username, hours, guildId);
       }
 
     public void getUserFromLogin(String username)
@@ -66,35 +68,42 @@ public class ModelFacade
     //Data Model
     public User getUserInfo(int userId)
       {
-        return DATA_MOD.getUserInfo(userId);
+        return GEN_INFO_MOD.getUserInfo(userId);
       }
 
     public List<User> getAllUsers()
       {
-        return DATA_MOD.getAllUsers();
+        return GEN_INFO_MOD.getAllUsers();
       }
 
     public List<User> getAllVolunteers()
       {
-        return DATA_MOD.getAllVolunteers();
+        return GEN_INFO_MOD.getAllVolunteers();
       }
 
     public List<User> getAllManagers()
       {
-        return DATA_MOD.getAllManagers();
+        return GEN_INFO_MOD.getAllManagers();
       }
 
     public List<User> getAllAdmins()
       {
-        return DATA_MOD.getAllAdmins();
+        return GEN_INFO_MOD.getAllAdmins();
       }
-    
+
     //Language Model
-    public String getLang(String key) {
+    public String getLang(String key)
+      {
         return LANG_MOD.getLang(key);
-    }
-    
-    public void setLang(EnumCache.Lang lang) {
+      }
+
+    public void setLang(EnumCache.Lang lang)
+      {
         LANG_MOD.setLang(lang);
-    }
+      }
+
+    public List<Guild> getAllGuilds()
+      { 
+        return GEN_INFO_MOD.getAllGuilds();
+      }
   }
