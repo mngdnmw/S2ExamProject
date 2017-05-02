@@ -6,6 +6,7 @@
 package GUI.Model;
 
 import BE.User;
+import BLL.BLLFacade;
 import BLL.DataHandler;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
 public class DataModel
 {
     DataHandler dataHandler = new DataHandler();
+    BLLFacade bllFacade = new BLLFacade();
     
     public User getUserInfo(int userId)
     {
@@ -40,5 +42,10 @@ public class DataModel
     public List<User> getAllAdmins()
     {
         return dataHandler.getAllAdmins();
+    }
+    
+    public void addUser(String name, String email, String password, int type, int phone, String address, String note)
+    {
+        bllFacade.addUser(name, email, password, type, phone, address, note);
     }
 }

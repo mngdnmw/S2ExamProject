@@ -7,15 +7,17 @@ public abstract class User
     String email;
     int type;
     int phone;
+    String address;
     String note;
 
-    public User(int id, String name, String email, int type, int phone, String note)
+    public User(int id, String name, String email, int type, int phone, String address, String note)
     {
         this.id = id;
         this.name = name;
         this.email = email;
         this.type = type;
         this.phone = phone;
+        this.address = address;
         this.note = note;
     }
 
@@ -45,6 +47,10 @@ public abstract class User
         return phone;
     }
 
+    public String getAddress()
+    {
+        return address;
+    }
     public String getNote()
     {
         return note;
@@ -73,6 +79,11 @@ public abstract class User
     public void setPhone(int phone)
     {
         this.phone = phone;
+    }
+    
+    public void setAddress(String address)
+    {
+        this.address = address;
     }
 
     public void setNote(String note)

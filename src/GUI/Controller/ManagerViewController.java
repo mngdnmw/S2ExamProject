@@ -1,27 +1,23 @@
 package GUI.Controller;
 
+import BE.User;
+import GUI.Model.DataModel;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 
 
 public class ManagerViewController implements Initializable
 {
-
-    @FXML
-    private Label lblName;
-    @FXML
-    private Label lblPh;
-    @FXML
-    private Label lblEmail;
-    @FXML
-    private Label lblAddress;
     @FXML
     private JFXButton btnNameEdit;
     @FXML
@@ -44,10 +40,87 @@ public class ManagerViewController implements Initializable
     private TextArea textAreaGuilds;
     @FXML
     private JFXButton JFXBtnUpdatePhoto;
+    @FXML
+    private JFXTextField txtName;
+    @FXML
+    private JFXTextField txtPhone;
+    @FXML
+    private JFXTextField txtEmail;
+    @FXML
+    private JFXTextField txtAddress;
+    
+    ManagerEditViewController mevController;
+    boolean edit = false;
+    
+    DataModel dataModel = new DataModel();
+    
+    private static User selectedUser;
+    
     
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        
+        boolean edit = false;
+        setText();
     }    
+    
+    public void setController(ManagerEditViewController c)
+    {
+        txtName.setEditable(false);
+        txtAddress.setEditable(false);
+        txtPhone.setEditable(false);
+        txtEmail.setEditable(false);
+        this.mevController = c;
+    }
+    
+    public void setText()
+    {
+        if (selectedUser != null)
+        {
+            txtName.setText(selectedUser.getName());
+            txtAddress.setText(selectedUser.getAddress());
+            txtPhone.setText(String.valueOf(selectedUser.getPhone()));
+            txtEmail.setText(selectedUser.getEmail());
+            JFXTxtAreaNotes.setText(selectedUser.getNote());
+        }
+        else
+        {
+            System.out.println("selected user is null");
+        }
+    }
+
+    @FXML
+    private void onBtnNameEditPressed(ActionEvent event)
+    {
+        edit = !edit;
+        
+        if(edit == true)
+        {
+            txtName.setEditable(true);
+            txtAddress.setEditable(true);
+            txtPhone.setEditable(true);
+            txtEmail.setEditable(true);
+        }
+        
+        if(edit == false)
+        {            
+            txtName.setEditable(false);
+            txtAddress.setEditable(false);
+            txtPhone.setEditable(false);
+            txtEmail.setEditable(false);
+        }     
+    }
+
+    @FXML
+    private void onBtnUpdatePhotoPressed(ActionEvent event)
+    {
+        //dataModel.addUser(name, email, password, type, phone, address, note);
+        dataModel.addUser(txtName.getText(), txtEmail.getText(), "asd123", 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), JFXTxtAreaNotes.getText());
+    }
+    
+    public static void setSelectedUser(User user)
+    {
+        selectedUser = user;
+    }
+    
 }

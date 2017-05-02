@@ -2,11 +2,10 @@ package DAL;
 
 public class DALFacade
 {
-    /****************************************************************dafaq am i supposed to do here??******************/
-    /*private LoginManager loginManager = new LoginManager();
+    DataManager dataManager = new DataManager();
     
-    public void logHours(int userId, String date, int hours, int guildId)
+    public void addUser(String name, String email, String password, int type, int phone, String address, String note)
     {
-        loginManager.logHours(userId, date, hours, guildId);
-    }*/
+        dataManager.addUser(name, email, password, type, phone, address, note);
+    }
 }
