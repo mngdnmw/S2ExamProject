@@ -244,6 +244,14 @@ public class GeneralInfoManager extends ConnectionManager
     }
     
     public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence) {
-        //TODO
+        String query = "update [user] set [name] = '"+name+"', [email] = '"+email+"', [phone] = '"+phone+"', [residence] = '"+residence+"' where [userid] = "+userId;
+        
+        try(Connection con = super.getConnection()) {
+            Statement s = con.createStatement();
+            s.execute(query);
+        } catch(SQLException e) {
+            System.out.println("Exception in: DataManager::updateUserInfo()");
+            System.out.println(e);
+        }
     }
 }
