@@ -4,11 +4,13 @@ import BE.User;
 import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
+import com.sun.deploy.util.StringUtils;
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -16,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -154,6 +157,14 @@ public class UserInfoViewController implements Initializable
         txtEmail = new TextField();
         txtResidence = new TextField();
         
+        txtPh.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                checkTextFields();
+            }
+            
+        });
+        
         txtName.setVisible(false);
         txtPh.setVisible(false);
         txtEmail.setVisible(false);
@@ -186,12 +197,9 @@ public class UserInfoViewController implements Initializable
     }
     
     private void saveInfo(User user) {
-        currentUser.setName(txtName.getText());
-        currentUser.setEmail(txtEmail.getText());
-        currentUser.setPhone(Integer.parseInt(txtPh.getText()));
-        currentUser.setResidence(txtResidence.getText());
+        MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPh.getText()), user.getNote(), txtResidence.getText()); //do things in db
         
-        MOD_FACADE.updateUserInfo(user.getId(), user.getName(), user.getEmail(), user.getType(), user.getPhone(), user.getNote(), user.getResidence()); //do things in db
+        currentUser = MOD_FACADE.getUserInfo(user.getId());
         
         txtName.setVisible(false);
         txtPh.setVisible(false);
@@ -204,5 +212,24 @@ public class UserInfoViewController implements Initializable
         lblResidence.setVisible(true);
         
         setProperties(); //update labels
+    }
+    
+    private void checkTextFields() {
+        boolean success = false;
+        try {
+            Integer.parseInt(txtPh.getText());
+            success = true;
+        } catch(NumberFormatException e) {
+            success = false;
+            txtPh.setStyle("-fx-background-color:red;");
+            btnEditSave.setDisable(true);    
+        }
+        if(success) {
+            btnEditSave.setDisable(false);
+            txtPh.setStyle("");
+        } else {
+            txtPh.setStyle("-fx-background-color:red;");
+            btnEditSave.setDisable(true);
+        }
     }
 }
