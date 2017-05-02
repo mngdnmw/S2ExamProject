@@ -5,7 +5,16 @@ import BE.User;
 import BE.Volunteer;
 import BE.Admin;
 import BE.Manager;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import java.io.OutputStream;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,7 +30,7 @@ public class GeneralInfoManager extends ConnectionManager
      * @param userId
      * @return 
      */
-    public User getUserInfo(int userId) 
+    public User getUserInfo(int userId)
     {
         //String query = "select [user].[name], [user].[email],[user].phone From [user] where [user].userid ="+userId;
         String query = "select [user].* from [user] where [user].userid =" +userId;
@@ -31,7 +40,6 @@ public class GeneralInfoManager extends ConnectionManager
             ResultSet rs = s.executeQuery(query);
             System.out.println(query);
             System.out.println(rs);
-            
             
             while(rs.next())
             {
@@ -254,4 +262,54 @@ public class GeneralInfoManager extends ConnectionManager
             System.out.println(e);
         }
     }
+    
+    public void updateUserImage(User user, File img) throws FileNotFoundException{
+        List<Integer> hasImg = new ArrayList<>();
+        String checkQuery = "select [userid] from [image]";
+        try(Connection con = super.getConnection()) {
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery(checkQuery);
+            while(rs.next()) {
+                hasImg.add(rs.getInt("userid"));
+            }
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+        
+        String query;
+        PreparedStatement ps;
+        long len = img.length();
+        try(Connection con = super.getConnection()) {
+            if(hasImg.contains(user.getId())) {
+                query = "update [image] set [img] = ? where [userid] = '"+user.getId()+"'";
+                ps = con.prepareStatement(query);
+                ps.setBinaryStream(1, new FileInputStream(img),len);
+            } else {
+                query = "insert into [image]([userid],[img]) values (?,?)";
+                ps = con.prepareStatement(query);
+                ps.setInt(1, user.getId());
+                ps.setBinaryStream(2, new FileInputStream(img),len);
+            }
+        ps.execute();
+            
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public InputStream getUserImage(User user) {
+        String query = "select [img] from [image] where [image].[userid] = "+user.getId();
+        try(Connection con = super.getConnection()) {
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery(query);
+            while(rs.next()) {
+                
+                return rs.getBlob("img").getBinaryStream();
+            }
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    } 
 }
+
