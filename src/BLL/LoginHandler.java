@@ -1,32 +1,17 @@
 package BLL;
 
 import BE.User;
-import BE.Volunteer;
+import DAL.DALFacade;
 
 public class LoginHandler
   {
 
-    public User getUserFromLogin(String username)
-      {
-        boolean parsable = true;
-        int tester = 0;
-        try
-          {
-            tester = Integer.parseInt(username);
+    private final static DALFacade DAL_FAC = new DALFacade();
 
-          }
-        catch (NumberFormatException e)
-          {
-            parsable = false;
-          }
-        if (parsable)
-          {
-            return new Volunteer(1, "Daniel", "LOL@EMAIL.DK", 0, tester, "There is a note", "2131 dskhhkdfs road");
-          }
-        else
-          {
-            return new Volunteer(1, "Daniel", username, 0, 50458222, "There is a note", "123 parkvej");
-            
-          }
+    public User getUserFromLogin(String username, String password)
+      {
+        return null;
       }
+
+    
   }
