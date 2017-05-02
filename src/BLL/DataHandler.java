@@ -41,4 +41,8 @@ public class DataHandler
     {
         return dataManager.getAllAdmins();
     }
+    
+    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence) {
+        dataManager.updateUserInfo(userId, name, email, type, phone, note, residence);
+    }
 }

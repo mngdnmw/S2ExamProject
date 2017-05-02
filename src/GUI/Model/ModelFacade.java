@@ -106,4 +106,9 @@ public class ModelFacade
       { 
         return GEN_INFO_MOD.getAllGuilds();
       }
-  }
+    }
+    
+    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence) {
+        DATA_MOD.updateUserInfo(userId, name, email, type, phone, note, residence);
+    }
+}
