@@ -1,6 +1,7 @@
 package GUI.Controller;
 
 import BE.User;
+import GUI.Controller.ManagerViewController;
 import GUI.Model.AnimationModel;
 import GUI.Model.DataModel;
 
@@ -104,20 +105,32 @@ public class ManagerEditViewController implements Initializable
 
     public void addUserPopup()
     {
+        selectedUser = null;
+        
         try
         {
             Stage primStage = (Stage) tblVolunteers.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/ManagerView.fxml"));
-
+            
+            ManagerViewController.setSelectedUser(selectedUser);
+            
             Parent root = loader.load();
-
+            
             // Fetches controller from view
             ManagerViewController controller = loader.getController();
+            
             //controller.setController(this);
             controller.setController(this);
             // Sets new stage as modal window
             Stage stageView = new Stage();
             stageView.setScene(new Scene(root));
+            
+            stageView.setOnHiding(new EventHandler<WindowEvent>() {
+                    public void handle(WindowEvent we) {
+                        System.out.println("Stage on Hiding");
+                        setTableItems();
+                    }
+                });
             
             stageView.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
@@ -148,14 +161,11 @@ public class ManagerEditViewController implements Initializable
             try
             {
                 
-                selectedUser = tblVolunteers.getSelectionModel().getSelectedItem();
-
-                System.out.println("Selected User: " + selectedUser.getName());
                 
                 selectedUser = tblVolunteers.getSelectionModel().getSelectedItem();
                 Stage primStage = (Stage) tblVolunteers.getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/ManagerView.fxml"));
-
+                System.out.println("Selected User: " + selectedUser.getName());
                 ManagerViewController.setSelectedUser(selectedUser);
 
                 Parent root = loader.load();
@@ -171,6 +181,13 @@ public class ManagerEditViewController implements Initializable
                 Stage stageView = new Stage();
                 stageView.setScene(new Scene(root));
 
+                stageView.setOnHiding(new EventHandler<WindowEvent>() {
+                    public void handle(WindowEvent we) {
+                        System.out.println("Stage on Hiding");
+                        setTableItems();
+                    }
+                });
+                
                 stageView.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 public void handle(WindowEvent we) {
                   System.out.println("Stage is closing");
@@ -185,6 +202,7 @@ public class ManagerEditViewController implements Initializable
             } catch (Exception e)
             {
                 System.out.println(e);
+                e.printStackTrace();
             }
         }
         else
@@ -228,6 +246,13 @@ public class ManagerEditViewController implements Initializable
                 Stage stageView = new Stage();
                 stageView.setScene(new Scene(root));
 
+                stageView.setOnHiding(new EventHandler<WindowEvent>() {
+                    public void handle(WindowEvent we) {
+                        System.out.println("Stage on Hiding");
+                        setTableItems();
+                    }
+                });
+                
                 stageView.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 public void handle(WindowEvent we) {
                   System.out.println("Stage is closing");

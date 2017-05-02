@@ -199,7 +199,7 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <JFXButton fx:id="JFXBtnAccept" style="-fx-background-color: #61B329;" text="Accept Edit" textFill="WHITE">
+                              <JFXButton fx:id="JFXBtnAccept" onAction="#onBtnAcceptPressed" style="-fx-background-color: #61B329;" text="Accept Edit" textFill="WHITE">
                                  <padding>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </padding>
@@ -210,7 +210,7 @@
                                     <Insets left="50.0" />
                                  </GridPane.margin>
                               </JFXButton>
-                              <JFXButton fx:id="JFXBtnCancel" style="-fx-background-color: #ff0000;" text="Cancel Edit" textFill="WHITE" GridPane.columnIndex="1">
+                              <JFXButton fx:id="JFXBtnCancel" onAction="#onBtnCancelPressed" style="-fx-background-color: #ff0000;" text="Cancel Edit" textFill="WHITE" GridPane.columnIndex="1">
                                  <padding>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </padding>

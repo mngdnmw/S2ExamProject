@@ -48,4 +48,9 @@ public class DataModel
     {
         bllFacade.addUser(name, email, password, type, phone, address, note);
     }
+    
+    public void updateUserInfo(String name, String email, String password, int type, int phone, String address, String note, int userid)
+    {
+        bllFacade.updateUserInfo(name, email, password, type, phone, address, note, userid);
+    }
 }

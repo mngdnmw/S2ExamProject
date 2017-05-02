@@ -11,9 +11,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 
 public class ManagerViewController implements Initializable
@@ -36,8 +35,6 @@ public class ManagerViewController implements Initializable
     private JFXButton JFXBtnCancel;
     @FXML
     private ImageView imgVwProfilePic;
-    @FXML
-    private TextArea textAreaGuilds;
     @FXML
     private JFXButton JFXBtnUpdatePhoto;
     @FXML
@@ -123,4 +120,24 @@ public class ManagerViewController implements Initializable
         selectedUser = user;
     }
     
+    private void updateUserInfo()
+    {
+        dataModel.updateUserInfo(txtName.getText(), txtEmail.getText(), "password", 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), JFXTxtAreaNotes.getText(), selectedUser.getId());
+    }
+
+    @FXML
+    private void onBtnAcceptPressed(ActionEvent event)
+    {
+        updateUserInfo();
+        System.out.println("Updated info saved. ");
+        Stage stage = (Stage) JFXBtnAccept.getScene().getWindow();
+        stage.close();
+    }
+
+    @FXML
+    private void onBtnCancelPressed(ActionEvent event)
+    {
+        Stage stage = (Stage) btnNameEdit.getScene().getWindow();
+        stage.close();
+    }
 }

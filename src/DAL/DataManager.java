@@ -266,4 +266,28 @@ public class DataManager extends ConnectionManager
             System.err.println(sqle);
         }
     }
+    
+    public void updateUserInfo(String name, String email, String password, int type, int phone, String address, String note, int userid)
+    {
+        try(Connection con = super.getConnection())
+        {
+            String sqlCommand =
+            "UPDATE [user] SET name=?, email=?, password=?, type=?, phone=?, residence=?, note=? WHERE userid=?";
+            PreparedStatement pstat = con.prepareStatement(sqlCommand);
+            pstat.setString(1, name);
+            pstat.setString(2, email);
+            pstat.setString(3, password);
+            pstat.setInt(4, type);
+            pstat.setInt(5, phone);
+            pstat.setString(6, address);
+            pstat.setString(7, note);
+            pstat.setInt(8, userid);
+            pstat.executeUpdate();
+        }
+        catch(SQLException sqle)
+        {
+            System.out.println("Exception in: DataManager: updateInfo method");
+            System.err.println(sqle);
+        }
+    }
 }
