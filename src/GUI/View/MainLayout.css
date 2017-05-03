@@ -33,8 +33,10 @@
     -fx-background-radius:20px
 }
 
-/*What is this one for?*/
-.text-area.content
+/*What is this one for?
+    Maybe for the text area, as it's name suggests? ¯\_(ツ)_/¯
+*/
+.text-area .content
 {
     -fx-background-color: #FAFAFA;
 }
