@@ -126,7 +126,6 @@ public class ModelFacade
       {
         return GEN_INFO_MOD.getAllGuilds();
       }
-
     /**
      * Changes the view based on number. 0 goes to the UserInfoView, 1 goes to
      * ManagerEditView, 2 goes to ManagerView 3 goes to the hourLoginView
