@@ -129,7 +129,13 @@ public class ManagerViewController implements Initializable
     @FXML
     private void onBtnAcceptPressed(ActionEvent event)
     {
-        updateUserInfo();
+        if(selectedUser == null)
+        {
+            modelFacade.addUser(txtName.getText(), txtEmail.getText(), "", 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtNotes.getText());
+        }
+        else if(selectedUser != null)
+            updateUserInfo();
+        
         System.out.println("Updated info saved. ");
         Stage stage = (Stage) JFXBtnAccept.getScene().getWindow();
         stage.close();
