@@ -13,7 +13,7 @@ public class LanguageManager extends ConfigManager{
     public static Properties language = new Properties();
 
     public LanguageManager() {
-        if(!props.getProperty("LANGUAGE").isEmpty()) {
+        if(!props.getProperty("LANGUAGE").isEmpty() && props.getProperty("LANGUAGE") != null) {
             file = "src//Resources//"+props.getProperty("LANGUAGE")+".lang";
         } else {
             file = "src//Resources//en.lang";
