@@ -44,7 +44,7 @@
             <Label fx:id="lblPh" prefHeight="17.0" prefWidth="102.0" text="lblPh" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label fx:id="lblEmail" prefHeight="17.0" prefWidth="102.0" text="lblEmail" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label fx:id="lblResidence" prefHeight="17.0" prefWidth="102.0" text="lblResidence" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <JFXButton fx:id="btnNameEdit" style="-fx-background-color: #00c4ad;" text="Edit" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3">
+            <JFXButton fx:id="btnNameEdit" buttonType="RAISED" ripplerFill="#ddcece" style="-fx-background-color: #00c4ad;" text="Edit" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </padding>
@@ -288,12 +288,12 @@
             </VBox>
          </children>
       </VBox>
-      <JFXButton fx:id="JFXBtnUpdatePhoto" layoutX="368.0" layoutY="165.0" style="-fx-background-color: #00c4ad;" text="Update Photo" textFill="WHITE">
+      <JFXButton fx:id="JFXBtnUpdatePhoto" buttonType="RAISED" layoutX="368.0" layoutY="165.0" ripplerFill="#ddcece" style="-fx-background-color: #00c4ad;" text="Update Photo" textFill="WHITE">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </JFXButton>
-      <JFXButton fx:id="btnNameEdit1" layoutX="443.0" layoutY="331.0" style="-fx-background-color: #00c4ad;" text="Log out" textFill="WHITE">
+      <JFXButton fx:id="btnNameEdit1" buttonType="RAISED" layoutX="443.0" layoutY="331.0" ripplerFill="#ddcece" style="-fx-background-color: #00c4ad;" text="Log out" textFill="WHITE">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>

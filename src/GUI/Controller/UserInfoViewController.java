@@ -73,6 +73,9 @@ public class UserInfoViewController implements Initializable
         setCurrentUser(MOD_FACADE.getCurrentUser());
         setProperties();
         showConstantCalendar();
+        
+        
+        
     }
 
     public void setCurrentUser(User currentUser)
@@ -88,6 +91,10 @@ public class UserInfoViewController implements Initializable
         pop.setMaxSize(hBoxCalAll.getMaxWidth(), hBoxCalAll.getMaxHeight());
         //hBoxCalAll.setPadding(new Insets(5));
         hBoxCalAll.getChildren().add(pop);
+        
+        String css = this.getClass().getResource("/GUI/View/MainLayout.css").toExternalForm();
+        pop.getStyleClass().add(css);
+        
         //Trying to make calendar smaller by applying CSS
         pop.setId("calendar");
         pop.applyCss();
