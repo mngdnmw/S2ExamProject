@@ -1,19 +1,20 @@
 package GUI.Controller;
 
-import GUI.Model.AnimationModel;
+import BE.EnumCache.*;
+import BE.Guild;
+import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -22,14 +23,16 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import javafx.util.Duration;
+import sun.plugin2.jvm.RemoteJVMLauncher.CallBack;
 
 public class HourLoginController implements Initializable
   {
@@ -49,7 +52,7 @@ public class HourLoginController implements Initializable
     @FXML
     private Label lblGuildTag;
     @FXML
-    private JFXComboBox<?> cmbGuildChooser;
+    private JFXComboBox<Guild> cmbGuildChooser;
     @FXML
     private Label lblGuildTagTwo;
     @FXML
@@ -60,14 +63,15 @@ public class HourLoginController implements Initializable
     private AnchorPane root;
 
     private String strLogThanks = "Thanks!";
-    private String strContribution = "You have helped shape this community!";
+    private String strContribution = "Your hours have been logged. Thank you!";
     private String strLogin = "Log In";
     private String strCancel = "Cancel";
     private String strLanguage = "English";
-    //Models used by this Controller
-    private static AnimationModel ANIM_MODEL = new AnimationModel();
+
     private Image iconDK, iconENG;
     private ImageView imgViewLngBut = new ImageView();
+    //Models used by this Controller
+    private final static ModelFacade MOD_FACADE = new ModelFacade();
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -76,14 +80,25 @@ public class HourLoginController implements Initializable
         preloadImages();
         imgViewLngBut.setImage(iconENG);
         btnLanguage.setGraphic(imgViewLngBut);
+        cmbGuildChooser.setItems(FXCollections.observableArrayList(MOD_FACADE.getAllGuilds()));
       }
 
     @FXML
     private void LogHoursAction(ActionEvent event)
       {
-
         lockButtons();
-        contributionPopup();
+        if (!txtUser.getText().isEmpty() && !txtHours.getText().isEmpty() && !cmbGuildChooser.getSelectionModel().isEmpty())
+          {
+            MOD_FACADE.logHours(
+                    txtUser.getText(), Integer.parseInt(txtHours.getText()),
+                    cmbGuildChooser.getSelectionModel().getSelectedItem().getId()
+            );
+            contributionPopup(strContribution);
+          }
+        else
+          {
+            contributionPopup("Please input information in all fields");
+          }
       }
 
     @FXML
@@ -91,6 +106,7 @@ public class HourLoginController implements Initializable
       {
         lockButtons();
         languagePopup();
+
       }
 
     @FXML
@@ -131,56 +147,63 @@ public class HourLoginController implements Initializable
     /**
      * pops up a bordered VBox that disappear after a short moment.
      */
-    public void contributionPopup()
+    public void contributionPopup(String str)
       {
-        //popup window that we are making
-        VBox popup = new VBox();
-        popup.setSpacing(5);
-        popup.setPadding(new Insets(20));
-        popup.setAlignment(Pos.CENTER);
-        popup.getStyleClass().add("popup");
-        popup.setStyle("-fx-background-color: #00c4ad;");
-
-        //CSS to be added to both labels
-        String styleText = "-fx-font:italic bold 20px/30px System;"
-                + "-fx-text-fill: #FFFFFF;" + "";
-
-        //First Label
-        Label lblThanks = new Label();
-        lblThanks.setStyle(styleText);
-        lblThanks.setText(strLogThanks);
-
-        //Next Label
-        Label lblContribution = new Label();
-        lblContribution.setStyle(styleText);
-        lblContribution.setText(strContribution);
-        //Imageview that contains a star
-        ImageView imgStar = new ImageView();
-        Image img = new Image("/GUI/Images/star.png");
-        imgStar.setImage(img);
-        imgStar.setFitHeight(imgStar.getImage().getHeight() / 3);
-        imgStar.setPreserveRatio(true);
-        //Add all nodes to the popup window in order
-        popup.getChildren().add(lblThanks);
-        popup.getChildren().add(lblContribution);
-        popup.getChildren().add(imgStar);
-
-        root.getChildren().add(popup);
-        popup.setTranslateY((root.getHeight() / 3));
-        popup.setTranslateX(root.getWidth() / 4.2);
-        ANIM_MODEL.fadeInTransition(Duration.millis(500), popup);
-
-        PauseTransition pause = new PauseTransition(Duration.millis(1500));
+        int time = 3000;
+        JFXSnackbar snackbar = new JFXSnackbar(root);
+        snackbar.show(str, time);
+        PauseTransition pause = new PauseTransition(Duration.millis(time));
         pause.setOnFinished(
-                e -> ANIM_MODEL.fadeOutTransition(Duration.millis(500), popup).setOnFinished(ev -> removePopup(popup))
+                e -> unlockButtons()
         );
         pause.play();
-
+//        //popup window that we are making
+//        VBox popup = new VBox();
+//        popup.setSpacing(5);
+//        popup.setPadding(new Insets(20));
+//        popup.setAlignment(Pos.CENTER);
+//        popup.getStyleClass().add("popup");
+//        popup.setStyle("-fx-background-color: #00c4ad;");
+//
+//        //CSS to be added to both labels
+//        String styleText = "-fx-font:italic bold 20px/30px System;"
+//                + "-fx-text-fill: #FFFFFF;" + "";
+//
+//        //First Label
+//        Label lblThanks = new Label();
+//        lblThanks.setStyle(styleText);
+//        lblThanks.setText(strLogThanks);
+//
+//        //Next Label
+//        Label lblContribution = new Label();
+//        lblContribution.setStyle(styleText);
+//        lblContribution.setText(strContribution);
+//        //Imageview that contains a star
+//        ImageView imgStar = new ImageView();
+//        Image img = new Image("/GUI/Images/star.png");
+//        imgStar.setImage(img);
+//        imgStar.setFitHeight(imgStar.getImage().getHeight() / 3);
+//        imgStar.setPreserveRatio(true);
+//        //Add all nodes to the popup window in order
+//        popup.getChildren().add(lblThanks);
+//        popup.getChildren().add(lblContribution);
+//        popup.getChildren().add(imgStar);
+//
+//        root.getChildren().add(popup);
+//        popup.setTranslateY((root.getHeight() / 3));
+//        popup.setTranslateX(root.getWidth() / 4.2);
+//        MOD_FACADE.fadeInTransition(Duration.millis(500), popup);
+//
+//        PauseTransition pause = new PauseTransition(Duration.millis(1500));
+//        pause.setOnFinished(
+//                e -> MOD_FACADE.fadeOutTransition(Duration.millis(500), popup).setOnFinished(ev -> removePopup(popup))
+//        );
+//        pause.play();
       }
 
     /**
-     * Pops up a login view that plays a short fade in transition.
-     *
+     * Pops up a login view that plays a short fade in transition. Contains
+     * event for the buttons that are within.
      */
     public void loginPopup()
       {
@@ -189,9 +212,8 @@ public class HourLoginController implements Initializable
         //Styles that will be used
         popup.setSpacing(20);
         popup.setPadding(new Insets(20, 20, 20, 20));
-
         popup.getStyleClass().add("popup");
-        popup.setStyle("-fx-background-color: #AAAAAA;");
+        popup.setStyle("-fx-background-color: #BBBBBB;");
 
         //CSS to be added to both labels
         String styleText = "-fx-font:italic bold 20px/30px System;"
@@ -233,7 +255,11 @@ public class HourLoginController implements Initializable
         txtPassword.setStyle(styleTextField);
 
         passwordArea.getChildren().addAll(lblPassword, txtPassword);
+        //A checkbox with the word Remember Me!
+        JFXCheckBox bxRemPassword = new JFXCheckBox("Remember Me");
+        bxRemPassword.setStyle(styleText);
         //Two buttons to confirm wether or not to log in and a label to say if it is wrong password
+
         HBox confirmArea = new HBox();
         confirmArea.alignmentProperty().set(Pos.CENTER_RIGHT);
         confirmArea.setSpacing(10);
@@ -246,17 +272,17 @@ public class HourLoginController implements Initializable
         btnCancel.setStyle(styleText + styleButtons);
         confirmArea.getChildren().addAll(lblWrongPw, btnLogin, btnCancel);
 
-        popup.getChildren().addAll(usernameArea, passwordArea, confirmArea);
+        popup.getChildren().addAll(usernameArea, passwordArea, bxRemPassword, confirmArea);
         root.getChildren().add(popup);
         popup.setTranslateY((root.getHeight() / 3));
         popup.setTranslateX(root.getWidth() / 4.2);
-        ANIM_MODEL.fadeInTransition(Duration.millis(500), popup);
+        MOD_FACADE.fadeInTransition(Duration.millis(500), popup);
         btnCancel.setOnAction(new EventHandler<ActionEvent>()
           {
             @Override
             public void handle(ActionEvent e)
               {
-                ANIM_MODEL.fadeOutTransition(Duration.millis(500), popup)
+                MOD_FACADE.fadeOutTransition(Duration.millis(500), popup)
                         .setOnFinished(
                                 ev -> removePopup(popup)
                         );
@@ -267,7 +293,14 @@ public class HourLoginController implements Initializable
             @Override
             public void handle(ActionEvent e)
               {
-                lblWrongPw.setText("Wrong Password");
+                MOD_FACADE.getUserFromLogin(txtUsername.getText());
+                if (MOD_FACADE.getCurrentUser() != null)
+                  {
+                  }
+                else
+                  {
+                    lblWrongPw.setText("Wrong Password");
+                  }
               }
 
           });
@@ -303,35 +336,33 @@ public class HourLoginController implements Initializable
         root.getChildren().add(popup);
         popup.getChildren().addAll(btnDanish, btnEnglish);
         popup.setTranslateX(0);
-        ANIM_MODEL.fadeInTransition(Duration.millis(500), popup);
+        MOD_FACADE.fadeInTransition(Duration.millis(500), popup);
         popup.setTranslateY((root.getHeight() / 1.5));
         popup.setTranslateX(root.getWidth() / 6);
-        btnDanish.setOnAction(new EventHandler<ActionEvent>()
+
+        EventHandler changeLanguageHandler = new EventHandler<ActionEvent>()
           {
             @Override
-            public void handle(ActionEvent e)
+            public void handle(ActionEvent event)
               {
-                changeLanguage(btnDanish, "Dansk");
-
-                ANIM_MODEL.fadeOutTransition(Duration.millis(500), popup)
+                if (event.getSource().equals(btnDanish))
+                  {
+                    changeLanguage("Dansk");
+                  }
+                else if (event.getSource().equals(btnEnglish))
+                  {
+                    changeLanguage("English");
+                  }
+                setTextAll();
+                MOD_FACADE.fadeOutTransition(Duration.millis(500), popup)
                         .setOnFinished(
                                 ev -> removePopup(popup)
                         );
               }
-          });
-        btnEnglish.setOnAction(new EventHandler<ActionEvent>()
-          {
-            @Override
-            public void handle(ActionEvent e)
-              {
-                changeLanguage(btnEnglish, "English");
+          };
 
-                ANIM_MODEL.fadeOutTransition(Duration.millis(500), popup)
-                        .setOnFinished(
-                                ev -> removePopup(popup)
-                        );
-              }
-          });
+        btnDanish.setOnAction(changeLanguageHandler);
+        btnEnglish.setOnAction(changeLanguageHandler);
 
       }
 
@@ -368,7 +399,7 @@ public class HourLoginController implements Initializable
 
       }
 
-    public void changeLanguage(JFXButton btn, String str)
+    public void changeLanguage(String str)
       {
         if (!str.equals(btnLanguage.getText()))
           {
@@ -377,10 +408,12 @@ public class HourLoginController implements Initializable
             if (strLanguage.equals("Dansk"))
               {
                 imgViewLngBut.setImage(iconDK);
+                MOD_FACADE.setLang(Lang.DAN);
               }
             else if (strLanguage.equals("English"))
               {
                 imgViewLngBut.setImage(iconENG);
+                MOD_FACADE.setLang(Lang.ENG);
               }
           }
       }
@@ -390,4 +423,20 @@ public class HourLoginController implements Initializable
         iconDK = new Image(getClass().getResourceAsStream("/GUI/Images/danish.png"));
         iconENG = new Image(getClass().getResourceAsStream("/GUI/Images/english.png"));
       }
+
+    private void setTextAll()
+      {
+        lblUsernameTag.setText(MOD_FACADE.getLang("USERNAME_TAG"));
+        txtUser.setPromptText(MOD_FACADE.getLang("TXT_USERNAME_PROMPT"));
+        lblHourTag.setText(MOD_FACADE.getLang("HOUR_TAG"));
+        txtHours.setPromptText(MOD_FACADE.getLang("TXT_HOURS_PROMPT"));
+        lblHourTagTwo.setText(MOD_FACADE.getLang("HOUR_TAG_TWO"));
+        lblGuildTag.setText(MOD_FACADE.getLang("GUILD_TAG"));
+        cmbGuildChooser.setPromptText(MOD_FACADE.getLang("CMB_GUILD_CHOOSER_PROMPT"));
+        lblGuildTagTwo.setText(MOD_FACADE.getLang("GUILD_TAG_TWO"));
+        btnLogHours.setText(MOD_FACADE.getLang("BTN_LOG_HOURS"));
+        btnSeeInfo.setText(MOD_FACADE.getLang("BTN_SEE_INFO"));
+
+      }
+
   }

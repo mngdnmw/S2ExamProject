@@ -1,9 +1,7 @@
 package GUI.Controller;
 
 import BE.User;
-import GUI.Controller.ManagerViewController;
-import GUI.Model.AnimationModel;
-import GUI.Model.DataModel;
+import GUI.Model.GeneralInfoModel;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
@@ -64,15 +62,10 @@ public class ManagerEditViewController implements Initializable
     @FXML
     private TableColumn<User, String> colGuild;
 
-    @FXML
-    private AnchorPane root;
-
-    DataModel dataModel = new DataModel();
-
+    
+    GeneralInfoModel dataModel = new GeneralInfoModel();
     User selectedUser;
-
-    private static AnimationModel ANIM_MODEL = new AnimationModel();
-
+    
     /**
      * Initializes the controller class.
      */

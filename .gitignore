@@ -17,7 +17,7 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
+
 *.war
 *.ear
 *.zip
@@ -85,4 +85,7 @@ $RECYCLE.BIN/
 
 # End of https://www.gitignore.io/api/java,macos,windows,netbeans
 *.properties
-nbproject/project.properties
+
+nbproject/*
+*.xml
+

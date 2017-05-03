@@ -1,0 +1,17 @@
+#Login screeen buttons
+LOG_THANKS = Tak!
+LOG_CONTRIB = Du har hjulpet med at forbedre vores fælleskab!
+BTN_LOGIN = Log in
+BTN_CANCEL = Annuller
+BTN_LOG_HOURS = Tilføj Timer
+BTN_SEE_INFO = Se info
+
+#Login screen labels
+USERNAME_TAG = Mit brugernavn er
+TXT_USERNAME_PROMPT = Telefon eller E-mail
+HOUR_TAG = Jeg har bidraget med
+TXT_HOURS_PROMPT = Number
+HOUR_TAG_TWO = timer
+GUILD_TAG = til
+CMB_GUILDCHOOSER_PROMPT = Vælg et laug
+GUILD_TAG_TWO = laug

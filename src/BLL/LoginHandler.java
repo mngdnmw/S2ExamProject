@@ -1,13 +1,17 @@
 package BLL;
 
-import DAL.LoginManager;
+import BE.User;
+import DAL.DALFacade;
 
 public class LoginHandler
-{
-    LoginManager loginManager = new LoginManager();
+  {
+
+    private final static DALFacade DAL_FAC = new DALFacade();
+
+    public User getUserFromLogin(String username, String password)
+      {
+        return null;
+      }
+
     
-    public void logHours(int userId, String date, int hours, int guildId)
-    {
-        loginManager.logHours(userId, date, hours, guildId);
-    }
-}
+  }

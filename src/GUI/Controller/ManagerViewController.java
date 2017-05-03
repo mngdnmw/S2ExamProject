@@ -1,7 +1,6 @@
 package GUI.Controller;
 
 import BE.User;
-import GUI.Model.DataModel;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
@@ -17,6 +16,15 @@ import javafx.stage.Stage;
 
 public class ManagerViewController implements Initializable
 {
+
+    @FXML
+    private Label lblName;
+    @FXML
+    private Label lblPh;
+    @FXML
+    private Label lblEmail;
+    @FXML
+    private Label lblResidence;
     @FXML
     private JFXButton btnNameEdit;
     @FXML
@@ -49,9 +57,9 @@ public class ManagerViewController implements Initializable
     ManagerEditViewController mevController;
     boolean edit = false;
     
-    DataModel dataModel = new DataModel();
     
     private static User selectedUser;
+    
     
     
     @Override
@@ -112,7 +120,7 @@ public class ManagerViewController implements Initializable
     private void onBtnUpdatePhotoPressed(ActionEvent event)
     {
         //dataModel.addUser(name, email, password, type, phone, address, note);
-        dataModel.addUser(txtName.getText(), txtEmail.getText(), "asd123", 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), JFXTxtAreaNotes.getText());
+        //dataModel.addUser(txtName.getText(), txtEmail.getText(), "asd123", 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), JFXTxtAreaNotes.getText());
     }
     
     public static void setSelectedUser(User user)
@@ -122,7 +130,7 @@ public class ManagerViewController implements Initializable
     
     private void updateUserInfo()
     {
-        dataModel.updateUserInfo(txtName.getText(), txtEmail.getText(), "password", 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), JFXTxtAreaNotes.getText(), selectedUser.getId());
+        //dataModel.updateUserInfo(txtName.getText(), txtEmail.getText(), "password", 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), JFXTxtAreaNotes.getText(), selectedUser.getId());
     }
 
     @FXML

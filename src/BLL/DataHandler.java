@@ -6,7 +6,10 @@
 package BLL;
 
 import BE.User;
-import DAL.DataManager;
+import DAL.GeneralInfoManager;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -15,7 +18,7 @@ import java.util.List;
  */
 public class DataHandler
 {
-    DataManager dataManager = new DataManager();
+    GeneralInfoManager dataManager = new GeneralInfoManager();
     
     public User getUserInfo(int userId)
     {
@@ -42,13 +45,15 @@ public class DataHandler
         return dataManager.getAllAdmins();
     }
     
-    public void addUser(String name, String email, String password, int type, int phone, String address, String note)
-    {
-        dataManager.addUser(name, email, password, type, phone, address, note);
+    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence) {
+        dataManager.updateUserInfo(userId, name, email, type, phone, note, residence);
     }
     
-    public void updateUserInfo(String name, String email, String password, int type, int phone, String address, String note, int userid)
-    {
-        dataManager.updateUserInfo(name, email, password, type, phone, address, note, userid);
+    public void updateUserImage(User user, File img) throws FileNotFoundException {
+        dataManager.updateUserImage(user, img);
+    }
+    
+    public InputStream getUserImage(User user) {
+        return dataManager.getUserImage(user);
     }
 }

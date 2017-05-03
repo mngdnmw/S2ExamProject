@@ -10,12 +10,13 @@
     -fx-orientation: vertical;
     -fx-content-display: top;
 
-    -fx-background-color: #00c4ad; 
+    -fx-background-color: #00e2c7; 
+    /*#00c4ad*/
 }
 .JFXButtonLogHours
 {
     -fx-graphic:url("../Images/save-white.png");
-    -fx-background-color: #00e2c7;
+    -fx-background-color: #00c4ad;
 }
 .JFXButtonSeeInfo
 {
@@ -32,8 +33,27 @@
     -fx-background-radius:20px
 }
 
-.text-area .content
+/*What is this one for?*/
+.text-area.content
 {
-      -fx-background-color: #FAFAFA;
+    -fx-background-color: #FAFAFA;
 }
+#calendar{
+    -fx-padding: 0.588883em 0.5em 0.666667em 0.5em; /* 7 6 8 6 */
+    -fx-background-color: red;
+    -fx-background-insets: 0 0 0 0, 0 0 1 0;
 
+}
+.jfx-snackbar-content{
+    -fx-background-color:#00e2c7;
+    -fx-border-style: solid solid hidden solid ;
+    -fx-border-width: 2px;
+    -fx-border-color: Black;
+    -fx-border-radius:5 5 5 5;
+    -fx-background-radius:5 5 5 5;
+    /* top-left, top-right, bottom-right, and bottom-left corners, in that order. */
+}
+.jfx-snackbar-toast{
+    -fx-font: bold 20px/30px System;
+    -fx-text-fill: #FFFFFF;
+}
