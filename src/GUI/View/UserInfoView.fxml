@@ -289,7 +289,7 @@
             </VBox>
          </children>
       </VBox>
-      <JFXButton fx:id="JFXBtnUpdatePhoto" buttonType="RAISED" layoutX="368.0" layoutY="165.0" ripplerFill="#ddcece" style="-fx-background-color: #00c4ad;" text="Update Photo" textFill="WHITE">
+      <JFXButton fx:id="JFXBtnUpdatePhoto" layoutX="368.0" layoutY="165.0" onAction="#pressedChangeImage" style="-fx-background-color: #00c4ad;" text="Update Photo" textFill="WHITE">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>

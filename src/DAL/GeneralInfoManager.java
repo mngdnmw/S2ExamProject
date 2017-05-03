@@ -5,6 +5,14 @@ import BE.Volunteer;
 import BE.Admin;
 import BE.Guild;
 import BE.Manager;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,7 +34,7 @@ public class GeneralInfoManager extends ConnectionManager
      * @return
      */
     public User getUserInfo(int userId)
-      {
+    {
         //String query = "select [user].[name], [user].[email],[user].phone From [user] where [user].userid ="+userId;
         String query = "select [user].* from [user] where [user].userid =" + userId;
 
@@ -36,9 +44,9 @@ public class GeneralInfoManager extends ConnectionManager
             ResultSet rs = s.executeQuery(query);
             System.out.println(query);
             System.out.println(rs);
-
-            while (rs.next())
-              {
+            
+            while(rs.next())
+            {
                 int id = rs.getInt("userid");
                 String name = rs.getString("name");
                 String email = rs.getString("email");
@@ -53,7 +61,7 @@ public class GeneralInfoManager extends ConnectionManager
                     System.out.println("type0");
                     Volunteer volunteer = null;
                     //(id, name, email, password, type, phone, note);
-                    volunteer = new Volunteer(id, name, email, type, phone, note, residence);
+                    volunteer = new Volunteer(id, name, email, phone, note, residence);
 
                     System.out.println("Volunteer info: " + volunteer.getName());
 
@@ -66,7 +74,7 @@ public class GeneralInfoManager extends ConnectionManager
                     System.out.println("type1");
                     Manager manager = null;
                     //(id, name, email, password, type, phone, note);
-                    manager = new Manager(id, name, email, type, phone, note, residence);
+                    manager = new Manager(id, name, email, phone, note, residence);
 
                     System.out.println("Manager info: " + manager.getName());
 
@@ -79,7 +87,7 @@ public class GeneralInfoManager extends ConnectionManager
                     System.out.println("type2");
                     Admin admin = null;
                     //(id, name, email, password, type, phone, note);
-                    admin = new Admin(id, name, email, type, phone, note, residence);
+                    admin = new Admin(id, name, email, phone, note, residence);
 
                     System.out.println("Admin info: " + admin.getName());
 
@@ -121,7 +129,7 @@ public class GeneralInfoManager extends ConnectionManager
                         System.out.println("type0");
                         Volunteer volunteer = null;
                         //(id, name, email, password, type, phone, note);
-                        volunteer = new Volunteer(id, name, email, type, phone, note, residence);
+                        volunteer = new Volunteer(id, name, email, phone, note, residence);
                         users.add(volunteer);
                         System.out.println("Volunteer " + volunteer.getName() + " added to the list");
                         break;
@@ -130,7 +138,7 @@ public class GeneralInfoManager extends ConnectionManager
                         System.out.println("type1");
                         Manager manager = null;
                         //(id, name, email, password, type, phone, note);
-                        manager = new Manager(id, name, email, type, phone, note, residence);
+                        manager = new Manager(id, name, email, phone, note, residence);
                         users.add(manager);
                         System.out.println("Manager " + manager.getName() + " added to the list");
                         break;
@@ -139,7 +147,7 @@ public class GeneralInfoManager extends ConnectionManager
                         System.out.println("type2");
                         Admin admin = null;
                         //(id, name, email, password, type, phone, note);
-                        admin = new Admin(id, name, email, type, phone, note, residence);
+                        admin = new Admin(id, name, email, phone, note, residence);
                         users.add(admin);
                         System.out.println("Admin " + admin.getName() + " added to the list");
                         break;
@@ -180,7 +188,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                 Volunteer volunteer = null;
                 //(id, name, email, password, type, phone, note);
-                volunteers.add(new Volunteer(id, name, email, type, phone, note, residence));
+                volunteers.add(new Volunteer(id, name, email, phone, note, residence));
                 System.out.println("Volunteer " + volunteer.getName() + " added to the list");
 
               }
@@ -215,7 +223,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                 Manager manager = null;
                 //(id, name, email, password, type, phone, note);
-                managers.add(new Manager(id, name, email, type, phone, note, residence));
+                managers.add(new Manager(id, name, email, phone, note, residence));
                 System.out.println("Volunteer " + manager.getName() + " added to the list");
 
               }
@@ -250,7 +258,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                 Admin admin = null;
                 //(id, name, email, password, type, phone, note);
-                admins.add(new Admin(id, name, email, type, phone, note, residence));
+                admins.add(new Admin(id, name, email, phone, note, residence));
                 System.out.println("Volunteer " + admin.getName() + " added to the list");
 
               }
@@ -264,7 +272,31 @@ public class GeneralInfoManager extends ConnectionManager
         return admins;
       }
 
-    public int getUserIdFromEmail(String username)
+    public int getUserId(String username)
+      {
+        boolean parsable = true;
+        int phoneNo = 0;
+
+        try
+          {
+            phoneNo = Integer.parseInt(username);
+          }
+        catch (NumberFormatException e)
+          {
+            parsable = false;
+
+          }
+        if (parsable)
+          {
+            return getUserIdFromPhoneNumber(phoneNo);
+          }
+        else
+          {
+            return getUserIdFromEmail(username);
+          }
+      }
+
+    private int getUserIdFromEmail(String username)
       {
         try (Connection con = super.getConnection())
           {
@@ -286,7 +318,7 @@ public class GeneralInfoManager extends ConnectionManager
         return -1;
       }
 
-    public int getUserIdFromPhoneNumber(int username)
+    private int getUserIdFromPhoneNumber(int username)
       {
 
         try (Connection con = super.getConnection())
@@ -345,6 +377,56 @@ public class GeneralInfoManager extends ConnectionManager
           {
             System.out.println("Exception in: DataManager::updateUserInfo()");
             System.out.println(e);
-          }
-      }
-  }
+        }
+    }
+    
+    public void updateUserImage(User user, File img) throws FileNotFoundException{
+        List<Integer> hasImg = new ArrayList<>();
+        String checkQuery = "select [userid] from [image]";
+        try(Connection con = super.getConnection()) {
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery(checkQuery);
+            while(rs.next()) {
+                hasImg.add(rs.getInt("userid"));
+            }
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+        
+        String query;
+        PreparedStatement ps;
+        long len = img.length();
+        try(Connection con = super.getConnection()) {
+            if(hasImg.contains(user.getId())) {
+                query = "update [image] set [img] = ? where [userid] = '"+user.getId()+"'";
+                ps = con.prepareStatement(query);
+                ps.setBinaryStream(1, new FileInputStream(img),len);
+            } else {
+                query = "insert into [image]([userid],[img]) values (?,?)";
+                ps = con.prepareStatement(query);
+                ps.setInt(1, user.getId());
+                ps.setBinaryStream(2, new FileInputStream(img),len);
+            }
+        ps.execute();
+            
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public InputStream getUserImage(User user) {
+        String query = "select [img] from [image] where [image].[userid] = "+user.getId();
+        try(Connection con = super.getConnection()) {
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery(query);
+            while(rs.next()) {
+                
+                return rs.getBlob("img").getBinaryStream();
+            }
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    } 
+}
+

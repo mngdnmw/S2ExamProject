@@ -3,6 +3,9 @@ package GUI.Model;
 import BE.EnumCache;
 import BE.Guild;
 import BE.User;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 import javafx.animation.FadeTransition;
 import javafx.scene.Node;
@@ -11,10 +14,12 @@ import javafx.util.Duration;
 public class ModelFacade
   {
 
+    private static ModelFacade ModFac;
     private final static GeneralInfoModel GEN_INFO_MOD = new GeneralInfoModel();
     private final static LoginModel LOG_MOD = new LoginModel();
     private final static AnimationModel ANIM_MOD = new AnimationModel();
     private final static LanguageModel LANG_MOD = new LanguageModel();
+    private final static ViewChangerModel VIEW_CHANG_MOD = new ViewChangerModel();
 
     //Login Model
     public Boolean logHours(String username, int hours, int guildId)
@@ -22,9 +27,9 @@ public class ModelFacade
         return LOG_MOD.logHours(username, hours, guildId);
       }
 
-    public void getUserFromLogin(String username)
+    public void getUserFromLogin(String username, String password)
       {
-        LOG_MOD.getUserFromLogin(username);
+        LOG_MOD.getUserFromLogin(username, password);
       }
 
     public User getCurrentUser()
@@ -102,13 +107,45 @@ public class ModelFacade
         LANG_MOD.setLang(lang);
       }
 
+    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence)
+      {
+        GEN_INFO_MOD.updateUserInfo(userId, name, email, type, phone, note, residence);
+      }
+
+    public void updateUserImage(User user, File img) throws FileNotFoundException
+      {
+        GEN_INFO_MOD.updateUserImage(user, img);
+      }
+
+    public InputStream getUserImage(User user)
+      {
+        return GEN_INFO_MOD.getUserImage(user);
+      }
+
     public List<Guild> getAllGuilds()
       {
         return GEN_INFO_MOD.getAllGuilds();
       }
 
-    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence)
+    /**
+     * Changes the view based on number. 0 goes to the UserInfoView, 1 goes to
+     * ManagerEditView, 2 goes to ManagerView 3 goes to the hourLoginView
+     *
+     * @param GUINumb
+     *
+     */
+    public void changeView(int GUINumb)
       {
-        GEN_INFO_MOD.updateUserInfo(userId, name, email, type, phone, note, residence);
+        VIEW_CHANG_MOD.changeView(GUINumb);
+      }
+
+    public static ModelFacade getModelFacade()
+      {
+        return ModFac;
+      }
+
+    public static void setModelFacade(ModelFacade modelfacade)
+      {
+        ModFac = modelfacade;
       }
   }

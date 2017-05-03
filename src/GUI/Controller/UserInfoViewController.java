@@ -6,23 +6,32 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
 import com.sun.deploy.util.StringUtils;
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 public class UserInfoViewController implements Initializable
 {
@@ -75,7 +84,7 @@ public class UserInfoViewController implements Initializable
     User currentUser;
     boolean editing = false;
 
-    private final static ModelFacade MOD_FACADE = new ModelFacade();
+    private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
 
     /**
      * Initializes the controller class.
@@ -87,9 +96,7 @@ public class UserInfoViewController implements Initializable
         setCurrentUser(MOD_FACADE.getCurrentUser());
         setProperties();
         showConstantCalendar();
-        
-        
-        
+        setUserImage();
     }
 
     public void setCurrentUser(User currentUser)
@@ -238,5 +245,31 @@ public class UserInfoViewController implements Initializable
             txtPh.setStyle("-fx-background-color:red;");
             btnEditSave.setDisable(true);
         }
+    }
+    
+    @FXML
+    private void pressedChangeImage(ActionEvent event) {
+        FileChooser c = new FileChooser();
+        c.setTitle("Select a new image");
+        String[] extensions = {"jpg","jpeg","png","gif"};
+        c.setSelectedExtensionFilter(new ExtensionFilter("Image files only", extensions));
+        File newImg = c.showOpenDialog(JFXBtnUpdatePhoto.getScene().getWindow());
+        
+        if(newImg != null) {
+            try {
+                MOD_FACADE.updateUserImage(currentUser, newImg);
+            } catch(FileNotFoundException e) {
+                System.out.println(e);
+                Alert a = new Alert(Alert.AlertType.ERROR);
+                a.setHeaderText("Selected image is not found");
+                a.setContentText("File not found!");
+            } 
+        }
+        setUserImage();
+    }
+    
+    public void setUserImage() {
+        System.out.println(MOD_FACADE.getUserImage(currentUser));
+        imgVwProfilePic.setImage(new Image(MOD_FACADE.getUserImage(currentUser)));
     }
 }
