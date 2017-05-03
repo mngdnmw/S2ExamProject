@@ -9,16 +9,16 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="610.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerEditViewController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerEditViewController">
    <children>
       <Label layoutX="14.0" layoutY="22.0" text="Logged In as: " />
       <Label fx:id="lblUserName" layoutX="88.0" layoutY="22.0" text="Label" />
-      <JFXButton fx:id="btnAddUser" layoutX="17.0" layoutY="361.0" style="-fx-background-color: #00c4ad;" text="Add User" />
-      <JFXTextArea fx:id="txtNotes" focusColor="#4e6fc9" layoutX="372.0" layoutY="120.0" prefHeight="215.0" prefWidth="220.0" />
-      <JFXButton fx:id="btnAddHours" layoutX="176.0" layoutY="57.0" style="-fx-background-color: #00c4ad;" text="Add Hours" />
-      <JFXButton fx:id="btnEditInfo" layoutX="252.0" layoutY="57.0" style="-fx-background-color: #00c4ad;" text="Edit Information" />
-      <JFXButton fx:id="btnLogOut" layoutX="373.0" layoutY="361.0" prefHeight="25.0" prefWidth="220.0" style="-fx-background-color: #00c4ad;" text="Log Out" />
-      <TableView fx:id="tblVolunteers" layoutX="16.0" layoutY="94.0" prefHeight="247.0" prefWidth="338.0">
+      <JFXButton fx:id="btnAddUser" layoutX="14.0" layoutY="462.0" onAction="#onBtnAddUserClicked" style="-fx-background-color: #00c4ad;" text="Add User" />
+      <JFXTextArea fx:id="txtNotes" editable="false" focusColor="#4e6fc9" layoutX="465.0" layoutY="132.0" prefHeight="304.0" prefWidth="220.0" />
+      <JFXButton fx:id="btnAddHours" layoutX="176.0" layoutY="91.0" style="-fx-background-color: #00c4ad;" text="Add Hours" />
+      <JFXButton fx:id="btnEditInfo" layoutX="252.0" layoutY="91.0" onAction="#onEditInfoPressed" style="-fx-background-color: #00c4ad;" text="Edit Information" />
+      <JFXButton fx:id="btnLogOut" layoutX="466.0" layoutY="462.0" onAction="#onBtnLogOutPressed" prefHeight="25.0" prefWidth="220.0" style="-fx-background-color: #00c4ad;" text="Log Out" />
+      <TableView fx:id="tblVolunteers" layoutX="14.0" layoutY="132.0" onMousePressed="#onTablePressed" prefHeight="310.0" prefWidth="443.0">
         <columns>
           <TableColumn fx:id="colName" prefWidth="75.0" text="Name" />
           <TableColumn fx:id="colPhone" prefWidth="75.0" text="Phone" />
@@ -26,8 +26,8 @@
             <TableColumn fx:id="colGuild" prefWidth="87.0" text="Guild" />
         </columns>
       </TableView>
-      <Label layoutX="372.0" layoutY="94.0" text="Note:" />
-      <JFXComboBox layoutX="474.0" layoutY="27.0" promptText="Guild Chooser" />
-      <JFXTextField fx:id="txtSearch" layoutX="14.0" layoutY="57.0" promptText="Search user.." />
+      <Label layoutX="465.0" layoutY="108.0" text="Note:" />
+      <JFXComboBox layoutX="568.0" layoutY="31.0" promptText="Guild Chooser" />
+      <JFXTextField fx:id="txtSearch" layoutX="14.0" layoutY="91.0" promptText="Search user.." />
    </children>
 </AnchorPane>

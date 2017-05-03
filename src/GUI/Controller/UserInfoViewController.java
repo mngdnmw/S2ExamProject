@@ -88,7 +88,7 @@ public class UserInfoViewController implements Initializable
     boolean editing = false;
     boolean isIncorrect = false;
 
-    private final static ModelFacade MOD_FACADE = new ModelFacade();
+    private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
 
     /**
      * Initializes the controller class.
@@ -116,6 +116,10 @@ public class UserInfoViewController implements Initializable
         pop.setMaxSize(hBoxCalAll.getMaxWidth(), hBoxCalAll.getMaxHeight());
         //hBoxCalAll.setPadding(new Insets(5));
         hBoxCalAll.getChildren().add(pop);
+        
+        String css = this.getClass().getResource("/GUI/View/MainLayout.css").toExternalForm();
+        pop.getStyleClass().add(css);
+        
         //Trying to make calendar smaller by applying CSS
         pop.setId("calendar");
         pop.applyCss();

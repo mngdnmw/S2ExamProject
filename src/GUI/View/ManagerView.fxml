@@ -2,12 +2,12 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.image.Image?>
@@ -16,12 +16,11 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="365.0" prefWidth="517.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerViewController">
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerViewController">
     <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="129.0" layoutX="13.0" layoutY="11.0" stroke="TRANSPARENT" strokeType="INSIDE" width="491.0">
          <effect>
@@ -41,11 +40,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="lblName" prefHeight="17.0" prefWidth="102.0" text="lblName" GridPane.columnIndex="1" />
-            <Label fx:id="lblPh" prefHeight="17.0" prefWidth="102.0" text="lblPh" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label fx:id="lblEmail" prefHeight="17.0" prefWidth="102.0" text="lblEmail" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label fx:id="lblResidence" prefHeight="17.0" prefWidth="102.0" text="lblResidence" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <JFXButton fx:id="btnNameEdit" style="-fx-background-color: #00c4ad;" text="Edit" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3">
+            <JFXButton fx:id="btnEdit" onAction="#onBtnEditPressed" style="-fx-background-color: #00c4ad;" text="Edit" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </padding>
@@ -85,9 +80,13 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </ImageView>
+            <JFXTextField fx:id="txtName" promptText="Name" GridPane.columnIndex="1" />
+            <JFXTextField fx:id="txtPhone" promptText="Phone number" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <JFXTextField fx:id="txtEmail" promptText="Email" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <JFXTextField fx:id="txtAddress" promptText="Address" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>
-      <TabPane layoutX="14.0" layoutY="153.0" prefHeight="199.0" prefWidth="296.0" style="-fx-border-color: #00c4ad; -fx-background-color: #ffffff;" tabClosingPolicy="UNAVAILABLE">
+      <TabPane layoutX="14.0" layoutY="153.0" prefHeight="335.0" prefWidth="482.0" style="-fx-border-color: #00c4ad; -fx-background-color: #ffffff;" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="All">
             <content>
@@ -174,7 +173,7 @@
                      <children>
                         <ScrollPane layoutX="-2.0" layoutY="-1.0" prefHeight="134.0" prefWidth="299.0" style="-fx-border-color: #ffffff;">
                            <content>
-                              <JFXTextArea fx:id="JFXTxtAreaNotes" prefHeight="154.0" prefWidth="121.0" unFocusColor="WHITE" />
+                              <JFXTextArea fx:id="txtNotes" prefHeight="154.0" prefWidth="281.0" unFocusColor="WHITE" />
                            </content>
                         </ScrollPane>
                         <GridPane layoutX="-3.0" layoutY="136.0" prefHeight="22.0" prefWidth="297.0">
@@ -186,7 +185,7 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <JFXButton fx:id="JFXBtnAccept" style="-fx-background-color: #61B329;" text="Accept Edit" textFill="WHITE">
+                              <JFXButton fx:id="JFXBtnAccept" onAction="#onBtnAcceptPressed" style="-fx-background-color: #61B329;" text="Accept Edit" textFill="WHITE">
                                  <padding>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </padding>
@@ -197,7 +196,7 @@
                                     <Insets left="50.0" />
                                  </GridPane.margin>
                               </JFXButton>
-                              <JFXButton fx:id="JFXBtnCancel" style="-fx-background-color: #ff0000;" text="Cancel Edit" textFill="WHITE" GridPane.columnIndex="1">
+                              <JFXButton fx:id="JFXBtnCancel" onAction="#onBtnCancelPressed" style="-fx-background-color: #ff0000;" text="Cancel Edit" textFill="WHITE" GridPane.columnIndex="1">
                                  <padding>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </padding>
@@ -220,12 +219,12 @@
          </effect>
       </TabPane>
       <ImageView fitHeight="138.0" fitWidth="127.0" layoutX="369.0" layoutY="14.0" pickOnBounds="true" style="-fx-effect: 30;" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="355.0" layoutX="322.0" layoutY="11.0" stroke="TRANSPARENT" strokeType="INSIDE" width="183.0">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="479.0" layoutX="504.0" layoutY="9.0" stroke="TRANSPARENT" strokeType="INSIDE" width="183.0">
          <effect>
             <DropShadow />
          </effect>
       </Rectangle>
-      <ImageView fx:id="imgVwProfilePic" fitHeight="127.0" fitWidth="131.0" layoutX="351.0" layoutY="26.0" pickOnBounds="true">
+      <ImageView fx:id="imgVwProfilePic" fitHeight="127.0" fitWidth="131.0" layoutX="530.0" layoutY="26.0" pickOnBounds="true">
          <image>
             <Image url="@../Images/labeouf.jpg" />
          </image>
@@ -233,24 +232,12 @@
             <Reflection fraction="0.11" topOffset="-4.0" topOpacity="0.35" />
          </effect>
       </ImageView>
-      <VBox layoutX="344.0" layoutY="290.0" prefHeight="62.0" prefWidth="133.0">
-         <children>
-            <VBox prefHeight="8.0" prefWidth="133.0">
-               <children>
-                  <Label style="-fx-background-color: #00c4ad;" text="Guilds:" textFill="WHITE" />
-               </children>
-            </VBox>
-            <VBox prefHeight="45.0" prefWidth="133.0">
-               <children>
-                  <TextArea fx:id="textAreaGuilds" editable="false" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffffff; -fx-border-color: #ffffff;" />
-               </children>
-            </VBox>
-         </children>
-      </VBox>
-      <JFXButton fx:id="JFXBtnUpdatePhoto" layoutX="368.0" layoutY="165.0" style="-fx-background-color: #00c4ad;" text="Update Photo" textFill="WHITE">
+      <JFXButton fx:id="JFXBtnUpdatePhoto" layoutX="557.0" layoutY="166.0" onAction="#onBtnUpdatePhotoPressed" style="-fx-background-color: #00c4ad;" text="Update Photo" textFill="WHITE">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </JFXButton>
+      <Label layoutX="512.0" layoutY="427.0" style="-fx-background-color: #00c4ad;" text="Guilds:" textFill="WHITE" />
+      <JFXTextArea fx:id="txtGuilds" layoutX="517.0" layoutY="444.0" prefHeight="21.0" prefWidth="161.0" stylesheets="@MainLayout.css" />
     </children>
 </AnchorPane>
