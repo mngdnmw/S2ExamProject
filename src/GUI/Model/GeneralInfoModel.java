@@ -39,4 +39,7 @@ public class GeneralInfoModel
       {
       return BLL_FAC.getAllGuilds();
       }
+    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence) {
+        dataHandler.updateUserInfo(userId, name, email, type, phone, note, residence);
+    }
 }
