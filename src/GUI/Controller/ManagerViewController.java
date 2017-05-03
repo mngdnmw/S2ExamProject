@@ -1,6 +1,7 @@
 package GUI.Controller;
 
 import BE.User;
+import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
@@ -51,7 +52,7 @@ public class ManagerViewController implements Initializable
     ManagerEditViewController mevController;
     boolean edit = false;
     
-    
+    private static ModelFacade modelFacade = new ModelFacade();
     private static User selectedUser;
  
     @Override
@@ -122,7 +123,7 @@ public class ManagerViewController implements Initializable
     
     private void updateUserInfo()
     {
-        //dataModel.updateUserInfo(txtName.getText(), txtEmail.getText(), "password", 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), JFXTxtAreaNotes.getText(), selectedUser.getId());
+        modelFacade.updateUserInfo(selectedUser.getId(), txtName.getText(), txtEmail.getText(), selectedUser.getType(), Integer.parseInt(txtPhone.getText()), txtNotes.getText(), txtAddress.getText());
     }
 
     @FXML

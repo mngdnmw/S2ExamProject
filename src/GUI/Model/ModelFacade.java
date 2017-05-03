@@ -124,11 +124,6 @@ public class ModelFacade
         return GEN_INFO_MOD.getAllGuilds();
       }
 
-    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence)
-      {
-        GEN_INFO_MOD.updateUserInfo(userId, name, email, type, phone, note, residence);
-      }
-
     /**
      * Changes the view based on number. 0 goes to the UserInfoView, 1 goes to
      * ManagerEditView, 2 goes to ManagerView 3 goes to the hourLoginView

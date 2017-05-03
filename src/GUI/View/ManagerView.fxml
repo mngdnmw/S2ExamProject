@@ -16,12 +16,11 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="365.0" prefWidth="517.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerViewController">
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerViewController">
     <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="129.0" layoutX="13.0" layoutY="11.0" stroke="TRANSPARENT" strokeType="INSIDE" width="491.0">
          <effect>
@@ -87,7 +86,7 @@
             <JFXTextField fx:id="txtAddress" promptText="Address" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>
-      <TabPane layoutX="14.0" layoutY="153.0" prefHeight="199.0" prefWidth="296.0" style="-fx-border-color: #00c4ad; -fx-background-color: #ffffff;" tabClosingPolicy="UNAVAILABLE">
+      <TabPane layoutX="14.0" layoutY="153.0" prefHeight="335.0" prefWidth="482.0" style="-fx-border-color: #00c4ad; -fx-background-color: #ffffff;" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="All">
             <content>
@@ -220,12 +219,12 @@
          </effect>
       </TabPane>
       <ImageView fitHeight="138.0" fitWidth="127.0" layoutX="369.0" layoutY="14.0" pickOnBounds="true" style="-fx-effect: 30;" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="355.0" layoutX="322.0" layoutY="11.0" stroke="TRANSPARENT" strokeType="INSIDE" width="183.0">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="479.0" layoutX="504.0" layoutY="9.0" stroke="TRANSPARENT" strokeType="INSIDE" width="183.0">
          <effect>
             <DropShadow />
          </effect>
       </Rectangle>
-      <ImageView fx:id="imgVwProfilePic" fitHeight="127.0" fitWidth="131.0" layoutX="351.0" layoutY="26.0" pickOnBounds="true">
+      <ImageView fx:id="imgVwProfilePic" fitHeight="127.0" fitWidth="131.0" layoutX="530.0" layoutY="26.0" pickOnBounds="true">
          <image>
             <Image url="@../Images/labeouf.jpg" />
          </image>
@@ -233,24 +232,12 @@
             <Reflection fraction="0.11" topOffset="-4.0" topOpacity="0.35" />
          </effect>
       </ImageView>
-      <VBox layoutX="344.0" layoutY="290.0" prefHeight="62.0" prefWidth="133.0">
-         <children>
-            <VBox prefHeight="8.0" prefWidth="133.0">
-               <children>
-                  <Label style="-fx-background-color: #00c4ad;" text="Guilds:" textFill="WHITE" />
-               </children>
-            </VBox>
-            <VBox prefHeight="45.0" prefWidth="133.0">
-               <children>
-                  <JFXTextArea fx:id="txtGuilds" stylesheets="@MainLayout.css" />
-               </children>
-            </VBox>
-         </children>
-      </VBox>
-      <JFXButton fx:id="JFXBtnUpdatePhoto" layoutX="368.0" layoutY="165.0" onAction="#onBtnUpdatePhotoPressed" style="-fx-background-color: #00c4ad;" text="Update Photo" textFill="WHITE">
+      <JFXButton fx:id="JFXBtnUpdatePhoto" layoutX="557.0" layoutY="166.0" onAction="#onBtnUpdatePhotoPressed" style="-fx-background-color: #00c4ad;" text="Update Photo" textFill="WHITE">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </JFXButton>
+      <Label layoutX="512.0" layoutY="427.0" style="-fx-background-color: #00c4ad;" text="Guilds:" textFill="WHITE" />
+      <JFXTextArea fx:id="txtGuilds" layoutX="517.0" layoutY="444.0" prefHeight="21.0" prefWidth="161.0" stylesheets="@MainLayout.css" />
     </children>
 </AnchorPane>
