@@ -4,6 +4,8 @@ import BE.User;
 import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXSnackbar;
+import com.jfoenix.controls.JFXTextField;
 import com.sun.deploy.util.StringUtils;
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
 import java.io.File;
@@ -19,6 +21,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -30,6 +33,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
@@ -76,13 +80,17 @@ public class UserInfoViewController implements Initializable
     private AnchorPane anchorGraph;
     @FXML
     private GridPane gridEdit;
+    @FXML
+    private AnchorPane root;
 
     TextField txtName;
     TextField txtPh; 
     TextField txtEmail;
     TextField txtResidence;
+    JFXButton btnCancel;
     User currentUser;
     boolean editing = false;
+    boolean isIncorrect = false;
 
     private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
 
@@ -158,18 +166,27 @@ public class UserInfoViewController implements Initializable
             editInfo();
             editing = true;
             btnEditSave.setText("Save");
+            checkTextFields();
+            addCancelButton();
         } else {
+            if(isIncorrect && btnEditSave.isDisabled()) {
+                JFXSnackbar b = new JFXSnackbar(root);
+                b.show("Please enter valid information in the fields!", 2000);
+                return;
+            }
             saveInfo(currentUser);
             editing = false;
             btnEditSave.setText("Edit");
+            checkTextFields();
+            removeCancelButton();
         }
     }
     
     private void createEditFields() {
-        txtName = new TextField();
-        txtPh = new TextField();
-        txtEmail = new TextField();
-        txtResidence = new TextField();
+        txtName = new JFXTextField();
+        txtPh = new JFXTextField();
+        txtEmail = new JFXTextField();
+        txtResidence = new JFXTextField();
         
         txtPh.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
@@ -188,6 +205,7 @@ public class UserInfoViewController implements Initializable
         gridEdit.add(txtPh, 1, 1);
         gridEdit.add(txtEmail, 1, 2);
         gridEdit.add(txtResidence, 1, 3);
+        
     }
     
     private void editInfo() {
@@ -236,14 +254,16 @@ public class UserInfoViewController implements Initializable
         } catch(NumberFormatException e) {
             success = false;
             txtPh.setStyle("-fx-background-color:red;");
-            btnEditSave.setDisable(true);    
+            btnEditSave.setDisable(true);
         }
         if(success) {
             btnEditSave.setDisable(false);
             txtPh.setStyle("");
+            isIncorrect = false;
         } else {
             txtPh.setStyle("-fx-background-color:red;");
             btnEditSave.setDisable(true);
+            isIncorrect = true;
         }
     }
     
@@ -270,6 +290,46 @@ public class UserInfoViewController implements Initializable
     
     public void setUserImage() {
         System.out.println(MOD_FACADE.getUserImage(currentUser));
-        imgVwProfilePic.setImage(new Image(MOD_FACADE.getUserImage(currentUser)));
+        if(MOD_FACADE.getUserImage(currentUser) != null)
+            imgVwProfilePic.setImage(new Image(MOD_FACADE.getUserImage(currentUser)));
+    }
+    
+    private void addCancelButton() {
+        int btnSavePosCol = GridPane.getColumnIndex(btnEditSave); //saving position
+        int btnSavePosRow = GridPane.getRowIndex(btnEditSave);
+        //GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave)-1); //moving save button one up
+        btnCancel = new JFXButton();
+        btnCancel.setText("Cancel"); //preparing cancel button
+        btnCancel.setTextFill(Color.WHITE);
+        btnCancel.setStyle(btnEditSave.getStyle());
+        btnCancel.setPadding(btnEditSave.getPadding());
+        btnCancel.setAlignment(btnEditSave.getAlignment());
+        
+        gridEdit.add(btnCancel, btnSavePosCol, btnSavePosRow+1); //adding to the old position of save btn
+        btnCancel.setOnAction(new EventHandler<ActionEvent>() { //setting onAction, nothing changed, just show old labels again
+            @Override
+            public void handle(ActionEvent event) {
+                txtName.setVisible(false);
+                txtPh.setVisible(false);
+                txtEmail.setVisible(false);
+                txtResidence.setVisible(false);
+        
+                lblName.setVisible(true);
+                lblPh.setVisible(true);
+                lblEmail.setVisible(true);
+                lblResidence.setVisible(true);
+                
+                removeCancelButton(); //if cancel button clicked, it will disappear
+                editing = false;
+                btnEditSave.setText("Edit");
+            }
+        });
+    }
+    
+    private void removeCancelButton() {
+        //GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave)+1); //moving save button one down
+        gridEdit.getChildren().remove(btnCancel); //deleting cancel button from gridpane
+        if(btnEditSave.isDisabled())
+            btnEditSave.setDisable(false);
     }
 }
