@@ -86,6 +86,7 @@ public class UserInfoViewController implements Initializable
     JFXButton btnCancel;
     User currentUser;
     boolean editing = false;
+    boolean isIncorrect = false;
 
     private final static ModelFacade MOD_FACADE = new ModelFacade();
 
@@ -159,6 +160,9 @@ public class UserInfoViewController implements Initializable
             btnEditSave.setText("Save");
             addCancelButton();
         } else {
+            if(isIncorrect) {
+                
+            }
             saveInfo(currentUser);
             editing = false;
             btnEditSave.setText("Edit");
@@ -238,14 +242,16 @@ public class UserInfoViewController implements Initializable
         } catch(NumberFormatException e) {
             success = false;
             txtPh.setStyle("-fx-background-color:red;");
-            btnEditSave.setDisable(true);    
+            btnEditSave.setDisable(true);
         }
         if(success) {
             btnEditSave.setDisable(false);
             txtPh.setStyle("");
+            isIncorrect = false;
         } else {
             txtPh.setStyle("-fx-background-color:red;");
             btnEditSave.setDisable(true);
+            isIncorrect = true;
         }
     }
     
