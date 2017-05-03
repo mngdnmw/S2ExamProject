@@ -105,28 +105,26 @@ public class ModelFacade
     public void setLang(EnumCache.Lang lang)
       {
         LANG_MOD.setLang(lang);
-    }
-    
-    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence) {
+      }
+
+    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence)
+      {
         GEN_INFO_MOD.updateUserInfo(userId, name, email, type, phone, note, residence);
-    }
-    
-    public void updateUserImage(User user, File img) throws FileNotFoundException {
+      }
+
+    public void updateUserImage(User user, File img) throws FileNotFoundException
+      {
         GEN_INFO_MOD.updateUserImage(user, img);
-    }
-    
-    public InputStream getUserImage(User user) {
+      }
+
+    public InputStream getUserImage(User user)
+      {
         return GEN_INFO_MOD.getUserImage(user);
       }
 
     public List<Guild> getAllGuilds()
       {
         return GEN_INFO_MOD.getAllGuilds();
-      }
-
-    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence)
-      {
-        GEN_INFO_MOD.updateUserInfo(userId, name, email, type, phone, note, residence);
       }
 
     /**
