@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="600.0" prefWidth="750.0" styleClass="JFXTxtAreaMain" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.HourLoginController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="600.0" prefWidth="750.0" styleClass="JFXTxtAreaMain" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.HourLoginController">
     <children>
-      <VBox layoutX="56.0" layoutY="44.0" prefHeight="213.0" prefWidth="643.0" AnchorPane.leftAnchor="56.0" AnchorPane.rightAnchor="51.0">
+      <VBox layoutX="56.0" layoutY="28.0" prefHeight="256.0" prefWidth="643.0" AnchorPane.leftAnchor="56.0" AnchorPane.rightAnchor="51.0">
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
@@ -23,14 +23,17 @@
                               <font>
                                   <Font size="29.0" />
                               </font>
-                           <padding>
-                              <Insets top="15.0" />
-                           </padding>
+                           <HBox.margin>
+                              <Insets top="20.0" />
+                           </HBox.margin>
                           </Label>
-                          <JFXTextField fx:id="txtUser" alignment="BOTTOM_CENTER" focusColor="#7c7c7c" prefHeight="51.0" prefWidth="415.0" promptText="Phone No. or Email">
+                          <JFXTextField fx:id="txtUser" alignment="BOTTOM_CENTER" focusColor="#00c4ad" labelFloat="true" prefHeight="51.0" prefWidth="415.0" promptText="Phone No. or Email" unFocusColor="#797777">
                               <font>
                                   <Font size="29.0" />
                               </font>
+                           <HBox.margin>
+                              <Insets top="8.0" />
+                           </HBox.margin>
                           </JFXTextField>
                      </children>
                   </HBox>
@@ -44,22 +47,25 @@
                               <font>
                                   <Font size="29.0" />
                               </font>
-                           <padding>
-                              <Insets top="15.0" />
-                           </padding>
+                           <HBox.margin>
+                              <Insets top="20.0" />
+                           </HBox.margin>
                           </Label>
-                          <JFXTextField fx:id="txtHours" alignment="BOTTOM_CENTER" focusColor="#7c7c7c" prefHeight="51.0" prefWidth="175.0" promptText="Number">
+                          <JFXTextField fx:id="txtHours" alignment="BOTTOM_CENTER" focusColor="#00c4ad" labelFloat="true" prefHeight="51.0" prefWidth="175.0" promptText="Number" unFocusColor="#797777">
                               <font>
                                   <Font size="29.0" />
                               </font>
+                           <HBox.margin>
+                              <Insets top="8.0" />
+                           </HBox.margin>
                           </JFXTextField>
                           <Label fx:id="lblHourTagTwo" text="hours">
                               <font>
                                   <Font size="29.0" />
                               </font>
-                           <padding>
-                              <Insets left="10.0" top="15.0" />
-                           </padding>
+                           <HBox.margin>
+                              <Insets top="20.0" />
+                           </HBox.margin>
                           </Label>
                      </children>
                   </HBox>
@@ -73,22 +79,22 @@
                               <font>
                                   <Font size="29.0" />
                               </font>
-                           <padding>
-                              <Insets top="15.0" />
-                           </padding>
-                          </Label>
-                          <JFXComboBox fx:id="cmbGuildChooser" focusColor="#7c7c7c" prefHeight="55.0" prefWidth="250.0" promptText="Choose a guild" style="-fx-font-size: 29px;">
                            <HBox.margin>
-                              <Insets />
+                              <Insets top="20.0" />
+                           </HBox.margin>
+                          </Label>
+                          <JFXComboBox fx:id="cmbGuildChooser" focusColor="#00c4ad" labelFloat="true" prefHeight="55.0" prefWidth="250.0" promptText="Choose a guild" style="-fx-font-size: 29px;" unFocusColor="#797777">
+                           <HBox.margin>
+                              <Insets top="8.0" />
                            </HBox.margin>
                         </JFXComboBox>
                         <Label fx:id="lblGuildTagTwo" text="guild">
                            <font>
                               <Font size="29.0" />
                            </font>
-                           <padding>
-                              <Insets top="15.0" />
-                           </padding>
+                           <HBox.margin>
+                              <Insets top="20.0" />
+                           </HBox.margin>
                         </Label>
                      </children>
                   </HBox>
@@ -98,7 +104,7 @@
       </VBox>
       <HBox alignment="BOTTOM_CENTER" layoutY="257.0" prefHeight="343.0" prefWidth="750.0" spacing="44.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-              <JFXButton fx:id="btnLanguage" defaultButton="true" onAction="#ChangeLanguageAction" prefHeight="150.0" prefWidth="150.0" ripplerFill="WHITE" stylesheets="@MainLayout.css" text="English" textFill="WHITE">
+              <JFXButton fx:id="btnLanguage" buttonType="RAISED" defaultButton="true" onAction="#ChangeLanguageAction" prefHeight="150.0" prefWidth="150.0" ripplerFill="WHITE" stylesheets="@MainLayout.css" text="English" textFill="WHITE">
                   <font>
                       <Font name="System Bold Italic" size="23.0" />
                   </font>
@@ -107,7 +113,7 @@
                       <String fx:value="JFXRoundedButton" />
                   </styleClass>
               </JFXButton>
-              <JFXButton fx:id="btnLogHours" defaultButton="true" onAction="#LogHoursAction" prefHeight="260.0" prefWidth="260.0" ripplerFill="WHITE" stylesheets="@MainLayout.css" text="Log Hours" textFill="WHITE">
+              <JFXButton fx:id="btnLogHours" buttonType="RAISED" defaultButton="true" onAction="#LogHoursAction" prefHeight="260.0" prefWidth="260.0" ripplerFill="WHITE" stylesheets="@MainLayout.css" text="Log Hours" textFill="WHITE">
                   <font>
                       <Font name="System Bold Italic" size="36.0" />
                   </font>
@@ -116,7 +122,7 @@
                       <String fx:value="JFXButtonLogHours" />
                   </styleClass>
               </JFXButton>
-              <JFXButton fx:id="btnSeeInfo" defaultButton="true" onAction="#LogInAction" prefHeight="150.0" prefWidth="150.0" ripplerFill="WHITE" stylesheets="@MainLayout.css" text="See Info" textFill="WHITE">
+              <JFXButton fx:id="btnSeeInfo" buttonType="RAISED" defaultButton="true" onAction="#LogInAction" prefHeight="150.0" prefWidth="150.0" ripplerFill="WHITE" stylesheets="@MainLayout.css" text="See Info" textFill="WHITE">
                   <font>
                       <Font name="System Bold Italic" size="23.0" />
                   </font>
