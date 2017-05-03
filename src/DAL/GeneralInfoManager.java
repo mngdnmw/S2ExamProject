@@ -52,7 +52,6 @@ public class GeneralInfoManager extends ConnectionManager
                 String email = rs.getString("email");
                 int type = rs.getInt("type");
                 int phone = rs.getInt("phone");
-                String address = rs.getString("residence");
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
 
@@ -121,7 +120,6 @@ public class GeneralInfoManager extends ConnectionManager
                 String email = rs.getString("email");
                 int type = rs.getInt("type");
                 int phone = rs.getInt("phone");
-                String address = rs.getString("residence");
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
 
@@ -183,9 +181,8 @@ public class GeneralInfoManager extends ConnectionManager
                 int id = rs.getInt("userid");
                 String name = rs.getString("name");
                 String email = rs.getString("email");
-                int type = rs.getInt("type");
+                //int type = rs.getInt("type");
                 int phone = rs.getInt("phone");
-                String address = rs.getString("residence");
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
 
@@ -219,9 +216,8 @@ public class GeneralInfoManager extends ConnectionManager
                 int id = rs.getInt("userid");
                 String name = rs.getString("name");
                 String email = rs.getString("email");
-                int type = rs.getInt("type");
+                //int type = rs.getInt("type");
                 int phone = rs.getInt("phone");
-                String address = rs.getString("residence");
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
 
@@ -255,9 +251,7 @@ public class GeneralInfoManager extends ConnectionManager
                 int id = rs.getInt("userid");
                 String name = rs.getString("name");
                 String email = rs.getString("email");
-                int type = rs.getInt("type");
                 int phone = rs.getInt("phone");
-                String address = rs.getString("residence");
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
 
@@ -371,17 +365,24 @@ public class GeneralInfoManager extends ConnectionManager
 
     public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence)
       {
-        String query = "update [user] set [name] = '" + name + "', [email] = '" + email + "', [phone] = '" + phone + "', [residence] = '" + residence + "' where [userid] = " + userId;
-
-        try (Connection con = super.getConnection())
-          {
-            Statement s = con.createStatement();
-            s.execute(query);
-          }
-        catch (SQLException e)
-          {
-            System.out.println("Exception in: DataManager::updateUserInfo()");
-            System.out.println(e);
+        try(Connection con = super.getConnection())
+        {
+            String sqlCommand =
+            "UPDATE [user] SET name=?, email=?, type=?, phone=?, residence=?, note=? WHERE userid=?";
+            PreparedStatement pstat = con.prepareStatement(sqlCommand);
+            pstat.setString(1, name);
+            pstat.setString(2, email);
+            pstat.setInt(3, type);
+            pstat.setInt(4, phone);
+            pstat.setString(5, residence);
+            pstat.setString(6, note);
+            pstat.setInt(7, userId);
+            pstat.executeUpdate();
+        }
+        catch(SQLException sqle)
+        {
+            System.out.println("Exception in: DataManager: updateInfo method");
+            System.err.println(sqle);
         }
     }
     
@@ -433,7 +434,7 @@ public class GeneralInfoManager extends ConnectionManager
         }
         return null;
     } 
-    public void addUser(String name, String email, String password, int type, int phone, String address, String note)
+    public void addUser(String name, String email, String password, int type, int phone, String residence, String note)
     {
         try(Connection con = super.getConnection())
         {
@@ -445,7 +446,7 @@ public class GeneralInfoManager extends ConnectionManager
             pstat.setString(3, password);
             pstat.setInt(4, type);
             pstat.setInt(5, phone);
-            pstat.setString(6, address);
+            pstat.setString(6, residence);
             pstat.setString(7, note);
             pstat.executeUpdate();
         }
