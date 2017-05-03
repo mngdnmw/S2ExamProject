@@ -31,6 +31,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
@@ -82,6 +83,7 @@ public class UserInfoViewController implements Initializable
     TextField txtPh; 
     TextField txtEmail;
     TextField txtResidence;
+    JFXButton btnCancel;
     User currentUser;
     boolean editing = false;
 
@@ -155,10 +157,12 @@ public class UserInfoViewController implements Initializable
             editInfo();
             editing = true;
             btnEditSave.setText("Save");
+            addCancelButton();
         } else {
             saveInfo(currentUser);
             editing = false;
             btnEditSave.setText("Edit");
+            removeCancelButton();
         }
     }
     
@@ -269,5 +273,39 @@ public class UserInfoViewController implements Initializable
     public void setUserImage() {
         System.out.println(MOD_FACADE.getUserImage(currentUser));
         imgVwProfilePic.setImage(new Image(MOD_FACADE.getUserImage(currentUser)));
+    }
+    
+    private void addCancelButton() {
+        int btnSavePosCol = GridPane.getColumnIndex(btnEditSave); //saving position
+        int btnSavePosRow = GridPane.getRowIndex(btnEditSave);
+        GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave)-1); //moving save button one up
+        btnCancel = new JFXButton();
+        btnCancel.setText("Cancel"); //preparing cancel button
+        btnCancel.setTextFill(Color.WHITE);
+        btnCancel.setStyle(btnEditSave.getStyle());
+        gridEdit.add(btnCancel, btnSavePosCol, btnSavePosRow); //adding to the old position of save btn
+        btnCancel.setOnAction(new EventHandler<ActionEvent>() { //setting onAction, nothing changed, just show old labels again
+            @Override
+            public void handle(ActionEvent event) {
+                txtName.setVisible(false);
+                txtPh.setVisible(false);
+                txtEmail.setVisible(false);
+                txtResidence.setVisible(false);
+        
+                lblName.setVisible(true);
+                lblPh.setVisible(true);
+                lblEmail.setVisible(true);
+                lblResidence.setVisible(true);
+                
+                removeCancelButton(); //if cancel button clicked, it will disappear
+                editing = false;
+                btnEditSave.setText("Edit");
+            }
+        });
+    }
+    
+    private void removeCancelButton() {
+        GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave)+1); //moving save button one down
+        gridEdit.getChildren().remove(btnCancel); //deleting cancel button from gridpane
     }
 }
