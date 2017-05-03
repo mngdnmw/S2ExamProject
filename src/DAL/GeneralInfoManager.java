@@ -331,18 +331,20 @@ public class GeneralInfoManager extends ConnectionManager
 
         return guilds;
       }
-  }
-    
-    
-    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence) {
-        String query = "update [user] set [name] = '"+name+"', [email] = '"+email+"', [phone] = '"+phone+"', [residence] = '"+residence+"' where [userid] = "+userId;
-        
-        try(Connection con = super.getConnection()) {
+
+    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence)
+      {
+        String query = "update [user] set [name] = '" + name + "', [email] = '" + email + "', [phone] = '" + phone + "', [residence] = '" + residence + "' where [userid] = " + userId;
+
+        try (Connection con = super.getConnection())
+          {
             Statement s = con.createStatement();
             s.execute(query);
-        } catch(SQLException e) {
+          }
+        catch (SQLException e)
+          {
             System.out.println("Exception in: DataManager::updateUserInfo()");
             System.out.println(e);
-        }
-    }
-}
+          }
+      }
+  }

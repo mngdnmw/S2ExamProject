@@ -103,12 +103,12 @@ public class ModelFacade
       }
 
     public List<Guild> getAllGuilds()
-      { 
+      {
         return GEN_INFO_MOD.getAllGuilds();
       }
-    }
-    
-    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence) {
-        DATA_MOD.updateUserInfo(userId, name, email, type, phone, note, residence);
-    }
-}
+
+    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence)
+      {
+        GEN_INFO_MOD.updateUserInfo(userId, name, email, type, phone, note, residence);
+      }
+  }
