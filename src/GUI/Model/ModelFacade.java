@@ -3,6 +3,9 @@ package GUI.Model;
 import BE.EnumCache;
 import BE.Guild;
 import BE.User;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 import javafx.animation.FadeTransition;
 import javafx.scene.Node;
@@ -100,15 +103,22 @@ public class ModelFacade
     public void setLang(EnumCache.Lang lang)
       {
         LANG_MOD.setLang(lang);
+    }
+    
+    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence) {
+        GEN_INFO_MOD.updateUserInfo(userId, name, email, type, phone, note, residence);
+    }
+    
+    public void updateUserImage(User user, File img) throws FileNotFoundException {
+        GEN_INFO_MOD.updateUserImage(user, img);
+    }
+    
+    public InputStream getUserImage(User user) {
+        return GEN_INFO_MOD.getUserImage(user);
       }
 
     public List<Guild> getAllGuilds()
       {
         return GEN_INFO_MOD.getAllGuilds();
-      }
-
-    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence)
-      {
-        GEN_INFO_MOD.updateUserInfo(userId, name, email, type, phone, note, residence);
       }
   }
