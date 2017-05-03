@@ -32,20 +32,12 @@
     -fx-border-radius:20px;
     -fx-background-radius:20px
 }
-
-/*What is this one for?
-    Maybe for the text area, as it's name suggests? ¯\_(ツ)_/¯
-*/
 .text-area .content
+
 {
     -fx-background-color: #FAFAFA;
 }
-#calendar{
-    -fx-padding: 0.588883em 0.5em 0.666667em 0.5em; /* 7 6 8 6 */
-    -fx-background-color: red;
-    -fx-background-insets: 0 0 0 0, 0 0 1 0;
 
-}
 .jfx-snackbar-content{
     -fx-background-color:#00e2c7;
     -fx-border-style: solid solid hidden solid ;
@@ -58,4 +50,12 @@
 .jfx-snackbar-toast{
     -fx-font: bold 20px/30px System;
     -fx-text-fill: #FFFFFF;
+}
+
+.date-picker-popup .calendar-grid {
+    -fx-pref-width: 100;
+    -fx-pref-height: 100;
+}
+.date-picker-popup .spinner-label {
+    -fx-font-size: 14.0;
 }

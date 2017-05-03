@@ -17,6 +17,8 @@ public class S2ExamProject extends Application
 
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/View/HourLoginView.fxml"));
 
+
+
         Scene scene = new Scene(root);
 
         stage.setScene(scene);
