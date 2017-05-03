@@ -18,16 +18,6 @@ public class ManagerViewController implements Initializable
 {
 
     @FXML
-    private Label lblName;
-    @FXML
-    private Label lblPh;
-    @FXML
-    private Label lblEmail;
-    @FXML
-    private Label lblResidence;
-    @FXML
-    private JFXButton btnNameEdit;
-    @FXML
     private Label lblHrsAll;
     @FXML
     private Label lblHrsYr;
@@ -35,8 +25,6 @@ public class ManagerViewController implements Initializable
     private Label lblHrsMth;
     @FXML
     private Label lblHrsDay;
-    @FXML
-    private JFXTextArea JFXTxtAreaNotes;
     @FXML
     private JFXButton JFXBtnAccept;
     @FXML
@@ -53,15 +41,19 @@ public class ManagerViewController implements Initializable
     private JFXTextField txtEmail;
     @FXML
     private JFXTextField txtAddress;
+    @FXML
+    private JFXButton btnEdit;
+    @FXML
+    private JFXTextArea txtNotes;
+    @FXML
+    private JFXTextArea txtGuilds;
     
     ManagerEditViewController mevController;
     boolean edit = false;
     
     
     private static User selectedUser;
-    
-    
-    
+ 
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
@@ -86,7 +78,7 @@ public class ManagerViewController implements Initializable
             txtAddress.setText(selectedUser.getAddress());
             txtPhone.setText(String.valueOf(selectedUser.getPhone()));
             txtEmail.setText(selectedUser.getEmail());
-            JFXTxtAreaNotes.setText(selectedUser.getNote());
+            txtNotes.setText(selectedUser.getNote());
         }
         else
         {
@@ -95,7 +87,7 @@ public class ManagerViewController implements Initializable
     }
 
     @FXML
-    private void onBtnNameEditPressed(ActionEvent event)
+    private void onBtnEditPressed(ActionEvent event)
     {
         edit = !edit;
         
@@ -145,7 +137,7 @@ public class ManagerViewController implements Initializable
     @FXML
     private void onBtnCancelPressed(ActionEvent event)
     {
-        Stage stage = (Stage) btnNameEdit.getScene().getWindow();
+        Stage stage = (Stage) btnEdit.getScene().getWindow();
         stage.close();
     }
 }

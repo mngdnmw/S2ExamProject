@@ -41,11 +41,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="lblName" prefHeight="17.0" prefWidth="102.0" text="lblName" GridPane.columnIndex="1" />
-            <Label fx:id="lblPh" prefHeight="17.0" prefWidth="102.0" text="lblPh" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label fx:id="lblEmail" prefHeight="17.0" prefWidth="102.0" text="lblEmail" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label fx:id="lblResidence" prefHeight="17.0" prefWidth="102.0" text="lblResidence" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <JFXButton fx:id="btnNameEdit" style="-fx-background-color: #00c4ad;" text="Edit" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3">
+            <JFXButton fx:id="btnEdit" onAction="#onBtnEditPressed" style="-fx-background-color: #00c4ad;" text="Edit" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </padding>
@@ -178,7 +174,7 @@
                      <children>
                         <ScrollPane layoutX="-2.0" layoutY="-1.0" prefHeight="134.0" prefWidth="299.0" style="-fx-border-color: #ffffff;">
                            <content>
-                              <JFXTextArea fx:id="JFXTxtAreaNotes" prefHeight="154.0" prefWidth="281.0" unFocusColor="WHITE" />
+                              <JFXTextArea fx:id="txtNotes" prefHeight="154.0" prefWidth="281.0" unFocusColor="WHITE" />
                            </content>
                         </ScrollPane>
                         <GridPane layoutX="-3.0" layoutY="136.0" prefHeight="22.0" prefWidth="297.0">
@@ -246,7 +242,7 @@
             </VBox>
             <VBox prefHeight="45.0" prefWidth="133.0">
                <children>
-                  <JFXTextArea stylesheets="@MainLayout.css" />
+                  <JFXTextArea fx:id="txtGuilds" stylesheets="@MainLayout.css" />
                </children>
             </VBox>
          </children>

@@ -4,21 +4,16 @@ import BE.User;
 import GUI.Model.GeneralInfoModel;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -27,12 +22,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.util.Duration;
 
 public class ManagerEditViewController implements Initializable
 {
@@ -61,7 +53,8 @@ public class ManagerEditViewController implements Initializable
     private TableColumn<User, String> colEmail;
     @FXML
     private TableColumn<User, String> colGuild;
-
+    @FXML
+    private AnchorPane root;
     
     GeneralInfoModel dataModel = new GeneralInfoModel();
     User selectedUser;
@@ -74,8 +67,6 @@ public class ManagerEditViewController implements Initializable
     {
         setTableProperties();
         tblVolunteers.setItems(FXCollections.observableArrayList(dataModel.getAllUsers()));
-        //System.out.println(dataModel.getAllUsers().toString());
-
     }
 
     /**
@@ -112,7 +103,6 @@ public class ManagerEditViewController implements Initializable
             // Fetches controller from view
             ManagerViewController controller = loader.getController();
             
-            //controller.setController(this);
             controller.setController(this);
             // Sets new stage as modal window
             Stage stageView = new Stage();
@@ -153,8 +143,6 @@ public class ManagerEditViewController implements Initializable
         {
             try
             {
-                
-                
                 selectedUser = tblVolunteers.getSelectionModel().getSelectedItem();
                 Stage primStage = (Stage) tblVolunteers.getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/ManagerView.fxml"));
@@ -166,10 +154,7 @@ public class ManagerEditViewController implements Initializable
                 // Fetches controller from view
                 ManagerViewController controller = loader.getController();
                 controller.setController(this);
-                //controller.setTableItems(selected.getClassId());
-                //controller.setLabels(selected.getClassId(), selected.getSubject());
-                //controller.setDateText();
-                //controller.setCurrentTeacher(currentTeacher);
+
                 // Sets new stage as modal window
                 Stage stageView = new Stage();
                 stageView.setScene(new Scene(root));
@@ -231,10 +216,7 @@ public class ManagerEditViewController implements Initializable
                 // Fetches controller from view
                 ManagerViewController controller = loader.getController();
                 controller.setController(this);
-                //controller.setTableItems(selected.getClassId());
-                //controller.setLabels(selected.getClassId(), selected.getSubject());
-                //controller.setDateText();
-                //controller.setCurrentTeacher(currentTeacher);
+
                 // Sets new stage as modal window
                 Stage stageView = new Stage();
                 stageView.setScene(new Scene(root));
