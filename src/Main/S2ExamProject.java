@@ -15,7 +15,7 @@ public class S2ExamProject extends Application
       {
 
 
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/View/ManagerEditView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/View/UserInfoView.fxml"));
 
         Scene scene = new Scene(root);
 
