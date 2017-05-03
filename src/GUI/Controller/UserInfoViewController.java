@@ -4,6 +4,7 @@ import BE.User;
 import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextField;
 import com.sun.deploy.util.StringUtils;
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
 import java.io.File;
@@ -162,10 +163,10 @@ public class UserInfoViewController implements Initializable
     }
     
     private void createEditFields() {
-        txtName = new TextField();
-        txtPh = new TextField();
-        txtEmail = new TextField();
-        txtResidence = new TextField();
+        txtName = new JFXTextField();
+        txtPh = new JFXTextField();
+        txtEmail = new JFXTextField();
+        txtResidence = new JFXTextField();
         
         txtPh.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
@@ -184,6 +185,7 @@ public class UserInfoViewController implements Initializable
         gridEdit.add(txtPh, 1, 1);
         gridEdit.add(txtEmail, 1, 2);
         gridEdit.add(txtResidence, 1, 3);
+        
     }
     
     private void editInfo() {
