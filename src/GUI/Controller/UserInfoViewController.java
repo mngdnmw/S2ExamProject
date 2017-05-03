@@ -4,17 +4,23 @@ import BE.User;
 import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
+import com.sun.deploy.util.StringUtils;
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 
@@ -30,7 +36,7 @@ public class UserInfoViewController implements Initializable
     @FXML
     private Label lblResidence;
     @FXML
-    private JFXButton btnNameEdit;
+    private JFXButton btnEditSave;
     @FXML
     private ImageView imgVwProfilePic;
     @FXML
@@ -59,8 +65,15 @@ public class UserInfoViewController implements Initializable
     private Label lblHrsDay;
     @FXML
     private AnchorPane anchorGraph;
+    @FXML
+    private GridPane gridEdit;
 
+    TextField txtName;
+    TextField txtPh; 
+    TextField txtEmail;
+    TextField txtResidence;
     User currentUser;
+    boolean editing = false;
 
     private final static ModelFacade MOD_FACADE = new ModelFacade();
 
@@ -70,6 +83,7 @@ public class UserInfoViewController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        createEditFields();
         setCurrentUser(MOD_FACADE.getCurrentUser());
         setProperties();
         showConstantCalendar();
@@ -131,4 +145,98 @@ public class UserInfoViewController implements Initializable
         //Need to add 
     }
 
+    @FXML
+    private void pressedEditSaveButton(ActionEvent event) {
+        if(!editing) {
+            editInfo();
+            editing = true;
+            btnEditSave.setText("Save");
+        } else {
+            saveInfo(currentUser);
+            editing = false;
+            btnEditSave.setText("Edit");
+        }
+    }
+    
+    private void createEditFields() {
+        txtName = new TextField();
+        txtPh = new TextField();
+        txtEmail = new TextField();
+        txtResidence = new TextField();
+        
+        txtPh.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                checkTextFields();
+            }
+            
+        });
+        
+        txtName.setVisible(false);
+        txtPh.setVisible(false);
+        txtEmail.setVisible(false);
+        txtResidence.setVisible(false);
+        
+        gridEdit.add(txtName, 1, 0);
+        gridEdit.add(txtPh, 1, 1);
+        gridEdit.add(txtEmail, 1, 2);
+        gridEdit.add(txtResidence, 1, 3);
+    }
+    
+    private void editInfo() {
+        txtName.setText(lblName.getText());
+        
+        txtPh.setText(lblPh.getText());
+        
+        txtEmail.setText(lblEmail.getText());
+        
+        txtResidence.setText(lblResidence.getText());
+        
+        lblName.setVisible(false);
+        lblPh.setVisible(false);
+        lblEmail.setVisible(false);
+        lblResidence.setVisible(false);
+        
+        txtName.setVisible(true);
+        txtPh.setVisible(true);
+        txtEmail.setVisible(true);
+        txtResidence.setVisible(true);
+    }
+    
+    private void saveInfo(User user) {
+        MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPh.getText()), user.getNote(), txtResidence.getText()); //do things in db
+        
+        currentUser = MOD_FACADE.getUserInfo(user.getId());
+        
+        txtName.setVisible(false);
+        txtPh.setVisible(false);
+        txtEmail.setVisible(false);
+        txtResidence.setVisible(false);
+        
+        lblName.setVisible(true);
+        lblPh.setVisible(true);
+        lblEmail.setVisible(true);
+        lblResidence.setVisible(true);
+        
+        setProperties(); //update labels
+    }
+    
+    private void checkTextFields() {
+        boolean success = false;
+        try {
+            Integer.parseInt(txtPh.getText());
+            success = true;
+        } catch(NumberFormatException e) {
+            success = false;
+            txtPh.setStyle("-fx-background-color:red;");
+            btnEditSave.setDisable(true);    
+        }
+        if(success) {
+            btnEditSave.setDisable(false);
+            txtPh.setStyle("");
+        } else {
+            txtPh.setStyle("-fx-background-color:red;");
+            btnEditSave.setDisable(true);
+        }
+    }
 }

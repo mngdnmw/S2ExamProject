@@ -1,17 +1,20 @@
 package GUI.Controller;
 
 import BE.EnumCache.*;
+import BE.Guild;
 import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,12 +23,16 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import javafx.util.Duration;
+import sun.plugin2.jvm.RemoteJVMLauncher.CallBack;
 
 public class HourLoginController implements Initializable
   {
@@ -45,7 +52,7 @@ public class HourLoginController implements Initializable
     @FXML
     private Label lblGuildTag;
     @FXML
-    private JFXComboBox<?> cmbGuildChooser;
+    private JFXComboBox<Guild> cmbGuildChooser;
     @FXML
     private Label lblGuildTagTwo;
     @FXML
@@ -56,7 +63,7 @@ public class HourLoginController implements Initializable
     private AnchorPane root;
 
     private String strLogThanks = "Thanks!";
-    private String strContribution = "You have helped shape this community!";
+    private String strContribution = "Your hours have been logged. Thank you!";
     private String strLogin = "Log In";
     private String strCancel = "Cancel";
     private String strLanguage = "English";
@@ -73,14 +80,25 @@ public class HourLoginController implements Initializable
         preloadImages();
         imgViewLngBut.setImage(iconENG);
         btnLanguage.setGraphic(imgViewLngBut);
+        cmbGuildChooser.setItems(FXCollections.observableArrayList(MOD_FACADE.getAllGuilds()));
       }
 
     @FXML
     private void LogHoursAction(ActionEvent event)
       {
-
         lockButtons();
-        contributionPopup();
+        if (!txtUser.getText().isEmpty() && !txtHours.getText().isEmpty() && !cmbGuildChooser.getSelectionModel().isEmpty())
+          {
+            MOD_FACADE.logHours(
+                    txtUser.getText(), Integer.parseInt(txtHours.getText()),
+                    cmbGuildChooser.getSelectionModel().getSelectedItem().getId()
+            );
+            contributionPopup(strContribution);
+          }
+        else
+          {
+            contributionPopup("Please input information in all fields");
+          }
       }
 
     @FXML
@@ -88,6 +106,7 @@ public class HourLoginController implements Initializable
       {
         lockButtons();
         languagePopup();
+
       }
 
     @FXML
@@ -128,51 +147,58 @@ public class HourLoginController implements Initializable
     /**
      * pops up a bordered VBox that disappear after a short moment.
      */
-    public void contributionPopup()
+    public void contributionPopup(String str)
       {
-        //popup window that we are making
-        VBox popup = new VBox();
-        popup.setSpacing(5);
-        popup.setPadding(new Insets(20));
-        popup.setAlignment(Pos.CENTER);
-        popup.getStyleClass().add("popup");
-        popup.setStyle("-fx-background-color: #00c4ad;");
-
-        //CSS to be added to both labels
-        String styleText = "-fx-font:italic bold 20px/30px System;"
-                + "-fx-text-fill: #FFFFFF;" + "";
-
-        //First Label
-        Label lblThanks = new Label();
-        lblThanks.setStyle(styleText);
-        lblThanks.setText(strLogThanks);
-
-        //Next Label
-        Label lblContribution = new Label();
-        lblContribution.setStyle(styleText);
-        lblContribution.setText(strContribution);
-        //Imageview that contains a star
-        ImageView imgStar = new ImageView();
-        Image img = new Image("/GUI/Images/star.png");
-        imgStar.setImage(img);
-        imgStar.setFitHeight(imgStar.getImage().getHeight() / 3);
-        imgStar.setPreserveRatio(true);
-        //Add all nodes to the popup window in order
-        popup.getChildren().add(lblThanks);
-        popup.getChildren().add(lblContribution);
-        popup.getChildren().add(imgStar);
-
-        root.getChildren().add(popup);
-        popup.setTranslateY((root.getHeight() / 3));
-        popup.setTranslateX(root.getWidth() / 4.2);
-        MOD_FACADE.fadeInTransition(Duration.millis(500), popup);
-
-        PauseTransition pause = new PauseTransition(Duration.millis(1500));
+        int time = 3000;
+        JFXSnackbar snackbar = new JFXSnackbar(root);
+        snackbar.show(str, time);
+        PauseTransition pause = new PauseTransition(Duration.millis(time));
         pause.setOnFinished(
-                e -> MOD_FACADE.fadeOutTransition(Duration.millis(500), popup).setOnFinished(ev -> removePopup(popup))
+                e -> unlockButtons()
         );
         pause.play();
-
+//        //popup window that we are making
+//        VBox popup = new VBox();
+//        popup.setSpacing(5);
+//        popup.setPadding(new Insets(20));
+//        popup.setAlignment(Pos.CENTER);
+//        popup.getStyleClass().add("popup");
+//        popup.setStyle("-fx-background-color: #00c4ad;");
+//
+//        //CSS to be added to both labels
+//        String styleText = "-fx-font:italic bold 20px/30px System;"
+//                + "-fx-text-fill: #FFFFFF;" + "";
+//
+//        //First Label
+//        Label lblThanks = new Label();
+//        lblThanks.setStyle(styleText);
+//        lblThanks.setText(strLogThanks);
+//
+//        //Next Label
+//        Label lblContribution = new Label();
+//        lblContribution.setStyle(styleText);
+//        lblContribution.setText(strContribution);
+//        //Imageview that contains a star
+//        ImageView imgStar = new ImageView();
+//        Image img = new Image("/GUI/Images/star.png");
+//        imgStar.setImage(img);
+//        imgStar.setFitHeight(imgStar.getImage().getHeight() / 3);
+//        imgStar.setPreserveRatio(true);
+//        //Add all nodes to the popup window in order
+//        popup.getChildren().add(lblThanks);
+//        popup.getChildren().add(lblContribution);
+//        popup.getChildren().add(imgStar);
+//
+//        root.getChildren().add(popup);
+//        popup.setTranslateY((root.getHeight() / 3));
+//        popup.setTranslateX(root.getWidth() / 4.2);
+//        MOD_FACADE.fadeInTransition(Duration.millis(500), popup);
+//
+//        PauseTransition pause = new PauseTransition(Duration.millis(1500));
+//        pause.setOnFinished(
+//                e -> MOD_FACADE.fadeOutTransition(Duration.millis(500), popup).setOnFinished(ev -> removePopup(popup))
+//        );
+//        pause.play();
       }
 
     /**
@@ -412,4 +438,5 @@ public class HourLoginController implements Initializable
         btnSeeInfo.setText(MOD_FACADE.getLang("BTN_SEE_INFO"));
 
       }
+
   }
