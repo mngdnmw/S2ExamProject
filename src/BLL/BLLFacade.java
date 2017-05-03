@@ -12,9 +12,9 @@ public class BLLFacade
     private final static DALFacade DAL_FAC = new DALFacade();
     private final static LoginHandler LOG_HAND = new LoginHandler();
 
-    public User getUserFromLogin(String username)
+    public User getUserFromLogin(String username, String password)
       {
-        return LOG_HAND.getUserFromLogin(username, username);
+        return LOG_HAND.getUserFromLogin(username, password);
       }
 
     /**

@@ -1,6 +1,7 @@
 package DAL;
 
 import BE.Guild;
+import BE.User;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -19,10 +20,6 @@ public class DALFacade
             LOGIN_MAN.logHours(userid, date, hours, guildId);
           }
 
-//        DATA_MAN.getAllManagers();
-//        DATA_MAN.getAllUsers();
-//        DATA_MAN.getAllVolunteers();
-//        DATA_MAN.getUserInfo(guildId);
       }
 
     public void getAllAdmins()
@@ -40,32 +37,19 @@ public class DALFacade
         GEN_INFO_MAN.getAllVolunteers();
       }
 
-    public int getUserId(String username)
-      {
-        boolean parsable = true;
-        int phoneNo = 0;
-
-        try
-          {
-            phoneNo = Integer.parseInt(username);
-          }
-        catch (NumberFormatException e)
-          {
-            parsable = false;
-            
-          }
-        if (parsable)
-          {
-            return GEN_INFO_MAN.getUserIdFromPhoneNumber(phoneNo);
-          }
-        else
-          {
-            return GEN_INFO_MAN.getUserIdFromEmail(username);
-          }
-      }
     public List<Guild> getAllGuilds()
       {
         return GEN_INFO_MAN.getAllGuilds();
+      }
+
+    public int getUserId(String username)
+      {
+        return GEN_INFO_MAN.getUserId(username);
+      }
+
+    public User getUserFromLogin(int id, String password)
+      {
+       return LOGIN_MAN.getUserFromLogin(id, password);
       }
 
   }

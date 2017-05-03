@@ -2,8 +2,14 @@ package GUI.Model;
 
 import Main.S2ExamProject;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class ViewChangerModel
   {
@@ -14,27 +20,50 @@ public class ViewChangerModel
     private String ManagerString = "ManageView.fxml";
     private String UserInfoString = "UserInfoView.fxml";
 
+    private Window stage;
 
-    public void changeView(int GUINumb) throws IOException
+    /**
+     * Changes the view based on number. 0 goes to the UserInfoView, 1 goes to
+     * ManagerEditView, 2 goes to ManagerView 3 goes to the hourLoginView
+     *
+     * @param GUINumb
+     *
+     */
+    public void changeView(int GUINumb)
       {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(S2ExamProject.class.getResource(switcher(GUINumb)));
-        AnchorPane page = (AnchorPane) loader.load();
+        loader.setLocation(getClass().getClassLoader().getResource(switcher(GUINumb)));
+          System.out.println(loader.getLocation()+"");
+        try
+          {
+            AnchorPane page = (AnchorPane) loader.load();
+            Stage nxtStage = new Stage();
+            nxtStage.initOwner(stage);
+            nxtStage.initModality(Modality.WINDOW_MODAL);
+            Scene scene = new Scene(page);
+            nxtStage.setScene(scene);
+            nxtStage.show();
+
+          }
+        catch (IOException ex)
+          {
+            Logger.getLogger(ViewChangerModel.class.getName()).log(Level.SEVERE, null, ex);
+          }
 
       }
 
-    public String switcher(int GUINumb)
+    private String switcher(int GUINumb)
       {
         switch (GUINumb)
           {
             case 0:
-                return ViewPath + HourLoginString;
+                return ViewPath + UserInfoString;
             case 1:
                 return ViewPath + ManagerEditString;
             case 2:
                 return ViewPath + ManagerString;
             case 3:
-                return ViewPath + UserInfoString;
+                return ViewPath + HourLoginString;
 
           }
         return null;
