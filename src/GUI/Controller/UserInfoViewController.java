@@ -84,7 +84,7 @@ public class UserInfoViewController implements Initializable
     User currentUser;
     boolean editing = false;
 
-    private final static ModelFacade MOD_FACADE = new ModelFacade();
+    private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
 
     /**
      * Initializes the controller class.

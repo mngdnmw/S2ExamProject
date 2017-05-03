@@ -30,6 +30,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import sun.plugin2.jvm.RemoteJVMLauncher.CallBack;
@@ -81,6 +82,7 @@ public class HourLoginController implements Initializable
         imgViewLngBut.setImage(iconENG);
         btnLanguage.setGraphic(imgViewLngBut);
         cmbGuildChooser.setItems(FXCollections.observableArrayList(MOD_FACADE.getAllGuilds()));
+        ModelFacade.setModelFacade(MOD_FACADE);
       }
 
     @FXML
@@ -95,6 +97,7 @@ public class HourLoginController implements Initializable
             );
             contributionPopup(strContribution);
           }
+
         else
           {
             contributionPopup("Please input information in all fields");
@@ -157,48 +160,7 @@ public class HourLoginController implements Initializable
                 e -> unlockButtons()
         );
         pause.play();
-//        //popup window that we are making
-//        VBox popup = new VBox();
-//        popup.setSpacing(5);
-//        popup.setPadding(new Insets(20));
-//        popup.setAlignment(Pos.CENTER);
-//        popup.getStyleClass().add("popup");
-//        popup.setStyle("-fx-background-color: #00c4ad;");
-//
-//        //CSS to be added to both labels
-//        String styleText = "-fx-font:italic bold 20px/30px System;"
-//                + "-fx-text-fill: #FFFFFF;" + "";
-//
-//        //First Label
-//        Label lblThanks = new Label();
-//        lblThanks.setStyle(styleText);
-//        lblThanks.setText(strLogThanks);
-//
-//        //Next Label
-//        Label lblContribution = new Label();
-//        lblContribution.setStyle(styleText);
-//        lblContribution.setText(strContribution);
-//        //Imageview that contains a star
-//        ImageView imgStar = new ImageView();
-//        Image img = new Image("/GUI/Images/star.png");
-//        imgStar.setImage(img);
-//        imgStar.setFitHeight(imgStar.getImage().getHeight() / 3);
-//        imgStar.setPreserveRatio(true);
-//        //Add all nodes to the popup window in order
-//        popup.getChildren().add(lblThanks);
-//        popup.getChildren().add(lblContribution);
-//        popup.getChildren().add(imgStar);
-//
-//        root.getChildren().add(popup);
-//        popup.setTranslateY((root.getHeight() / 3));
-//        popup.setTranslateX(root.getWidth() / 4.2);
-//        MOD_FACADE.fadeInTransition(Duration.millis(500), popup);
-//
-//        PauseTransition pause = new PauseTransition(Duration.millis(1500));
-//        pause.setOnFinished(
-//                e -> MOD_FACADE.fadeOutTransition(Duration.millis(500), popup).setOnFinished(ev -> removePopup(popup))
-//        );
-//        pause.play();
+
       }
 
     /**
@@ -293,9 +255,14 @@ public class HourLoginController implements Initializable
             @Override
             public void handle(ActionEvent e)
               {
-                MOD_FACADE.getUserFromLogin(txtUsername.getText());
+                MOD_FACADE.getUserFromLogin(txtUsername.getText(), txtPassword.getText());
+
                 if (MOD_FACADE.getCurrentUser() != null)
                   {
+                    MOD_FACADE.changeView(0);
+                    Stage stage = (Stage) root.getScene().getWindow();
+                    stage.close();
+                    
                   }
                 else
                   {
