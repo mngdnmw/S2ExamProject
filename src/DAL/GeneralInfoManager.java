@@ -252,14 +252,24 @@ public class GeneralInfoManager extends ConnectionManager
     }
     
     public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence) {
-        String query = "update [user] set [name] = '"+name+"', [email] = '"+email+"', [phone] = '"+phone+"', [residence] = '"+residence+"' where [userid] = "+userId;
-        
-        try(Connection con = super.getConnection()) {
-            Statement s = con.createStatement();
-            s.execute(query);
-        } catch(SQLException e) {
-            System.out.println("Exception in: DataManager::updateUserInfo()");
-            System.out.println(e);
+        try(Connection con = super.getConnection())
+        {
+            String sqlCommand =
+            "UPDATE [user] SET name=?, email=?, type=?, phone=?, residence=?, note=? WHERE userid=?";
+            PreparedStatement pstat = con.prepareStatement(sqlCommand);
+            pstat.setString(1, name);
+            pstat.setString(2, email);
+            pstat.setInt(3, type);
+            pstat.setInt(4, phone);
+            pstat.setString(5, residence);
+            pstat.setString(6, note);
+            pstat.setInt(7, userId);
+            pstat.executeUpdate();
+        }
+        catch(SQLException sqle)
+        {
+            System.out.println("Exception in: DataManager: updateInfo method");
+            System.err.println(sqle);
         }
     }
     
