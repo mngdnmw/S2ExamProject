@@ -5,17 +5,26 @@ import GUI.Model.GeneralInfoModel;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class ManagerEditViewController implements Initializable
 {
@@ -23,9 +32,9 @@ public class ManagerEditViewController implements Initializable
     @FXML
     private Label lblUserName;
     @FXML
-    private JFXButton btnSearch;
+    private JFXButton btnAddUser;
     @FXML
-    private JFXButton btnCopyEmail;
+    private JFXTextField txtSearch;
     @FXML
     private JFXTextArea txtNotes;
     @FXML
@@ -44,9 +53,11 @@ public class ManagerEditViewController implements Initializable
     private TableColumn<User, String> colEmail;
     @FXML
     private TableColumn<User, String> colGuild;
-
+    @FXML
+    private AnchorPane root;
     
     GeneralInfoModel dataModel = new GeneralInfoModel();
+    User selectedUser;
     
     /**
      * Initializes the controller class.
@@ -56,10 +67,8 @@ public class ManagerEditViewController implements Initializable
     {
         setTableProperties();
         tblVolunteers.setItems(FXCollections.observableArrayList(dataModel.getAllUsers()));
-        //System.out.println(dataModel.getAllUsers().toString());
-        
-    }    
-    
+    }
+
     /**
      * Sets table's properties
      */
@@ -71,8 +80,181 @@ public class ManagerEditViewController implements Initializable
         colGuild.setCellValueFactory(new PropertyValueFactory("guildId"));
     }
 
-    private void onLogOutClicked(ActionEvent event)
+    @FXML
+    private void onBtnAddUserClicked(ActionEvent event)
     {
-         tblVolunteers.setItems(FXCollections.observableArrayList(dataModel.getAllUsers()));
+        //dataModel.addUser("IT", "FUCKING", "WORKS", 0, 48615, "EEEYYYYY");
+        addUserPopup();
+    }
+
+    public void addUserPopup()
+    {
+        selectedUser = null;
+        
+        try
+        {
+            Stage primStage = (Stage) tblVolunteers.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/ManagerView.fxml"));
+            
+            ManagerViewController.setSelectedUser(selectedUser);
+            
+            Parent root = loader.load();
+            
+            // Fetches controller from view
+            ManagerViewController controller = loader.getController();
+            
+            controller.setController(this);
+            // Sets new stage as modal window
+            Stage stageView = new Stage();
+            stageView.setScene(new Scene(root));
+            
+            stageView.setOnHiding(new EventHandler<WindowEvent>() {
+                    public void handle(WindowEvent we) {
+                        System.out.println("Stage on Hiding");
+                        setTableItems();
+                    }
+                });
+            
+            stageView.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+              System.out.println("Stage is closing");
+              setTableItems();
+            }
+            });        
+            
+
+            stageView.initModality(Modality.WINDOW_MODAL);
+            stageView.initOwner(primStage);
+
+            stageView.show();
+        } catch (Exception e)
+        {
+            System.out.println(e);
+        }
+
+    }
+
+    @FXML
+    private void onEditInfoPressed(ActionEvent event)
+    {
+        selectedUser = null;
+ 
+        if(tblVolunteers.getSelectionModel().getSelectedItem() != null)
+        {
+            try
+            {
+                selectedUser = tblVolunteers.getSelectionModel().getSelectedItem();
+                Stage primStage = (Stage) tblVolunteers.getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/ManagerView.fxml"));
+                System.out.println("Selected User: " + selectedUser.getName());
+                ManagerViewController.setSelectedUser(selectedUser);
+
+                Parent root = loader.load();
+
+                // Fetches controller from view
+                ManagerViewController controller = loader.getController();
+                controller.setController(this);
+
+                // Sets new stage as modal window
+                Stage stageView = new Stage();
+                stageView.setScene(new Scene(root));
+
+                stageView.setOnHiding(new EventHandler<WindowEvent>() {
+                    public void handle(WindowEvent we) {
+                        System.out.println("Stage on Hiding");
+                        setTableItems();
+                    }
+                });
+                
+                stageView.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                  System.out.println("Stage is closing");
+                  setTableItems();
+                }
+                });        
+
+                stageView.initModality(Modality.WINDOW_MODAL);
+                stageView.initOwner(primStage);
+
+                stageView.show();
+            } catch (Exception e)
+            {
+                System.out.println(e);
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            System.out.println("Selected user missing");
+        }
+    }
+
+    @FXML
+    private void onTablePressed(MouseEvent event)
+    {
+        selectedUser = null;
+
+        if (event.isPrimaryButtonDown() && event.getClickCount() == 1)
+        {
+            selectedUser = tblVolunteers.getSelectionModel().getSelectedItem();
+
+            System.out.println("Selected User: " + selectedUser.getName());
+            
+            txtNotes.setText(selectedUser.getNote());
+        } else if (event.isPrimaryButtonDown() && event.getClickCount() == 2)
+        {
+            try
+            {
+                selectedUser = tblVolunteers.getSelectionModel().getSelectedItem();
+                Stage primStage = (Stage) tblVolunteers.getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/ManagerView.fxml"));
+
+                ManagerViewController.setSelectedUser(selectedUser);
+
+                Parent root = loader.load();
+
+                // Fetches controller from view
+                ManagerViewController controller = loader.getController();
+                controller.setController(this);
+
+                // Sets new stage as modal window
+                Stage stageView = new Stage();
+                stageView.setScene(new Scene(root));
+
+                stageView.setOnHiding(new EventHandler<WindowEvent>() {
+                    public void handle(WindowEvent we) {
+                        System.out.println("Stage on Hiding");
+                        setTableItems();
+                    }
+                });
+                
+                stageView.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                  System.out.println("Stage is closing");
+                  setTableItems();
+                }
+                });        
+
+                stageView.initModality(Modality.WINDOW_MODAL);
+                stageView.initOwner(primStage);
+
+                stageView.show();
+            } catch (Exception e)
+            {
+                System.out.println(e);
+            }
+        }
+    }
+
+    @FXML
+    private void onBtnLogOutPressed(ActionEvent event)
+    {
+
+    }
+    
+    private void setTableItems()
+    {
+        tblVolunteers.setItems(FXCollections.observableArrayList(dataModel.getAllUsers()));
+        System.out.println("Table items set/refreshed");
     }
 }
