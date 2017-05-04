@@ -94,16 +94,16 @@ public class ManagerEditViewController implements Initializable
         try
         {
             Stage primStage = (Stage) tblVolunteers.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/ManagerView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/ManagerAddUser.fxml"));
             
-            ManagerViewController.setSelectedUser(selectedUser);
+            //ManagerViewController.setSelectedUser(selectedUser);
             
             Parent root = loader.load();
             
             // Fetches controller from view
-            ManagerViewController controller = loader.getController();
+            //ManagerViewController controller = loader.getController();
             
-            controller.setController(this);
+            //controller.setController(this);
             // Sets new stage as modal window
             Stage stageView = new Stage();
             stageView.setScene(new Scene(root));
