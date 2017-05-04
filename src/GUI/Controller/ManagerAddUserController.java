@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI.Controller;
 
 import BE.Guild;
@@ -10,6 +5,7 @@ import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
@@ -28,11 +24,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author Desmoswal
- */
 public class ManagerAddUserController implements Initializable
 {
 
@@ -47,21 +38,23 @@ public class ManagerAddUserController implements Initializable
     @FXML
     private ImageView imgVwProfilePic;
     @FXML
-    private JFXButton btnUpdatePhoto;
-    @FXML
     private JFXButton btnAccept;
     @FXML
     private JFXButton btnCancel;
     @FXML
     private JFXTextArea txtNotes;
-    @FXML
-    private TableView<Guild> tblGuilds;
-    @FXML
     private TableColumn<Guild, String> colGuilds;
-    @FXML
     private StackPane stackPane;
 
     ModelFacade modelFacade = new ModelFacade();
+    @FXML
+    private AnchorPane rootPane;
+    @FXML
+    private JFXTextField txtPassord;
+    @FXML
+    private JFXListView<?> listViewGuilds;
+    @FXML
+    private JFXButton JFXBtnAddPhoto;
     
     
 
@@ -79,10 +72,6 @@ public class ManagerAddUserController implements Initializable
         colGuilds.setCellValueFactory(new PropertyValueFactory("name"));
     }
     
-    @FXML
-    private void onBtnUpdatePhotoPressed(ActionEvent event)
-    {
-    }
 
     @FXML
     private void onBtnAcceptPressed(ActionEvent event)

@@ -90,7 +90,7 @@
       </GridPane>
       <TabPane fx:id="tabPaneOverview" layoutX="14.0" layoutY="153.0" onMousePressed="#handleClickTab" prefHeight="333.0" prefWidth="484.0" style="-fx-border-color: #00c4ad; -fx-background-color: #ffffff;" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab fx:id="tabAll" onSelectionChanged="#changedTab" text="All">
+          <Tab fx:id="tabAll" text="All">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="164.0" prefWidth="278.0">
                      <children>
@@ -130,7 +130,7 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-          <Tab fx:id="tabYear" onSelectionChanged="#changedTab" text="Year">
+          <Tab fx:id="tabYear" text="Year">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -170,7 +170,7 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-            <Tab fx:id="tabMonth" onSelectionChanged="#changedTab" text="Month">
+            <Tab fx:id="tabMonth" text="Month">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -211,7 +211,7 @@
                   </AnchorPane>
               </content>
             </Tab>
-            <Tab fx:id="tabDay" onSelectionChanged="#changedTab" text="Day">
+            <Tab fx:id="tabDay" text="Day">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -252,7 +252,7 @@
                   </AnchorPane>
               </content>
             </Tab>
-            <Tab fx:id="tabGraphs" onSelectionChanged="#changedTab" text="Graphs">
+            <Tab fx:id="tabGraphs" text="Graphs">
               <content>
                 <AnchorPane fx:id="anchorGraph" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>

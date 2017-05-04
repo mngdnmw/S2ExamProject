@@ -121,6 +121,8 @@ public class UserInfoViewController implements Initializable
     private Tab tabGraphs;
     @FXML
     private HBox hBoxInvisBtn;
+    
+    private int GUIView;
 
     /**
      * Initializes the controller class.
@@ -174,15 +176,14 @@ public class UserInfoViewController implements Initializable
     /**
      * Displays additional button for Manager and Administrators.
      * 
-     * Changes the view based on number. 0 goes to the UserInfoView, 1 goes to
-     * ManagerEditView, 2 goes to ManagerView, 3 goes to the hourLoginView
      *
-     * @param GUINumb
-     *
+     * @param type
+     * 1 = User is a Manager
+     * 2 = User is an Admin
      */
     private void createHighClearanceButton(int type)
     {
-        int GUIView;
+        //int GUIView;
         JFXButton higherClearanceBtn = new JFXButton();
         higherClearanceBtn.setId("higherClearanceBtn");
         higherClearanceBtn.toFront();
@@ -196,12 +197,12 @@ public class UserInfoViewController implements Initializable
         if (type == 1)
         {
             higherClearanceBtn.setText("Manager functions");
-            GUIView = 2;
+            GUIView = 1;
 
         } else
         {
             higherClearanceBtn.setText("Admin functions");
-            GUIView = 1;
+            GUIView = 2;
             // GUIView =4; add when admin view has been made - for the moment it will go to managereditview
         }
 
@@ -216,6 +217,7 @@ public class UserInfoViewController implements Initializable
 
     }
 
+
     private void setUserInfo()
     {
         lblName.setText(currentUser.getName());
@@ -227,17 +229,10 @@ public class UserInfoViewController implements Initializable
     @FXML
     private void handleClickTab(MouseEvent event)
     {
-        tabPaneOverview.getSelectionModel().selectedItemProperty().addListener(
-                new ChangeListener<Tab>()
-        {
-            @Override
-            public void changed(ObservableValue<? extends Tab> ov, Tab oldTab, Tab newTab)
-            {
-                System.out.println("oldTab: " + oldTab.getId() + " | newTab " + newTab.getId());
-            }
-        }
-        );
+        tabPaneOverview.getSelectionModel().getSelectedIndex();
     }
+    
+    
 
     @FXML
     private void pressedEditSaveButton(ActionEvent event)
@@ -317,9 +312,9 @@ public class UserInfoViewController implements Initializable
 
     private void saveInfo(User user)
     {
-        //MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPh.getText()), user.getNote(), txtResidence.getText()); //do things in db
+        MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPh.getText()), user.getNote(), txtResidence.getText()); //do things in db
 
-        //currentUser = MOD_FACADE.getUserInfo(user.getId());
+        currentUser = MOD_FACADE.getUserInfo(user.getId());
         txtName.setVisible(false);
         txtPh.setVisible(false);
         txtEmail.setVisible(false);
@@ -371,16 +366,16 @@ public class UserInfoViewController implements Initializable
         c.setSelectedExtensionFilter(new ExtensionFilter("Image files only", extensions));
         File newImg = c.showOpenDialog(JFXBtnUpdatePhoto.getScene().getWindow());
 
-//        if(newImg != null) {
-//            try {
-//                MOD_FACADE.updateUserImage(currentUser, newImg);
-//            } catch(FileNotFoundException e) {
-//                System.out.println(e);
-//                Alert a = new Alert(Alert.AlertType.ERROR);
-//                a.setHeaderText("Selected image is not found");
-//                a.setContentText("File not found!");
-//            } 
-//        }
+        if(newImg != null) {
+            try {
+                MOD_FACADE.updateUserImage(currentUser, newImg);
+            } catch(FileNotFoundException e) {
+                System.out.println(e);
+                Alert a = new Alert(Alert.AlertType.ERROR);
+                a.setHeaderText("Selected image is not found");
+                a.setContentText("File not found!");
+            } 
+        }
         setUserImage();
     }
 
@@ -437,8 +432,4 @@ public class UserInfoViewController implements Initializable
         }
     }
 
-    @FXML
-    private void changedTab(Event event)
-    {
-    }
 }
