@@ -33,7 +33,6 @@
     -fx-background-radius:20px
 }
 .text-area .content
-
 {
     -fx-background-color: #FAFAFA;
 }
@@ -50,6 +49,33 @@
 .jfx-snackbar-toast{
     -fx-font: bold 20px/30px System;
     -fx-text-fill: #FFFFFF;
+}
+.darkenedBackground{
+    -fx-background-color: rgba(0,0,0,.5)
+}
+
+.logintextAndFontLabels{
+    -fx-font: bold 22px/30px System;
+    -fx-text-fill: #353535;
+}
+.logintextFields
+{
+    -fx-font:Bold 18px/30px System;
+    -fx-text-fill: #353535;
+}
+.loginbuttons{
+    -fx-background-radius: 5px;
+    -fx-background-color: #00e2c7;
+    -fx-font:italic bold 20px/30px System;
+    -fx-text-fill: #FFFFFF;
+}
+.loginwindow{
+    -fx-background-color: #ffffff;
+    -fx-border-color: #00e2c7;
+    -fx-border-radius: 19px;
+    -fx-border-width: 5px;
+    -fx-background-radius: 22px;
+
 }
 
 .date-picker-popup .calendar-grid {
