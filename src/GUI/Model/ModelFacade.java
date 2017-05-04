@@ -126,7 +126,6 @@ public class ModelFacade
       {
         return GEN_INFO_MOD.getAllGuilds();
       }
-
     /**
      * Changes the view based on number. 0 goes to the UserInfoView, 1 goes to
      * ManagerEditView, 2 goes to ManagerView 3 goes to the hourLoginView
@@ -148,4 +147,9 @@ public class ModelFacade
       {
         ModFac = modelfacade;
       }
+    
+    public void addUser(String name, String email, String password, int type, int phone, String residence, String note)
+    {
+        GEN_INFO_MOD.addUser(name, email, password, type, phone, residence, note);
+    }
   }

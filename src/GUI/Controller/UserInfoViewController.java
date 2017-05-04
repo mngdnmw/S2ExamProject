@@ -1,24 +1,28 @@
 package GUI.Controller;
 
 import BE.User;
+import BE.Volunteer;
 import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.skins.JFXDatePickerSkin;
+
+import com.jfoenix.controls.JFXSnackbar;
+import com.jfoenix.controls.JFXTextField;
 import com.sun.deploy.util.StringUtils;
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -29,7 +33,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
@@ -45,17 +51,11 @@ public class UserInfoViewController implements Initializable
     @FXML
     private Label lblResidence;
     @FXML
-    private JFXButton btnEditSave;
-    @FXML
     private ImageView imgVwProfilePic;
     @FXML
     private TextArea textAreaGuilds;
     @FXML
     private JFXButton JFXBtnUpdatePhoto;
-    @FXML
-    private JFXButton btnNameEdit1;
-    @FXML
-    private TextArea TextAreaBenefits;
     @FXML
     private HBox hBoxCalAll;
     @FXML
@@ -76,15 +76,28 @@ public class UserInfoViewController implements Initializable
     private AnchorPane anchorGraph;
     @FXML
     private GridPane gridEdit;
+    @FXML
+
+    private JFXButton btnEditSave;
+    
+
+    private AnchorPane root;
 
     TextField txtName;
     TextField txtPh; 
     TextField txtEmail;
     TextField txtResidence;
+
+    JFXButton btnCancel;
     User currentUser;
     boolean editing = false;
+    boolean isIncorrect = false;
 
     private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
+    @FXML
+    private JFXTextArea JFXTxtAreaBenefits;
+    @FXML
+    private Pane paneCalAll;
 
     /**
      * Initializes the controller class.
@@ -94,7 +107,7 @@ public class UserInfoViewController implements Initializable
     {
         createEditFields();
         setCurrentUser(MOD_FACADE.getCurrentUser());
-        setProperties();
+        setUserInfo();
         showConstantCalendar();
         setUserImage();
     }
@@ -106,50 +119,28 @@ public class UserInfoViewController implements Initializable
 
     private void showConstantCalendar()
     {
-        JFXDatePicker calendar = new JFXDatePicker(LocalDate.now());
-        DatePickerSkin datePickerSkin = new DatePickerSkin(calendar);
-        Region pop = (Region) datePickerSkin.getPopupContent();
-        pop.setMaxSize(hBoxCalAll.getMaxWidth(), hBoxCalAll.getMaxHeight());
-        //hBoxCalAll.setPadding(new Insets(5));
+        JFXDatePicker calendar = new JFXDatePicker();
+        
+        JFXDatePickerSkin skin = new JFXDatePickerSkin(calendar);
+        Region pop = (Region) skin.getPopupContent();
+        
+        //String s = "S2ExamProject.class.getResource(\"/GUI/View/MainLayout.css\").toExternalForm()";
+        //pop.getStylesheets().add(s);
+        //pop.setMaxSize(hBoxCalAll.getMaxWidth(), hBoxCalAll.getMaxHeight());
+        //hBoxCalAll.setPadding(new Insets(10));
+        //pop.setMinSize(paneCalAll.getWidth(), paneCalAll.getHeight());
+        //paneCalAll.getChildren().add(pop);  
         hBoxCalAll.getChildren().add(pop);
+          
         
-        String css = this.getClass().getResource("/GUI/View/MainLayout.css").toExternalForm();
-        pop.getStyleClass().add(css);
-        
-        //Trying to make calendar smaller by applying CSS
-        pop.setId("calendar");
-        pop.applyCss();
     }
 
-    private void setProperties()
+    private void setUserInfo()
     {
         lblName.setText(currentUser.getName());
         lblPh.setText(String.valueOf(currentUser.getPhone()));
         lblEmail.setText(currentUser.getEmail());
         lblResidence.setText(currentUser.getResidence());
-        //Need to get path to image on database
-        //imgVwProfilePic.setImage(value);
-    }
-
-    private void updateProperties()
-    {
-        lblName.textProperty().addListener((observable, oldValue, newValue) ->
-        {
-            lblName.setText(newValue);
-        });
-        lblPh.textProperty().addListener((observable, oldValue, newValue) ->
-        {
-            lblPh.setText(newValue);
-        });
-        lblEmail.textProperty().addListener((observable, oldValue, newValue) ->
-        {
-            lblEmail.setText(newValue);
-        });
-        lblResidence.textProperty().addListener((observable, oldValue, newValue) ->
-        {
-            lblResidence.setText(newValue);
-        });
-        //Need to add 
     }
 
     @FXML
@@ -158,18 +149,27 @@ public class UserInfoViewController implements Initializable
             editInfo();
             editing = true;
             btnEditSave.setText("Save");
+            checkTextFields();
+            addCancelButton();
         } else {
+            if(isIncorrect && btnEditSave.isDisabled()) {
+                JFXSnackbar b = new JFXSnackbar(root);
+                b.show("Please enter valid information in the fields!", 2000);
+                return;
+            }
             saveInfo(currentUser);
             editing = false;
             btnEditSave.setText("Edit");
+            checkTextFields();
+            removeCancelButton();
         }
     }
     
     private void createEditFields() {
-        txtName = new TextField();
-        txtPh = new TextField();
-        txtEmail = new TextField();
-        txtResidence = new TextField();
+        txtName = new JFXTextField();
+        txtPh = new JFXTextField();
+        txtEmail = new JFXTextField();
+        txtResidence = new JFXTextField();
         
         txtPh.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
@@ -188,6 +188,7 @@ public class UserInfoViewController implements Initializable
         gridEdit.add(txtPh, 1, 1);
         gridEdit.add(txtEmail, 1, 2);
         gridEdit.add(txtResidence, 1, 3);
+        
     }
     
     private void editInfo() {
@@ -211,9 +212,9 @@ public class UserInfoViewController implements Initializable
     }
     
     private void saveInfo(User user) {
-        MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPh.getText()), user.getNote(), txtResidence.getText()); //do things in db
+        //MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPh.getText()), user.getNote(), txtResidence.getText()); //do things in db
         
-        currentUser = MOD_FACADE.getUserInfo(user.getId());
+        //currentUser = MOD_FACADE.getUserInfo(user.getId());
         
         txtName.setVisible(false);
         txtPh.setVisible(false);
@@ -225,7 +226,7 @@ public class UserInfoViewController implements Initializable
         lblEmail.setVisible(true);
         lblResidence.setVisible(true);
         
-        setProperties(); //update labels
+        setUserInfo(); //update labels
     }
     
     private void checkTextFields() {
@@ -236,14 +237,16 @@ public class UserInfoViewController implements Initializable
         } catch(NumberFormatException e) {
             success = false;
             txtPh.setStyle("-fx-background-color:red;");
-            btnEditSave.setDisable(true);    
+            btnEditSave.setDisable(true);
         }
         if(success) {
             btnEditSave.setDisable(false);
             txtPh.setStyle("");
+            isIncorrect = false;
         } else {
             txtPh.setStyle("-fx-background-color:red;");
             btnEditSave.setDisable(true);
+            isIncorrect = true;
         }
     }
     
@@ -255,21 +258,62 @@ public class UserInfoViewController implements Initializable
         c.setSelectedExtensionFilter(new ExtensionFilter("Image files only", extensions));
         File newImg = c.showOpenDialog(JFXBtnUpdatePhoto.getScene().getWindow());
         
-        if(newImg != null) {
-            try {
-                MOD_FACADE.updateUserImage(currentUser, newImg);
-            } catch(FileNotFoundException e) {
-                System.out.println(e);
-                Alert a = new Alert(Alert.AlertType.ERROR);
-                a.setHeaderText("Selected image is not found");
-                a.setContentText("File not found!");
-            } 
-        }
+//        if(newImg != null) {
+//            try {
+//                MOD_FACADE.updateUserImage(currentUser, newImg);
+//            } catch(FileNotFoundException e) {
+//                System.out.println(e);
+//                Alert a = new Alert(Alert.AlertType.ERROR);
+//                a.setHeaderText("Selected image is not found");
+//                a.setContentText("File not found!");
+//            } 
+//        }
         setUserImage();
     }
     
     public void setUserImage() {
+
         System.out.println(MOD_FACADE.getUserImage(currentUser));
-        imgVwProfilePic.setImage(new Image(MOD_FACADE.getUserImage(currentUser)));
+        if(MOD_FACADE.getUserImage(currentUser) != null)
+            imgVwProfilePic.setImage(new Image(MOD_FACADE.getUserImage(currentUser)));
+    }
+    
+    private void addCancelButton() {
+        int btnSavePosCol = GridPane.getColumnIndex(btnEditSave); //saving position
+        int btnSavePosRow = GridPane.getRowIndex(btnEditSave);
+        //GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave)-1); //moving save button one up
+        btnCancel = new JFXButton();
+        btnCancel.setText("Cancel"); //preparing cancel button
+        btnCancel.setTextFill(Color.WHITE);
+        btnCancel.setStyle(btnEditSave.getStyle());
+        btnCancel.setPadding(btnEditSave.getPadding());
+        btnCancel.setAlignment(btnEditSave.getAlignment());
+        
+        gridEdit.add(btnCancel, btnSavePosCol, btnSavePosRow+1); //adding to the old position of save btn
+        btnCancel.setOnAction(new EventHandler<ActionEvent>() { //setting onAction, nothing changed, just show old labels again
+            @Override
+            public void handle(ActionEvent event) {
+                txtName.setVisible(false);
+                txtPh.setVisible(false);
+                txtEmail.setVisible(false);
+                txtResidence.setVisible(false);
+        
+                lblName.setVisible(true);
+                lblPh.setVisible(true);
+                lblEmail.setVisible(true);
+                lblResidence.setVisible(true);
+                
+                removeCancelButton(); //if cancel button clicked, it will disappear
+                editing = false;
+                btnEditSave.setText("Edit");
+            }
+        });
+    }
+    
+    private void removeCancelButton() {
+        //GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave)+1); //moving save button one down
+        gridEdit.getChildren().remove(btnCancel); //deleting cancel button from gridpane
+        if(btnEditSave.isDisabled())
+            btnEditSave.setDisable(false);
     }
 }

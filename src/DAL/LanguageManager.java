@@ -17,6 +17,8 @@ public class LanguageManager extends ConfigManager{
             file = "src//Resources//"+props.getProperty("LANGUAGE")+".lang";
         } else {
             file = "src//Resources//en.lang";
+            props.setProperty("LANGUAGE", "en");
+            saveConfig(props);
         }
         getLanguageFile();
     }
