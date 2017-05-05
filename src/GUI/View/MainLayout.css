@@ -78,10 +78,4 @@
 
 }
 
-.date-picker-popup .calendar-grid {
-    -fx-pref-width: 100;
-    -fx-pref-height: 100;
-}
-.date-picker-popup .spinner-label {
-    -fx-font-size: 14.0;
-}
+

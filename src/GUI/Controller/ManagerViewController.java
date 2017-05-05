@@ -1,150 +1,257 @@
 package GUI.Controller;
 
 import BE.User;
-import GUI.Model.ModelFacade;
+import GUI.Model.GeneralInfoModel;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+import javafx.stage.WindowEvent;
 
 public class ManagerViewController implements Initializable
 {
 
     @FXML
-    private Label lblHrsAll;
+    private Label lblUserName;
     @FXML
-    private Label lblHrsYr;
+    private JFXButton btnAddUser;
     @FXML
-    private Label lblHrsMth;
-    @FXML
-    private Label lblHrsDay;
-    @FXML
-    private JFXButton JFXBtnAccept;
-    @FXML
-    private JFXButton JFXBtnCancel;
-    @FXML
-    private ImageView imgVwProfilePic;
-    @FXML
-    private JFXButton JFXBtnUpdatePhoto;
-    @FXML
-    private JFXTextField txtName;
-    @FXML
-    private JFXTextField txtPhone;
-    @FXML
-    private JFXTextField txtEmail;
-    @FXML
-    private JFXTextField txtAddress;
-    @FXML
-    private JFXButton btnEdit;
+    private JFXTextField txtSearch;
     @FXML
     private JFXTextArea txtNotes;
     @FXML
-    private JFXTextArea txtGuilds;
+    private JFXButton btnAddHours;
+    @FXML
+    private JFXButton btnEditInfo;
+    @FXML
+    private JFXButton btnLogOut;
+    @FXML
+    private TableView<User> tblVolunteers;
+    @FXML
+    private TableColumn<User, String> colName;
+    @FXML
+    private TableColumn<User, Integer> colPhone;
+    @FXML
+    private TableColumn<User, String> colEmail;
+    @FXML
+    private TableColumn<User, String> colGuild;
+    @FXML
+    private AnchorPane root;
     
-    ManagerEditViewController mevController;
-    boolean edit = false;
+    GeneralInfoModel dataModel = new GeneralInfoModel();
+    User selectedUser;
+    @FXML
+    private JFXButton btnStats;
     
-    private static ModelFacade modelFacade = new ModelFacade();
-    private static User selectedUser;
- 
+    /**
+     * Initializes the controller class.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        boolean edit = false;
-        setText();
-    }    
-    
-    public void setController(ManagerEditViewController c)
-    {
-        txtName.setEditable(false);
-        txtAddress.setEditable(false);
-        txtPhone.setEditable(false);
-        txtEmail.setEditable(false);
-        this.mevController = c;
+        setTableProperties();
+        tblVolunteers.setItems(FXCollections.observableArrayList(dataModel.getAllUsers()));
     }
-    
-    public void setText()
+
+    /**
+     * Sets table's properties
+     */
+    private void setTableProperties()
     {
-        if (selectedUser != null)
+        colName.setCellValueFactory(new PropertyValueFactory("name"));
+        colPhone.setCellValueFactory(new PropertyValueFactory("phone"));
+        colEmail.setCellValueFactory(new PropertyValueFactory("email"));
+        colGuild.setCellValueFactory(new PropertyValueFactory("guildId"));
+    }
+
+    @FXML
+    private void onBtnAddUserClicked(ActionEvent event)
+    {
+        addUserPopup();
+    }
+
+    public void addUserPopup()
+    {
+        selectedUser = null;
+        
+        try
         {
-            txtName.setText(selectedUser.getName());
-            txtAddress.setText(selectedUser.getAddress());
-            txtPhone.setText(String.valueOf(selectedUser.getPhone()));
-            txtEmail.setText(selectedUser.getEmail());
-            txtNotes.setText(selectedUser.getNote());
+            Stage primStage = (Stage) tblVolunteers.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/ManagerAddUser.fxml"));
+            
+            //ManagerViewController.setSelectedUser(selectedUser);
+            
+            Parent root = loader.load();
+            
+            // Fetches controller from view
+            //ManagerViewController controller = loader.getController();
+            
+            //controller.setController(this);
+            // Sets new stage as modal window
+            Stage stageView = new Stage();
+            stageView.setScene(new Scene(root));
+            
+            stageView.setOnHiding(new EventHandler<WindowEvent>() {
+                    public void handle(WindowEvent we) {
+                        System.out.println("Stage on Hiding");
+                        setTableItems();
+                    }
+                });
+            
+            stageView.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+              System.out.println("Stage is closing");
+              setTableItems();
+            }
+            });        
+            
+
+            stageView.initModality(Modality.WINDOW_MODAL);
+            stageView.initOwner(primStage);
+
+            stageView.show();
+        } catch (Exception e)
+        {
+            System.out.println(e);
+        }
+
+    }
+
+    @FXML
+    private void onEditInfoPressed(ActionEvent event)
+    {
+        selectedUser = null;
+ 
+        if(tblVolunteers.getSelectionModel().getSelectedItem() != null)
+        {
+            try
+            {
+                selectedUser = tblVolunteers.getSelectionModel().getSelectedItem();
+                Stage primStage = (Stage) tblVolunteers.getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/ManagerEditView.fxml"));
+                ManagerEditViewController.setSelectedUser(selectedUser);
+
+                Parent root = loader.load();
+
+                // Fetches controller from view
+                ManagerEditViewController controller = loader.getController();
+                controller.setController(this);
+
+                // Sets new stage as modal window
+                Stage stageView = new Stage();
+                stageView.setScene(new Scene(root));
+
+                stageView.setOnHiding(new EventHandler<WindowEvent>() {
+                    public void handle(WindowEvent we) {
+                        System.out.println("Stage on Hiding");
+                        setTableItems();
+                    }
+                });
+                
+                stageView.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                  System.out.println("Stage is closing");
+                  setTableItems();
+                }
+                });        
+
+                stageView.initModality(Modality.WINDOW_MODAL);
+                stageView.initOwner(primStage);
+
+                stageView.show();
+            } catch (Exception e)
+            {
+                System.out.println(e);
+                e.printStackTrace();
+            }
         }
         else
         {
-            System.out.println("selected user is null");
+            System.out.println("Selected user missing");
         }
     }
 
     @FXML
-    private void onBtnEditPressed(ActionEvent event)
+    private void onTablePressed(MouseEvent event)
     {
-        edit = !edit;
-        
-        if(edit == true)
+        selectedUser = null;
+
+        if (event.isPrimaryButtonDown() && event.getClickCount() == 1)
         {
-            txtName.setEditable(true);
-            txtAddress.setEditable(true);
-            txtPhone.setEditable(true);
-            txtEmail.setEditable(true);
+            selectedUser = tblVolunteers.getSelectionModel().getSelectedItem();
+            
+            txtNotes.setText(selectedUser.getNote());
+        } else if (event.isPrimaryButtonDown() && event.getClickCount() == 2)
+        {
+            try
+            {
+                selectedUser = tblVolunteers.getSelectionModel().getSelectedItem();
+                Stage primStage = (Stage) tblVolunteers.getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/ManagerEditView.fxml"));
+
+                ManagerEditViewController.setSelectedUser(selectedUser);
+
+                Parent root = loader.load();
+
+                // Fetches controller from view
+                ManagerEditViewController controller = loader.getController();
+                controller.setController(this);
+
+                // Sets new stage as modal window
+                Stage stageView = new Stage();
+                stageView.setScene(new Scene(root));
+
+                stageView.setOnHiding(new EventHandler<WindowEvent>() {
+                    public void handle(WindowEvent we) {
+                        System.out.println("Stage on Hiding");
+                        setTableItems();
+                    }
+                });
+                
+                stageView.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                public void handle(WindowEvent we) {
+                  System.out.println("Stage is closing");
+                  setTableItems();
+                }
+                });        
+
+                stageView.initModality(Modality.WINDOW_MODAL);
+                stageView.initOwner(primStage);
+
+                stageView.show();
+            } catch (Exception e)
+            {
+                System.out.println(e);
+            }
         }
-        
-        if(edit == false)
-        {            
-            txtName.setEditable(false);
-            txtAddress.setEditable(false);
-            txtPhone.setEditable(false);
-            txtEmail.setEditable(false);
-        }     
     }
 
     @FXML
-    private void onBtnUpdatePhotoPressed(ActionEvent event)
+    private void onBtnLogOutPressed(ActionEvent event)
     {
-        //dataModel.addUser(name, email, password, type, phone, address, note);
-        //dataModel.addUser(txtName.getText(), txtEmail.getText(), "asd123", 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), JFXTxtAreaNotes.getText());
+
     }
     
-    public static void setSelectedUser(User user)
+    private void setTableItems()
     {
-        selectedUser = user;
-    }
-    
-    private void updateUserInfo()
-    {
-        modelFacade.updateUserInfo(selectedUser.getId(), txtName.getText(), txtEmail.getText(), selectedUser.getType(), Integer.parseInt(txtPhone.getText()), txtNotes.getText(), txtAddress.getText());
-    }
-
-    @FXML
-    private void onBtnAcceptPressed(ActionEvent event)
-    {
-        if(selectedUser == null)
-        {
-            modelFacade.addUser(txtName.getText(), txtEmail.getText(), "", 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtNotes.getText());
-        }
-        else if(selectedUser != null)
-            updateUserInfo();
-        
-        System.out.println("Updated info saved. ");
-        Stage stage = (Stage) JFXBtnAccept.getScene().getWindow();
-        stage.close();
-    }
-
-    @FXML
-    private void onBtnCancelPressed(ActionEvent event)
-    {
-        Stage stage = (Stage) btnEdit.getScene().getWindow();
-        stage.close();
+        tblVolunteers.setItems(FXCollections.observableArrayList(dataModel.getAllUsers()));
     }
 }
