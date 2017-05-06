@@ -1,0 +1,244 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Reflection?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.View.FXMLController">
+    <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="129.0" layoutX="13.0" layoutY="11.0" stroke="TRANSPARENT" strokeType="INSIDE" width="491.0">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Rectangle>
+      <GridPane layoutX="14.0" layoutY="14.0" prefHeight="120.0" prefWidth="288.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="119.0" minWidth="10.0" prefWidth="54.70549011230469" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="226.8740119934082" minWidth="10.0" prefWidth="183.91952514648438" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="54.080474853515625" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <JFXButton fx:id="btnEdit" onAction="#onBtnEditPressed" style="-fx-background-color: #00c4ad;" text="Edit" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3">
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </padding>
+               <GridPane.margin>
+                  <Insets left="15.0" />
+               </GridPane.margin>
+            </JFXButton>
+            <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/person.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../Images/phone.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@../Images/email.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </ImageView>
+            <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
+               <image>
+                  <Image url="@../Images/location.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </ImageView>
+            <JFXTextField fx:id="txtName" promptText="Name" GridPane.columnIndex="1" />
+            <JFXTextField fx:id="txtPhone" promptText="Phone number" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <JFXTextField fx:id="txtEmail" promptText="Email" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <JFXTextField fx:id="txtAddress" promptText="Address" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+         </children>
+      </GridPane>
+      <TabPane layoutX="14.0" layoutY="153.0" prefHeight="335.0" prefWidth="482.0" style="-fx-border-color: #00c4ad; -fx-background-color: #ffffff;" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="All">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="164.0" prefWidth="278.0">
+                     <children>
+                        <Circle fill="#00c4ad" layoutX="67.0" layoutY="85.0" radius="64.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Label layoutX="78.0" layoutY="74.0" text="Hours" textFill="WHITE">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblHrsAll" layoutX="33.0" layoutY="37.0" prefHeight="79.0" prefWidth="51.0" text="8" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font name="Noteworthy Bold" size="56.0" />
+                           </font>
+                        </Label>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Year">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Circle fill="#00c4ad" layoutX="67.0" layoutY="85.0" radius="64.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Label layoutX="78.0" layoutY="74.0" text="Hours" textFill="WHITE">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblHrsYr" layoutX="33.0" layoutY="37.0" prefHeight="79.0" prefWidth="51.0" text="8" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font name="Noteworthy Bold" size="56.0" />
+                           </font>
+                        </Label>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Month">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Circle fill="#00c4ad" layoutX="67.0" layoutY="85.0" radius="64.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Label layoutX="78.0" layoutY="74.0" text="Hours" textFill="WHITE">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblHrsMth" layoutX="33.0" layoutY="37.0" prefHeight="79.0" prefWidth="51.0" text="8" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font name="Noteworthy Bold" size="56.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Day">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Circle fill="#00c4ad" layoutX="67.0" layoutY="85.0" radius="64.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+                        <Label layoutX="78.0" layoutY="74.0" text="Hours" textFill="WHITE">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblHrsDay" layoutX="33.0" layoutY="37.0" prefHeight="79.0" prefWidth="51.0" text="8" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font name="Noteworthy Bold" size="56.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Graphs">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+            <Tab text="Notes">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ScrollPane layoutX="-2.0" layoutY="-1.0" prefHeight="134.0" prefWidth="299.0" style="-fx-border-color: #ffffff;">
+                           <content>
+                              <JFXTextArea fx:id="txtNotes" prefHeight="154.0" prefWidth="281.0" unFocusColor="WHITE" />
+                           </content>
+                        </ScrollPane>
+                        <GridPane layoutX="-3.0" layoutY="136.0" prefHeight="22.0" prefWidth="297.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <JFXButton fx:id="JFXBtnAccept" onAction="#onBtnAcceptPressed" style="-fx-background-color: #61B329;" text="Accept Edit" textFill="WHITE">
+                                 <padding>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </padding>
+                                 <font>
+                                    <Font size="7.0" />
+                                 </font>
+                                 <GridPane.margin>
+                                    <Insets left="50.0" />
+                                 </GridPane.margin>
+                              </JFXButton>
+                              <JFXButton fx:id="JFXBtnCancel" onAction="#onBtnCancelPressed" style="-fx-background-color: #ff0000;" text="Cancel Edit" textFill="WHITE" GridPane.columnIndex="1">
+                                 <padding>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </padding>
+                                 <font>
+                                    <Font size="7.0" />
+                                 </font>
+                                 <GridPane.margin>
+                                    <Insets left="50.0" />
+                                 </GridPane.margin>
+                              </JFXButton>
+                           </children>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+        </tabs>
+         <effect>
+            <DropShadow />
+         </effect>
+      </TabPane>
+      <ImageView fitHeight="138.0" fitWidth="127.0" layoutX="369.0" layoutY="14.0" pickOnBounds="true" style="-fx-effect: 30;" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="479.0" layoutX="504.0" layoutY="9.0" stroke="TRANSPARENT" strokeType="INSIDE" width="183.0">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Rectangle>
+      <ImageView fx:id="imgVwProfilePic" fitHeight="127.0" fitWidth="131.0" layoutX="530.0" layoutY="26.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Images/labeouf.jpg" />
+         </image>
+         <effect>
+            <Reflection fraction="0.11" topOffset="-4.0" topOpacity="0.35" />
+         </effect>
+      </ImageView>
+      <JFXButton fx:id="JFXBtnUpdatePhoto" layoutX="557.0" layoutY="166.0" onAction="#onBtnUpdatePhotoPressed" style="-fx-background-color: #00c4ad;" text="Update Photo" textFill="WHITE">
+         <padding>
+            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+         </padding>
+      </JFXButton>
+      <Label layoutX="512.0" layoutY="427.0" style="-fx-background-color: #00c4ad;" text="Guilds:" textFill="WHITE" />
+      <JFXTextArea fx:id="txtGuilds" layoutX="517.0" layoutY="444.0" prefHeight="21.0" prefWidth="161.0" styleClass="text-area" stylesheets="@MainLayout.css" />
+    </children>
+</AnchorPane>

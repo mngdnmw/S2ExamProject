@@ -39,6 +39,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -85,7 +86,6 @@ public class UserInfoViewController implements Initializable
     @FXML
     private GridPane gridEdit;
     @FXML
-
     private JFXButton btnEditSave;
 
     @FXML
@@ -97,7 +97,7 @@ public class UserInfoViewController implements Initializable
     TextField txtResidence;
 
     JFXButton btnCancel;
-    User currentUser = new Manager(0, "name", "email", 1, "note", "residence");
+    User currentUser;
     boolean editing = false;
     boolean isIncorrect = false;
 
@@ -131,12 +131,11 @@ public class UserInfoViewController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
     {
         createEditFields();
-        //setCurrentUser(MOD_FACADE.getCurrentUser());
+        setCurrentUser(MOD_FACADE.getCurrentUser());
         setUserInfo();
         showConstantCalendar();
-        //setUserImage();
+        setUserImage();
         checkTypeOfUser();
-        //NOT SURE HOW TO INITIALISE CHANGE HANDLER? handleClickTab(new MouseEvent());
     }
 
     public void setCurrentUser(User currentUser)
@@ -152,8 +151,8 @@ public class UserInfoViewController implements Initializable
         POPUP_CAL = (Region) skin.getPopupContent();
 
         POPUP_CAL.getStylesheets().add(STYLESHEET);
-        hBoxCalAll.setPadding(new Insets(0, 10, 0, 0));
-        hBoxCalAll.getChildren().add(POPUP_CAL);
+        hBoxCalMth.setPadding(new Insets(0, 10, 0, 0));
+        hBoxCalMth.getChildren().add(POPUP_CAL);
 
     }
 
@@ -391,15 +390,16 @@ public class UserInfoViewController implements Initializable
     {
         int btnSavePosCol = GridPane.getColumnIndex(btnEditSave); //saving position
         int btnSavePosRow = GridPane.getRowIndex(btnEditSave);
-        //GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave)-1); //moving save button one up
+        GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave)-1); //moving save button one up
         btnCancel = new JFXButton();
         btnCancel.setText("Cancel"); //preparing cancel button
+        
+        btnCancel.setButtonType(JFXButton.ButtonType.RAISED);
         btnCancel.setTextFill(Color.WHITE);
         btnCancel.setStyle(btnEditSave.getStyle());
         btnCancel.setPadding(btnEditSave.getPadding());
-        btnCancel.setAlignment(btnEditSave.getAlignment());
 
-        gridEdit.add(btnCancel, btnSavePosCol, btnSavePosRow + 1); //adding to the old position of save btn
+        gridEdit.add(btnCancel, btnSavePosCol, btnSavePosRow); //adding to the old position of save btn
         btnCancel.setOnAction(new EventHandler<ActionEvent>()
         { //setting onAction, nothing changed, just show old labels again
             @Override
@@ -424,7 +424,7 @@ public class UserInfoViewController implements Initializable
 
     private void removeCancelButton()
     {
-        //GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave)+1); //moving save button one down
+        GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave)+1); //moving save button one down
         gridEdit.getChildren().remove(btnCancel); //deleting cancel button from gridpane
         if (btnEditSave.isDisabled())
         {
