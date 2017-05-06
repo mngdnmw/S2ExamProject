@@ -1,9 +1,9 @@
-#Login screeen buttons
+ï»¿#Login screeen buttons
 LOG_THANKS = Tak!
-LOG_CONTRIB = Du har hjulpet med at forbedre vores fælleskab!
+LOG_CONTRIB = Du har hjulpet med at forbedre vores fÃ¦lleskab!
 BTN_LOGIN = Log in
 BTN_CANCEL = Annuller
-BTN_LOG_HOURS = Tilføj Timer
+BTN_LOG_HOURS = TilfÃ¸j Timer
 BTN_SEE_INFO = Se info
 
 #Login screen labels
@@ -13,5 +13,5 @@ HOUR_TAG = Jeg har bidraget med
 TXT_HOURS_PROMPT = Number
 HOUR_TAG_TWO = timer
 GUILD_TAG = til
-CMB_GUILDCHOOSER_PROMPT = Vælg et laug
+CMB_GUILDCHOOSER_PROMPT = VÃ¦lg et laug
 GUILD_TAG_TWO = laug
