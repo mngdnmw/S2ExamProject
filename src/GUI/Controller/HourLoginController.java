@@ -92,7 +92,12 @@ public class HourLoginController implements Initializable
     private final static ModelFacade MOD_FACADE = new ModelFacade();
     @FXML
     private AnchorPane ancDarken;
-
+    
+    JFXButton btnDanish = new JFXButton();
+    JFXButton btnEnglish = new JFXButton();
+    
+    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb)
       {
@@ -130,6 +135,7 @@ public class HourLoginController implements Initializable
           {
             snackBarPopup("Please input information in all fields");
           }
+        unlockButtons();
       }
 
     @FXML
@@ -137,7 +143,7 @@ public class HourLoginController implements Initializable
       {
         lockButtons();
         languagePopup();
-
+        unlockButtons();
       }
 
     @FXML
@@ -145,7 +151,6 @@ public class HourLoginController implements Initializable
       {
         lockButtons();
         loginPopup();
-
       }
 
     public void addListener()
@@ -239,8 +244,28 @@ public class HourLoginController implements Initializable
         popup.setStyle("-fx-background-color: #00c4ad;");
         popup.setPadding(new Insets(20));
         popup.setSpacing(20);
-        JFXButton btnDanish = new JFXButton();
-        JFXButton btnEnglish = new JFXButton();
+        //popup.setMaxHeight(size);
+        //popup.setMaxWidth(size*2);
+        //btnDanish.setOnAction(null);
+        //btnEnglish.setOnAction(null);
+        EventHandler changeLanguageHandler = new EventHandler<ActionEvent>()
+        {
+          @Override
+          public void handle(ActionEvent event)
+            {
+              if (event.getSource().equals(btnDanish))
+                {
+                  changeLanguage("Dansk");
+                }
+              else if (event.getSource().equals(btnEnglish))
+                {
+                  changeLanguage("English");
+                }
+              setTextAll();
+              MOD_FACADE.fadeOutTransition(Duration.millis(500), popup);
+              unlockButtons();
+            }
+        };
 
         btnDanish.getStyleClass().add("JFXRoundedButton");
         btnDanish.setStyle("-fx-background-color:#FFFFFF");
@@ -259,30 +284,11 @@ public class HourLoginController implements Initializable
         popup.setTranslateX(0);
         MOD_FACADE.fadeInTransition(Duration.millis(500), popup);
         popup.setTranslateY((root.getHeight() / 1.5));
-        popup.setTranslateX(root.getWidth() / 6);
-
-        EventHandler changeLanguageHandler = new EventHandler<ActionEvent>()
-          {
-            @Override
-            public void handle(ActionEvent event)
-              {
-                if (event.getSource().equals(btnDanish))
-                  {
-                    changeLanguage("Dansk");
-                  }
-                else if (event.getSource().equals(btnEnglish))
-                  {
-                    changeLanguage("English");
-                  }
-                setTextAll();
-                MOD_FACADE.fadeOutTransition(Duration.millis(500), popup);
-
-              }
-          };
+        popup.setTranslateX(root.getWidth() / 5);
 
         btnDanish.setOnAction(changeLanguageHandler);
         btnEnglish.setOnAction(changeLanguageHandler);
-
+        
       }
 
     public void unlockButtons()
