@@ -53,4 +53,9 @@ public class GeneralInfoModel
     public InputStream getUserImage(User user) {
         return dataHandler.getUserImage(user);
     }
+    
+    public void addUser(String name, String email, String password, int type, int phone, String residence, String note)
+    {
+        BLL_FAC.addUser(name, email, password, type, phone, residence, note);
+    }
 }

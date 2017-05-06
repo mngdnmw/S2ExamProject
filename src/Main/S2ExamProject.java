@@ -14,8 +14,7 @@ public class S2ExamProject extends Application
     public void start(Stage stage) throws Exception
       {
 
-
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/View/HourLoginView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/View/ManagerView.fxml"));
 
         Scene scene = new Scene(root);
 

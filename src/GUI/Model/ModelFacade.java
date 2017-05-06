@@ -147,4 +147,9 @@ public class ModelFacade
       {
         ModFac = modelfacade;
       }
+    
+    public void addUser(String name, String email, String password, int type, int phone, String residence, String note)
+    {
+        GEN_INFO_MOD.addUser(name, email, password, type, phone, residence, note);
+    }
   }

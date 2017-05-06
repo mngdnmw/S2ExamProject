@@ -34,4 +34,9 @@ public class BLLFacade
       {
         return DAL_FAC.getAllGuilds();
       }
+    
+    public void addUser(String name, String email, String password, int type, int phone, String residence, String note)
+    {
+        DAL_FAC.addUser(name, email, password, type, phone, residence, note);
+    }
   }
