@@ -1,5 +1,6 @@
 package DAL;
 
+import BE.Day;
 import BE.Guild;
 import BE.User;
 import java.sql.SQLException;
@@ -10,6 +11,7 @@ public class DALFacade
 
     private final static GeneralInfoManager GEN_INFO_MAN = new GeneralInfoManager();
     private final static LoginManager LOGIN_MAN = new LoginManager();
+    private final static HourManager HR_MAN = new HourManager();
 
     public void logHours(String username, String date, int hours, int guildId) throws SQLException
       {
@@ -57,4 +59,7 @@ public class DALFacade
         GEN_INFO_MAN.addUser(name, email, password, type, phone, residence, note);
     }
 
+    public List<Day> getWorkedDays(User user){
+        return HR_MAN.getWorkedDays(user);
+    }
   }

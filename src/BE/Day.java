@@ -24,17 +24,17 @@ public class Day extends RecursiveTreeObject<Day>
         
     }
     
-    private String getDate()
+    public String getDate()
     {
         return date.get();
     }
 
-    private void setDate(String value)
+    public void setDate(String value)
     {
         date.set(value);
     }
 
-    private StringProperty dateProperty()
+    public StringProperty dateProperty()
     {
         return date;
     }
@@ -54,17 +54,17 @@ public class Day extends RecursiveTreeObject<Day>
         return hour;
     }
 
-    private String getGuild()
+    public String getGuild()
     {
         return guild.get();
     }
 
-    private void setGuild(String guildName)
+    public void setGuild(String guildName)
     {
         guild.set(guildName);
     }
 
-    private StringProperty guildProperty()
+    public StringProperty guildProperty()
     {
         return guild;
     }
