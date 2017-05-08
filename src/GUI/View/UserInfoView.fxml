@@ -132,7 +132,7 @@
                                           </VBox>
                                           <VBox maxHeight="176.0" prefHeight="95.0" prefWidth="143.0">
                                              <children>
-                                                <JFXTextField fx:id="JFXTxtFSearchDate" focusColor="#00c4ad" prefHeight="26.0" prefWidth="133.0" promptText="Search date">
+                                                <JFXTextField fx:id="JFXTxtFSearchDate" focusColor="#00c4ad" prefHeight="26.0" prefWidth="133.0" promptText="Search ">
                                                    <padding>
                                                       <Insets left="5.0" right="5.0" />
                                                    </padding>

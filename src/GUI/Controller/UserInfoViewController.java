@@ -170,9 +170,8 @@ public class UserInfoViewController implements Initializable
     private void showTreeTable()
     {
         //Need to do some threading for this method
-        double colWidths = treeViewAllHours.getWidth()/3;
-        
-        
+        treeViewAllHours.setPlaceholder(new Label("Nothing found"));
+
         //Date column set up
         JFXTreeTableColumn<Day, String> dateCol = new JFXTreeTableColumn<>("Date");
         //dateCol.setPrefWidth(colWidths);
@@ -219,23 +218,36 @@ public class UserInfoViewController implements Initializable
         treeViewAllHours.getColumns().setAll(dateCol, hoursCol, guildCol);
         treeViewAllHours.setRoot(root);
         treeViewAllHours.setShowRoot(false);
-        
-        JFXTxtFSearchDate.textProperty().addListener(new ChangeListener<String>(){
+
+        JFXTxtFSearchDate.textProperty().addListener(new ChangeListener<String>()
+        {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
             {
-                treeViewAllHours.setPredicate(new Predicate<TreeItem<Day>>(){
+                treeViewAllHours.setPredicate(new Predicate<TreeItem<Day>>()
+                {
                     @Override
                     public boolean test(TreeItem<Day> day)
                     {
-                        Boolean search = day.getValue().dateProperty().getValue().contains(newValue);
-                        
+                        String regex = "[^a-zA-Z0-9\\s]";
+                        Boolean search = 
+                                day.getValue().dateProperty().getValue().replaceAll(regex, "")
+                                        .contains(newValue.replaceAll(regex, "")) 
+                                || 
+                                day.getValue().guildProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                        contains(newValue.toLowerCase().replaceAll(regex, ""));
+
                         return search;
                     }
-                    
+
                 });
             }
         });
+    }
+
+    private void searchListener()
+    {
+
     }
 
     /**
