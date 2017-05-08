@@ -42,8 +42,6 @@ public class GeneralInfoManager extends ConnectionManager
           {
             Statement s = con.createStatement();
             ResultSet rs = s.executeQuery(query);
-            System.out.println(query);
-            System.out.println(rs);
             
             while(rs.next())
             {
@@ -58,12 +56,12 @@ public class GeneralInfoManager extends ConnectionManager
                 //If it's a volunteer
                 if (type == 0)
                   {
-                    System.out.println("type0");
+                   
                     Volunteer volunteer = null;
                     //(id, name, email, password, type, phone, note);
                     volunteer = new Volunteer(id, name, email, phone, note, residence);
 
-                    System.out.println("Volunteer info: " + volunteer.getName());
+                    
 
                     return volunteer;
                   }
@@ -71,12 +69,12 @@ public class GeneralInfoManager extends ConnectionManager
                 //If it's a manager
                 if (type == 1)
                   {
-                    System.out.println("type1");
+                    
                     Manager manager = null;
                     //(id, name, email, password, type, phone, note);
                     manager = new Manager(id, name, email, phone, note, residence);
 
-                    System.out.println("Manager info: " + manager.getName());
+                  
 
                     return manager;
                   }
@@ -84,12 +82,12 @@ public class GeneralInfoManager extends ConnectionManager
                 //If it's an admin
                 if (type == 2)
                   {
-                    System.out.println("type2");
+                   
                     Admin admin = null;
                     //(id, name, email, password, type, phone, note);
                     admin = new Admin(id, name, email, phone, note, residence);
 
-                    System.out.println("Admin info: " + admin.getName());
+                    
 
                     return admin;
                   }
@@ -126,30 +124,30 @@ public class GeneralInfoManager extends ConnectionManager
                 switch (type)
                   {
                     case 0:
-                        System.out.println("type0");
+                        
                         Volunteer volunteer = null;
                         //(id, name, email, password, type, phone, note);
                         volunteer = new Volunteer(id, name, email, phone, note, residence);
                         users.add(volunteer);
-                        System.out.println("Volunteer " + volunteer.getName() + " added to the list");
+                        
                         break;
 
                     case 1:
-                        System.out.println("type1");
+                        
                         Manager manager = null;
                         //(id, name, email, password, type, phone, note);
                         manager = new Manager(id, name, email, phone, note, residence);
                         users.add(manager);
-                        System.out.println("Manager " + manager.getName() + " added to the list");
+                        
                         break;
 
                     case 2:
-                        System.out.println("type2");
+                       
                         Admin admin = null;
                         //(id, name, email, password, type, phone, note);
                         admin = new Admin(id, name, email, phone, note, residence);
                         users.add(admin);
-                        System.out.println("Admin " + admin.getName() + " added to the list");
+                        
                         break;
 
                     default:
@@ -189,7 +187,7 @@ public class GeneralInfoManager extends ConnectionManager
                 Volunteer volunteer = null;
                 //(id, name, email, password, type, phone, note);
                 volunteers.add(new Volunteer(id, name, email, phone, note, residence));
-                System.out.println("Volunteer " + volunteer.getName() + " added to the list");
+               
 
               }
           }
@@ -224,7 +222,7 @@ public class GeneralInfoManager extends ConnectionManager
                 Manager manager = null;
                 //(id, name, email, password, type, phone, note);
                 managers.add(new Manager(id, name, email, phone, note, residence));
-                System.out.println("Volunteer " + manager.getName() + " added to the list");
+                
 
               }
           }
@@ -258,7 +256,7 @@ public class GeneralInfoManager extends ConnectionManager
                 Admin admin = null;
                 //(id, name, email, password, type, phone, note);
                 admins.add(new Admin(id, name, email, phone, note, residence));
-                System.out.println("Volunteer " + admin.getName() + " added to the list");
+                
 
               }
           }
@@ -305,7 +303,7 @@ public class GeneralInfoManager extends ConnectionManager
             ResultSet rs = pstmt.executeQuery();
 
             rs.next();
-            System.out.println(rs.getInt("userid"));
+            
             return rs.getInt("userid");
 
           }
