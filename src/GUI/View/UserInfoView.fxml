@@ -2,6 +2,8 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
@@ -98,36 +100,64 @@
                            <children>
                               <HBox prefWidth="143.0">
                                  <children>
-                                    <Circle fill="#00c4ad" radius="64.0" stroke="TRANSPARENT" strokeType="INSIDE">
-                                       <HBox.margin>
-                                          <Insets left="5.0" top="20.0" />
-                                       </HBox.margin>
-                                    </Circle>
-                                    <Label fx:id="lblHrsAll" maxWidth="200.0" prefHeight="79.0" prefWidth="170.0" text="8" textAlignment="CENTER" textFill="WHITE">
-                                       <font>
-                                          <Font name="Noteworthy Bold" size="56.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets left="-100.0" top="40.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <Label maxHeight="100.0" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="164.0" text="Hours" textFill="WHITE">
-                                       <font>
-                                          <Font name="Arial Rounded MT Bold" size="13.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets left="15.0" right="15.0" top="20.0" />
-                                       </HBox.margin>
-                                       <padding>
-                                          <Insets left="-10.0" />
-                                       </padding>
-                                    </Label>
+                                    <VBox prefHeight="298.0" prefWidth="174.0">
+                                       <children>
+                                          <VBox maxHeight="357.0" minHeight="100.0" prefHeight="203.0" prefWidth="143.0">
+                                             <children>
+                                                <Circle fill="#00c4ad" radius="64.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                                                   <VBox.margin>
+                                                      <Insets left="7.0" right="5.0" top="20.0" />
+                                                   </VBox.margin>
+                                                </Circle>
+                                                <Label maxHeight="100.0" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="164.0" text="Hours" textFill="WHITE" translateY="-100.0">
+                                                   <font>
+                                                      <Font name="Arial Rounded MT Bold" size="13.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets left="80.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <Label fx:id="lblHrsAll" alignment="CENTER" contentDisplay="CENTER" maxWidth="200.0" prefHeight="79.0" prefWidth="170.0" text="8" textAlignment="CENTER" textFill="WHITE" translateY="-160.0">
+                                                   <font>
+                                                      <Font name="Noteworthy Bold" size="56.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets left="5.0" right="55.0" top="40.0" />
+                                                   </VBox.margin>
+                                                   <padding>
+                                                      <Insets left="10.0" />
+                                                   </padding>
+                                                </Label>
+                                             </children>
+                                          </VBox>
+                                          <VBox maxHeight="176.0" prefHeight="95.0" prefWidth="143.0">
+                                             <children>
+                                                <JFXTextField focusColor="#00c4ad" prefHeight="26.0" prefWidth="133.0" promptText="Search date">
+                                                   <padding>
+                                                      <Insets left="5.0" right="5.0" />
+                                                   </padding>
+                                                   <VBox.margin>
+                                                      <Insets left="5.0" right="5.0" />
+                                                   </VBox.margin>
+                                                </JFXTextField>
+                                                <JFXButton alignment="CENTER" buttonType="RAISED" style="-fx-background-color: #00c4ad;" text="Edit " textFill="WHITE" translateX="50.0">
+                                                   <VBox.margin>
+                                                      <Insets top="20.0" />
+                                                   </VBox.margin>
+                                                </JFXButton>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </VBox>
                                  </children>
                               </HBox>
                               <HBox fx:id="hBoxCalAll" prefWidth="340.0">
                                  <HBox.margin>
                                     <Insets />
-                                 </HBox.margin></HBox>
+                                 </HBox.margin>
+                                 <children>
+                                    <JFXTreeTableView fx:id="treeViewAllHours" prefHeight="298.0" prefWidth="353.0" />
+                                 </children></HBox>
                            </children>
                         </HBox>
                      </children></AnchorPane>
@@ -141,30 +171,55 @@
                            <children>
                               <HBox prefWidth="143.0">
                                  <children>
-                                    <Circle fill="#00c4ad" radius="64.0" stroke="TRANSPARENT" strokeType="INSIDE">
-                                       <HBox.margin>
-                                          <Insets left="5.0" top="20.0" />
-                                       </HBox.margin>
-                                    </Circle>
-                                    <Label fx:id="lblHrsYr" maxWidth="200.0" prefHeight="79.0" prefWidth="170.0" text="8" textAlignment="CENTER" textFill="WHITE">
-                                       <font>
-                                          <Font name="Noteworthy Bold" size="56.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets left="-100.0" top="40.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <Label maxHeight="100.0" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="164.0" text="Hours" textFill="WHITE">
-                                       <font>
-                                          <Font name="Arial Rounded MT Bold" size="13.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets left="15.0" right="15.0" top="20.0" />
-                                       </HBox.margin>
-                                       <padding>
-                                          <Insets left="-10.0" />
-                                       </padding>
-                                    </Label>
+                                    <VBox prefHeight="298.0" prefWidth="174.0">
+                                       <children>
+                                          <VBox maxHeight="357.0" minHeight="100.0" prefHeight="203.0" prefWidth="143.0">
+                                             <children>
+                                                <Circle fill="#00c4ad" radius="64.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                                                   <VBox.margin>
+                                                      <Insets left="7.0" right="5.0" top="20.0" />
+                                                   </VBox.margin>
+                                                </Circle>
+                                                <Label maxHeight="100.0" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="164.0" text="Hours" textFill="WHITE" translateY="-100.0">
+                                                   <font>
+                                                      <Font name="Arial Rounded MT Bold" size="13.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets left="80.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <Label fx:id="lblHrsAll1" alignment="CENTER" contentDisplay="CENTER" maxWidth="200.0" prefHeight="79.0" prefWidth="170.0" text="8" textAlignment="CENTER" textFill="WHITE" translateY="-160.0">
+                                                   <font>
+                                                      <Font name="Noteworthy Bold" size="56.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets left="5.0" right="55.0" top="40.0" />
+                                                   </VBox.margin>
+                                                   <padding>
+                                                      <Insets left="10.0" />
+                                                   </padding>
+                                                </Label>
+                                             </children>
+                                          </VBox>
+                                          <VBox maxHeight="176.0" prefHeight="95.0" prefWidth="143.0">
+                                             <children>
+                                                <JFXTextField focusColor="#00c4ad" prefHeight="26.0" prefWidth="133.0" promptText="Search date">
+                                                   <padding>
+                                                      <Insets left="5.0" right="5.0" />
+                                                   </padding>
+                                                   <VBox.margin>
+                                                      <Insets left="5.0" right="5.0" />
+                                                   </VBox.margin>
+                                                </JFXTextField>
+                                                <JFXButton alignment="CENTER" buttonType="RAISED" style="-fx-background-color: #00c4ad;" text="Edit " textFill="WHITE" translateX="50.0">
+                                                   <VBox.margin>
+                                                      <Insets top="20.0" />
+                                                   </VBox.margin>
+                                                </JFXButton>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </VBox>
                                  </children>
                               </HBox>
                               <HBox fx:id="hBoxCalYr" prefWidth="340.0">
@@ -184,30 +239,55 @@
                            <children>
                               <HBox prefWidth="143.0">
                                  <children>
-                                    <Circle fill="#00c4ad" radius="64.0" stroke="TRANSPARENT" strokeType="INSIDE">
-                                       <HBox.margin>
-                                          <Insets left="5.0" top="20.0" />
-                                       </HBox.margin>
-                                    </Circle>
-                                    <Label fx:id="lblHrsMth" maxWidth="200.0" prefHeight="79.0" prefWidth="170.0" text="8" textAlignment="CENTER" textFill="WHITE">
-                                       <font>
-                                          <Font name="Noteworthy Bold" size="56.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets left="-100.0" top="40.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <Label maxHeight="100.0" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="164.0" text="Hours" textFill="WHITE">
-                                       <font>
-                                          <Font name="Arial Rounded MT Bold" size="13.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets left="15.0" right="15.0" top="20.0" />
-                                       </HBox.margin>
-                                       <padding>
-                                          <Insets left="-10.0" />
-                                       </padding>
-                                    </Label>
+                                    <VBox prefHeight="298.0" prefWidth="174.0">
+                                       <children>
+                                          <VBox maxHeight="357.0" minHeight="100.0" prefHeight="203.0" prefWidth="143.0">
+                                             <children>
+                                                <Circle fill="#00c4ad" radius="64.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                                                   <VBox.margin>
+                                                      <Insets left="7.0" right="5.0" top="20.0" />
+                                                   </VBox.margin>
+                                                </Circle>
+                                                <Label maxHeight="100.0" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="164.0" text="Hours" textFill="WHITE" translateY="-100.0">
+                                                   <font>
+                                                      <Font name="Arial Rounded MT Bold" size="13.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets left="80.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <Label fx:id="lblHrsAll2" alignment="CENTER" contentDisplay="CENTER" maxWidth="200.0" prefHeight="79.0" prefWidth="170.0" text="8" textAlignment="CENTER" textFill="WHITE" translateY="-160.0">
+                                                   <font>
+                                                      <Font name="Noteworthy Bold" size="56.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets left="5.0" right="55.0" top="40.0" />
+                                                   </VBox.margin>
+                                                   <padding>
+                                                      <Insets left="10.0" />
+                                                   </padding>
+                                                </Label>
+                                             </children>
+                                          </VBox>
+                                          <VBox maxHeight="176.0" prefHeight="95.0" prefWidth="143.0">
+                                             <children>
+                                                <JFXTextField focusColor="#00c4ad" prefHeight="26.0" prefWidth="133.0" promptText="Search date">
+                                                   <padding>
+                                                      <Insets left="5.0" right="5.0" />
+                                                   </padding>
+                                                   <VBox.margin>
+                                                      <Insets left="5.0" right="5.0" />
+                                                   </VBox.margin>
+                                                </JFXTextField>
+                                                <JFXButton alignment="CENTER" buttonType="RAISED" style="-fx-background-color: #00c4ad;" text="Edit " textFill="WHITE" translateX="50.0">
+                                                   <VBox.margin>
+                                                      <Insets top="20.0" />
+                                                   </VBox.margin>
+                                                </JFXButton>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </VBox>
                                  </children>
                               </HBox>
                               <HBox fx:id="hBoxCalMth" prefWidth="340.0">
@@ -228,30 +308,55 @@
                            <children>
                               <HBox prefWidth="143.0">
                                  <children>
-                                    <Circle fill="#00c4ad" radius="64.0" stroke="TRANSPARENT" strokeType="INSIDE">
-                                       <HBox.margin>
-                                          <Insets left="5.0" top="20.0" />
-                                       </HBox.margin>
-                                    </Circle>
-                                    <Label fx:id="lblHrsDay" maxWidth="200.0" prefHeight="79.0" prefWidth="170.0" text="8" textAlignment="CENTER" textFill="WHITE">
-                                       <font>
-                                          <Font name="Noteworthy Bold" size="56.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets left="-100.0" top="40.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <Label maxHeight="100.0" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="164.0" text="Hours" textFill="WHITE">
-                                       <font>
-                                          <Font name="Arial Rounded MT Bold" size="13.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets left="15.0" right="15.0" top="20.0" />
-                                       </HBox.margin>
-                                       <padding>
-                                          <Insets left="-10.0" />
-                                       </padding>
-                                    </Label>
+                                    <VBox prefHeight="298.0" prefWidth="174.0">
+                                       <children>
+                                          <VBox maxHeight="357.0" minHeight="100.0" prefHeight="203.0" prefWidth="143.0">
+                                             <children>
+                                                <Circle fill="#00c4ad" radius="64.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                                                   <VBox.margin>
+                                                      <Insets left="7.0" right="5.0" top="20.0" />
+                                                   </VBox.margin>
+                                                </Circle>
+                                                <Label maxHeight="100.0" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="164.0" text="Hours" textFill="WHITE" translateY="-100.0">
+                                                   <font>
+                                                      <Font name="Arial Rounded MT Bold" size="13.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets left="80.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <Label fx:id="lblHrsAll3" alignment="CENTER" contentDisplay="CENTER" maxWidth="200.0" prefHeight="79.0" prefWidth="170.0" text="8" textAlignment="CENTER" textFill="WHITE" translateY="-160.0">
+                                                   <font>
+                                                      <Font name="Noteworthy Bold" size="56.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets left="5.0" right="55.0" top="40.0" />
+                                                   </VBox.margin>
+                                                   <padding>
+                                                      <Insets left="10.0" />
+                                                   </padding>
+                                                </Label>
+                                             </children>
+                                          </VBox>
+                                          <VBox maxHeight="176.0" prefHeight="95.0" prefWidth="143.0">
+                                             <children>
+                                                <JFXTextField focusColor="#00c4ad" prefHeight="26.0" prefWidth="133.0" promptText="Search date">
+                                                   <padding>
+                                                      <Insets left="5.0" right="5.0" />
+                                                   </padding>
+                                                   <VBox.margin>
+                                                      <Insets left="5.0" right="5.0" />
+                                                   </VBox.margin>
+                                                </JFXTextField>
+                                                <JFXButton alignment="CENTER" buttonType="RAISED" style="-fx-background-color: #00c4ad;" text="Edit " textFill="WHITE" translateX="50.0">
+                                                   <VBox.margin>
+                                                      <Insets top="20.0" />
+                                                   </VBox.margin>
+                                                </JFXButton>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </VBox>
                                  </children>
                               </HBox>
                               <HBox fx:id="hBoxCalDay" prefWidth="340.0">

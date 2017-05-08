@@ -95,8 +95,8 @@ public class ManagerViewController implements Initializable
         try
         {
             Stage primStage = (Stage) tblVolunteers.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/ManagerAddUser.fxml"));
-            
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("/GUI/View/ManagerAddUser.fxml"));
+           
             //ManagerViewController.setSelectedUser(selectedUser);
             
             Parent root = loader.load();
@@ -146,7 +146,7 @@ public class ManagerViewController implements Initializable
             {
                 selectedUser = tblVolunteers.getSelectionModel().getSelectedItem();
                 Stage primStage = (Stage) tblVolunteers.getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/ManagerEditView.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("/GUI/View/ManagerEditView.fxml"));
                 ManagerEditViewController.setSelectedUser(selectedUser);
 
                 Parent root = loader.load();
@@ -205,7 +205,7 @@ public class ManagerViewController implements Initializable
             {
                 selectedUser = tblVolunteers.getSelectionModel().getSelectedItem();
                 Stage primStage = (Stage) tblVolunteers.getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/View/ManagerEditView.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("/GUI/View/ManagerEditView.fxml"));
 
                 ManagerEditViewController.setSelectedUser(selectedUser);
 

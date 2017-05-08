@@ -12,6 +12,10 @@ import com.jfoenix.skins.JFXDatePickerSkin;
 
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXTreeTableColumn;
+import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import com.sun.deploy.util.StringUtils;
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
 import java.io.File;
@@ -34,6 +38,8 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -47,6 +53,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.util.Callback;
 
 public class UserInfoViewController implements Initializable
 {
@@ -97,13 +104,16 @@ public class UserInfoViewController implements Initializable
     TextField txtResidence;
 
     JFXButton btnCancel;
+
     User currentUser;
+
     boolean editing = false;
     boolean isIncorrect = false;
 
     private static Region POPUP_CAL;
 
     private final String STYLESHEET = "GUI/View/UserInfoCSS.css";
+
     private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
     @FXML
     private JFXTextArea JFXTxtAreaBenefits;
@@ -121,7 +131,10 @@ public class UserInfoViewController implements Initializable
     private Tab tabGraphs;
     @FXML
     private HBox hBoxInvisBtn;
-    
+
+    @FXML
+    private JFXTreeTableView <User> treeViewAllHours;
+
     private int GUIView;
 
     /**
@@ -143,6 +156,9 @@ public class UserInfoViewController implements Initializable
         this.currentUser = currentUser;
     }
 
+    /**
+     * Makes the calendar in the Month tab
+     */
     private void showConstantCalendar()
     {
         JFXDatePicker calendar = new JFXDatePicker();
@@ -155,7 +171,40 @@ public class UserInfoViewController implements Initializable
         hBoxCalMth.getChildren().add(POPUP_CAL);
 
     }
-
+    
+//    /**
+//     * Initialises the tree table containing information about the User
+//     */
+//    private void showTreeTable(){
+//        JFXTreeTableColumn<User,String> dateCol = new JFXTreeTableColumn<>("Date");
+//        dateCol.setPrefWidth(50);
+//        dateCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
+//            @Override
+//            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<User, String> param)
+//            {
+//                return param.getValue().getValue().getNote();
+//            }
+//        });
+//        JFXTreeTableColumn<User,Integer> hoursCol = new JFXTreeTableColumn<>("Hours");
+//        hoursCol.setPrefWidth(50);
+//        JFXTreeTableColumn<User,String> guildCol = new JFXTreeTableColumn<>("Guild");
+//        guildCol.setPrefWidth(50);
+//        
+//        treeViewAllHours.getColumns().setAll(dateCol, hoursCol, guildCol);
+//        final TreeItem<User> tree = new RecursiveTreeItem<User>(users, RecursiveTreeObject::getChildren);
+//        treeViewAllHours.setRoot(tree);
+//        treeViewAllHours.setShowRoot(false);
+//                
+//        
+//    }
+    
+    
+    /**
+     * Check what type of User this is, if it's a Manager or Administrator,
+     * a button will be created.
+     * 
+     * @param 1 = Manager, 2 = Admin
+     */
     private void checkTypeOfUser()
     {
         switch (currentUser.getType())
@@ -174,11 +223,8 @@ public class UserInfoViewController implements Initializable
 
     /**
      * Displays additional button for Manager and Administrators.
-     * 
      *
-     * @param type
-     * 1 = User is a Manager
-     * 2 = User is an Admin
+     * @param type 1 = Manager, 2 = Admin
      */
     private void createHighClearanceButton(int type)
     {
@@ -216,7 +262,6 @@ public class UserInfoViewController implements Initializable
 
     }
 
-
     private void setUserInfo()
     {
         lblName.setText(currentUser.getName());
@@ -230,8 +275,6 @@ public class UserInfoViewController implements Initializable
     {
         tabPaneOverview.getSelectionModel().getSelectedIndex();
     }
-    
-    
 
     @FXML
     private void pressedEditSaveButton(ActionEvent event)
@@ -365,15 +408,18 @@ public class UserInfoViewController implements Initializable
         c.setSelectedExtensionFilter(new ExtensionFilter("Image files only", extensions));
         File newImg = c.showOpenDialog(JFXBtnUpdatePhoto.getScene().getWindow());
 
-        if(newImg != null) {
-            try {
+        if (newImg != null)
+        {
+            try
+            {
                 MOD_FACADE.updateUserImage(currentUser, newImg);
-            } catch(FileNotFoundException e) {
+            } catch (FileNotFoundException e)
+            {
                 System.out.println(e);
                 Alert a = new Alert(Alert.AlertType.ERROR);
                 a.setHeaderText("Selected image is not found");
                 a.setContentText("File not found!");
-            } 
+            }
         }
         setUserImage();
     }
@@ -390,10 +436,10 @@ public class UserInfoViewController implements Initializable
     {
         int btnSavePosCol = GridPane.getColumnIndex(btnEditSave); //saving position
         int btnSavePosRow = GridPane.getRowIndex(btnEditSave);
-        GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave)-1); //moving save button one up
+        GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) - 1); //moving save button one up
         btnCancel = new JFXButton();
         btnCancel.setText("Cancel"); //preparing cancel button
-        
+
         btnCancel.setButtonType(JFXButton.ButtonType.RAISED);
         btnCancel.setTextFill(Color.WHITE);
         btnCancel.setStyle(btnEditSave.getStyle());
@@ -424,7 +470,7 @@ public class UserInfoViewController implements Initializable
 
     private void removeCancelButton()
     {
-        GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave)+1); //moving save button one down
+        GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) + 1); //moving save button one down
         gridEdit.getChildren().remove(btnCancel); //deleting cancel button from gridpane
         if (btnEditSave.isDisabled())
         {
