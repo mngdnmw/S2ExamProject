@@ -254,6 +254,7 @@ public class ManagerViewController implements Initializable
     
     private void setTableItems()
     {
+        //refactor so that you use the facade rather than model? -Meng 
         tblVolunteers.setItems(FXCollections.observableArrayList(dataModel.getAllUsers()));
     }
 
