@@ -206,6 +206,9 @@ public class HourLoginViewController implements Initializable
         MOD_FACADE.fadeInTransition(Duration.millis(500), ancDarken);
         MOD_FACADE.fadeInTransition(Duration.millis(500), loginWindow);
 
+        if(!txtUser.getText().isEmpty() && txtUser.getText() != null)
+            txtUsername.setText(txtUser.getText());
+        
         btnCancel.setOnAction(new EventHandler<ActionEvent>()
           {
             @Override

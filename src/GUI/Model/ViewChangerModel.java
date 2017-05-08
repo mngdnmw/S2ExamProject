@@ -18,13 +18,14 @@ public class ViewChangerModel
     private String ManagerString = "ManagerView.fxml";
     private String ManagerEditString = "ManagerEditView.fxml";
     private String UserInfoString = "UserInfoView.fxml";
+    private String ManagerAddUserString = "ManagerAddUserView.fxml";
     
 
     private Window stage;
 
     /**
      * Changes the view based on number. 0 goes to the UserInfoView, 1 goes to 
-     * ManagerView, 2 goes to ManagerEditView, 3 goes to the hourLoginView
+     * ManagerView, 2 goes to ManagerEditView, 3 goes to the hourLoginView, 4 goes to ManagerAddUserView
      *
      * @param GUINumb
      *
@@ -63,6 +64,8 @@ public class ViewChangerModel
                 return ViewPath + ManagerEditString;
             case 3:
                 return ViewPath + HourLoginString;
+            case 4:
+                return ViewPath + ManagerAddUserString;
 
         }
         return null;
