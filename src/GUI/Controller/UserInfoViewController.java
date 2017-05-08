@@ -18,6 +18,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -68,19 +70,11 @@ public class UserInfoViewController implements Initializable
     @FXML
     private HBox hBoxCalAll;
     @FXML
-    private HBox hBoxCalYr;
-    @FXML
     private HBox hBoxCalMth;
     @FXML
     private HBox hBoxCalDay;
     @FXML
     private Label lblHrsAll;
-    @FXML
-    private Label lblHrsYr;
-    @FXML
-    private Label lblHrsMth;
-    @FXML
-    private Label lblHrsDay;
     @FXML
     private AnchorPane anchorGraph;
     @FXML
@@ -113,8 +107,6 @@ public class UserInfoViewController implements Initializable
     @FXML
     private Tab tabAll;
     @FXML
-    private Tab tabYear;
-    @FXML
     private Tab tabMonth;
     @FXML
     private Tab tabDay;
@@ -129,6 +121,12 @@ public class UserInfoViewController implements Initializable
     private JFXTreeTableView<Day> treeViewAllHours;
 
     private int GUIView;
+    @FXML
+    private JFXTextField JFXTxtFSearchDate;
+    @FXML
+    private Label lblHrsAll2;
+    @FXML
+    private Label lblHrsAll3;
 
     /**
      * Initializes the controller class.
@@ -221,6 +219,23 @@ public class UserInfoViewController implements Initializable
         treeViewAllHours.getColumns().setAll(dateCol, hoursCol, guildCol);
         treeViewAllHours.setRoot(root);
         treeViewAllHours.setShowRoot(false);
+        
+        JFXTxtFSearchDate.textProperty().addListener(new ChangeListener<String>(){
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
+            {
+                treeViewAllHours.setPredicate(new Predicate<TreeItem<Day>>(){
+                    @Override
+                    public boolean test(TreeItem<Day> day)
+                    {
+                        Boolean search = day.getValue().dateProperty().getValue().contains(newValue);
+                        
+                        return search;
+                    }
+                    
+                });
+            }
+        });
     }
 
     /**
