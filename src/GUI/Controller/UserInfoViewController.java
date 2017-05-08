@@ -160,31 +160,31 @@ public class UserInfoViewController implements Initializable
 
     }
     
-    /**
-     * Initialises the tree table containing information about the User
-     */
-    private void showTreeTable(){
-        JFXTreeTableColumn<Day,String> dateCol = new JFXTreeTableColumn<>("Date");
-        dateCol.setPrefWidth(50);
-        dateCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Day, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Day, String> param)
-            {
-                return param.getValue().getValue().get;
-            }
-        });
-        JFXTreeTableColumn<User,Integer> hoursCol = new JFXTreeTableColumn<>("Hours");
-        hoursCol.setPrefWidth(50);
-        JFXTreeTableColumn<User,String> guildCol = new JFXTreeTableColumn<>("Guild");
-        guildCol.setPrefWidth(50);
-        
-        treeViewAllHours.getColumns().setAll(dateCol, hoursCol, guildCol);
-        final TreeItem<User> tree = new RecursiveTreeItem<User>(users, RecursiveTreeObject::getChildren);
-        treeViewAllHours.setRoot(tree);
-        treeViewAllHours.setShowRoot(false);
-                
-        
-    }
+//    /**
+//     * Initialises the tree table containing information about the User
+//     */
+//    private void showTreeTable(){
+//        JFXTreeTableColumn<Day,String> dateCol = new JFXTreeTableColumn<>("Date");
+//        dateCol.setPrefWidth(50);
+//        dateCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Day, String>, ObservableValue<String>>() {
+//            @Override
+//            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Day, String> param)
+//            {
+//                return param.getValue().getValue().get;
+//            }
+//        });
+//        JFXTreeTableColumn<User,Integer> hoursCol = new JFXTreeTableColumn<>("Hours");
+//        hoursCol.setPrefWidth(50);
+//        JFXTreeTableColumn<User,String> guildCol = new JFXTreeTableColumn<>("Guild");
+//        guildCol.setPrefWidth(50);
+//        
+//        treeViewAllHours.getColumns().setAll(dateCol, hoursCol, guildCol);
+//        final TreeItem<User> tree = new RecursiveTreeItem<User>(users, RecursiveTreeObject::getChildren);
+//        treeViewAllHours.setRoot(tree);
+//        treeViewAllHours.setShowRoot(false);
+//                
+//        
+//    }
     
     
     /**

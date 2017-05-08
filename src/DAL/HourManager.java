@@ -13,11 +13,11 @@ import java.util.List;
 public class HourManager extends ConnectionManager
 {
 
-    public List<Day> getWorkedDays(int userId) throws SQLException
+    public List<Day> getWorkedDays(User user) throws SQLException
     {
         ArrayList<Day> workedDays = new ArrayList<>();
 
-        //int userId = user.getId();
+        int userId = user.getId();
 
         String query = (""
                 + "SELECT h.[date], h.[hours], h.[guildid], g.[name]"
@@ -37,15 +37,11 @@ public class HourManager extends ConnectionManager
                 System.out.println("Date: "+dateString+" | Hours: "+hours+" | Guild: "+guild);
                 Day dayworked = new Day(dateString, hours, guild);
                 workedDays.add(dayworked);
-                
-//                for (Day workedDay : workedDays)
-//                {
-//                    System.out.println("Date: "+dateString+" | Hours: "+hours+" | Guild: "+guild);
-//                }
+
             }
         }
 
-        return null;
+        return workedDays;
     }
 
 }
