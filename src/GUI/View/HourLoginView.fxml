@@ -14,97 +14,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.HourLoginController">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.HourLoginViewController">
     <children>
         <BorderPane prefHeight="600.0" prefWidth="822.0" style="-fx-background-color: FFFFFF;">
-            <top>
-                <VBox prefHeight="262.0" prefWidth="822.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <VBox prefHeight="262.0" prefWidth="739.0" VBox.vgrow="NEVER">
-                            <children>
-                                <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-                                    <children>
-                                        <Label fx:id="lblUsernameTag" alignment="BOTTOM_LEFT" text="My username is">
-                                            <font>
-                                                <Font size="29.0" />
-                                            </font>
-                                            <HBox.margin>
-                                                <Insets top="20.0" />
-                                            </HBox.margin>
-                                        </Label>
-                                        <JFXTextField fx:id="txtUser" alignment="BOTTOM_CENTER" focusColor="#00c4ad" labelFloat="true" prefHeight="51.0" prefWidth="415.0" promptText="Phone No. or Email" unFocusColor="#797777">
-                                            <font>
-                                                <Font size="29.0" />
-                                            </font>
-                                        </JFXTextField>
-                                    </children>
-                                </HBox>
-                                <HBox prefHeight="85.0" prefWidth="119.0" spacing="15.0">
-                                    <children>
-                                        <Label fx:id="lblHourTag" text="Today I have contributed">
-                                            <font>
-                                                <Font size="29.0" />
-                                            </font>
-                                            <HBox.margin>
-                                                <Insets top="20.0" />
-                                            </HBox.margin>
-                                        </Label>
-                                        <JFXTextField fx:id="txtHours" alignment="BOTTOM_CENTER" focusColor="#00c4ad" labelFloat="true" prefHeight="51.0" prefWidth="234.0" promptText="Number of hours" unFocusColor="#797777">
-                                            <font>
-                                                <Font size="29.0" />
-                                            </font>
-                                            <HBox.margin>
-                                                <Insets top="8.0" />
-                                            </HBox.margin>
-                                        </JFXTextField>
-                                        <Label fx:id="lblHourTagTwo" prefHeight="43.0" prefWidth="78.0" text="hours">
-                                            <font>
-                                                <Font size="29.0" />
-                                            </font>
-                                            <HBox.margin>
-                                                <Insets top="20.0" />
-                                            </HBox.margin>
-                                        </Label>
-                                    </children>
-                                </HBox>
-                                <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-                                    <children>
-                                        <Label fx:id="lblGuildTag" text="to the">
-                                            <font>
-                                                <Font size="29.0" />
-                                            </font>
-                                            <HBox.margin>
-                                                <Insets top="20.0" />
-                                            </HBox.margin>
-                                        </Label>
-                                        <JFXComboBox fx:id="cmbGuildChooser" focusColor="#00c4ad" labelFloat="true" prefHeight="55.0" prefWidth="250.0" promptText="Choose a guild" style="-fx-font-size: 29px;" unFocusColor="#797777">
-                                            <HBox.margin>
-                                                <Insets top="8.0" />
-                                            </HBox.margin>
-                                        </JFXComboBox>
-                                        <Label fx:id="lblGuildTagTwo" text="guild">
-                                            <font>
-                                                <Font size="29.0" />
-                                            </font>
-                                            <HBox.margin>
-                                                <Insets top="20.0" />
-                                            </HBox.margin>
-                                        </Label>
-                                    </children>
-                                </HBox>
-                            </children>
-                            <padding>
-                                <Insets left="30.0" />
-                            </padding>
-                        </VBox>
-                    </children>
-                    <padding>
-                        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
-                    </padding>
-                </VBox>
-            </top>
             <bottom>
-                <HBox alignment="BOTTOM_CENTER" prefHeight="343.0" prefWidth="750.0" spacing="44.0" BorderPane.alignment="CENTER">
+                <HBox alignment="BOTTOM_CENTER" prefHeight="305.0" prefWidth="800.0" spacing="44.0" BorderPane.alignment="CENTER">
                     <children>
                         <JFXButton fx:id="btnLanguage" buttonType="RAISED" defaultButton="true" onAction="#ChangeLanguageAction" prefHeight="150.0" prefWidth="150.0" ripplerFill="WHITE" stylesheets="@MainLayout.css" text="English" textFill="WHITE">
                             <font>
@@ -142,6 +56,101 @@
                     </padding>
                 </HBox>
             </bottom>
+         <left>
+                <VBox prefHeight="295.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <VBox prefHeight="262.0" prefWidth="739.0" VBox.vgrow="NEVER">
+                            <children>
+                                <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                    <children>
+                                        <Label fx:id="lblUsernameTag" alignment="BOTTOM_LEFT" text="My username is">
+                                            <font>
+                                                <Font size="29.0" />
+                                            </font>
+                                            <HBox.margin>
+                                                <Insets top="20.0" />
+                                            </HBox.margin>
+                                        </Label>
+                                        <JFXTextField fx:id="txtUser" alignment="BOTTOM_CENTER" focusColor="#00c4ad" labelFloat="true" prefHeight="51.0" prefWidth="415.0" promptText="Phone No. or Email" unFocusColor="#797777">
+                                            <font>
+                                                <Font size="29.0" />
+                                            </font>
+                                        </JFXTextField>
+                                    </children>
+                           <padding>
+                              <Insets bottom="15.0" top="15.0" />
+                           </padding>
+                                </HBox>
+                                <HBox prefHeight="85.0" prefWidth="119.0" spacing="15.0">
+                                    <children>
+                                        <Label fx:id="lblHourTag" text="Today I have contributed">
+                                            <font>
+                                                <Font size="29.0" />
+                                            </font>
+                                            <HBox.margin>
+                                                <Insets top="20.0" />
+                                            </HBox.margin>
+                                        </Label>
+                                        <JFXTextField fx:id="txtHours" alignment="BOTTOM_CENTER" focusColor="#00c4ad" labelFloat="true" prefHeight="51.0" prefWidth="234.0" promptText="Number of hours" unFocusColor="#797777">
+                                            <font>
+                                                <Font size="29.0" />
+                                            </font>
+                                            <HBox.margin>
+                                                <Insets top="8.0" />
+                                            </HBox.margin>
+                                        </JFXTextField>
+                                        <Label fx:id="lblHourTagTwo" prefHeight="43.0" prefWidth="78.0" text="hours">
+                                            <font>
+                                                <Font size="29.0" />
+                                            </font>
+                                            <HBox.margin>
+                                                <Insets top="20.0" />
+                                            </HBox.margin>
+                                        </Label>
+                                    </children>
+                           <padding>
+                              <Insets bottom="15.0" top="15.0" />
+                           </padding>
+                                </HBox>
+                                <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                    <children>
+                                        <Label fx:id="lblGuildTag" text="to the">
+                                            <font>
+                                                <Font size="29.0" />
+                                            </font>
+                                            <HBox.margin>
+                                                <Insets top="20.0" />
+                                            </HBox.margin>
+                                        </Label>
+                                        <JFXComboBox fx:id="cmbGuildChooser" focusColor="#00c4ad" labelFloat="true" prefHeight="55.0" prefWidth="250.0" promptText="Choose a guild" style="-fx-font-size: 29px;" unFocusColor="#797777">
+                                            <HBox.margin>
+                                                <Insets top="8.0" />
+                                            </HBox.margin>
+                                        </JFXComboBox>
+                                        <Label fx:id="lblGuildTagTwo" text="guild">
+                                            <font>
+                                                <Font size="29.0" />
+                                            </font>
+                                            <HBox.margin>
+                                                <Insets top="20.0" />
+                                            </HBox.margin>
+                                        </Label>
+                                    </children>
+                           <padding>
+                              <Insets bottom="15.0" top="15.0" />
+                           </padding>
+                                </HBox>
+                            </children>
+                            <padding>
+                                <Insets left="30.0" />
+                            </padding>
+                        </VBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="20.0" left="40.0" right="40.0" top="30.0" />
+                    </padding>
+                </VBox>
+         </left>
         </BorderPane>
         <AnchorPane fx:id="ancDarken" prefHeight="200.0" prefWidth="200.0" styleClass="darkenedBackground" visible="false" />
         <VBox fx:id="loginWindow" alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="200.0" prefWidth="463.0" styleClass="loginwindow" visible="false">
