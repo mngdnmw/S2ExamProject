@@ -156,7 +156,7 @@
                                     <Insets />
                                  </HBox.margin>
                                  <children>
-                                    <JFXTreeTableView fx:id="treeViewAllHours" prefHeight="298.0" prefWidth="353.0" />
+                                    <JFXTreeTableView fx:id="treeViewAllHours" prefHeight="298.0" prefWidth="353.0" stylesheets="@UserInfoCSS.css" />
                                  </children></HBox>
                            </children>
                         </HBox>

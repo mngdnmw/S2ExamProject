@@ -170,13 +170,10 @@ public class UserInfoViewController implements Initializable
     private void showTreeTable()
     {
         //Need to do some threading for this method
-        treeViewAllHours.setPlaceholder(new Label("Nothing found"));
-
+        
         //Date column set up
         JFXTreeTableColumn<Day, String> dateCol = new JFXTreeTableColumn<>("Date");
-        //dateCol.setPrefWidth(colWidths);
         dateCol.prefWidthProperty().bind(treeViewAllHours.widthProperty().divide(3));
-        //dateCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Day, String> param) -> param.getValue().getValue().dateProperty());
         dateCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Day, String>, ObservableValue<String>>()
         {
             @Override
@@ -188,60 +185,42 @@ public class UserInfoViewController implements Initializable
 
         //Hours column set up
         JFXTreeTableColumn<Day, Integer> hoursCol = new JFXTreeTableColumn<>("Hours");
-        //hoursCol.setPrefWidth(colWidths);
         hoursCol.prefWidthProperty().bind(treeViewAllHours.widthProperty().divide(3));
-        hoursCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Day, Integer>, ObservableValue<Integer>>()
-        {
-            @Override
-            public ObservableValue<Integer> call(TreeTableColumn.CellDataFeatures<Day, Integer> param)
-            {
-                return param.getValue().getValue().hourProperty().asObject();
-            }
-        });
+        hoursCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Day, Integer> param) -> param.getValue().getValue().hourProperty().asObject());
 
         //Guild column set up
         JFXTreeTableColumn<Day, String> guildCol = new JFXTreeTableColumn<>("Guild");
-        //guildCol.setPrefWidth(colWidths);
         guildCol.prefWidthProperty().bind(treeViewAllHours.widthProperty().divide(3));
-        guildCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Day, String>, ObservableValue<String>>()
-        {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Day, String> param)
-            {
-                return param.getValue().getValue().guildProperty();
-            }
-        });
+        guildCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Day, String> param) -> param.getValue().getValue().guildProperty());
 
+        treeViewAllHours.setPlaceholder(new Label("Nothing found"));
+        
         ObservableList<Day> daysWorked = FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(currentUser));
-
-        final TreeItem<Day> root = new RecursiveTreeItem<Day>(daysWorked, RecursiveTreeObject::getChildren);
+        
+        final TreeItem<Day> rootOfTree = new RecursiveTreeItem<>(daysWorked, RecursiveTreeObject::getChildren);
+        
+        dateCol.getStyleClass().add("col");
+        hoursCol.getStyleClass().add("col");
+        guildCol.getStyleClass().add("col");
+        
         treeViewAllHours.getColumns().setAll(dateCol, hoursCol, guildCol);
-        treeViewAllHours.setRoot(root);
+        treeViewAllHours.setRoot(rootOfTree);
         treeViewAllHours.setShowRoot(false);
 
-        JFXTxtFSearchDate.textProperty().addListener(new ChangeListener<String>()
+        JFXTxtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) ->
         {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
+            treeViewAllHours.setPredicate((TreeItem<Day> day) ->
             {
-                treeViewAllHours.setPredicate(new Predicate<TreeItem<Day>>()
-                {
-                    @Override
-                    public boolean test(TreeItem<Day> day)
-                    {
-                        String regex = "[^a-zA-Z0-9\\s]";
-                        Boolean search = 
-                                day.getValue().dateProperty().getValue().replaceAll(regex, "")
-                                        .contains(newValue.replaceAll(regex, "")) 
-                                || 
-                                day.getValue().guildProperty().getValue().toLowerCase().replaceAll(regex, "").
-                                        contains(newValue.toLowerCase().replaceAll(regex, ""));
-
-                        return search;
-                    }
-
-                });
-            }
+                String regex = "[^a-zA-Z0-9\\s]";
+                Boolean search =
+                        day.getValue().dateProperty().getValue().replaceAll(regex, "")
+                                .contains(newValue.replaceAll(regex, ""))
+                        ||
+                        day.getValue().guildProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                contains(newValue.toLowerCase().replaceAll(regex, ""));
+                
+                return search;
+            });
         });
     }
 
