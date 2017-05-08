@@ -14,21 +14,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.HourLoginViewController">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.HourLoginViewController">
     <children>
         <BorderPane prefHeight="600.0" prefWidth="822.0" style="-fx-background-color: FFFFFF;">
             <bottom>
                 <HBox alignment="BOTTOM_CENTER" prefHeight="305.0" prefWidth="800.0" spacing="44.0" BorderPane.alignment="CENTER">
                     <children>
-                        <JFXButton fx:id="btnLanguage" buttonType="RAISED" defaultButton="true" onAction="#ChangeLanguageAction" prefHeight="150.0" prefWidth="150.0" ripplerFill="WHITE" stylesheets="@MainLayout.css" text="English" textFill="WHITE">
-                            <font>
-                                <Font name="System Bold Italic" size="23.0" />
-                            </font>
-                            <styleClass>
-                                <String fx:value="JFXButtonEnglish" />
-                                <String fx:value="JFXRoundedButton" />
-                            </styleClass>
-                        </JFXButton>
+                  <JFXButton fx:id="btnLanguage" buttonType="RAISED" onAction="#ChangeLanguageAction" prefHeight="150.0" prefWidth="150.0" ripplerFill="WHITE" styleClass="JFXRoundedButton" text="Sprog" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold Italic" size="23.0" />
+                     </font>
+                  </JFXButton>
                         <JFXButton fx:id="btnLogHours" buttonType="RAISED" defaultButton="true" onAction="#LogHoursAction" prefHeight="260.0" prefWidth="260.0" ripplerFill="WHITE" stylesheets="@MainLayout.css" text="Log Hours" textFill="WHITE">
                             <font>
                                 <Font name="System Bold Italic" size="36.0" />
