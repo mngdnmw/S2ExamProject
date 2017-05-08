@@ -38,7 +38,7 @@ import javafx.util.Callback;
 import javafx.util.Duration;
 import sun.plugin2.jvm.RemoteJVMLauncher.CallBack;
 
-public class HourLoginController implements Initializable
+public class HourLoginViewController implements Initializable
   {
 
     @FXML
