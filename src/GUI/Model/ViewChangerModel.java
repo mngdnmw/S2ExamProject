@@ -18,6 +18,7 @@ public class ViewChangerModel
     private String ManagerString = "ManagerView.fxml";
     private String ManagerEditString = "ManagerEditView.fxml";
     private String UserInfoString = "UserInfoView.fxml";
+    
 
     private Window stage;
 

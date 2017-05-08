@@ -1,6 +1,8 @@
 package BE;
 
-public abstract class User
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+
+public abstract class User extends RecursiveTreeObject<User>
   {
 
     int id;
