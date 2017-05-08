@@ -27,8 +27,11 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -61,7 +64,21 @@ public class HourLoginController implements Initializable
     @FXML
     private JFXButton btnSeeInfo;
     @FXML
-    private AnchorPane root;
+    private StackPane root;
+    @FXML
+    private VBox loginWindow;
+    @FXML
+    private Label lblUsername;
+    @FXML
+    private JFXTextField txtUsername;
+    @FXML
+    private JFXPasswordField txtPassword;
+    @FXML
+    private Label lblWrongPass;
+    @FXML
+    private JFXButton btnLogin;
+    @FXML
+    private JFXButton btnCancel;
 
     private String strLogThanks = "Thanks!";
     private String strContribution = "Your hours have been logged. Thank you!";
@@ -73,7 +90,14 @@ public class HourLoginController implements Initializable
     private ImageView imgViewLngBut = new ImageView();
     //Models used by this Controller
     private final static ModelFacade MOD_FACADE = new ModelFacade();
-
+    @FXML
+    private AnchorPane ancDarken;
+    
+    JFXButton btnDanish = new JFXButton();
+    JFXButton btnEnglish = new JFXButton();
+    
+    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb)
       {
@@ -86,6 +110,15 @@ public class HourLoginController implements Initializable
       }
 
     @FXML
+    public void buttonPressed(KeyEvent ke)
+      {
+        if (ke.getCode() == KeyCode.ENTER)
+          {
+            loginEvent();
+          }
+      }
+
+    @FXML
     private void LogHoursAction(ActionEvent event)
       {
         lockButtons();
@@ -95,13 +128,14 @@ public class HourLoginController implements Initializable
                     txtUser.getText(), Integer.parseInt(txtHours.getText()),
                     cmbGuildChooser.getSelectionModel().getSelectedItem().getId()
             );
-            contributionPopup(strContribution);
+            snackBarPopup(strContribution);
           }
 
         else
           {
-            contributionPopup("Please input information in all fields");
+            snackBarPopup("Please input information in all fields");
           }
+        unlockButtons();
       }
 
     @FXML
@@ -109,7 +143,7 @@ public class HourLoginController implements Initializable
       {
         lockButtons();
         languagePopup();
-
+        unlockButtons();
       }
 
     @FXML
@@ -117,7 +151,6 @@ public class HourLoginController implements Initializable
       {
         lockButtons();
         loginPopup();
-
       }
 
     public void addListener()
@@ -150,7 +183,7 @@ public class HourLoginController implements Initializable
     /**
      * pops up a bordered VBox that disappear after a short moment.
      */
-    public void contributionPopup(String str)
+    public void snackBarPopup(String str)
       {
         int time = 3000;
         JFXSnackbar snackbar = new JFXSnackbar(root);
@@ -170,84 +203,22 @@ public class HourLoginController implements Initializable
     public void loginPopup()
       {
         //popup for the login
-        VBox popup = new VBox();
-        //Styles that will be used
-        popup.setSpacing(20);
-        popup.setPadding(new Insets(20, 20, 20, 20));
-        popup.getStyleClass().add("popup");
-        popup.setStyle("-fx-background-color: #BBBBBB;");
+        loginWindow.visibleProperty().set(true);
+        ancDarken.visibleProperty().set(true);
+        MOD_FACADE.fadeInTransition(Duration.millis(500), ancDarken);
+        MOD_FACADE.fadeInTransition(Duration.millis(500), loginWindow);
 
-        //CSS to be added to both labels
-        String styleText = "-fx-font:italic bold 20px/30px System;"
-                + "-fx-text-fill: #FFFFFF;";
-        String styleTextField = "-fx-font:Bold 18px/30px System;"
-                + "-fx-text-fill: #FFFFFF;";
-        String styleButtons = "-fx-background-color: #00e2c7;";
-        //Username Area made here a label and a textfield
-        HBox usernameArea = new HBox();
-        usernameArea.setSpacing(10);
-        usernameArea.alignmentProperty().set(Pos.BOTTOM_RIGHT);
-        Label lblUsername = new Label("Username:");
-        lblUsername.setStyle(styleText);
-
-        JFXTextField txtUsername = new JFXTextField();
-
-        txtUsername.setStyle(styleTextField);
-        //txtUsername.promptTextProperty().set("Username");
-
-        if (!txtUser.getText().isEmpty())
-          {
-            txtUsername.setText(txtUser.getText());
-          }
-        txtUsername.widthProperty().add(50);
-        txtUsername.alignmentProperty().set(Pos.CENTER);
-        usernameArea.getChildren().addAll(lblUsername, txtUsername);
-
-        //password Area made here a label and a passwordfield
-        HBox passwordArea = new HBox();
-        passwordArea.setSpacing(10);
-        passwordArea.alignmentProperty().set(Pos.BOTTOM_RIGHT);
-
-        Label lblPassword = new Label("Password:");
-        lblPassword.setStyle(styleText);
-        JFXPasswordField txtPassword = new JFXPasswordField();
-        //txtPassword.promptTextProperty().set("Password");
-        txtPassword.alignmentProperty().set(Pos.CENTER);
-        txtPassword.widthProperty().add(50);
-        txtPassword.setStyle(styleTextField);
-
-        passwordArea.getChildren().addAll(lblPassword, txtPassword);
-        //A checkbox with the word Remember Me!
-        JFXCheckBox bxRemPassword = new JFXCheckBox("Remember Me");
-        bxRemPassword.setStyle(styleText);
-        //Two buttons to confirm wether or not to log in and a label to say if it is wrong password
-
-        HBox confirmArea = new HBox();
-        confirmArea.alignmentProperty().set(Pos.CENTER_RIGHT);
-        confirmArea.setSpacing(10);
-        Label lblWrongPw = new Label();
-        lblWrongPw.setStyle("-fx-font:Bold 15px/30px System;"
-                + "-fx-text-fill: #FFFFFF;");
-        JFXButton btnLogin = new JFXButton(strLogin);
-        btnLogin.setStyle(styleText + styleButtons);
-        JFXButton btnCancel = new JFXButton(strCancel);
-        btnCancel.setStyle(styleText + styleButtons);
-        confirmArea.getChildren().addAll(lblWrongPw, btnLogin, btnCancel);
-
-        popup.getChildren().addAll(usernameArea, passwordArea, bxRemPassword, confirmArea);
-        root.getChildren().add(popup);
-        popup.setTranslateY((root.getHeight() / 3));
-        popup.setTranslateX(root.getWidth() / 4.2);
-        MOD_FACADE.fadeInTransition(Duration.millis(500), popup);
         btnCancel.setOnAction(new EventHandler<ActionEvent>()
           {
             @Override
             public void handle(ActionEvent e)
               {
-                MOD_FACADE.fadeOutTransition(Duration.millis(500), popup)
+                MOD_FACADE.fadeOutTransition(Duration.millis(500), loginWindow)
                         .setOnFinished(
-                                ev -> removePopup(popup)
+                                ev -> hideLoginWind()
                         );
+                MOD_FACADE.fadeOutTransition(Duration.millis(500), ancDarken);
+
               }
           });
         btnLogin.setOnAction(new EventHandler<ActionEvent>()
@@ -255,19 +226,7 @@ public class HourLoginController implements Initializable
             @Override
             public void handle(ActionEvent e)
               {
-                MOD_FACADE.getUserFromLogin(txtUsername.getText(), txtPassword.getText());
-
-                if (MOD_FACADE.getCurrentUser() != null)
-                  {
-                    MOD_FACADE.changeView(0);
-                    Stage stage = (Stage) root.getScene().getWindow();
-                    stage.close();
-                    
-                  }
-                else
-                  {
-                    lblWrongPw.setText("Wrong Password");
-                  }
+                loginEvent();
               }
 
           });
@@ -285,8 +244,28 @@ public class HourLoginController implements Initializable
         popup.setStyle("-fx-background-color: #00c4ad;");
         popup.setPadding(new Insets(20));
         popup.setSpacing(20);
-        JFXButton btnDanish = new JFXButton();
-        JFXButton btnEnglish = new JFXButton();
+        //popup.setMaxHeight(size);
+        //popup.setMaxWidth(size*2);
+        //btnDanish.setOnAction(null);
+        //btnEnglish.setOnAction(null);
+        EventHandler changeLanguageHandler = new EventHandler<ActionEvent>()
+        {
+          @Override
+          public void handle(ActionEvent event)
+            {
+              if (event.getSource().equals(btnDanish))
+                {
+                  changeLanguage("Dansk");
+                }
+              else if (event.getSource().equals(btnEnglish))
+                {
+                  changeLanguage("English");
+                }
+              setTextAll();
+              MOD_FACADE.fadeOutTransition(Duration.millis(500), popup);
+              unlockButtons();
+            }
+        };
 
         btnDanish.getStyleClass().add("JFXRoundedButton");
         btnDanish.setStyle("-fx-background-color:#FFFFFF");
@@ -305,32 +284,11 @@ public class HourLoginController implements Initializable
         popup.setTranslateX(0);
         MOD_FACADE.fadeInTransition(Duration.millis(500), popup);
         popup.setTranslateY((root.getHeight() / 1.5));
-        popup.setTranslateX(root.getWidth() / 6);
-
-        EventHandler changeLanguageHandler = new EventHandler<ActionEvent>()
-          {
-            @Override
-            public void handle(ActionEvent event)
-              {
-                if (event.getSource().equals(btnDanish))
-                  {
-                    changeLanguage("Dansk");
-                  }
-                else if (event.getSource().equals(btnEnglish))
-                  {
-                    changeLanguage("English");
-                  }
-                setTextAll();
-                MOD_FACADE.fadeOutTransition(Duration.millis(500), popup)
-                        .setOnFinished(
-                                ev -> removePopup(popup)
-                        );
-              }
-          };
+        popup.setTranslateX(root.getWidth() / 5);
 
         btnDanish.setOnAction(changeLanguageHandler);
         btnEnglish.setOnAction(changeLanguageHandler);
-
+        
       }
 
     public void unlockButtons()
@@ -355,14 +313,11 @@ public class HourLoginController implements Initializable
         cmbGuildChooser.setDisable(dis);
       }
 
-    public void removePopup(Node popup)
+    public void hideLoginWind()
       {
-        PauseTransition pause = new PauseTransition(Duration.millis(100));
-        pause.setOnFinished(
-                e -> unlockButtons()
-        );
-        pause.play();
-        root.getChildren().removeAll(popup);
+        ancDarken.visibleProperty().set(false);
+        loginWindow.visibleProperty().set(false);
+        unlockButtons();
 
       }
 
@@ -406,4 +361,21 @@ public class HourLoginController implements Initializable
 
       }
 
+    private void loginEvent()
+      {
+
+        MOD_FACADE.getUserFromLogin(txtUsername.getText(), txtPassword.getText());
+
+        if (MOD_FACADE.getCurrentUser() != null)
+          {
+            MOD_FACADE.changeView(0);
+            Stage stage = (Stage) root.getScene().getWindow();
+            stage.close();
+
+          }
+        else
+          {
+            lblWrongPass.setText("Wrong Password");
+          }
+      }
   }
