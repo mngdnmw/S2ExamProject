@@ -7,25 +7,24 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class ManagerAddUserController implements Initializable
 {
@@ -49,8 +48,6 @@ public class ManagerAddUserController implements Initializable
     @FXML
     private AnchorPane rootPane;
     @FXML
-    private JFXTextField txtPassord;
-    @FXML
     private JFXListView<Guild> listViewGuilds;
     @FXML
     private JFXButton JFXBtnAddPhoto;
@@ -58,9 +55,11 @@ public class ManagerAddUserController implements Initializable
     private JFXCheckBox chkVolunteer;
     @FXML
     private JFXCheckBox chkManager;
-
-    private StackPane stackPane;
+    @FXML
+    private JFXTextField txtPassword;
+    
     ModelFacade modelFacade = new ModelFacade();
+    
 
     /**
      * Initializes the controller class.
@@ -87,7 +86,7 @@ public class ManagerAddUserController implements Initializable
         {
             if(txtPhone.getText().isEmpty() && txtEmail.getText().isEmpty())
             {
-                showMissingInfoDialog();
+                snackBarPopup("Phone number OR Email required");
                 System.out.println("User not added: missing phone or email");
             }
             
@@ -98,7 +97,7 @@ public class ManagerAddUserController implements Initializable
                     txtPhone.setText("0");
                 }
 
-                modelFacade.addUser(txtName.getText(), txtEmail.getText(), "", 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtNotes.getText());
+                modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtNotes.getText());
                 Stage stage = (Stage) btnAccept.getScene().getWindow();
                 stage.close();
                 System.out.println("New user added: " + txtName.getText());
@@ -106,7 +105,7 @@ public class ManagerAddUserController implements Initializable
         }
         else
         {
-            showMissingInfoDialog();
+            snackBarPopup("Name required");
             System.out.println("User not added: missing name");
         }  
     }
@@ -118,29 +117,13 @@ public class ManagerAddUserController implements Initializable
         stage.close();
     }
     
-    private void showMissingInfoDialog()
-    {
-        stackPane.toFront();
-            JFXDialogLayout content = new JFXDialogLayout();
-            content.setHeading(new Text("Missing information"));
-            content.setBody(new Text("Required information: \n"
-            +"-Name\n"
-            +"-Email or Phone number"));
-
-            JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
-            JFXButton button = new JFXButton("Okay");
-            button.setStyle("-fx-background-color:  #00c4ad; -fx-text-fill: white;");
-            
-            button.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event)
-                    {
-                        dialog.close();
-                        stackPane.toBack();
-                    }
-            });
-            content.setActions(button);
-            dialog.show();
+        public void snackBarPopup(String str)
+      {
+        int time = 3000;
+        JFXSnackbar snackbar = new JFXSnackbar(rootPane);
+        snackbar.show(str, time);
+        PauseTransition pause = new PauseTransition(Duration.millis(time));
+        pause.play();
     }
     
 }

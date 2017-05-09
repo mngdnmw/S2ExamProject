@@ -1,7 +1,6 @@
 package GUI.Controller;
 
 import BE.User;
-import GUI.Model.GeneralInfoModel;
 import GUI.Model.ModelFacade;
 
 import com.jfoenix.controls.JFXButton;
@@ -56,12 +55,12 @@ public class ManagerViewController implements Initializable
     private AnchorPane root;
     @FXML
     private JFXButton btnStats;
-    
-    GeneralInfoModel dataModel = new GeneralInfoModel();
-    ModelFacade modelFacade = new ModelFacade();
-    User selectedUser;
     @FXML
     private JFXButton btnClose;
+    
+    ModelFacade modelFacade = new ModelFacade();
+    User selectedUser;
+    
     
     /**
      * Initializes the controller class.
@@ -70,7 +69,7 @@ public class ManagerViewController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
     {
         setTableProperties();
-        tblVolunteers.setItems(FXCollections.observableArrayList(dataModel.getAllUsers()));
+        tblVolunteers.setItems(FXCollections.observableArrayList(modelFacade.getAllUsers()));
         if(modelFacade.getCurrentUser() != null)
         {
             lblUserName.setText(lblUserName.getText()+" " +modelFacade.getCurrentUser().getName());
@@ -254,8 +253,7 @@ public class ManagerViewController implements Initializable
     
     private void setTableItems()
     {
-        //refactor so that you use the facade rather than model? -Meng 
-        tblVolunteers.setItems(FXCollections.observableArrayList(dataModel.getAllUsers()));
+        tblVolunteers.setItems(FXCollections.observableArrayList(modelFacade.getAllUsers()));
     }
 
     @FXML
