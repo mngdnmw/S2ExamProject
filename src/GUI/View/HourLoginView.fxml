@@ -14,21 +14,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.HourLoginViewController">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.HourLoginViewController">
     <children>
         <BorderPane prefHeight="600.0" prefWidth="822.0" style="-fx-background-color: FFFFFF;">
             <bottom>
                 <HBox alignment="BOTTOM_CENTER" prefHeight="305.0" prefWidth="800.0" spacing="44.0" BorderPane.alignment="CENTER">
                     <children>
-                        <JFXButton fx:id="btnLanguage" buttonType="RAISED" defaultButton="true" onAction="#ChangeLanguageAction" prefHeight="150.0" prefWidth="150.0" ripplerFill="WHITE" stylesheets="@MainLayout.css" text="English" textFill="WHITE">
-                            <font>
-                                <Font name="System Bold Italic" size="23.0" />
-                            </font>
-                            <styleClass>
-                                <String fx:value="JFXButtonEnglish" />
-                                <String fx:value="JFXRoundedButton" />
-                            </styleClass>
-                        </JFXButton>
+                  <JFXButton fx:id="btnLanguage" buttonType="RAISED" onAction="#ChangeLanguageAction" prefHeight="150.0" prefWidth="150.0" ripplerFill="WHITE" styleClass="JFXRoundedButton" text="Sprog" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold Italic" size="23.0" />
+                     </font>
+                  </JFXButton>
                         <JFXButton fx:id="btnLogHours" buttonType="RAISED" defaultButton="true" onAction="#LogHoursAction" prefHeight="260.0" prefWidth="260.0" ripplerFill="WHITE" stylesheets="@MainLayout.css" text="Log Hours" textFill="WHITE">
                             <font>
                                 <Font name="System Bold Italic" size="36.0" />
@@ -167,16 +163,26 @@
                         <JFXPasswordField fx:id="txtPassword" focusColor="#00e2c7" styleClass="logintextFields" />
                     </children>
                 </HBox>
-                <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
                     <children>
-                        <Label fx:id="lblWrongPass" styleClass="logintextAndFontLabels" text="Wrong password" visible="false" />
                         <JFXButton fx:id="btnLogin" buttonType="RAISED" styleClass="loginbuttons" text="Login" />
                         <JFXButton fx:id="btnCancel" buttonType="RAISED" styleClass="loginbuttons" text="Cancel" />
                     </children>
+               <padding>
+                  <Insets bottom="1.0" top="8.0" />
+               </padding>
                 </HBox>
+                  <Label fx:id="lblWrongPass" alignment="CENTER_RIGHT" prefHeight="19.0" prefWidth="420.0" text="Wrong username or password" visible="false">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
             </children>
             <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
             </padding>
         </VBox>
     </children>

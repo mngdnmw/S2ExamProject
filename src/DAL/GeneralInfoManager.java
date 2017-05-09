@@ -34,7 +34,7 @@ public class GeneralInfoManager extends ConnectionManager
      * @return
      */
     public User getUserInfo(int userId)
-    {
+      {
         //String query = "select [user].[name], [user].[email],[user].phone From [user] where [user].userid ="+userId;
         String query = "select [user].* from [user] where [user].userid =" + userId;
 
@@ -42,11 +42,9 @@ public class GeneralInfoManager extends ConnectionManager
           {
             Statement s = con.createStatement();
             ResultSet rs = s.executeQuery(query);
-            System.out.println(query);
-            System.out.println(rs);
-            
-            while(rs.next())
-            {
+
+            while (rs.next())
+              {
                 int id = rs.getInt("userid");
                 String name = rs.getString("name");
                 String email = rs.getString("email");
@@ -58,12 +56,10 @@ public class GeneralInfoManager extends ConnectionManager
                 //If it's a volunteer
                 if (type == 0)
                   {
-                    System.out.println("type0");
+
                     Volunteer volunteer = null;
                     //(id, name, email, password, type, phone, note);
                     volunteer = new Volunteer(id, name, email, phone, note, residence);
-
-                    System.out.println("Volunteer info: " + volunteer.getName());
 
                     return volunteer;
                   }
@@ -71,12 +67,10 @@ public class GeneralInfoManager extends ConnectionManager
                 //If it's a manager
                 if (type == 1)
                   {
-                    System.out.println("type1");
+
                     Manager manager = null;
                     //(id, name, email, password, type, phone, note);
                     manager = new Manager(id, name, email, phone, note, residence);
-
-                    System.out.println("Manager info: " + manager.getName());
 
                     return manager;
                   }
@@ -84,12 +78,10 @@ public class GeneralInfoManager extends ConnectionManager
                 //If it's an admin
                 if (type == 2)
                   {
-                    System.out.println("type2");
+
                     Admin admin = null;
                     //(id, name, email, password, type, phone, note);
                     admin = new Admin(id, name, email, phone, note, residence);
-
-                    System.out.println("Admin info: " + admin.getName());
 
                     return admin;
                   }
@@ -126,30 +118,30 @@ public class GeneralInfoManager extends ConnectionManager
                 switch (type)
                   {
                     case 0:
-                        System.out.println("type0");
+
                         Volunteer volunteer = null;
                         //(id, name, email, password, type, phone, note);
                         volunteer = new Volunteer(id, name, email, phone, note, residence);
                         users.add(volunteer);
-                        System.out.println("Volunteer " + volunteer.getName() + " added to the list");
+
                         break;
 
                     case 1:
-                        System.out.println("type1");
+
                         Manager manager = null;
                         //(id, name, email, password, type, phone, note);
                         manager = new Manager(id, name, email, phone, note, residence);
                         users.add(manager);
-                        System.out.println("Manager " + manager.getName() + " added to the list");
+
                         break;
 
                     case 2:
-                        System.out.println("type2");
+
                         Admin admin = null;
                         //(id, name, email, password, type, phone, note);
                         admin = new Admin(id, name, email, phone, note, residence);
                         users.add(admin);
-                        System.out.println("Admin " + admin.getName() + " added to the list");
+
                         break;
 
                     default:
@@ -189,7 +181,6 @@ public class GeneralInfoManager extends ConnectionManager
                 Volunteer volunteer = null;
                 //(id, name, email, password, type, phone, note);
                 volunteers.add(new Volunteer(id, name, email, phone, note, residence));
-                System.out.println("Volunteer " + volunteer.getName() + " added to the list");
 
               }
           }
@@ -224,7 +215,6 @@ public class GeneralInfoManager extends ConnectionManager
                 Manager manager = null;
                 //(id, name, email, password, type, phone, note);
                 managers.add(new Manager(id, name, email, phone, note, residence));
-                System.out.println("Volunteer " + manager.getName() + " added to the list");
 
               }
           }
@@ -258,7 +248,6 @@ public class GeneralInfoManager extends ConnectionManager
                 Admin admin = null;
                 //(id, name, email, password, type, phone, note);
                 admins.add(new Admin(id, name, email, phone, note, residence));
-                System.out.println("Volunteer " + admin.getName() + " added to the list");
 
               }
           }
@@ -304,10 +293,10 @@ public class GeneralInfoManager extends ConnectionManager
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
 
-            rs.next();
-            System.out.println(rs.getInt("userid"));
-            return rs.getInt("userid");
-
+            if (rs.next())
+              {
+                return rs.getInt("userid");
+              }
           }
         catch (SQLException ex)
           {
@@ -365,10 +354,10 @@ public class GeneralInfoManager extends ConnectionManager
 
     public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence)
       {
-        try(Connection con = super.getConnection())
-        {
-            String sqlCommand =
-            "UPDATE [user] SET name=?, email=?, type=?, phone=?, residence=?, note=? WHERE userid=?";
+        try (Connection con = super.getConnection())
+          {
+            String sqlCommand
+                    = "UPDATE [user] SET name=?, email=?, type=?, phone=?, residence=?, note=? WHERE userid=?";
             PreparedStatement pstat = con.prepareStatement(sqlCommand);
             pstat.setString(1, name);
             pstat.setString(2, email);
@@ -378,68 +367,85 @@ public class GeneralInfoManager extends ConnectionManager
             pstat.setString(6, note);
             pstat.setInt(7, userId);
             pstat.executeUpdate();
-        }
-        catch(SQLException sqle)
-        {
+          }
+        catch (SQLException sqle)
+          {
             System.out.println("Exception in: DataManager: updateInfo method");
             System.err.println(sqle);
-        }
-    }
-    
-    public void updateUserImage(User user, File img) throws FileNotFoundException{
+          }
+      }
+
+    public void updateUserImage(User user, File img) throws FileNotFoundException
+      {
         List<Integer> hasImg = new ArrayList<>();
         String checkQuery = "select [userid] from [image]";
-        try(Connection con = super.getConnection()) {
+        try (Connection con = super.getConnection())
+          {
             Statement s = con.createStatement();
             ResultSet rs = s.executeQuery(checkQuery);
-            while(rs.next()) {
+            while (rs.next())
+              {
                 hasImg.add(rs.getInt("userid"));
-            }
-        } catch(SQLException e) {
+              }
+          }
+        catch (SQLException e)
+          {
             System.out.println(e);
-        }
-        
+          }
+
         String query;
         PreparedStatement ps;
         long len = img.length();
-        try(Connection con = super.getConnection()) {
-            if(hasImg.contains(user.getId())) {
-                query = "update [image] set [img] = ? where [userid] = '"+user.getId()+"'";
+        try (Connection con = super.getConnection())
+          {
+            if (hasImg.contains(user.getId()))
+              {
+                query = "update [image] set [img] = ? where [userid] = '" + user.getId() + "'";
                 ps = con.prepareStatement(query);
-                ps.setBinaryStream(1, new FileInputStream(img),len);
-            } else {
+                ps.setBinaryStream(1, new FileInputStream(img), len);
+              }
+            else
+              {
                 query = "insert into [image]([userid],[img]) values (?,?)";
                 ps = con.prepareStatement(query);
                 ps.setInt(1, user.getId());
-                ps.setBinaryStream(2, new FileInputStream(img),len);
-            }
-        ps.execute();
-            
-        } catch(SQLException e) {
+                ps.setBinaryStream(2, new FileInputStream(img), len);
+              }
+            ps.execute();
+
+          }
+        catch (SQLException e)
+          {
             System.out.println(e);
-        }
-    }
-    
-    public InputStream getUserImage(User user) {
-        String query = "select [img] from [image] where [image].[userid] = "+user.getId();
-        try(Connection con = super.getConnection()) {
+          }
+      }
+
+    public InputStream getUserImage(User user)
+      {
+        String query = "select [img] from [image] where [image].[userid] = " + user.getId();
+        try (Connection con = super.getConnection())
+          {
             Statement s = con.createStatement();
             ResultSet rs = s.executeQuery(query);
-            while(rs.next()) {
-                
+            while (rs.next())
+              {
+
                 return rs.getBlob("img").getBinaryStream();
-            }
-        } catch(SQLException e) {
+              }
+          }
+        catch (SQLException e)
+          {
             System.out.println(e);
-        }
+          }
         return null;
-    } 
+      }
+
     public void addUser(String name, String email, String password, int type, int phone, String residence, String note)
-    {
-        try(Connection con = super.getConnection())
-        {
-            String sqlCommand =
-            "insert into [user] ([name], [email], [password], [type], [phone], [residence], [note]) values (?,?,?,?,?,?,?)";
+      {
+        try (Connection con = super.getConnection())
+          {
+            String sqlCommand
+                    = "insert into [user] ([name], [email], [password], [type], [phone], [residence], [note]) values (?,?,?,?,?,?,?)";
             PreparedStatement pstat = con.prepareStatement(sqlCommand);
             pstat.setString(1, name);
             pstat.setString(2, email);
@@ -449,20 +455,20 @@ public class GeneralInfoManager extends ConnectionManager
             pstat.setString(6, residence);
             pstat.setString(7, note);
             pstat.executeUpdate();
-        }
+          }
         catch (SQLException sqle)
-        {
+          {
             System.out.println("Exception in: DataManager: addUser method");
             System.err.println(sqle);
-        }
-    }
-    
+          }
+      }
+
     public void updateUserInfo(String name, String email, String password, int type, int phone, String address, String note, int userid)
-    {
-        try(Connection con = super.getConnection())
-        {
-            String sqlCommand =
-            "UPDATE [user] SET name=?, email=?, password=?, type=?, phone=?, residence=?, note=? WHERE userid=?";
+      {
+        try (Connection con = super.getConnection())
+          {
+            String sqlCommand
+                    = "UPDATE [user] SET name=?, email=?, password=?, type=?, phone=?, residence=?, note=? WHERE userid=?";
             PreparedStatement pstat = con.prepareStatement(sqlCommand);
             pstat.setString(1, name);
             pstat.setString(2, email);
@@ -473,12 +479,11 @@ public class GeneralInfoManager extends ConnectionManager
             pstat.setString(7, note);
             pstat.setInt(8, userid);
             pstat.executeUpdate();
-        }
-        catch(SQLException sqle)
-        {
+          }
+        catch (SQLException sqle)
+          {
             System.out.println("Exception in: DataManager: updateInfo method");
             System.err.println(sqle);
-        }
-    }
-}
-
+          }
+      }
+  }
