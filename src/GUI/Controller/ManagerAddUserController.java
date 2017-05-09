@@ -3,6 +3,7 @@ package GUI.Controller;
 import BE.Guild;
 import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXListView;
@@ -10,6 +11,8 @@ import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -43,20 +46,21 @@ public class ManagerAddUserController implements Initializable
     private JFXButton btnCancel;
     @FXML
     private JFXTextArea txtNotes;
-    private TableColumn<Guild, String> colGuilds;
-    private StackPane stackPane;
-
-    ModelFacade modelFacade = new ModelFacade();
     @FXML
     private AnchorPane rootPane;
     @FXML
     private JFXTextField txtPassord;
     @FXML
-    private JFXListView<?> listViewGuilds;
+    private JFXListView<Guild> listViewGuilds;
     @FXML
     private JFXButton JFXBtnAddPhoto;
-    
-    
+    @FXML
+    private JFXCheckBox chkVolunteer;
+    @FXML
+    private JFXCheckBox chkManager;
+
+    private StackPane stackPane;
+    ModelFacade modelFacade = new ModelFacade();
 
     /**
      * Initializes the controller class.
@@ -64,13 +68,16 @@ public class ManagerAddUserController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        setTableProperties();
+        setListView();
+        
     }    
 
-    private void setTableProperties()
+    private void setListView()
     {
-        colGuilds.setCellValueFactory(new PropertyValueFactory("name"));
+        ObservableList<Guild> items =FXCollections.observableArrayList (modelFacade.getAllGuilds());
+        listViewGuilds.setItems(items);
     }
+    
     
 
     @FXML

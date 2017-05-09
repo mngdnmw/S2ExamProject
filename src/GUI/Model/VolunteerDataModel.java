@@ -1,6 +1,16 @@
 package GUI.Model;
 
+import BE.Day;
+import BE.User;
+import BLL.BLLFacade;
+import java.util.List;
+
 public class VolunteerDataModel
 {
-    //Calculating volunteer information so we can display the stats
+        private final static BLLFacade BLL_FAC = new BLLFacade();
+        
+        public List<Day> getWorkedDays(User user)
+    {
+        return BLL_FAC.getWorkedDays(user);
+    }
 }

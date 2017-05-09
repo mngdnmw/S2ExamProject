@@ -2,6 +2,7 @@ package GUI.Controller;
 
 import BE.User;
 import GUI.Model.GeneralInfoModel;
+import GUI.Model.ModelFacade;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
@@ -42,8 +43,6 @@ public class ManagerViewController implements Initializable
     @FXML
     private JFXButton btnEditInfo;
     @FXML
-    private JFXButton btnLogOut;
-    @FXML
     private TableView<User> tblVolunteers;
     @FXML
     private TableColumn<User, String> colName;
@@ -55,11 +54,14 @@ public class ManagerViewController implements Initializable
     private TableColumn<User, String> colGuild;
     @FXML
     private AnchorPane root;
-    
-    GeneralInfoModel dataModel = new GeneralInfoModel();
-    User selectedUser;
     @FXML
     private JFXButton btnStats;
+    
+    GeneralInfoModel dataModel = new GeneralInfoModel();
+    ModelFacade modelFacade = new ModelFacade();
+    User selectedUser;
+    @FXML
+    private JFXButton btnClose;
     
     /**
      * Initializes the controller class.
@@ -69,6 +71,11 @@ public class ManagerViewController implements Initializable
     {
         setTableProperties();
         tblVolunteers.setItems(FXCollections.observableArrayList(dataModel.getAllUsers()));
+        if(modelFacade.getCurrentUser() != null)
+        {
+            lblUserName.setText(lblUserName.getText()+" " +modelFacade.getCurrentUser().getName());
+        }
+        
     }
 
     /**
@@ -95,7 +102,7 @@ public class ManagerViewController implements Initializable
         try
         {
             Stage primStage = (Stage) tblVolunteers.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("/GUI/View/ManagerAddUser.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/ManagerAddUserView.fxml"));
            
             //ManagerViewController.setSelectedUser(selectedUser);
             
@@ -146,7 +153,7 @@ public class ManagerViewController implements Initializable
             {
                 selectedUser = tblVolunteers.getSelectionModel().getSelectedItem();
                 Stage primStage = (Stage) tblVolunteers.getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("/GUI/View/ManagerEditView.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/ManagerEditView.fxml"));
                 ManagerEditViewController.setSelectedUser(selectedUser);
 
                 Parent root = loader.load();
@@ -205,7 +212,7 @@ public class ManagerViewController implements Initializable
             {
                 selectedUser = tblVolunteers.getSelectionModel().getSelectedItem();
                 Stage primStage = (Stage) tblVolunteers.getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("/GUI/View/ManagerEditView.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/ManagerEditView.fxml"));
 
                 ManagerEditViewController.setSelectedUser(selectedUser);
 
@@ -244,14 +251,17 @@ public class ManagerViewController implements Initializable
         }
     }
 
-    @FXML
-    private void onBtnLogOutPressed(ActionEvent event)
-    {
-
-    }
     
     private void setTableItems()
     {
+        //refactor so that you use the facade rather than model? -Meng 
         tblVolunteers.setItems(FXCollections.observableArrayList(dataModel.getAllUsers()));
+    }
+
+    @FXML
+    private void onBtnClosePressed(ActionEvent event)
+    {
+        Stage stage = (Stage) btnClose.getScene().getWindow();
+        stage.close();
     }
 }

@@ -1,9 +1,7 @@
 package GUI.Controller;
 
-import BE.Admin;
-import BE.Manager;
+import BE.Day;
 import BE.User;
-import BE.Volunteer;
 import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
@@ -16,17 +14,16 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import com.sun.deploy.util.StringUtils;
-import com.sun.javafx.scene.control.skin.DatePickerSkin;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -45,10 +42,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -75,19 +70,11 @@ public class UserInfoViewController implements Initializable
     @FXML
     private HBox hBoxCalAll;
     @FXML
-    private HBox hBoxCalYr;
-    @FXML
     private HBox hBoxCalMth;
     @FXML
     private HBox hBoxCalDay;
     @FXML
     private Label lblHrsAll;
-    @FXML
-    private Label lblHrsYr;
-    @FXML
-    private Label lblHrsMth;
-    @FXML
-    private Label lblHrsDay;
     @FXML
     private AnchorPane anchorGraph;
     @FXML
@@ -120,8 +107,6 @@ public class UserInfoViewController implements Initializable
     @FXML
     private Tab tabAll;
     @FXML
-    private Tab tabYear;
-    @FXML
     private Tab tabMonth;
     @FXML
     private Tab tabDay;
@@ -133,9 +118,15 @@ public class UserInfoViewController implements Initializable
     private HBox hBoxInvisBtn;
 
     @FXML
-    private JFXTreeTableView <User> treeViewAllHours;
+    private JFXTreeTableView<Day> treeViewAllHours;
 
     private int GUIView;
+    @FXML
+    private JFXTextField JFXTxtFSearchDate;
+    @FXML
+    private Label lblHrsAll2;
+    @FXML
+    private Label lblHrsAll3;
 
     /**
      * Initializes the controller class.
@@ -149,6 +140,7 @@ public class UserInfoViewController implements Initializable
         showConstantCalendar();
         setUserImage();
         checkTypeOfUser();
+        showTreeTable();
     }
 
     public void setCurrentUser(User currentUser)
@@ -171,38 +163,76 @@ public class UserInfoViewController implements Initializable
         hBoxCalMth.getChildren().add(POPUP_CAL);
 
     }
-    
-//    /**
-//     * Initialises the tree table containing information about the User
-//     */
-//    private void showTreeTable(){
-//        JFXTreeTableColumn<User,String> dateCol = new JFXTreeTableColumn<>("Date");
-//        dateCol.setPrefWidth(50);
-//        dateCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
-//            @Override
-//            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<User, String> param)
-//            {
-//                return param.getValue().getValue().getNote();
-//            }
-//        });
-//        JFXTreeTableColumn<User,Integer> hoursCol = new JFXTreeTableColumn<>("Hours");
-//        hoursCol.setPrefWidth(50);
-//        JFXTreeTableColumn<User,String> guildCol = new JFXTreeTableColumn<>("Guild");
-//        guildCol.setPrefWidth(50);
-//        
-//        treeViewAllHours.getColumns().setAll(dateCol, hoursCol, guildCol);
-//        final TreeItem<User> tree = new RecursiveTreeItem<User>(users, RecursiveTreeObject::getChildren);
-//        treeViewAllHours.setRoot(tree);
-//        treeViewAllHours.setShowRoot(false);
-//                
-//        
-//    }
-    
-    
+
     /**
-     * Check what type of User this is, if it's a Manager or Administrator,
-     * a button will be created.
-     * 
+     * Initialises the tree table containing information about the User
+     */
+    private void showTreeTable()
+    {
+        //Need to do some threading for this method
+        
+        //Date column set up
+        JFXTreeTableColumn<Day, String> dateCol = new JFXTreeTableColumn<>("Date");
+        dateCol.prefWidthProperty().bind(treeViewAllHours.widthProperty().divide(3));
+        dateCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Day, String>, ObservableValue<String>>()
+        {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Day, String> param)
+            {
+                return param.getValue().getValue().dateProperty();
+            }
+        });
+
+        //Hours column set up
+        JFXTreeTableColumn<Day, Integer> hoursCol = new JFXTreeTableColumn<>("Hours");
+        hoursCol.prefWidthProperty().bind(treeViewAllHours.widthProperty().divide(3));
+        hoursCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Day, Integer> param) -> param.getValue().getValue().hourProperty().asObject());
+
+        //Guild column set up
+        JFXTreeTableColumn<Day, String> guildCol = new JFXTreeTableColumn<>("Guild");
+        guildCol.prefWidthProperty().bind(treeViewAllHours.widthProperty().divide(3));
+        guildCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Day, String> param) -> param.getValue().getValue().guildProperty());
+
+        treeViewAllHours.setPlaceholder(new Label("Nothing found"));
+        
+        ObservableList<Day> daysWorked = FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(currentUser));
+        
+        final TreeItem<Day> rootOfTree = new RecursiveTreeItem<>(daysWorked, RecursiveTreeObject::getChildren);
+        
+        dateCol.getStyleClass().add("col");
+        hoursCol.getStyleClass().add("col");
+        guildCol.getStyleClass().add("col");
+        
+        treeViewAllHours.getColumns().setAll(dateCol, hoursCol, guildCol);
+        treeViewAllHours.setRoot(rootOfTree);
+        treeViewAllHours.setShowRoot(false);
+
+        JFXTxtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) ->
+        {
+            treeViewAllHours.setPredicate((TreeItem<Day> day) ->
+            {
+                String regex = "[^a-zA-Z0-9\\s]";
+                Boolean search =
+                        day.getValue().dateProperty().getValue().replaceAll(regex, "")
+                                .contains(newValue.replaceAll(regex, ""))
+                        ||
+                        day.getValue().guildProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                contains(newValue.toLowerCase().replaceAll(regex, ""));
+                
+                return search;
+            });
+        });
+    }
+
+    private void searchListener()
+    {
+
+    }
+
+    /**
+     * Check what type of User this is, if it's a Manager or Administrator, a
+     * button will be created.
+     *
      * @param 1 = Manager, 2 = Admin
      */
     private void checkTypeOfUser()
