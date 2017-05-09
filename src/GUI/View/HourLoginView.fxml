@@ -163,16 +163,26 @@
                         <JFXPasswordField fx:id="txtPassword" focusColor="#00e2c7" styleClass="logintextFields" />
                     </children>
                 </HBox>
-                <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
                     <children>
-                        <Label fx:id="lblWrongPass" styleClass="logintextAndFontLabels" text="Wrong password" visible="false" />
                         <JFXButton fx:id="btnLogin" buttonType="RAISED" styleClass="loginbuttons" text="Login" />
                         <JFXButton fx:id="btnCancel" buttonType="RAISED" styleClass="loginbuttons" text="Cancel" />
                     </children>
+               <padding>
+                  <Insets bottom="1.0" top="8.0" />
+               </padding>
                 </HBox>
+                  <Label fx:id="lblWrongPass" alignment="CENTER_RIGHT" prefHeight="19.0" prefWidth="420.0" text="Wrong username or password" visible="false">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </Label>
             </children>
             <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
             </padding>
         </VBox>
     </children>
