@@ -506,5 +506,10 @@ public class UserInfoViewController implements Initializable
             btnEditSave.setDisable(false);
         }
     }
+    
+    @FXML
+    private void handleLogout(ActionEvent event)
+    {
+    }
 
 }
