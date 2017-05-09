@@ -18,8 +18,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -127,6 +125,8 @@ public class UserInfoViewController implements Initializable
     private Label lblHrsAll2;
     @FXML
     private Label lblHrsAll3;
+    @FXML
+    private JFXButton btnLogout;
 
     /**
      * Initializes the controller class.
@@ -224,10 +224,7 @@ public class UserInfoViewController implements Initializable
         });
     }
 
-    private void searchListener()
-    {
-
-    }
+  
 
     /**
      * Check what type of User this is, if it's a Manager or Administrator, a
@@ -300,6 +297,7 @@ public class UserInfoViewController implements Initializable
         lblResidence.setText(currentUser.getResidence());
     }
 
+    //Need to finish
     @FXML
     private void handleClickTab(MouseEvent event)
     {
@@ -466,15 +464,15 @@ public class UserInfoViewController implements Initializable
     {
         int btnSavePosCol = GridPane.getColumnIndex(btnEditSave); //saving position
         int btnSavePosRow = GridPane.getRowIndex(btnEditSave);
+        btnEditSave.setStyle("-fx-background-color: #61B329;");
         GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) - 1); //moving save button one up
+       
         btnCancel = new JFXButton();
         btnCancel.setText("Cancel"); //preparing cancel button
-
         btnCancel.setButtonType(JFXButton.ButtonType.RAISED);
+        btnCancel.setStyle("-fx-background-color: #ff0000;");
         btnCancel.setTextFill(Color.WHITE);
-        btnCancel.setStyle(btnEditSave.getStyle());
         btnCancel.setPadding(btnEditSave.getPadding());
-
         gridEdit.add(btnCancel, btnSavePosCol, btnSavePosRow); //adding to the old position of save btn
         btnCancel.setOnAction(new EventHandler<ActionEvent>()
         { //setting onAction, nothing changed, just show old labels again
@@ -494,6 +492,7 @@ public class UserInfoViewController implements Initializable
                 removeCancelButton(); //if cancel button clicked, it will disappear
                 editing = false;
                 btnEditSave.setText("Edit");
+                btnEditSave.setStyle("-fx-background-color:#00c4ad;");
             }
         });
     }
