@@ -2,6 +2,7 @@ package GUI.Model;
 
 import javafx.animation.FadeTransition;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 public class AnimationModel
@@ -14,6 +15,13 @@ public class AnimationModel
      * @param node
      * @return
      */
+    private Image loaderImage = new Image("file:Resources/animal.gif");
+
+    public Image getLoaderImage()
+      {
+        return loaderImage;
+      }
+
     public FadeTransition fadeInTransition(Duration dur, Node node)
       {
         FadeTransition ft = new FadeTransition(dur, node);
