@@ -10,7 +10,6 @@ public abstract class User extends RecursiveTreeObject<User>
     String email;
     int type;
     int phone;
-    String address;
     String note;
     String residence;
 
@@ -20,7 +19,6 @@ public abstract class User extends RecursiveTreeObject<User>
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.address = address;
         this.note = note;
         this.residence = residence;
       }
@@ -50,10 +48,6 @@ public abstract class User extends RecursiveTreeObject<User>
         return phone;
       }
 
-    public String getAddress()
-    {
-        return address;
-    }
     public String getNote()
       {
         return note;
