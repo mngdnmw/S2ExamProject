@@ -15,12 +15,12 @@ public class S2ExamProject extends Application
       {
 
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/View/HourLoginView.fxml"));
-
+        String title = "VMS - Volunteer Maintenance System";
         Scene scene = new Scene(root);
 
         stage.setScene(scene);
         stage.show();
-
+        stage.setTitle(title);
       }
 
     /**

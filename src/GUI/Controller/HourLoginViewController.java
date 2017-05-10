@@ -12,9 +12,12 @@ import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -79,22 +82,41 @@ public class HourLoginViewController implements Initializable
     private JFXButton btnLogin;
     @FXML
     private JFXButton btnCancel;
+    @FXML
+    private AnchorPane ancDarken;
+    @FXML
+    private ImageView imgVLoading;
 
     private String strLogThanks = "Thanks!";
     private String strContribution = "Your hours have been logged. Thank you!";
     private String strLogin = "Log In";
     private String strCancel = "Cancel";
     private String strLanguage = "English";
-
     private Image iconDK, iconENG;
     private final ImageView imgViewLngBut = new ImageView();
     //Models used by this Controller
     private final static ModelFacade MOD_FACADE = new ModelFacade();
-    @FXML
-    private AnchorPane ancDarken;
 
     JFXButton btnDanish = new JFXButton();
     JFXButton btnEnglish = new JFXButton();
+    boolean loggingIn = false;
+    private final Service serviceLog = new Service()
+      {
+        @Override
+        protected Task createTask()
+          {
+            return new Task()
+              {
+                @Override
+                protected Object call() throws Exception
+                  {
+                    loginEvent();
+
+                    return null;
+                  }
+              };
+          }
+      };
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -127,6 +149,7 @@ public class HourLoginViewController implements Initializable
                     cmbGuildChooser.getSelectionModel().getSelectedItem().getId()
             );
             snackBarPopup(strContribution);
+            System.out.println(cmbGuildChooser.getSelectionModel().getSelectedItem().getId()+ "");
           }
 
         else
@@ -216,7 +239,8 @@ public class HourLoginViewController implements Initializable
           {
             if (event.getCode() == KeyCode.ENTER)
               {
-                loginEvent();
+                serviceLog.restart();
+                loadingScreen();
               }
           });
         btnLogin.setOnAction(new EventHandler<ActionEvent>()
@@ -224,7 +248,8 @@ public class HourLoginViewController implements Initializable
             @Override
             public void handle(ActionEvent e)
               {
-                loginEvent();
+                serviceLog.restart();
+                loadingScreen();
               }
           });
 
@@ -383,17 +408,35 @@ public class HourLoginViewController implements Initializable
       {
 
         MOD_FACADE.getUserFromLogin(txtUsername.getText(), txtPassword.getText());
-
-        if (MOD_FACADE.getCurrentUser() != null)
+        Platform.runLater(new Runnable()
           {
-            MOD_FACADE.changeView(0);
-            Stage stage = (Stage) root.getScene().getWindow();
-            stage.close();
+            @Override
+            public void run()
+              {
+                if (MOD_FACADE.getCurrentUser() != null)
+                  {
 
-          }
-        else
-          {
-            lblWrongPass.visibleProperty().set(true);
-          }
+                    MOD_FACADE.changeView(0);
+                    Stage stage = (Stage) root.getScene().getWindow();
+                    stage.close();
+
+                  }
+                else
+                  {
+                    lblWrongPass.visibleProperty().set(true);
+                  }
+              }
+          });
+      }
+
+    private void loadingScreen()
+      {
+
+        imgVLoading = new ImageView(MOD_FACADE.getLoaderImg());
+        imgVLoading.setPreserveRatio(true);
+        imgVLoading.maxHeight(100);
+        ancDarken.setVisible(true);
+        imgVLoading.setVisible(true);
+
       }
   }
