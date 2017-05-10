@@ -11,6 +11,7 @@ import java.util.List;
 import javafx.animation.FadeTransition;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
+import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 public class ModelFacade
@@ -76,6 +77,11 @@ public class ModelFacade
     public Image getLoaderImg()
       {
         return ANIM_MOD.getLoaderImage();
+      }
+
+    public StackPane getLoadingScreen()
+      {
+        return ANIM_MOD.getLoadingScreen();
       }
 
     //Data Model
