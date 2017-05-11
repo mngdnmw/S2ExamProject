@@ -25,8 +25,8 @@
         <columns>
           <TableColumn fx:id="colName" prefWidth="114.06013679504395" text="Name" />
           <TableColumn fx:id="colPhone" prefWidth="91.93986511230469" text="Phone" />
-            <TableColumn fx:id="colEmail" prefWidth="141.55975341796875" text="Email" />
-            <TableColumn fx:id="colGuild" prefWidth="95.9796142578125" text="Guild" />
+            <TableColumn fx:id="colEmail" prefWidth="225.0" text="Email" />
+            <TableColumn fx:id="colGuild" minWidth="6.0" prefWidth="13.0" text="Guild" />
         </columns>
       </TableView>
       <Label layoutX="467.0" layoutY="135.0" text="Notes:">
