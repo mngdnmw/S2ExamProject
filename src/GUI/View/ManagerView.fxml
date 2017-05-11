@@ -10,10 +10,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerViewController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerViewController">
    <children>
-      <Label fx:id="lblUserName" layoutX="19.0" layoutY="22.0" prefHeight="17.0" prefWidth="261.0" text="Logged in as:" />
+      <Label fx:id="lblUserName" layoutX="19.0" layoutY="22.0" prefHeight="17.0" prefWidth="508.0" text="Logged in as:" />
       <JFXButton fx:id="btnAddUser" buttonType="RAISED" layoutX="15.0" layoutY="456.0" onAction="#onBtnAddUserClicked" prefHeight="25.0" prefWidth="110.0" style="-fx-background-color: #029E99;" text="Add User" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />
@@ -26,8 +25,8 @@
         <columns>
           <TableColumn fx:id="colName" prefWidth="114.06013679504395" text="Name" />
           <TableColumn fx:id="colPhone" prefWidth="91.93986511230469" text="Phone" />
-            <TableColumn fx:id="colEmail" prefWidth="141.55975341796875" text="Email" />
-            <TableColumn fx:id="colGuild" prefWidth="95.9796142578125" text="Guild" />
+            <TableColumn fx:id="colEmail" prefWidth="225.0" text="Email" />
+            <TableColumn fx:id="colGuild" minWidth="6.0" prefWidth="13.0" text="Guild" />
         </columns>
       </TableView>
       <Label layoutX="467.0" layoutY="135.0" text="Notes:">
