@@ -94,7 +94,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                   </JFXCheckBox>
-                  <JFXCheckBox fx:id="chkManager" checkedColor="#1cbf6e" contentDisplay="CENTER" text="Manager" unCheckedColor="#949292">
+                  <JFXCheckBox fx:id="chkManager" checkedColor="#1cbf6e" contentDisplay="CENTER" disable="true" text="Manager" unCheckedColor="#949292">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
@@ -133,7 +133,7 @@
                   <Insets />
                </GridPane.margin>
             </JFXButton>
-            <JFXButton fx:id="JFXBtnAddPhoto" buttonType="RAISED" style="-fx-background-color: #00c4ad;" text="Update Photo" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+            <JFXButton fx:id="JFXBtnAddPhoto" buttonType="RAISED" disable="true" onAction="#pressedChangeImage" style="-fx-background-color: #00c4ad;" text="Update Photo" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </padding>

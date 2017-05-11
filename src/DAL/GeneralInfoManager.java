@@ -335,7 +335,7 @@ public class GeneralInfoManager extends ConnectionManager
         List<Guild> guilds = new ArrayList<>();
         try (Connection con = super.getConnection())
           {
-            String query = "SELECT * FROM [guild]";
+            String query = "SELECT * FROM [guild] where [guildid] > 2"; //after meeting we need to delete guild LOL and ASD, but right now i dont want to fuck it up
             PreparedStatement pstmt = con.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next())
