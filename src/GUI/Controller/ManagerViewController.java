@@ -254,6 +254,9 @@ public class ManagerViewController implements Initializable
     private void setTableItems()
     {
         tblVolunteers.setItems(FXCollections.observableArrayList(modelFacade.getAllUsers()));
+        
+        if(tblVolunteers.getSelectionModel().getSelectedItem() == null)
+            txtNotes.setText("");
     }
 
     @FXML
