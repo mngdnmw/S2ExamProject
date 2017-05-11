@@ -69,12 +69,12 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </ImageView>
-            <JFXTextField fx:id="txtName" promptText="Name" GridPane.columnIndex="1" />
-            <JFXTextField fx:id="txtPhone" promptText="Phone number" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <JFXTextField fx:id="txtEmail" promptText="Email" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <JFXTextField fx:id="txtAddress" promptText="Address" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <JFXTextField fx:id="txtPassord" prefWidth="298.0" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <JFXTextArea fx:id="txtNotes" prefHeight="189.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <JFXTextField fx:id="txtName" focusColor="#00e2c7" promptText="Name" GridPane.columnIndex="1" />
+            <JFXTextField fx:id="txtPhone" focusColor="#00e2c7" promptText="Phone number" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <JFXTextField fx:id="txtEmail" focusColor="#00e2c7" promptText="Email" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <JFXTextField fx:id="txtAddress" focusColor="#00e2c7" promptText="Address" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <JFXTextField fx:id="txtPassword" focusColor="#00e2c7" prefWidth="298.0" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <JFXTextArea fx:id="txtNotes" focusColor="#00e2c7" prefHeight="189.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <GridPane.margin>
                   <Insets bottom="15.0" top="10.0" />
                </GridPane.margin>
