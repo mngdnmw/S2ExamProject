@@ -84,9 +84,6 @@ public class HourLoginViewController implements Initializable
     private JFXButton btnCancel;
     @FXML
     private AnchorPane ancDarken;
-    @FXML
-    private ImageView imgVLoading;
-
     private String strLogThanks = "Thanks!";
     private String strContribution = "Your hours have been logged. Thank you!";
     private String strLogin = "Log In";
@@ -100,6 +97,7 @@ public class HourLoginViewController implements Initializable
     JFXButton btnDanish = new JFXButton();
     JFXButton btnEnglish = new JFXButton();
     boolean loggingIn = false;
+
     private final Service serviceLog = new Service()
       {
         @Override
@@ -112,6 +110,22 @@ public class HourLoginViewController implements Initializable
                   {
                     loginEvent();
 
+                    return null;
+                  }
+              };
+          }
+      };
+    private final Service serviceHours = new Service()
+      {
+        @Override
+        protected Task createTask()
+          {
+            return new Task()
+              {
+                @Override
+                protected Object call() throws Exception
+                  {
+                    logHours();
                     return null;
                   }
               };
@@ -144,23 +158,19 @@ public class HourLoginViewController implements Initializable
         lockButtons();
         if (!txtUser.getText().isEmpty() && !txtHours.getText().isEmpty() && !cmbGuildChooser.getSelectionModel().isEmpty())
           {
-            MOD_FACADE.logHours(
-                    txtUser.getText(), Integer.parseInt(txtHours.getText()),
-                    cmbGuildChooser.getSelectionModel().getSelectedItem().getId()
-            );
-            snackBarPopup(strContribution);
-            System.out.println(cmbGuildChooser.getSelectionModel().getSelectedItem().getId()+ "");
+            loadingScreen(true);
+            serviceHours.restart();
           }
 
         else
           {
             snackBarPopup("Please input information in all fields");
           }
-        unlockButtons();
       }
 
     @FXML
-    private void ChangeLanguageAction(ActionEvent event)
+    private void ChangeLanguageAction(ActionEvent event
+    )
       {
         lockButtons();
         languagePopup();
@@ -168,7 +178,8 @@ public class HourLoginViewController implements Initializable
       }
 
     @FXML
-    private void LogInAction(ActionEvent event)
+    private void LogInAction(ActionEvent event
+    )
       {
         lockButtons();
         loginPopup();
@@ -209,7 +220,7 @@ public class HourLoginViewController implements Initializable
         int time = 3000;
         JFXSnackbar snackbar = new JFXSnackbar(root);
         snackbar.show(str, time);
-        PauseTransition pause = new PauseTransition(Duration.millis(time));
+        PauseTransition pause = new PauseTransition(Duration.millis(time - 2000));
         pause.setOnFinished(
                 e -> unlockButtons()
         );
@@ -239,8 +250,11 @@ public class HourLoginViewController implements Initializable
           {
             if (event.getCode() == KeyCode.ENTER)
               {
-                serviceLog.restart();
-                loadingScreen();
+                if (!txtUsername.getText().isEmpty())
+                  {
+                    serviceLog.restart();
+                    loadingScreen(true);
+                  }
               }
           });
         btnLogin.setOnAction(new EventHandler<ActionEvent>()
@@ -248,10 +262,15 @@ public class HourLoginViewController implements Initializable
             @Override
             public void handle(ActionEvent e)
               {
-                serviceLog.restart();
-                loadingScreen();
+                if (!txtUsername.getText().isEmpty())
+                  {
+
+                    serviceLog.restart();
+                    loadingScreen(true);
+                  }
               }
-          });
+          }
+        );
 
         btnCancel.setOnAction(
                 new EventHandler<ActionEvent>()
@@ -419,24 +438,44 @@ public class HourLoginViewController implements Initializable
                     MOD_FACADE.changeView(0);
                     Stage stage = (Stage) root.getScene().getWindow();
                     stage.close();
-
                   }
                 else
                   {
                     lblWrongPass.visibleProperty().set(true);
                   }
+                loadingScreen(false);
               }
           });
       }
 
-    private void loadingScreen()
+    private void logHours()
       {
 
-        imgVLoading = new ImageView(MOD_FACADE.getLoaderImg());
-        imgVLoading.setPreserveRatio(true);
-        imgVLoading.maxHeight(100);
-        ancDarken.setVisible(true);
-        imgVLoading.setVisible(true);
+        MOD_FACADE.logHours(
+                txtUser.getText(), Integer.parseInt(txtHours.getText()),
+                cmbGuildChooser.getSelectionModel().getSelectedItem().getId()
+        );
+        Platform.runLater(new Runnable()
+          {
+            @Override
+            public void run()
+              {
+                snackBarPopup(strContribution);
+                System.out.println(cmbGuildChooser.getSelectionModel().getSelectedItem().getId() + "");
+                loadingScreen(false);
+              }
+          });
+      }
 
+    private void loadingScreen(Boolean StartLoading)
+      {
+        if (StartLoading == true)
+          {
+            root.getChildren().add(MOD_FACADE.getLoadingScreen());
+          }
+        else
+          {
+            root.getChildren().remove(MOD_FACADE.getLoadingScreen());
+          }
       }
   }
