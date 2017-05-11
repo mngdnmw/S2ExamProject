@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -38,7 +39,7 @@ public class ViewChangerModel
 
         try
           {
-            AnchorPane page = (AnchorPane) loader.load();
+            Pane page = (Pane) loader.load();
             Stage nxtStage = new Stage();
             nxtStage.initOwner(stage);
             nxtStage.initModality(Modality.WINDOW_MODAL);
@@ -65,12 +66,13 @@ public class ViewChangerModel
                 title = "VMS - Manager";
                 return ViewPath + ManagerString;
             case 2:
+                title = "VMS - Manager Editing";
                 return ViewPath + ManagerEditString;
             case 3:
                 title = "VMS - Volunteer Maintenance System";
                 return ViewPath + HourLoginString;
             case 4:
-                title = "VMS - Add new volunteer";
+                title = "VMS - Add New volunteer";
                 return ViewPath + ManagerAddUserString;
 
           }

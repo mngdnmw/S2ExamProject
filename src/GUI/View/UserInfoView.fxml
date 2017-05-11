@@ -275,7 +275,7 @@
                                                       <Insets left="5.0" right="5.0" />
                                                    </VBox.margin>
                                                 </JFXTextField>
-                                                <JFXButton alignment="CENTER" buttonType="RAISED" style="-fx-background-color: #00c4ad;" text="Edit " textFill="WHITE" translateX="50.0">
+                                                <JFXButton alignment="CENTER" buttonType="RAISED" disable="true" style="-fx-background-color: #00c4ad;" text="Edit " textFill="WHITE" translateX="50.0">
                                                    <VBox.margin>
                                                       <Insets top="20.0" />
                                                    </VBox.margin>

@@ -16,6 +16,7 @@ import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
@@ -24,9 +25,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -43,9 +47,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 
 public class UserInfoViewController implements Initializable
@@ -170,7 +178,7 @@ public class UserInfoViewController implements Initializable
     private void showTreeTable()
     {
         //Need to do some threading for this method
-        
+
         //Date column set up
         JFXTreeTableColumn<Day, String> dateCol = new JFXTreeTableColumn<>("Date");
         dateCol.prefWidthProperty().bind(treeViewAllHours.widthProperty().divide(3));
@@ -194,15 +202,15 @@ public class UserInfoViewController implements Initializable
         guildCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Day, String> param) -> param.getValue().getValue().guildProperty());
 
         treeViewAllHours.setPlaceholder(new Label("Nothing found"));
-        
+
         ObservableList<Day> daysWorked = FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(currentUser));
-        
+
         final TreeItem<Day> rootOfTree = new RecursiveTreeItem<>(daysWorked, RecursiveTreeObject::getChildren);
-        
+
         dateCol.getStyleClass().add("col");
         hoursCol.getStyleClass().add("col");
         guildCol.getStyleClass().add("col");
-        
+
         treeViewAllHours.getColumns().setAll(dateCol, hoursCol, guildCol);
         treeViewAllHours.setRoot(rootOfTree);
         treeViewAllHours.setShowRoot(false);
@@ -212,19 +220,16 @@ public class UserInfoViewController implements Initializable
             treeViewAllHours.setPredicate((TreeItem<Day> day) ->
             {
                 String regex = "[^a-zA-Z0-9\\s]";
-                Boolean search =
-                        day.getValue().dateProperty().getValue().replaceAll(regex, "")
+                Boolean search
+                        = day.getValue().dateProperty().getValue().replaceAll(regex, "")
                                 .contains(newValue.replaceAll(regex, ""))
-                        ||
-                        day.getValue().guildProperty().getValue().toLowerCase().replaceAll(regex, "").
+                        || day.getValue().guildProperty().getValue().toLowerCase().replaceAll(regex, "").
                                 contains(newValue.toLowerCase().replaceAll(regex, ""));
-                
+
                 return search;
             });
         });
     }
-
-  
 
     /**
      * Check what type of User this is, if it's a Manager or Administrator, a
@@ -466,7 +471,7 @@ public class UserInfoViewController implements Initializable
         int btnSavePosRow = GridPane.getRowIndex(btnEditSave);
         btnEditSave.setStyle("-fx-background-color: #61B329;");
         GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) - 1); //moving save button one up
-       
+
         btnCancel = new JFXButton();
         btnCancel.setText("Cancel"); //preparing cancel button
         btnCancel.setButtonType(JFXButton.ButtonType.RAISED);
@@ -506,10 +511,18 @@ public class UserInfoViewController implements Initializable
             btnEditSave.setDisable(false);
         }
     }
-    
+
     @FXML
-    private void handleLogout(ActionEvent event)
+    private void handleLogout(ActionEvent event) throws IOException
     {
+
+        //Need to refactor this method next sprint - no time today!
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/HourLoginView.fxml"));
+        StackPane page = (StackPane) loader.load();
+
+        MOD_FACADE.changeView(3);
+        Stage stage = (Stage)btnEditSave.getScene().getWindow();
+        stage.close();
     }
 
 }
