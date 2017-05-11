@@ -118,19 +118,11 @@
                                                 <Insets top="20.0" />
                                             </HBox.margin>
                                         </Label>
-                                        <JFXComboBox fx:id="cmbGuildChooser" focusColor="#00c4ad" labelFloat="true" prefHeight="55.0" prefWidth="250.0" promptText="Choose a guild" style="-fx-font-size: 29px;" unFocusColor="#797777">
+                                        <JFXComboBox fx:id="cmbGuildChooser" focusColor="#00c4ad" labelFloat="true" prefHeight="63.0" prefWidth="559.0" promptText="Choose a guild" style="-fx-font-size: 29px; -fx-text-alignment: CENTER;" unFocusColor="#797777">
                                             <HBox.margin>
                                                 <Insets top="8.0" />
                                             </HBox.margin>
                                         </JFXComboBox>
-                                        <Label fx:id="lblGuildTagTwo" text="guild">
-                                            <font>
-                                                <Font size="29.0" />
-                                            </font>
-                                            <HBox.margin>
-                                                <Insets top="20.0" />
-                                            </HBox.margin>
-                                        </Label>
                                     </children>
                            <padding>
                               <Insets bottom="15.0" top="15.0" />

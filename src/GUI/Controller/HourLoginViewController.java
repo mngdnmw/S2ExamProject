@@ -61,8 +61,6 @@ public class HourLoginViewController implements Initializable
     @FXML
     private JFXComboBox<Guild> cmbGuildChooser;
     @FXML
-    private Label lblGuildTagTwo;
-    @FXML
     private JFXButton btnLanguage;
     @FXML
     private JFXButton btnSeeInfo;
@@ -416,11 +414,9 @@ public class HourLoginViewController implements Initializable
         txtHours.setPromptText(MOD_FACADE.getLang("TXT_HOURS_PROMPT"));
         lblHourTagTwo.setText(MOD_FACADE.getLang("HOUR_TAG_TWO"));
         lblGuildTag.setText(MOD_FACADE.getLang("GUILD_TAG"));
-        cmbGuildChooser.setPromptText(MOD_FACADE.getLang("CMB_GUILD_CHOOSER_PROMPT"));
-        lblGuildTagTwo.setText(MOD_FACADE.getLang("GUILD_TAG_TWO"));
+        cmbGuildChooser.setPromptText(MOD_FACADE.getLang("CMB_GUILDCHOOSER_PROMPT"));
         btnLogHours.setText(MOD_FACADE.getLang("BTN_LOG_HOURS"));
         btnSeeInfo.setText(MOD_FACADE.getLang("BTN_SEE_INFO"));
-
       }
 
     private void loginEvent()
