@@ -12,9 +12,12 @@ import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -38,7 +41,7 @@ import javafx.util.Callback;
 import javafx.util.Duration;
 import sun.plugin2.jvm.RemoteJVMLauncher.CallBack;
 
-public class HourLoginController implements Initializable
+public class HourLoginViewController implements Initializable
   {
 
     @FXML
@@ -79,25 +82,56 @@ public class HourLoginController implements Initializable
     private JFXButton btnLogin;
     @FXML
     private JFXButton btnCancel;
-
+    @FXML
+    private AnchorPane ancDarken;
     private String strLogThanks = "Thanks!";
     private String strContribution = "Your hours have been logged. Thank you!";
     private String strLogin = "Log In";
     private String strCancel = "Cancel";
     private String strLanguage = "English";
-
     private Image iconDK, iconENG;
-    private ImageView imgViewLngBut = new ImageView();
+    private final ImageView imgViewLngBut = new ImageView();
     //Models used by this Controller
     private final static ModelFacade MOD_FACADE = new ModelFacade();
-    @FXML
-    private AnchorPane ancDarken;
-    
+
     JFXButton btnDanish = new JFXButton();
     JFXButton btnEnglish = new JFXButton();
-    
-    
-    
+    boolean loggingIn = false;
+
+    private final Service serviceLog = new Service()
+      {
+        @Override
+        protected Task createTask()
+          {
+            return new Task()
+              {
+                @Override
+                protected Object call() throws Exception
+                  {
+                    loginEvent();
+
+                    return null;
+                  }
+              };
+          }
+      };
+    private final Service serviceHours = new Service()
+      {
+        @Override
+        protected Task createTask()
+          {
+            return new Task()
+              {
+                @Override
+                protected Object call() throws Exception
+                  {
+                    logHours();
+                    return null;
+                  }
+              };
+          }
+      };
+
     @Override
     public void initialize(URL url, ResourceBundle rb)
       {
@@ -105,11 +139,11 @@ public class HourLoginController implements Initializable
         preloadImages();
         imgViewLngBut.setImage(iconENG);
         btnLanguage.setGraphic(imgViewLngBut);
+        btnLanguage.setText(strLanguage);
         cmbGuildChooser.setItems(FXCollections.observableArrayList(MOD_FACADE.getAllGuilds()));
         ModelFacade.setModelFacade(MOD_FACADE);
       }
 
-    @FXML
     public void buttonPressed(KeyEvent ke)
       {
         if (ke.getCode() == KeyCode.ENTER)
@@ -124,30 +158,28 @@ public class HourLoginController implements Initializable
         lockButtons();
         if (!txtUser.getText().isEmpty() && !txtHours.getText().isEmpty() && !cmbGuildChooser.getSelectionModel().isEmpty())
           {
-            MOD_FACADE.logHours(
-                    txtUser.getText(), Integer.parseInt(txtHours.getText()),
-                    cmbGuildChooser.getSelectionModel().getSelectedItem().getId()
-            );
-            snackBarPopup(strContribution);
+            loadingScreen(true);
+            serviceHours.restart();
           }
 
         else
           {
             snackBarPopup("Please input information in all fields");
           }
-        unlockButtons();
       }
 
     @FXML
-    private void ChangeLanguageAction(ActionEvent event)
+    private void ChangeLanguageAction(ActionEvent event
+    )
       {
         lockButtons();
         languagePopup();
-        unlockButtons();
+
       }
 
     @FXML
-    private void LogInAction(ActionEvent event)
+    private void LogInAction(ActionEvent event
+    )
       {
         lockButtons();
         loginPopup();
@@ -188,7 +220,7 @@ public class HourLoginController implements Initializable
         int time = 3000;
         JFXSnackbar snackbar = new JFXSnackbar(root);
         snackbar.show(str, time);
-        PauseTransition pause = new PauseTransition(Duration.millis(time));
+        PauseTransition pause = new PauseTransition(Duration.millis(time - 2000));
         pause.setOnFinished(
                 e -> unlockButtons()
         );
@@ -208,10 +240,44 @@ public class HourLoginController implements Initializable
         MOD_FACADE.fadeInTransition(Duration.millis(500), ancDarken);
         MOD_FACADE.fadeInTransition(Duration.millis(500), loginWindow);
 
-        btnCancel.setOnAction(new EventHandler<ActionEvent>()
+        if (!txtUser.getText().isEmpty() && txtUser.getText() != null)
+          {
+            txtUsername.setText(txtUser.getText());
+          }
+
+        txtPassword.setOnKeyPressed((event)
+                -> 
+          {
+            if (event.getCode() == KeyCode.ENTER)
+              {
+                if (!txtUsername.getText().isEmpty())
+                  {
+                    serviceLog.restart();
+                    loadingScreen(true);
+                  }
+              }
+          });
+        btnLogin.setOnAction(new EventHandler<ActionEvent>()
           {
             @Override
             public void handle(ActionEvent e)
+              {
+                if (!txtUsername.getText().isEmpty())
+                  {
+
+                    serviceLog.restart();
+                    loadingScreen(true);
+                  }
+              }
+          }
+        );
+
+        btnCancel.setOnAction(
+                new EventHandler<ActionEvent>()
+          {
+            @Override
+            public void handle(ActionEvent e
+            )
               {
                 MOD_FACADE.fadeOutTransition(Duration.millis(500), loginWindow)
                         .setOnFinished(
@@ -220,16 +286,9 @@ public class HourLoginController implements Initializable
                 MOD_FACADE.fadeOutTransition(Duration.millis(500), ancDarken);
 
               }
-          });
-        btnLogin.setOnAction(new EventHandler<ActionEvent>()
-          {
-            @Override
-            public void handle(ActionEvent e)
-              {
-                loginEvent();
-              }
+          }
+        );
 
-          });
       }
 
     /**
@@ -238,34 +297,36 @@ public class HourLoginController implements Initializable
     public void languagePopup()
       {
         //contains buttons = languages
+        AnchorPane anch = new AnchorPane();
         int size = 75;
         HBox popup = new HBox();
         popup.getStyleClass().add("popup");
         popup.setStyle("-fx-background-color: #00c4ad;");
         popup.setPadding(new Insets(20));
         popup.setSpacing(20);
-        //popup.setMaxHeight(size);
-        //popup.setMaxWidth(size*2);
-        //btnDanish.setOnAction(null);
-        //btnEnglish.setOnAction(null);
+        popup.setPrefSize(size, size);
+        popup.setMaxSize(size * 3, size * 3);
+        anch.getChildren().add(popup);
         EventHandler changeLanguageHandler = new EventHandler<ActionEvent>()
-        {
-          @Override
-          public void handle(ActionEvent event)
-            {
-              if (event.getSource().equals(btnDanish))
-                {
-                  changeLanguage("Dansk");
-                }
-              else if (event.getSource().equals(btnEnglish))
-                {
-                  changeLanguage("English");
-                }
-              setTextAll();
-              MOD_FACADE.fadeOutTransition(Duration.millis(500), popup);
-              unlockButtons();
-            }
-        };
+          {
+            @Override
+            public void handle(ActionEvent event)
+              {
+                if (event.getSource().equals(btnDanish))
+                  {
+                    changeLanguage("Dansk");
+                  }
+                else if (event.getSource().equals(btnEnglish))
+                  {
+                    changeLanguage("English");
+                  }
+                setTextAll();
+                MOD_FACADE.fadeOutTransition(Duration.millis(500), popup).setOnFinished(
+                        e -> root.getChildren().remove(anch));
+
+                unlockButtons();
+              }
+          };
 
         btnDanish.getStyleClass().add("JFXRoundedButton");
         btnDanish.setStyle("-fx-background-color:#FFFFFF");
@@ -273,22 +334,23 @@ public class HourLoginController implements Initializable
         btnDanish.setPrefSize(size, size);
         btnDanish.setMaxSize(size, size);
         btnDanish.setGraphic(new ImageView(iconDK));
+
         btnEnglish.getStyleClass().add("JFXRoundedButton");
         btnEnglish.setStyle(btnDanish.getStyle());
         btnEnglish.setMinSize(size, size);
         btnEnglish.setPrefSize(size, size);
         btnEnglish.setMaxSize(size, size);
         btnEnglish.setGraphic(new ImageView(iconENG));
-        root.getChildren().add(popup);
+
+        root.getChildren().add(anch);
         popup.getChildren().addAll(btnDanish, btnEnglish);
-        popup.setTranslateX(0);
+        anch.setBottomAnchor(popup, 10.0);
+        anch.setLeftAnchor(popup, 10.0);
         MOD_FACADE.fadeInTransition(Duration.millis(500), popup);
-        popup.setTranslateY((root.getHeight() / 1.5));
-        popup.setTranslateX(root.getWidth() / 5);
 
         btnDanish.setOnAction(changeLanguageHandler);
         btnEnglish.setOnAction(changeLanguageHandler);
-        
+
       }
 
     public void unlockButtons()
@@ -365,17 +427,55 @@ public class HourLoginController implements Initializable
       {
 
         MOD_FACADE.getUserFromLogin(txtUsername.getText(), txtPassword.getText());
-
-        if (MOD_FACADE.getCurrentUser() != null)
+        Platform.runLater(new Runnable()
           {
-            MOD_FACADE.changeView(0);
-            Stage stage = (Stage) root.getScene().getWindow();
-            stage.close();
+            @Override
+            public void run()
+              {
+                if (MOD_FACADE.getCurrentUser() != null)
+                  {
 
+                    MOD_FACADE.changeView(0);
+                    Stage stage = (Stage) root.getScene().getWindow();
+                    stage.close();
+                  }
+                else
+                  {
+                    lblWrongPass.visibleProperty().set(true);
+                  }
+                loadingScreen(false);
+              }
+          });
+      }
+
+    private void logHours()
+      {
+
+        MOD_FACADE.logHours(
+                txtUser.getText(), Integer.parseInt(txtHours.getText()),
+                cmbGuildChooser.getSelectionModel().getSelectedItem().getId()
+        );
+        Platform.runLater(new Runnable()
+          {
+            @Override
+            public void run()
+              {
+                snackBarPopup(strContribution);
+                System.out.println(cmbGuildChooser.getSelectionModel().getSelectedItem().getId() + "");
+                loadingScreen(false);
+              }
+          });
+      }
+
+    private void loadingScreen(Boolean StartLoading)
+      {
+        if (StartLoading == true)
+          {
+            root.getChildren().add(MOD_FACADE.getLoadingScreen());
           }
         else
           {
-            lblWrongPass.setText("Wrong Password");
+            root.getChildren().remove(MOD_FACADE.getLoadingScreen());
           }
       }
   }

@@ -1,5 +1,6 @@
 package GUI.Model;
 
+import BE.Day;
 import BE.EnumCache;
 import BE.Guild;
 import BE.User;
@@ -9,6 +10,8 @@ import java.io.InputStream;
 import java.util.List;
 import javafx.animation.FadeTransition;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 public class ModelFacade
@@ -20,6 +23,7 @@ public class ModelFacade
     private final static AnimationModel ANIM_MOD = new AnimationModel();
     private final static LanguageModel LANG_MOD = new LanguageModel();
     private final static ViewChangerModel VIEW_CHANG_MOD = new ViewChangerModel();
+    private final static VolunteerDataModel VOL_DATA_MOD = new VolunteerDataModel();
 
     //Login Model
     public Boolean logHours(String username, int hours, int guildId)
@@ -68,6 +72,16 @@ public class ModelFacade
       {
 
         return ANIM_MOD.fadeOutTransition(dur, node);
+      }
+
+    public Image getLoaderImg()
+      {
+        return ANIM_MOD.getLoaderImage();
+      }
+
+    public StackPane getLoadingScreen()
+      {
+        return ANIM_MOD.getLoadingScreen();
       }
 
     //Data Model
@@ -126,6 +140,7 @@ public class ModelFacade
       {
         return GEN_INFO_MOD.getAllGuilds();
       }
+
     /**
      * Changes the view based on number. 0 goes to the UserInfoView, 1 goes to
      * ManagerEditView, 2 goes to ManagerView 3 goes to the hourLoginView
@@ -147,9 +162,14 @@ public class ModelFacade
       {
         ModFac = modelfacade;
       }
-    
+
     public void addUser(String name, String email, String password, int type, int phone, String residence, String note)
-    {
+      {
         GEN_INFO_MOD.addUser(name, email, password, type, phone, residence, note);
-    }
+      }
+
+    public List<Day> getWorkedDays(User user)
+      {
+        return VOL_DATA_MOD.getWorkedDays(user);
+      }
   }

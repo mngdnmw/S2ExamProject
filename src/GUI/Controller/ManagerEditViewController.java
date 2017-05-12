@@ -21,8 +21,6 @@ public class ManagerEditViewController implements Initializable
     @FXML
     private Label lblHrsAll;
     @FXML
-    private Label lblHrsYr;
-    @FXML
     private Label lblHrsMth;
     @FXML
     private Label lblHrsDay;
@@ -43,11 +41,7 @@ public class ManagerEditViewController implements Initializable
     @FXML
     private JFXTextField txtAddress;
     @FXML
-    private JFXButton btnEdit;
-    @FXML
     private JFXTextArea txtNotes;
-    @FXML
-    private JFXTextArea txtGuilds;
     
     ManagerViewController mevController;
     boolean edit = false;
@@ -64,10 +58,6 @@ public class ManagerEditViewController implements Initializable
     
     public void setController(ManagerViewController c)
     {
-        txtName.setEditable(false);
-        txtAddress.setEditable(false);
-        txtPhone.setEditable(false);
-        txtEmail.setEditable(false);
         this.mevController = c;
     }
     
@@ -76,7 +66,7 @@ public class ManagerEditViewController implements Initializable
         if (selectedUser != null)
         {
             txtName.setText(selectedUser.getName());
-            txtAddress.setText(selectedUser.getAddress());
+            txtAddress.setText(selectedUser.getResidence());
             txtPhone.setText(String.valueOf(selectedUser.getPhone()));
             txtEmail.setText(selectedUser.getEmail());
             txtNotes.setText(selectedUser.getNote());
@@ -88,32 +78,9 @@ public class ManagerEditViewController implements Initializable
     }
 
     @FXML
-    private void onBtnEditPressed(ActionEvent event)
-    {
-        edit = !edit;
-        
-        if(edit == true)
-        {
-            txtName.setEditable(true);
-            txtAddress.setEditable(true);
-            txtPhone.setEditable(true);
-            txtEmail.setEditable(true);
-        }
-        
-        if(edit == false)
-        {            
-            txtName.setEditable(false);
-            txtAddress.setEditable(false);
-            txtPhone.setEditable(false);
-            txtEmail.setEditable(false);
-        }     
-    }
-
-    @FXML
     private void onBtnUpdatePhotoPressed(ActionEvent event)
     {
-        //dataModel.addUser(name, email, password, type, phone, address, note);
-        //dataModel.addUser(txtName.getText(), txtEmail.getText(), "asd123", 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), JFXTxtAreaNotes.getText());
+        
     }
     
     public static void setSelectedUser(User user)
@@ -129,12 +96,7 @@ public class ManagerEditViewController implements Initializable
     @FXML
     private void onBtnAcceptPressed(ActionEvent event)
     {
-        if(selectedUser == null)
-        {
-            modelFacade.addUser(txtName.getText(), txtEmail.getText(), "", 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtNotes.getText());
-        }
-        else if(selectedUser != null)
-            updateUserInfo();
+        updateUserInfo();
         
         System.out.println("Updated info saved. ");
         Stage stage = (Stage) JFXBtnAccept.getScene().getWindow();
@@ -144,7 +106,7 @@ public class ManagerEditViewController implements Initializable
     @FXML
     private void onBtnCancelPressed(ActionEvent event)
     {
-        Stage stage = (Stage) btnEdit.getScene().getWindow();
+        Stage stage = (Stage) JFXBtnCancel.getScene().getWindow();
         stage.close();
     }
 }

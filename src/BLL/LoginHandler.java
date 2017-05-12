@@ -11,10 +11,11 @@ public class LoginHandler
     public User getUserFromLogin(String username, String password)
       {
         int id = DAL_FAC.getUserId(username);
-        
-        return DAL_FAC.getUserFromLogin(id, password);
+        if (id != -1)
+          {
+            return DAL_FAC.getUserFromLogin(id, password);
+          }
+        return null;
       }
-    
 
-    
   }
