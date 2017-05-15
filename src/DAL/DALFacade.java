@@ -62,4 +62,6 @@ public class DALFacade
     public List<Day> getWorkedDays(User user){
         return HR_MAN.getWorkedDays(user);
     }
+    
+    //public List<Guild> getGuildsForUser()
   }
