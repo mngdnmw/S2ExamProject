@@ -53,13 +53,15 @@ public class GeneralInfoManager extends ConnectionManager
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
 
+                List<Guild> guilds = getGuildsForUser(userId);
+                
                 //If it's a volunteer
                 if (type == 0)
                   {
 
                     Volunteer volunteer = null;
-                    //(id, name, email, password, type, phone, note);
-                    volunteer = new Volunteer(id, name, email, phone, note, residence);
+                    //(id, name, email, password, type, phone, note, residence, guilds);
+                    volunteer = new Volunteer(id, name, email, phone, note, residence, guilds);
 
                     return volunteer;
                   }
@@ -70,7 +72,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                     Manager manager = null;
                     //(id, name, email, password, type, phone, note);
-                    manager = new Manager(id, name, email, phone, note, residence);
+                    manager = new Manager(id, name, email, phone, note, residence, guilds);
 
                     return manager;
                   }
@@ -81,7 +83,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                     Admin admin = null;
                     //(id, name, email, password, type, phone, note);
-                    admin = new Admin(id, name, email, phone, note, residence);
+                    admin = new Admin(id, name, email, phone, note, residence, guilds);
 
                     return admin;
                   }
@@ -114,6 +116,8 @@ public class GeneralInfoManager extends ConnectionManager
                 int phone = rs.getInt("phone");
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
+                
+                List<Guild> guilds = getGuildsForUser(id);
 
                 switch (type)
                   {
@@ -121,7 +125,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                         Volunteer volunteer = null;
                         //(id, name, email, password, type, phone, note);
-                        volunteer = new Volunteer(id, name, email, phone, note, residence);
+                        volunteer = new Volunteer(id, name, email, phone, note, residence, guilds);
                         users.add(volunteer);
 
                         break;
@@ -130,7 +134,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                         Manager manager = null;
                         //(id, name, email, password, type, phone, note);
-                        manager = new Manager(id, name, email, phone, note, residence);
+                        manager = new Manager(id, name, email, phone, note, residence, guilds);
                         users.add(manager);
 
                         break;
@@ -139,7 +143,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                         Admin admin = null;
                         //(id, name, email, password, type, phone, note);
-                        admin = new Admin(id, name, email, phone, note, residence);
+                        admin = new Admin(id, name, email, phone, note, residence, guilds);
                         users.add(admin);
 
                         break;
@@ -178,9 +182,11 @@ public class GeneralInfoManager extends ConnectionManager
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
 
+                List<Guild> guilds = getGuildsForUser(id);
+                
                 Volunteer volunteer = null;
                 //(id, name, email, password, type, phone, note);
-                volunteers.add(new Volunteer(id, name, email, phone, note, residence));
+                volunteers.add(new Volunteer(id, name, email, phone, note, residence, guilds));
 
               }
           }
@@ -212,9 +218,11 @@ public class GeneralInfoManager extends ConnectionManager
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
 
+                List<Guild> guilds = getGuildsForUser(id);
+                
                 Manager manager = null;
                 //(id, name, email, password, type, phone, note);
-                managers.add(new Manager(id, name, email, phone, note, residence));
+                managers.add(new Manager(id, name, email, phone, note, residence, guilds));
 
               }
           }
@@ -245,9 +253,11 @@ public class GeneralInfoManager extends ConnectionManager
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
 
+                List<Guild> guilds = getGuildsForUser(id);
+                
                 Admin admin = null;
                 //(id, name, email, password, type, phone, note);
-                admins.add(new Admin(id, name, email, phone, note, residence));
+                admins.add(new Admin(id, name, email, phone, note, residence, guilds));
 
               }
           }
@@ -485,5 +495,30 @@ public class GeneralInfoManager extends ConnectionManager
             System.out.println("Exception in: DataManager: updateInfo method");
             System.err.println(sqle);
           }
+      }
+    
+    public List<Guild> getGuildsForUser(int userId)
+      {
+        List<Guild> guilds = new ArrayList<>();
+        try (Connection con = super.getConnection())
+          {
+            String query = "SELECT DISTINCT a.guildid, a.name\n" +
+                            "FROM    guild a,\n" +
+                            "[hour] b\n" +
+                            "WHERE   b.guildid = a.guildid AND b.userid = "+ userId; 
+            PreparedStatement pstmt = con.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next())
+              {
+                guilds.add(new Guild(rs.getInt("guildid"), rs.getString("name")));
+              }
+
+          }
+        catch (SQLException ex)
+          {
+            Logger.getLogger(GeneralInfoManager.class.getName()).log(Level.SEVERE, null, ex);
+          }
+
+        return guilds;
       }
   }

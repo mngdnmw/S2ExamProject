@@ -1,6 +1,7 @@
 package BE;
 
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import java.util.List;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -11,14 +12,16 @@ public abstract class User extends RecursiveTreeObject<User>
     
     int id;
     int type;
-    private final IntegerProperty phone = new SimpleIntegerProperty();
     
+    private final IntegerProperty phone = new SimpleIntegerProperty();
     private final StringProperty residence = new SimpleStringProperty();
     private final StringProperty note = new SimpleStringProperty();
     private final StringProperty email = new SimpleStringProperty();
     private final StringProperty name = new SimpleStringProperty();
     
-    public User(int id, String name, String email, int phone, String note, String residence)
+    List<Guild> guilds;
+    
+    public User(int id, String name, String email, int phone, String note, String residence, List<Guild> guilds)
       {
         this.id = id;
         setName(name);
@@ -26,6 +29,7 @@ public abstract class User extends RecursiveTreeObject<User>
         setPhone(phone);
         setNote(note);
         setResidence(residence);
+        setGuilds(guilds);
       }
     
     public int getId()
@@ -47,6 +51,11 @@ public abstract class User extends RecursiveTreeObject<User>
       {
         this.type = type;
       }
+    
+    public void setGuilds(List<Guild> guilds)
+    {
+        this.guilds = guilds;
+    }
     
     public String getName()
       {
@@ -122,5 +131,10 @@ public abstract class User extends RecursiveTreeObject<User>
       {
         return residence;
       }
+    
+    public List<Guild> getGuildList()
+    {
+        return guilds;
+    }
     
   }
