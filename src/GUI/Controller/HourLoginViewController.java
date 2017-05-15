@@ -93,7 +93,6 @@ public class HourLoginViewController implements Initializable
     JFXButton btnDanish = new JFXButton();
     JFXButton btnEnglish = new JFXButton();
     boolean loggingIn = false;
-
     private final Service serviceLog = new Service()
       {
         @Override
@@ -131,13 +130,13 @@ public class HourLoginViewController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
       {
-        addListener();
         preloadImages();
         imgViewLngBut.setImage(iconENG);
         btnLanguage.setGraphic(imgViewLngBut);
         btnLanguage.setText(strLanguage);
         cmbGuildChooser.setItems(FXCollections.observableArrayList(MOD_FACADE.getAllGuilds()));
         ModelFacade.setModelFacade(MOD_FACADE);
+        addListener();
       }
 
     public void buttonPressed(KeyEvent ke)
@@ -222,6 +221,7 @@ public class HourLoginViewController implements Initializable
               }
 
           });
+        new GUI.Model.AutoCompleteComboBoxListener<>(cmbGuildChooser);
       }
 
     /**
@@ -523,5 +523,10 @@ public class HourLoginViewController implements Initializable
 
               }
           }
+      }
+
+    public void rememberThisSession()
+      {
+
       }
   }

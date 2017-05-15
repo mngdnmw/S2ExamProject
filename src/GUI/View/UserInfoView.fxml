@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
@@ -18,6 +18,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
@@ -311,7 +312,7 @@
             <DropShadow />
          </effect>
       </Rectangle>
-      <ImageView fx:id="imgVwProfilePic" fitHeight="127.0" fitWidth="131.0" layoutX="530.0" layoutY="26.0" pickOnBounds="true">
+      <ImageView fx:id="imgVwProfilePic" fitHeight="130.0" fitWidth="130.0" layoutX="534.0" layoutY="26.0" pickOnBounds="true" AnchorPane.rightAnchor="35.0">
          <image>
             <Image url="@../Images/labeouf.jpg" />
          </image>
@@ -333,22 +334,71 @@
             </VBox>
          </children>
       </VBox>
-      <JFXButton fx:id="JFXBtnUpdatePhoto" buttonType="RAISED" layoutX="552.0" layoutY="166.0" onAction="#pressedChangeImage" style="-fx-background-color: #00c4ad;" text="Update Photo" textFill="WHITE">
+      <JFXButton fx:id="JFXBtnUpdatePhoto" buttonType="RAISED" layoutX="528.0" layoutY="166.0" onAction="#pressedChangeImage" prefHeight="25.0" prefWidth="141.0" style="-fx-background-color: #00c4ad;" text="Update Photo" textFill="WHITE" AnchorPane.rightAnchor="31.0">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </JFXButton>
-      <ImageView fitHeight="45.0" fitWidth="43.0" layoutX="515.0" layoutY="202.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Images/tick.png" />
-         </image>
-      </ImageView>
-      <JFXTextArea fx:id="JFXTxtAreaBenefits" editable="false" layoutX="563.0" layoutY="210.0" prefHeight="72.0" prefWidth="112.0" text="Congratulations! &#10;You have earnt &#10;benefits for this year." />
       <HBox fx:id="hBoxInvisBtn" layoutX="508.0" layoutY="407.0" prefHeight="45.0" prefWidth="183.0" />
       <JFXButton fx:id="btnLogout" buttonType="RAISED" layoutX="570.0" layoutY="455.0" onAction="#handleLogout" style="-fx-background-color: #B0B0B0;" text="Log Out" textFill="WHITE">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </JFXButton>
+      <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="528.0" layoutY="200.0" maxHeight="25.0" minHeight="25.0" onAction="#OpenPasswordChangerEvent" prefHeight="25.0" prefWidth="141.0" style="-fx-background-color: #00c4ad;" text="Change Password" textFill="WHITE" AnchorPane.rightAnchor="31.0">
+         <padding>
+            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+         </padding>
+      </JFXButton>
+      <StackPane fx:id="stckPanePasswordChanger" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox fx:id="loginWindow" alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="200.0" prefWidth="463.0" spacing="10.0" styleClass="loginwindow" stylesheets="@MainLayout.css">
+               <children>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                     <children>
+                        <Label fx:id="lblUsername" text="Old Password">
+                           <font>
+                              <Font name="System Bold Italic" size="16.0" />
+                           </font>
+                        </Label>
+                        <JFXPasswordField fx:id="txtOPassword" prefHeight="29.0" prefWidth="221.0" styleClass="logintextFields" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                     <children>
+                        <Label text="New Password">
+                           <font>
+                              <Font name="System Bold Italic" size="16.0" />
+                           </font>
+                        </Label>
+                        <JFXPasswordField fx:id="txtNPassword" focusColor="#00e2c7" styleClass="logintextFields" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                     <children>
+                        <Label text="New Password Again">
+                           <font>
+                              <Font name="System Bold Italic" size="16.0" />
+                           </font>
+                        </Label>
+                        <JFXPasswordField fx:id="txtNPasswordTwo" focusColor="#00e2c7" styleClass="logintextFields" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
+                     <children>
+                        <JFXButton buttonType="RAISED" onAction="#ChangePasswordEvent" styleClass="loginbuttons" text="Change" />
+                        <JFXButton fx:id="btnCancel" buttonType="RAISED" onAction="#HidePasswordChangerEvent" styleClass="loginbuttons" text="Cancel" />
+                     </children>
+                     <padding>
+                        <Insets bottom="1.0" top="8.0" />
+                     </padding>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </VBox>
+         </children>
+      </StackPane>
     </children>
 </AnchorPane>
