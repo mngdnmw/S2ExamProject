@@ -24,7 +24,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
 
     <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="129.0" layoutX="13.0" layoutY="11.0" stroke="TRANSPARENT" strokeType="INSIDE" width="491.0">
@@ -110,7 +110,7 @@
                                                       <Insets left="7.0" right="5.0" top="20.0" />
                                                    </VBox.margin>
                                                 </Circle>
-                                                <Label maxHeight="100.0" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="164.0" text="Hours" textFill="WHITE" translateY="-100.0">
+                                                <Label fx:id="lblHrsAllText" maxHeight="100.0" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="164.0" text="Hours" textFill="WHITE" translateY="-100.0">
                                                    <font>
                                                       <Font name="Arial Rounded MT Bold" size="13.0" />
                                                    </font>
@@ -133,7 +133,7 @@
                                           </VBox>
                                           <VBox maxHeight="176.0" prefHeight="95.0" prefWidth="143.0">
                                              <children>
-                                                <JFXTextField fx:id="JFXTxtFSearchDate" focusColor="#00c4ad" prefHeight="26.0" prefWidth="133.0" promptText="Search ">
+                                                <JFXTextField fx:id="txtFSearchDate" focusColor="#00c4ad" prefHeight="26.0" prefWidth="133.0" promptText="Search ">
                                                    <padding>
                                                       <Insets left="5.0" right="5.0" />
                                                    </padding>
@@ -176,7 +176,7 @@
                                                       <Insets left="7.0" right="5.0" top="20.0" />
                                                    </VBox.margin>
                                                 </Circle>
-                                                <Label maxHeight="100.0" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="164.0" text="Hours" textFill="WHITE" translateY="-100.0">
+                                                <Label fx:id="lblHrsAllText2" maxHeight="100.0" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="164.0" text="Hours" textFill="WHITE" translateY="-100.0">
                                                    <font>
                                                       <Font name="Arial Rounded MT Bold" size="13.0" />
                                                    </font>
@@ -199,7 +199,7 @@
                                           </VBox>
                                           <VBox maxHeight="176.0" prefHeight="95.0" prefWidth="143.0">
                                              <children>
-                                                <JFXTextField focusColor="#00c4ad" prefHeight="26.0" prefWidth="133.0" promptText="Search date">
+                                                <JFXTextField fx:id="txtFSearchDate2" focusColor="#00c4ad" prefHeight="26.0" prefWidth="133.0" promptText="Search date">
                                                    <padding>
                                                       <Insets left="5.0" right="5.0" />
                                                    </padding>
@@ -207,7 +207,7 @@
                                                       <Insets left="5.0" right="5.0" />
                                                    </VBox.margin>
                                                 </JFXTextField>
-                                                <JFXButton alignment="CENTER" buttonType="RAISED" style="-fx-background-color: #00c4ad;" text="Edit " textFill="WHITE" translateX="50.0">
+                                                <JFXButton fx:id="btnEditOnTabMonth" alignment="CENTER" buttonType="RAISED" style="-fx-background-color: #00c4ad;" text="Edit " textFill="WHITE" translateX="50.0">
                                                    <VBox.margin>
                                                       <Insets top="20.0" />
                                                    </VBox.margin>
@@ -245,7 +245,7 @@
                                                       <Insets left="7.0" right="5.0" top="20.0" />
                                                    </VBox.margin>
                                                 </Circle>
-                                                <Label maxHeight="100.0" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="164.0" text="Hours" textFill="WHITE" translateY="-100.0">
+                                                <Label fx:id="lblHrsAllText3" maxHeight="100.0" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="164.0" text="Hours" textFill="WHITE" translateY="-100.0">
                                                    <font>
                                                       <Font name="Arial Rounded MT Bold" size="13.0" />
                                                    </font>
@@ -268,7 +268,7 @@
                                           </VBox>
                                           <VBox maxHeight="176.0" prefHeight="95.0" prefWidth="143.0">
                                              <children>
-                                                <JFXTextField focusColor="#00c4ad" prefHeight="26.0" prefWidth="133.0" promptText="Search date">
+                                                <JFXTextField fx:id="txtFSearchDate3" focusColor="#00c4ad" prefHeight="26.0" prefWidth="133.0" promptText="Search date">
                                                    <padding>
                                                       <Insets left="5.0" right="5.0" />
                                                    </padding>
@@ -276,7 +276,7 @@
                                                       <Insets left="5.0" right="5.0" />
                                                    </VBox.margin>
                                                 </JFXTextField>
-                                                <JFXButton alignment="CENTER" buttonType="RAISED" disable="true" style="-fx-background-color: #00c4ad;" text="Edit " textFill="WHITE" translateX="50.0">
+                                                <JFXButton fx:id="btnEditOnTabDay" alignment="CENTER" buttonType="RAISED" disable="true" style="-fx-background-color: #00c4ad;" text="Edit " textFill="WHITE" translateX="50.0">
                                                    <VBox.margin>
                                                       <Insets top="20.0" />
                                                    </VBox.margin>
@@ -324,7 +324,7 @@
          <children>
             <VBox prefHeight="8.0" prefWidth="133.0">
                <children>
-                  <Label style="-fx-background-color: #00c4ad;" text="Guilds:" textFill="WHITE" />
+                  <Label fx:id="lblGuilds" style="-fx-background-color: #00c4ad;" text="Guilds:" textFill="WHITE" />
                </children>
             </VBox>
             <VBox prefHeight="45.0" prefWidth="133.0">
@@ -334,7 +334,7 @@
             </VBox>
          </children>
       </VBox>
-      <JFXButton fx:id="JFXBtnUpdatePhoto" buttonType="RAISED" layoutX="528.0" layoutY="166.0" onAction="#pressedChangeImage" prefHeight="25.0" prefWidth="141.0" style="-fx-background-color: #00c4ad;" text="Update Photo" textFill="WHITE" AnchorPane.rightAnchor="31.0">
+      <JFXButton fx:id="btnUpdatePhoto" buttonType="RAISED" layoutX="528.0" layoutY="166.0" onAction="#pressedChangeImage" prefHeight="25.0" prefWidth="141.0" style="-fx-background-color: #00c4ad;" text="Update Photo" textFill="WHITE" AnchorPane.rightAnchor="31.0">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
