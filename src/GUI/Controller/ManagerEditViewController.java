@@ -1,12 +1,15 @@
 package GUI.Controller;
 
+import BE.Guild;
 import BE.User;
 import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -42,18 +45,21 @@ public class ManagerEditViewController implements Initializable
     private JFXTextField txtAddress;
     @FXML
     private JFXTextArea txtNotes;
-    
+    @FXML
+    private JFXListView<Guild> listGuilds;
     ManagerViewController mevController;
     boolean edit = false;
     
     private static ModelFacade modelFacade = new ModelFacade();
     private static User selectedUser;
+    
  
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
         boolean edit = false;
         setText();
+        listGuilds.setItems(FXCollections.observableArrayList(selectedUser.getGuildList()));
     }    
     
     public void setController(ManagerViewController c)
