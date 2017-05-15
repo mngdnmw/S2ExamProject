@@ -4,7 +4,6 @@ import BE.EnumCache.*;
 import BE.Guild;
 import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXSnackbar;
@@ -23,11 +22,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -37,9 +32,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import javafx.util.Duration;
-import sun.plugin2.jvm.RemoteJVMLauncher.CallBack;
 
 public class HourLoginViewController implements Initializable
   {
@@ -61,8 +54,6 @@ public class HourLoginViewController implements Initializable
     @FXML
     private JFXComboBox<Guild> cmbGuildChooser;
     @FXML
-    private Label lblGuildTagTwo;
-    @FXML
     private JFXButton btnLanguage;
     @FXML
     private JFXButton btnSeeInfo;
@@ -82,6 +73,11 @@ public class HourLoginViewController implements Initializable
     private JFXButton btnLogin;
     @FXML
     private JFXButton btnCancel;
+
+    @FXML
+    private JFXButton btnIntDown;
+    @FXML
+    private JFXButton btnIntUp;
     @FXML
     private AnchorPane ancDarken;
     private String strLogThanks = "Thanks!";
@@ -196,7 +192,23 @@ public class HourLoginViewController implements Initializable
                   {
                     if (newValue.matches("\\d*") && newValue.length() < 3)
                       {
-                        int value = Integer.parseInt(newValue);
+                        if (Integer.parseInt(newValue) >= 25)
+                          {
+
+                            snackBarPopup("You Cannot Exceed 24 hours");
+                            txtHours.setText(oldValue);
+                          }
+                        else if (Integer.parseInt(newValue) <= 0)
+                          {
+
+                            snackBarPopup("You Cannot log 0 hours");
+                            txtHours.setText(oldValue);
+                          }
+                        else
+                          {
+
+                            int value = Integer.parseInt(newValue);
+                          }
                       }
                     else
                       {
@@ -416,11 +428,9 @@ public class HourLoginViewController implements Initializable
         txtHours.setPromptText(MOD_FACADE.getLang("TXT_HOURS_PROMPT"));
         lblHourTagTwo.setText(MOD_FACADE.getLang("HOUR_TAG_TWO"));
         lblGuildTag.setText(MOD_FACADE.getLang("GUILD_TAG"));
-        cmbGuildChooser.setPromptText(MOD_FACADE.getLang("CMB_GUILD_CHOOSER_PROMPT"));
-        lblGuildTagTwo.setText(MOD_FACADE.getLang("GUILD_TAG_TWO"));
+        cmbGuildChooser.setPromptText(MOD_FACADE.getLang("CMB_GUILDCHOOSER_PROMPT"));
         btnLogHours.setText(MOD_FACADE.getLang("BTN_LOG_HOURS"));
         btnSeeInfo.setText(MOD_FACADE.getLang("BTN_SEE_INFO"));
-
       }
 
     private void loginEvent()
@@ -476,6 +486,42 @@ public class HourLoginViewController implements Initializable
         else
           {
             root.getChildren().remove(MOD_FACADE.getLoadingScreen());
+          }
+      }
+
+    @FXML
+    private void setNumberOfHoursEvent(ActionEvent event)
+      {
+
+        if ((event.getSource().equals(btnIntUp)))
+          {
+            if (txtHours.getText().isEmpty())
+              {
+                txtHours.setText("1");
+              }
+            else
+              {
+                int hours = Integer.parseInt(txtHours.getText());
+
+                int currentHours = Integer.parseInt(txtHours.getText());
+                currentHours++;
+                txtHours.setText(currentHours + "");
+              }
+          }
+        if ((event.getSource().equals(btnIntDown)))
+          {
+
+            if (txtHours.getText().isEmpty())
+              {
+                snackBarPopup("Invalid Action");
+              }
+            else
+              {
+                int hours = Integer.parseInt(txtHours.getText());
+                hours--;
+                txtHours.setText(hours + "");
+
+              }
           }
       }
   }

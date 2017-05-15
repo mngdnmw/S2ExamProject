@@ -7,6 +7,8 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -61,7 +63,7 @@
                                     <children>
                                         <Label fx:id="lblUsernameTag" alignment="BOTTOM_LEFT" text="My username is">
                                             <font>
-                                                <Font size="29.0" />
+                                                <Font size="26.0" />
                                             </font>
                                             <HBox.margin>
                                                 <Insets top="20.0" />
@@ -69,7 +71,7 @@
                                         </Label>
                                         <JFXTextField fx:id="txtUser" alignment="BOTTOM_CENTER" focusColor="#00c4ad" labelFloat="true" prefHeight="51.0" prefWidth="415.0" promptText="Phone No. or Email" unFocusColor="#797777">
                                             <font>
-                                                <Font size="29.0" />
+                                                <Font size="26.0" />
                                             </font>
                                         </JFXTextField>
                                     </children>
@@ -77,27 +79,45 @@
                               <Insets bottom="15.0" top="15.0" />
                            </padding>
                                 </HBox>
-                                <HBox prefHeight="85.0" prefWidth="119.0" spacing="15.0">
+                                <HBox prefHeight="85.0" prefWidth="119.0" spacing="5.0">
                                     <children>
                                         <Label fx:id="lblHourTag" text="Today I have contributed">
                                             <font>
-                                                <Font size="29.0" />
+                                                <Font size="26.0" />
                                             </font>
                                             <HBox.margin>
                                                 <Insets top="20.0" />
                                             </HBox.margin>
                                         </Label>
-                                        <JFXTextField fx:id="txtHours" alignment="BOTTOM_CENTER" focusColor="#00c4ad" labelFloat="true" prefHeight="51.0" prefWidth="234.0" promptText="Number of hours" unFocusColor="#797777">
+                              <JFXButton fx:id="btnIntDown" alignment="BOTTOM_CENTER" contentDisplay="CENTER" onAction="#setNumberOfHoursEvent" prefHeight="55.0" prefWidth="52.0" style="-fx-background-color: rgba(0,0,0,0); -fx-background-radius: 50%;" text=" " HBox.hgrow="ALWAYS">
+                                 <graphic>
+                                    <ImageView fitHeight="40.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/C:/Users/Mecaa/Desktop/School/SecondSemester/S2ExamProject/src/Resources/arrowcoloredleft.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </JFXButton>
+                                        <JFXTextField fx:id="txtHours" alignment="BOTTOM_CENTER" focusColor="#00c4ad" labelFloat="true" prefHeight="47.0" prefWidth="168.0" promptText="Number of hours" unFocusColor="#797777">
                                             <font>
-                                                <Font size="29.0" />
+                                                <Font size="24.0" />
                                             </font>
                                             <HBox.margin>
                                                 <Insets top="8.0" />
                                             </HBox.margin>
                                         </JFXTextField>
+                              <JFXButton fx:id="btnIntUp" alignment="BOTTOM_CENTER" contentDisplay="CENTER" onAction="#setNumberOfHoursEvent" prefHeight="55.0" prefWidth="43.0" style="-fx-background-color: rgba(0,0,0,0); -fx-background-radius: 50%;" text=" ">
+                                 <graphic>
+                                    <ImageView fitHeight="40.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../Resources/arrowcolored.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </JFXButton>
                                         <Label fx:id="lblHourTagTwo" prefHeight="43.0" prefWidth="78.0" text="hours">
                                             <font>
-                                                <Font size="29.0" />
+                                                <Font size="26.0" />
                                             </font>
                                             <HBox.margin>
                                                 <Insets top="20.0" />
@@ -105,32 +125,24 @@
                                         </Label>
                                     </children>
                            <padding>
-                              <Insets bottom="15.0" top="15.0" />
+                              <Insets bottom="10.0" top="10.0" />
                            </padding>
                                 </HBox>
                                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                                     <children>
                                         <Label fx:id="lblGuildTag" text="to the">
                                             <font>
-                                                <Font size="29.0" />
+                                                <Font size="26.0" />
                                             </font>
                                             <HBox.margin>
                                                 <Insets top="20.0" />
                                             </HBox.margin>
                                         </Label>
-                                        <JFXComboBox fx:id="cmbGuildChooser" focusColor="#00c4ad" labelFloat="true" prefHeight="55.0" prefWidth="250.0" promptText="Choose a guild" style="-fx-font-size: 29px;" unFocusColor="#797777">
+                                        <JFXComboBox fx:id="cmbGuildChooser" focusColor="#00c4ad" labelFloat="true" prefHeight="63.0" prefWidth="559.0" promptText="Choose a guild" style="-fx-font-size: 26px; -fx-text-alignment: CENTER;" unFocusColor="#797777">
                                             <HBox.margin>
                                                 <Insets top="8.0" />
                                             </HBox.margin>
                                         </JFXComboBox>
-                                        <Label fx:id="lblGuildTagTwo" text="guild">
-                                            <font>
-                                                <Font size="29.0" />
-                                            </font>
-                                            <HBox.margin>
-                                                <Insets top="20.0" />
-                                            </HBox.margin>
-                                        </Label>
                                     </children>
                            <padding>
                               <Insets bottom="15.0" top="15.0" />
