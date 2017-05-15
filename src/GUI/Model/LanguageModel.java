@@ -12,4 +12,9 @@ public class LanguageModel extends Translation
     public void setLang(Lang lang) {
         super.set(lang);
     }
+    
+    @Override
+    public Lang getLangProperty() {
+        return super.getLangProperty();
+    }
 }
