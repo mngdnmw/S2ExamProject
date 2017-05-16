@@ -68,7 +68,12 @@
     -fx-background-color: #00e2c7;
     -fx-font:italic bold 20px/30px System;
     -fx-text-fill: #FFFFFF;
+}.cancelButtons{
+    -fx-background-radius: 5px;
+    -fx-background-color: #5C5858;
+    -fx-text-fill: #FFFFFF;
 }
+
 .loginwindow{
     -fx-background-color: #ffffff;
     -fx-border-color: #00e2c7;
