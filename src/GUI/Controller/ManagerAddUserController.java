@@ -18,6 +18,8 @@ import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -33,7 +35,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class ManagerAddUserController implements Initializable
-{
+  {
 
     @FXML
     private JFXTextField txtName;
@@ -66,77 +68,115 @@ public class ManagerAddUserController implements Initializable
     @FXML
     private JFXTextField txtPassword;
 
-    ModelFacade modelFacade = new ModelFacade();
-    
+
+    ModelFacade modelFacade = ModelFacade.getModelFacade();
+
+    private Service serviceAddNewUser = new Service()
+      {
+        @Override
+
+        protected Task createTask()
+          {
+            return new Task()
+              {
+                @Override
+                protected Object call() throws Exception
+                  {
+                    modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtNotes.getText());
+                    modelFacade.setAllVolunteersIntoArray();
+                    return null;
+                  }
+              };
+          }
+      };
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb)
-    {
+      {
         setListView();
 
-    }
+      }
 
     private void setListView()
-    {
+      {
         ObservableList<Guild> items = FXCollections.observableArrayList(modelFacade.getAllGuilds());
         listViewGuilds.setItems(items);
-    }
+      }
 
     @FXML
     private void onBtnAcceptPressed(ActionEvent event)
-    {
+      {
         if (!txtName.getText().isEmpty())
-        {
+          {
             if (txtPhone.getText().isEmpty() && txtEmail.getText().isEmpty())
-            {
+              {
                 snackBarPopup("Phone number OR Email required");
                 System.out.println("User not added: missing phone or email");
-            } else
-            {
+              }
+            else
+              {
                 if (txtPhone.getText().equals(""))
-                {
+                  {
                     txtPhone.setText("0");
-                }
+                  }
 
                 try
-                {
+                  {
                     Integer.parseInt(txtPhone.getText());
-                } catch (NumberFormatException e)
-                {
+                  }
+                catch (NumberFormatException e)
+                  {
                     snackBarPopup("Phone number needs to contain only numbers");
                     System.out.println("Phone number contains letters or special characters");
-                }
+                  }
+
+                StackPane loading = modelFacade.getLoadingScreen();
+                rootPane.getChildren().add(loading);
+                rootPane.setTopAnchor(loading, 0.0);
+                rootPane.setBottomAnchor(loading, 0.0);
+                rootPane.setRightAnchor(loading, 0.0);
+                rootPane.setLeftAnchor(loading, 0.0);
+                serviceAddNewUser.start();
+                serviceAddNewUser.setOnSucceeded(e
+                        -> 
+                  {
+                    Stage stage = (Stage) btnAccept.getScene().getWindow();
+                    stage.close();
+                  });
+
 
                 modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
                 Stage stage = (Stage) btnAccept.getScene().getWindow();
                 stage.close();
                 System.out.println("New user added: " + txtName.getText());
-            }
-        } else
-        {
+              }
+          }
+        else
+          {
             snackBarPopup("Name required");
             System.out.println("User not added: missing name");
-        }
+          }
 
-    }
+      }
 
     @FXML
     private void onBtnCancelPressed(ActionEvent event)
-    {
+      {
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
-    }
+      }
 
     public void snackBarPopup(String str)
-    {
+      {
         int time = 3000;
         JFXSnackbar snackbar = new JFXSnackbar(rootPane);
         snackbar.show(str, time);
         PauseTransition pause = new PauseTransition(Duration.millis(time));
         pause.play();
-    }
+      }
 
     /*@FXML
     private void pressedChangeImage(ActionEvent event)
@@ -173,10 +213,9 @@ public class ManagerAddUserController implements Initializable
             imgVwProfilePic.setImage(new Image(modelFacade.getUserImage(modelFacade.getAllUsers().get(modelFacade.getAllUsers().size()-1))));
         }
     }*/
-    
     @FXML
     private void pressedChangeImage(ActionEvent e)
-    {
-        
-    }
-}
+      {
+
+      }
+  }
