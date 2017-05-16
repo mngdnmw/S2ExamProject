@@ -42,8 +42,8 @@ public class GeneralInfoModel
       {
       return BLL_FAC.getAllGuilds();
       }
-    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence) {
-        dataHandler.updateUserInfo(userId, name, email, type, phone, note, residence);
+    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence, String residence2) {
+        dataHandler.updateUserInfo(userId, name, email, type, phone, note, residence, residence2);
     }
     
     public void updateUserImage(User user, File img) throws FileNotFoundException {
@@ -54,8 +54,8 @@ public class GeneralInfoModel
         return dataHandler.getUserImage(user);
     }
     
-    public void addUser(String name, String email, String password, int type, int phone, String residence, String note)
+    public void addUser(String name, String email, String password, int type, int phone, String residence, String residence2, String note)
     {
-        BLL_FAC.addUser(name, email, password, type, phone, residence, note);
+        BLL_FAC.addUser(name, email, password, type, phone, residence, residence2, note);
     }
 }

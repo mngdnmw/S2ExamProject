@@ -52,7 +52,8 @@ public class GeneralInfoManager extends ConnectionManager
                 int phone = rs.getInt("phone");
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
-
+                String residence2 = rs.getString("residence2");
+                
                 List<Guild> guilds = getGuildsForUser(userId);
                 
                 //If it's a volunteer
@@ -61,7 +62,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                     Volunteer volunteer = null;
                     //(id, name, email, password, type, phone, note, residence, guilds);
-                    volunteer = new Volunteer(id, name, email, phone, note, residence, guilds);
+                    volunteer = new Volunteer(id, name, email, phone, note, residence, residence2, guilds);
 
                     return volunteer;
                   }
@@ -72,7 +73,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                     Manager manager = null;
                     //(id, name, email, password, type, phone, note);
-                    manager = new Manager(id, name, email, phone, note, residence, guilds);
+                    manager = new Manager(id, name, email, phone, note, residence, residence2, guilds);
 
                     return manager;
                   }
@@ -83,7 +84,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                     Admin admin = null;
                     //(id, name, email, password, type, phone, note);
-                    admin = new Admin(id, name, email, phone, note, residence, guilds);
+                    admin = new Admin(id, name, email, phone, note, residence, residence2, guilds);
 
                     return admin;
                   }
@@ -116,6 +117,7 @@ public class GeneralInfoManager extends ConnectionManager
                 int phone = rs.getInt("phone");
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
+                String residence2 = rs.getString("residence2");
                 
                 List<Guild> guilds = getGuildsForUser(id);
 
@@ -125,7 +127,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                         Volunteer volunteer = null;
                         //(id, name, email, password, type, phone, note);
-                        volunteer = new Volunteer(id, name, email, phone, note, residence, guilds);
+                        volunteer = new Volunteer(id, name, email, phone, note, residence, residence2, guilds);
                         users.add(volunteer);
 
                         break;
@@ -134,7 +136,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                         Manager manager = null;
                         //(id, name, email, password, type, phone, note);
-                        manager = new Manager(id, name, email, phone, note, residence, guilds);
+                        manager = new Manager(id, name, email, phone, note, residence, residence2, guilds);
                         users.add(manager);
 
                         break;
@@ -143,7 +145,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                         Admin admin = null;
                         //(id, name, email, password, type, phone, note);
-                        admin = new Admin(id, name, email, phone, note, residence, guilds);
+                        admin = new Admin(id, name, email, phone, note, residence, residence2, guilds);
                         users.add(admin);
 
                         break;
@@ -181,12 +183,13 @@ public class GeneralInfoManager extends ConnectionManager
                 int phone = rs.getInt("phone");
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
+                String residence2 = rs.getString("residence2");
 
                 List<Guild> guilds = getGuildsForUser(id);
                 
                 Volunteer volunteer = null;
                 //(id, name, email, password, type, phone, note);
-                volunteers.add(new Volunteer(id, name, email, phone, note, residence, guilds));
+                volunteers.add(new Volunteer(id, name, email, phone, note, residence, residence2, guilds));
 
               }
           }
@@ -217,12 +220,13 @@ public class GeneralInfoManager extends ConnectionManager
                 int phone = rs.getInt("phone");
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
+                String residence2 = rs.getString("residence2");
 
                 List<Guild> guilds = getGuildsForUser(id);
                 
                 Manager manager = null;
                 //(id, name, email, password, type, phone, note);
-                managers.add(new Manager(id, name, email, phone, note, residence, guilds));
+                managers.add(new Manager(id, name, email, phone, note, residence, residence2, guilds));
 
               }
           }
@@ -252,12 +256,13 @@ public class GeneralInfoManager extends ConnectionManager
                 int phone = rs.getInt("phone");
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
+                String residence2 = rs.getString("residence2");
 
                 List<Guild> guilds = getGuildsForUser(id);
                 
                 Admin admin = null;
                 //(id, name, email, password, type, phone, note);
-                admins.add(new Admin(id, name, email, phone, note, residence, guilds));
+                admins.add(new Admin(id, name, email, phone, note, residence, residence2, guilds));
 
               }
           }
@@ -362,20 +367,21 @@ public class GeneralInfoManager extends ConnectionManager
         return guilds;
       }
 
-    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence)
+    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence, String residence2)
       {
         try (Connection con = super.getConnection())
           {
             String sqlCommand
-                    = "UPDATE [user] SET name=?, email=?, type=?, phone=?, residence=?, note=? WHERE userid=?";
+                    = "UPDATE [user] SET name=?, email=?, type=?, phone=?, residence=?, residence2=?, note=? WHERE userid=?";
             PreparedStatement pstat = con.prepareStatement(sqlCommand);
             pstat.setString(1, name);
             pstat.setString(2, email);
             pstat.setInt(3, type);
             pstat.setInt(4, phone);
             pstat.setString(5, residence);
-            pstat.setString(6, note);
-            pstat.setInt(7, userId);
+            pstat.setString(6, residence2);
+            pstat.setString(7, note);
+            pstat.setInt(8, userId);
             pstat.executeUpdate();
           }
         catch (SQLException sqle)
@@ -450,12 +456,12 @@ public class GeneralInfoManager extends ConnectionManager
         return null;
       }
 
-    public void addUser(String name, String email, String password, int type, int phone, String residence, String note)
+    public void addUser(String name, String email, String password, int type, int phone, String residence, String residence2, String note)
       {
         try (Connection con = super.getConnection())
           {
             String sqlCommand
-                    = "insert into [user] ([name], [email], [password], [type], [phone], [residence], [note]) values (?,?,?,?,?,?,?)";
+                    = "insert into [user] ([name], [email], [password], [type], [phone], [residence], [residence2], [note]) values (?,?,?,?,?,?,?,?)";
             PreparedStatement pstat = con.prepareStatement(sqlCommand);
             pstat.setString(1, name);
             pstat.setString(2, email);
@@ -463,7 +469,8 @@ public class GeneralInfoManager extends ConnectionManager
             pstat.setInt(4, type);
             pstat.setInt(5, phone);
             pstat.setString(6, residence);
-            pstat.setString(7, note);
+            pstat.setString(7, residence2);
+            pstat.setString(8, note);
             pstat.executeUpdate();
           }
         catch (SQLException sqle)
@@ -473,21 +480,22 @@ public class GeneralInfoManager extends ConnectionManager
           }
       }
 
-    public void updateUserInfo(String name, String email, String password, int type, int phone, String address, String note, int userid)
+    public void updateUserInfo(String name, String email, String password, int type, int phone, String residence, String residence2, String note, int userid)
       {
         try (Connection con = super.getConnection())
           {
             String sqlCommand
-                    = "UPDATE [user] SET name=?, email=?, password=?, type=?, phone=?, residence=?, note=? WHERE userid=?";
+                    = "UPDATE [user] SET name=?, email=?, password=?, type=?, phone=?, residence=?, residence2=?, note=? WHERE userid=?";
             PreparedStatement pstat = con.prepareStatement(sqlCommand);
             pstat.setString(1, name);
             pstat.setString(2, email);
             pstat.setString(3, password);
             pstat.setInt(4, type);
             pstat.setInt(5, phone);
-            pstat.setString(6, address);
-            pstat.setString(7, note);
-            pstat.setInt(8, userid);
+            pstat.setString(6, residence);
+            pstat.setString(7, residence2);
+            pstat.setString(8, note);
+            pstat.setInt(9, userid);
             pstat.executeUpdate();
           }
         catch (SQLException sqle)

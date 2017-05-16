@@ -60,14 +60,15 @@ public class LoginManager extends ConnectionManager
                 int phone = rs.getInt("phone");
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
+                String residence2 = rs.getString("residence2");
                 List<Guild> guilds = new ArrayList<>();
                 switch(type){
                     case 0:
-                        return new Volunteer(id, name, email, phone, note, residence, guilds);
+                        return new Volunteer(id, name, email, phone, note, residence, residence2, guilds);
                     case 1: 
-                        return new Manager(id, name, email, phone, note, residence, guilds);
+                        return new Manager(id, name, email, phone, note, residence, residence2, guilds);
                     case 2: 
-                        return new Admin(id, name, email, phone, note, residence, guilds);
+                        return new Admin(id, name, email, phone, note, residence, residence2, guilds);
                         
                 }
               }
