@@ -521,4 +521,20 @@ public class GeneralInfoManager extends ConnectionManager
 
         return guilds;
       }
+    
+    public Guild getGuild(int id) {
+        String query = "select * from [guild] where [guildid] = "+id;
+        try(Connection con = super.getConnection()) {
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery(query);
+            Guild guild = null;
+            while(rs.next()) {
+                guild = new Guild(rs.getInt("guildid"),rs.getString("name"));
+            }
+            return guild;
+        } catch (SQLException e) {
+            Logger.getLogger(GeneralInfoManager.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return null;
+    }
   }

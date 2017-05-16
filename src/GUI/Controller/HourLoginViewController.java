@@ -420,6 +420,12 @@ public class HourLoginViewController implements Initializable
         } else if(MOD_FACADE.getLangProperty().equals(Lang.DAN)){
             imgViewLngBut.setImage(iconDK);
         }
+        
+        if(!MOD_FACADE.loadSession().isEmpty()) {
+            txtUser.setText(MOD_FACADE.loadSession().get("LAST_USER"));
+            txtHours.setText(MOD_FACADE.loadSession().get("LAST_HOURS"));
+            cmbGuildChooser.getSelectionModel().select(MOD_FACADE.getGuild(Integer.parseInt(MOD_FACADE.loadSession().get("LAST_GUILD"))));
+        }
       }
 
     private void loginEvent()

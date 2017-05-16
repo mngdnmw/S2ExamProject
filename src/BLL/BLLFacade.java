@@ -5,6 +5,7 @@ import BE.Guild;
 import BE.User;
 import DAL.DALFacade;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 public class BLLFacade
@@ -44,5 +45,12 @@ public class BLLFacade
     public List<Day> getWorkedDays(User user)
     {
         return DAL_FAC.getWorkedDays(user);
+    }
+    public HashMap<String,String> loadSession() {
+        return DAL_FAC.loadSession();
+    }
+    
+    public Guild getGuild(int id) {
+        return DAL_FAC.getGuild(id);
     }
 }

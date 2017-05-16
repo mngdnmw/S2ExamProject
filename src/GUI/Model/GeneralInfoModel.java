@@ -58,4 +58,8 @@ public class GeneralInfoModel
     {
         BLL_FAC.addUser(name, email, password, type, phone, residence, note);
     }
+    
+    public Guild getGuild(int id) {
+        return BLL_FAC.getGuild(id);
+    }
 }
