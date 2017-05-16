@@ -9,15 +9,15 @@ import java.util.HashMap;
 import java.util.List;
 
 public class BLLFacade
-{
+  {
 
     private final static DALFacade DAL_FAC = new DALFacade();
     private final static LoginHandler LOG_HAND = new LoginHandler();
 
     public User getUserFromLogin(String username, String password)
-    {
+      {
         return LOG_HAND.getUserFromLogin(username, password);
-    }
+      }
 
     /**
      *
@@ -28,14 +28,14 @@ public class BLLFacade
      * @throws SQLException
      */
     public void logHours(String str, String date, int hours, int guildId) throws SQLException
-    {
+      {
         DAL_FAC.logHours(str, date, hours, guildId);
-    }
+      }
 
     public List<Guild> getAllGuilds()
-    {
+      {
         return DAL_FAC.getAllGuilds();
-    }
+      }
 
     public void addUser(String name, String email, String password, int type, int phone, String residence, String residence2, String note)
     {
@@ -43,8 +43,15 @@ public class BLLFacade
     }
 
     public List<Day> getWorkedDays(User user)
-    {
+      {
         return DAL_FAC.getWorkedDays(user);
+      }
+
+    public void changePassword(User user, String oldPassword, String newPassword)
+      {
+        DAL_FAC.changePassword(user, oldPassword, newPassword);
+      }
+  }
     }
     public HashMap<String,String> loadSession() {
         return DAL_FAC.loadSession();
@@ -54,3 +61,4 @@ public class BLLFacade
         return DAL_FAC.getGuild(id);
     }
 }
+s
