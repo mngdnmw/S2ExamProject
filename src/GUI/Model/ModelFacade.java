@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
@@ -188,4 +189,12 @@ public class ModelFacade
       {
         return VOL_DATA_MOD.getWorkedDays(user);
       }
+    
+    public HashMap<String,String> loadSession() {
+        return LOG_MOD.loadSession();
+    }
+    
+    public Guild getGuild(int id) {
+        return GEN_INFO_MOD.getGuild(id);
+    }
   }

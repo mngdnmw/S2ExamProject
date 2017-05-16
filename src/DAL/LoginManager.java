@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +18,7 @@ import java.util.logging.Logger;
 public class LoginManager extends ConnectionManager
   {
 
+    private final HashMap<String,String> session = new HashMap<>();
     /**
      * Logs hours into the database using userId, guildId, hours and date.
      *
@@ -79,4 +81,28 @@ public class LoginManager extends ConnectionManager
           }
         return null;
       }
+    
+    public void saveSession(String username, int guildid, int hours) {
+        props.setProperty("LAST_USER", username);
+        props.setProperty("LAST_GUILD", String.valueOf(guildid));
+        props.setProperty("LAST_HOURS", String.valueOf(hours));
+        super.saveConfig(props);
+    }
+    
+    public HashMap<String,String> loadSession() {
+        
+        if(props.getProperty("LAST_USER") != null) {
+            if(!props.getProperty("LAST_USER").isEmpty())
+                session.put("lastuser", props.getProperty("LAST_USER"));
+        }
+        if(props.getProperty("LAST_GUILD") != null) {
+            if(!props.getProperty("LAST_GUILD").isEmpty())
+                session.put("lastguild", props.getProperty("LAST_GUILD"));
+        }
+        if(props.getProperty("LAST_HOURS") != null) {
+            if(!props.getProperty("LAST_HOURS").isEmpty())
+                session.put("lasthours", props.getProperty("LAST_HOURS"));
+        }
+        return session;
+    }
   }

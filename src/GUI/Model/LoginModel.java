@@ -5,6 +5,7 @@ import BLL.BLLFacade;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,5 +52,9 @@ public class LoginModel
         return true;
 
       }
+    
+    public HashMap<String,String> loadSession() {
+        return BLL_FAC.loadSession();
+    }
 
   }
