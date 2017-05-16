@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.FadeTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
@@ -89,6 +91,7 @@ public class ModelFacade
     //Data Model
     public List<User> getAllSavedVolunteers()
       {
+
         return allUsers;
       }
 
@@ -104,6 +107,7 @@ public class ModelFacade
 
     public void setAllVolunteersIntoArray()
       {
+        allUsers.clear();
         allUsers.addAll(GEN_INFO_MOD.getAllVolunteers());
       }
 
