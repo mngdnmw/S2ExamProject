@@ -42,6 +42,26 @@ public class LoginManager extends ConnectionManager
           }
       }
 
+    public void changePassword(User user, String oldPassword, String newPassword)
+      {
+        try (Connection con = super.getConnection())
+          {
+            String query = "UPDATE [user] "
+                    + " SET [user].[password] = ? "
+                    + " WHERE [user].[userid] = ? "
+                    + " AND [user].[password] = ?";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setString(1, newPassword);
+            pstmt.setInt(2, user.getId());
+            pstmt.setString(3, oldPassword);
+            pstmt.execute();
+          }
+        catch (SQLException ex)
+          {
+            Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
+          }
+      }
+
     public User getUserFromLogin(int userid, String password)
       {
         try (Connection con = super.getConnection())
@@ -61,15 +81,16 @@ public class LoginManager extends ConnectionManager
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
                 List<Guild> guilds = new ArrayList<>();
-                switch(type){
+                switch (type)
+                  {
                     case 0:
                         return new Volunteer(id, name, email, phone, note, residence, guilds);
-                    case 1: 
+                    case 1:
                         return new Manager(id, name, email, phone, note, residence, guilds);
-                    case 2: 
+                    case 2:
                         return new Admin(id, name, email, phone, note, residence, guilds);
-                        
-                }
+
+                  }
               }
           }
         catch (SQLException ex)
