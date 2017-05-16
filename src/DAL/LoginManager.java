@@ -1,6 +1,7 @@
 package DAL;
 
 import BE.Admin;
+import BE.Guild;
 import BE.Manager;
 import BE.User;
 import BE.Volunteer;
@@ -8,6 +9,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -57,13 +60,14 @@ public class LoginManager extends ConnectionManager
                 int phone = rs.getInt("phone");
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
+                List<Guild> guilds = new ArrayList<>();
                 switch(type){
                     case 0:
-                        return new Volunteer(id, name, email, phone, note, residence);
+                        return new Volunteer(id, name, email, phone, note, residence, guilds);
                     case 1: 
-                        return new Manager(id, name, email, phone, note, residence);
+                        return new Manager(id, name, email, phone, note, residence, guilds);
                     case 2: 
-                        return new Admin(id, name, email, phone, note, residence);
+                        return new Admin(id, name, email, phone, note, residence, guilds);
                         
                 }
               }

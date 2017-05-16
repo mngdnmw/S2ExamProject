@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
@@ -17,12 +18,13 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
 
     <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="129.0" layoutX="13.0" layoutY="11.0" stroke="TRANSPARENT" strokeType="INSIDE" width="491.0">
@@ -43,10 +45,10 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="lblName" prefHeight="17.0" prefWidth="178.0" text="lblName" GridPane.columnIndex="1" />
-            <Label fx:id="lblPh" prefHeight="17.0" prefWidth="172.0" text="lblPh" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label fx:id="lblEmail" prefHeight="17.0" prefWidth="164.0" text="lblEmail" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label fx:id="lblResidence" prefHeight="17.0" prefWidth="173.0" text="lblResidence" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="lblName" prefHeight="21.0" prefWidth="349.0" text="lblName" GridPane.columnIndex="1" />
+            <Label fx:id="lblPh" prefHeight="21.0" prefWidth="347.0" text="lblPh" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="lblEmail" prefHeight="21.0" prefWidth="347.0" text="lblEmail" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label fx:id="lblResidence" prefHeight="21.0" prefWidth="343.0" text="lblResidence" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <JFXButton fx:id="btnEditSave" buttonType="RAISED" onAction="#pressedEditSaveButton" style="-fx-background-color: #00c4ad;" text="Edit" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -108,7 +110,7 @@
                                                       <Insets left="7.0" right="5.0" top="20.0" />
                                                    </VBox.margin>
                                                 </Circle>
-                                                <Label maxHeight="100.0" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="164.0" text="Hours" textFill="WHITE" translateY="-100.0">
+                                                <Label fx:id="lblHrsAllText" maxHeight="100.0" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="164.0" text="Hours" textFill="WHITE" translateY="-100.0">
                                                    <font>
                                                       <Font name="Arial Rounded MT Bold" size="13.0" />
                                                    </font>
@@ -131,7 +133,7 @@
                                           </VBox>
                                           <VBox maxHeight="176.0" prefHeight="95.0" prefWidth="143.0">
                                              <children>
-                                                <JFXTextField fx:id="JFXTxtFSearchDate" focusColor="#00c4ad" prefHeight="26.0" prefWidth="133.0" promptText="Search ">
+                                                <JFXTextField fx:id="txtFSearchDate" focusColor="#00c4ad" prefHeight="26.0" prefWidth="133.0" promptText="Search ">
                                                    <padding>
                                                       <Insets left="5.0" right="5.0" />
                                                    </padding>
@@ -174,7 +176,7 @@
                                                       <Insets left="7.0" right="5.0" top="20.0" />
                                                    </VBox.margin>
                                                 </Circle>
-                                                <Label maxHeight="100.0" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="164.0" text="Hours" textFill="WHITE" translateY="-100.0">
+                                                <Label fx:id="lblHrsAllText2" maxHeight="100.0" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="164.0" text="Hours" textFill="WHITE" translateY="-100.0">
                                                    <font>
                                                       <Font name="Arial Rounded MT Bold" size="13.0" />
                                                    </font>
@@ -197,7 +199,7 @@
                                           </VBox>
                                           <VBox maxHeight="176.0" prefHeight="95.0" prefWidth="143.0">
                                              <children>
-                                                <JFXTextField focusColor="#00c4ad" prefHeight="26.0" prefWidth="133.0" promptText="Search date">
+                                                <JFXTextField fx:id="txtFSearchDate2" focusColor="#00c4ad" prefHeight="26.0" prefWidth="133.0" promptText="Search date">
                                                    <padding>
                                                       <Insets left="5.0" right="5.0" />
                                                    </padding>
@@ -205,7 +207,7 @@
                                                       <Insets left="5.0" right="5.0" />
                                                    </VBox.margin>
                                                 </JFXTextField>
-                                                <JFXButton alignment="CENTER" buttonType="RAISED" style="-fx-background-color: #00c4ad;" text="Edit " textFill="WHITE" translateX="50.0">
+                                                <JFXButton fx:id="btnEditOnTabMonth" alignment="CENTER" buttonType="RAISED" style="-fx-background-color: #00c4ad;" text="Edit " textFill="WHITE" translateX="50.0">
                                                    <VBox.margin>
                                                       <Insets top="20.0" />
                                                    </VBox.margin>
@@ -243,7 +245,7 @@
                                                       <Insets left="7.0" right="5.0" top="20.0" />
                                                    </VBox.margin>
                                                 </Circle>
-                                                <Label maxHeight="100.0" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="164.0" text="Hours" textFill="WHITE" translateY="-100.0">
+                                                <Label fx:id="lblHrsAllText3" maxHeight="100.0" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="164.0" text="Hours" textFill="WHITE" translateY="-100.0">
                                                    <font>
                                                       <Font name="Arial Rounded MT Bold" size="13.0" />
                                                    </font>
@@ -266,7 +268,7 @@
                                           </VBox>
                                           <VBox maxHeight="176.0" prefHeight="95.0" prefWidth="143.0">
                                              <children>
-                                                <JFXTextField focusColor="#00c4ad" prefHeight="26.0" prefWidth="133.0" promptText="Search date">
+                                                <JFXTextField fx:id="txtFSearchDate3" focusColor="#00c4ad" prefHeight="26.0" prefWidth="133.0" promptText="Search date">
                                                    <padding>
                                                       <Insets left="5.0" right="5.0" />
                                                    </padding>
@@ -274,7 +276,7 @@
                                                       <Insets left="5.0" right="5.0" />
                                                    </VBox.margin>
                                                 </JFXTextField>
-                                                <JFXButton alignment="CENTER" buttonType="RAISED" disable="true" style="-fx-background-color: #00c4ad;" text="Edit " textFill="WHITE" translateX="50.0">
+                                                <JFXButton fx:id="btnEditOnTabDay" alignment="CENTER" buttonType="RAISED" disable="true" style="-fx-background-color: #00c4ad;" text="Edit " textFill="WHITE" translateX="50.0">
                                                    <VBox.margin>
                                                       <Insets top="20.0" />
                                                    </VBox.margin>
@@ -310,7 +312,7 @@
             <DropShadow />
          </effect>
       </Rectangle>
-      <ImageView fx:id="imgVwProfilePic" fitHeight="127.0" fitWidth="131.0" layoutX="530.0" layoutY="26.0" pickOnBounds="true">
+      <ImageView fx:id="imgVwProfilePic" fitHeight="130.0" fitWidth="130.0" layoutX="534.0" layoutY="26.0" pickOnBounds="true" AnchorPane.rightAnchor="35.0">
          <image>
             <Image url="@../Images/labeouf.jpg" />
          </image>
@@ -322,7 +324,7 @@
          <children>
             <VBox prefHeight="8.0" prefWidth="133.0">
                <children>
-                  <Label style="-fx-background-color: #00c4ad;" text="Guilds:" textFill="WHITE" />
+                  <Label fx:id="lblGuilds" style="-fx-background-color: #00c4ad;" text="Guilds:" textFill="WHITE" />
                </children>
             </VBox>
             <VBox prefHeight="45.0" prefWidth="133.0">
@@ -332,7 +334,7 @@
             </VBox>
          </children>
       </VBox>
-      <JFXButton fx:id="JFXBtnUpdatePhoto" buttonType="RAISED" layoutX="552.0" layoutY="166.0" onAction="#pressedChangeImage" style="-fx-background-color: #00c4ad;" text="Update Photo" textFill="WHITE">
+      <JFXButton fx:id="btnUpdatePhoto" buttonType="RAISED" layoutX="528.0" layoutY="166.0" onAction="#pressedChangeImage" prefHeight="25.0" prefWidth="141.0" style="-fx-background-color: #00c4ad;" text="Update Photo" textFill="WHITE" AnchorPane.rightAnchor="31.0">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
@@ -343,5 +345,60 @@
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </JFXButton>
+      <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="528.0" layoutY="200.0" maxHeight="25.0" minHeight="25.0" onAction="#OpenPasswordChangerEvent" prefHeight="25.0" prefWidth="141.0" style="-fx-background-color: #00c4ad;" text="Change Password" textFill="WHITE" AnchorPane.rightAnchor="31.0">
+         <padding>
+            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+         </padding>
+      </JFXButton>
+      <StackPane fx:id="stckPanePasswordChanger" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox fx:id="loginWindow" alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="200.0" prefWidth="463.0" spacing="10.0" styleClass="loginwindow" stylesheets="@MainLayout.css">
+               <children>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                     <children>
+                        <Label fx:id="lblUsername" text="Old Password">
+                           <font>
+                              <Font name="System Bold Italic" size="16.0" />
+                           </font>
+                        </Label>
+                        <JFXPasswordField fx:id="txtOPassword" prefHeight="29.0" prefWidth="221.0" styleClass="logintextFields" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                     <children>
+                        <Label text="New Password">
+                           <font>
+                              <Font name="System Bold Italic" size="16.0" />
+                           </font>
+                        </Label>
+                        <JFXPasswordField fx:id="txtNPassword" focusColor="#00e2c7" styleClass="logintextFields" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                     <children>
+                        <Label text="New Password Again">
+                           <font>
+                              <Font name="System Bold Italic" size="16.0" />
+                           </font>
+                        </Label>
+                        <JFXPasswordField fx:id="txtNPasswordTwo" focusColor="#00e2c7" styleClass="logintextFields" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
+                     <children>
+                        <JFXButton buttonType="RAISED" onAction="#ChangePasswordEvent" styleClass="loginbuttons" text="Change" />
+                        <JFXButton fx:id="btnCancel" buttonType="RAISED" onAction="#HidePasswordChangerEvent" styleClass="loginbuttons" text="Cancel" />
+                     </children>
+                     <padding>
+                        <Insets bottom="1.0" top="8.0" />
+                     </padding>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </VBox>
+         </children>
+      </StackPane>
     </children>
 </AnchorPane>

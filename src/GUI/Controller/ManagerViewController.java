@@ -1,15 +1,20 @@
 package GUI.Controller;
 
-
+import BE.Day;
 import BE.Guild;
 
 import BE.User;
 import GUI.Model.ModelFacade;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXTreeTableColumn;
+import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -32,6 +37,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
 
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
@@ -43,7 +50,7 @@ import javafx.util.Callback;
 import javafx.util.Duration;
 
 public class ManagerViewController implements Initializable
-{
+  {
 
     @FXML
     private Label lblUserName;
@@ -58,106 +65,121 @@ public class ManagerViewController implements Initializable
     @FXML
     private JFXButton btnEditInfo;
     @FXML
-    private TableView<User> tblVolunteers;
-    @FXML
-    private TableColumn<User, String> colName;
-    @FXML
-    private TableColumn<User, Integer> colPhone;
-    @FXML
-    private TableColumn<User, String> colEmail;
-    @FXML
-    private TableColumn<Guild, String> colGuild;
-    @FXML
     private AnchorPane root;
     @FXML
     private JFXButton btnStats;
     @FXML
     private JFXButton btnClose;
+    @FXML
+    private JFXTreeTableView<User> tblUsers;
 
-    ModelFacade modelFacade = new ModelFacade();
+    ModelFacade modelFacade = ModelFacade.getModelFacade();
     User selectedUser;
+    @FXML
+    private JFXComboBox<?> cmbGuildChooser;
+    @FXML
+    private Label lblNotes;
+    
+    JFXTreeTableColumn<User, String> colName = new JFXTreeTableColumn<>();
+    JFXTreeTableColumn<User, Integer> colPhone = new JFXTreeTableColumn<>();
+    JFXTreeTableColumn<User, String> colEmail = new JFXTreeTableColumn<>();
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb)
-    {
-        setTableProperties();
-
+      {
+        //setTableProperties();
+        setTextAll(); //this has to run before setting currently logged in username
         if (modelFacade.getCurrentUser() != null)
-        {
-            lblUserName.setText(lblUserName.getText() + " " + modelFacade.getCurrentUser().getName());
-        }
-
-    }
+          {
+            lblUserName.setText(modelFacade.getLang("LBL_USERNAME") + modelFacade.getCurrentUser().getName());
+          }
+        
+        showTreeTable();
+      }
 
     /**
-     * Sets table's properties
+     * Initialises the tree table containing information about the User
      */
-    private void setTableProperties()
-    {
-        tblVolunteers.setPlaceholder(new Label("Nothing found"));
-        colName.setCellValueFactory(new PropertyValueFactory("name"));
-        colPhone.setCellValueFactory(new PropertyValueFactory("phone"));
-        colEmail.setCellValueFactory(new PropertyValueFactory("email"));
+    private void showTreeTable()
+      {
+        //Need to do some threading for this method
 
-        //colGuild.setCellValueFactory(new PropertyValueFactory("guildId"));
+        //Name column set up
+        
+        colName.prefWidthProperty().bind(tblUsers.widthProperty().divide(3));
+        colName.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<User, String>, ObservableValue<String>>()
+          {
+            @Override
+            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<User, String> param)
+              {
+                return param.getValue().getValue().nameProperty();
+              }
+          });
 
-        ObservableList<User> masterData = FXCollections.observableArrayList(modelFacade.getAllUsers());
-        FilteredList<User> filteredData = new FilteredList<>(masterData, p -> true);
-        tblVolunteers.setItems(FXCollections.observableArrayList());
+        //Phone column set up
+        
+        colPhone.prefWidthProperty().bind(tblUsers.widthProperty().divide(3));
+        colPhone.setCellValueFactory((TreeTableColumn.CellDataFeatures<User, Integer> param) -> param.getValue().getValue().phoneProperty().asObject());
 
-        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(user -> {
-                // If filter text is empty, display all persons.
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
+        //Email column set up
+        
+        colEmail.prefWidthProperty().bind(tblUsers.widthProperty().divide(3));
+        colEmail.setCellValueFactory((TreeTableColumn.CellDataFeatures<User, String> param) -> param.getValue().getValue().emailProperty());
 
-                // Compare user with filter text.
-                String lowerCaseFilter = newValue.toLowerCase();
-                String phoneString = String.valueOf(user.getPhone());
-                
-                if (user.getName().toLowerCase().contains(lowerCaseFilter)) {
-                    return true; 
-                } else if (phoneString.contains(newValue)) {
-                    return true; 
-                }
-                else if (user.getEmail().toLowerCase().contains(lowerCaseFilter)) {
-                    return true; 
-                }
-                return false; 
-            });
-        });
-        // 3. Wrap the FilteredList in a SortedList. 
-        SortedList<User> sortedData = new SortedList<>(filteredData);
+        /*//Guild column set up
+        JFXTreeTableColumn<Guild, String> colGuild = new JFXTreeTableColumn<>("Guild");
+        colGuild.prefWidthProperty().bind(tblUsers.widthProperty().divide(3));
+        colGuild.setCellValueFactory((TreeTableColumn.CellDataFeatures<Guild, String> param) -> param.getValue().getValue().getName());*/
+        tblUsers.setPlaceholder(new Label("Nothing found"));
 
-        // 4. Bind the SortedList comparator to the TableView comparator.
-        sortedData.comparatorProperty().bind(tblVolunteers.comparatorProperty());
+        ObservableList<User> volunteers = FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers());
 
-        // 5. Add sorted (and filtered) data to the table.
-        tblVolunteers.setItems(sortedData);
+        final TreeItem<User> rootOfTree = new RecursiveTreeItem<>(volunteers, RecursiveTreeObject::getChildren);
 
-        //colGuild.setCellValueFactory(new PropertyValueFactory("name"));
-        //colGuild.setCellValueFactory((CellDataFeatures<Guild, String> p) -> new ReadOnlyObjectWrapper(p.getValue().getName()));
-        //((TreeTableColumn.CellDataFeatures<Day, String> param) -> param.getValue().getValue().guildProperty())
+        colName.getStyleClass().add("col");
+        colPhone.getStyleClass().add("col");
+        colEmail.getStyleClass().add("col");
 
-    }
+        tblUsers.getColumns().setAll(colName, colPhone, colEmail);
+        tblUsers.setRoot(rootOfTree);
+        tblUsers.setShowRoot(false);
+
+        txtSearch.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
+                -> 
+          {
+            tblUsers.setPredicate((TreeItem<User> user)
+                    -> 
+              {
+                String regex = "[^a-zA-Z0-9\\s]";
+                Boolean search
+                        = user.getValue().nameProperty().getValue().toLowerCase().replaceAll(regex, "")
+                        .contains(newValue.toLowerCase().replaceAll(regex, ""))
+                        || user.getValue().emailProperty().getValue().toLowerCase().replaceAll(regex, "").
+                        contains(newValue.toLowerCase().replaceAll(regex, ""))
+                        || user.getValue().phoneProperty().getValue().toString().replaceAll(regex, "")
+                        .contains(newValue.toLowerCase().replaceAll(regex, ""));
+
+                return search;
+              });
+          });
+      }
 
     @FXML
     private void onBtnAddUserClicked(ActionEvent event)
-    {
+      {
         addUserPopup();
-    }
+      }
 
     public void addUserPopup()
-    {
+      {
         selectedUser = null;
 
         try
-        {
-            Stage primStage = (Stage) tblVolunteers.getScene().getWindow();
+          {
+            Stage primStage = (Stage) tblUsers.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/ManagerAddUserView.fxml"));
 
             //ManagerViewController.setSelectedUser(selectedUser);
@@ -171,45 +193,48 @@ public class ManagerViewController implements Initializable
             stageView.setScene(new Scene(root));
 
             stageView.setOnHiding(new EventHandler<WindowEvent>()
-            {
+              {
                 public void handle(WindowEvent we)
-                {
+                  {
                     System.out.println("Stage on Hiding");
-                    setTableItems();
-                }
-            });
+                    //setTableItems();
+                    showTreeTable();
+                  }
+              });
 
             stageView.setOnCloseRequest(new EventHandler<WindowEvent>()
-            {
+              {
                 public void handle(WindowEvent we)
-                {
+                  {
                     System.out.println("Stage is closing");
-                    setTableItems();
-                }
-            });
+                    //setTableItems();
+                    showTreeTable();
+                  }
+              });
 
             stageView.initModality(Modality.WINDOW_MODAL);
             stageView.initOwner(primStage);
 
             stageView.show();
-        } catch (Exception e)
-        {
+          }
+        catch (Exception e)
+          {
             System.out.println(e);
-        }
+          }
 
-    }
+      }
 
     @FXML
     private void onEditInfoPressed(ActionEvent event)
-    {
+      {
         selectedUser = null;
 
-        if (tblVolunteers.getSelectionModel().getSelectedItem() != null)
-        {
+        if (tblUsers.getSelectionModel().getSelectedItem() != null)
+          {
             try
-            {
-                selectedUser = tblVolunteers.getSelectionModel().getSelectedItem();
-                Stage primStage = (Stage) tblVolunteers.getScene().getWindow();
+              {
+                selectedUser = tblUsers.getSelectionModel().getSelectedItem().getValue();
+                Stage primStage = (Stage) tblUsers.getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/ManagerEditView.fxml"));
                 ManagerEditViewController.setSelectedUser(selectedUser);
 
@@ -224,55 +249,60 @@ public class ManagerViewController implements Initializable
                 stageView.setScene(new Scene(root));
 
                 stageView.setOnHiding(new EventHandler<WindowEvent>()
-                {
+                  {
                     public void handle(WindowEvent we)
-                    {
+                      {
                         System.out.println("Stage on Hiding");
-                        setTableItems();
-                    }
-                });
+                        //setTableItems();
+                        showTreeTable();
+                      }
+                  });
 
                 stageView.setOnCloseRequest(new EventHandler<WindowEvent>()
-                {
+                  {
                     public void handle(WindowEvent we)
-                    {
+                      {
                         System.out.println("Stage is closing");
-                        setTableItems();
-                    }
-                });
+                        //setTableItems();
+                        showTreeTable();
+                      }
+                  });
 
                 stageView.initModality(Modality.WINDOW_MODAL);
                 stageView.initOwner(primStage);
 
                 stageView.show();
-            } catch (Exception e)
-            {
+              }
+            catch (Exception e)
+              {
                 System.out.println(e);
                 e.printStackTrace();
-            }
-        } else
-        {
+              }
+          }
+        else
+          {
             snackBarPopup("You need to select a user first.");
             System.out.println("Selected user missing");
-        }
-    }
+          }
+      }
 
     @FXML
     private void onTablePressed(MouseEvent event)
-    {
+      {
         selectedUser = null;
 
         if (event.isPrimaryButtonDown() && event.getClickCount() == 1)
-        {
-            selectedUser = tblVolunteers.getSelectionModel().getSelectedItem();
+          {
+            selectedUser = tblUsers.getSelectionModel().getSelectedItem().getValue();
 
             txtNotes.setText(selectedUser.getNote());
-        } else if (event.isPrimaryButtonDown() && event.getClickCount() == 2)
-        {
+          }
+        else if (event.isPrimaryButtonDown() && event.getClickCount() == 2)
+          {
             try
-            {
-                selectedUser = tblVolunteers.getSelectionModel().getSelectedItem();
-                Stage primStage = (Stage) tblVolunteers.getScene().getWindow();
+              {
+                selectedUser = tblUsers.getSelectionModel().getSelectedItem().getValue();
+                Stage primStage = (Stage) tblUsers.getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/ManagerEditView.fxml"));
 
                 ManagerEditViewController.setSelectedUser(selectedUser);
@@ -288,57 +318,66 @@ public class ManagerViewController implements Initializable
                 stageView.setScene(new Scene(root));
 
                 stageView.setOnHiding(new EventHandler<WindowEvent>()
-                {
+                  {
                     public void handle(WindowEvent we)
-                    {
+                      {
                         System.out.println("Stage on Hiding");
-                        setTableItems();
-                    }
-                });
+                        //setTableItems();
+                        showTreeTable();
+                      }
+                  });
 
                 stageView.setOnCloseRequest(new EventHandler<WindowEvent>()
-                {
+                  {
                     public void handle(WindowEvent we)
-                    {
+                      {
                         System.out.println("Stage is closing");
-                        setTableItems();
-                    }
-                });
+                        //setTableItems();
+                        showTreeTable();
+                      }
+                  });
 
                 stageView.initModality(Modality.WINDOW_MODAL);
                 stageView.initOwner(primStage);
 
                 stageView.show();
-            } catch (Exception e)
-            {
+              }
+            catch (Exception e)
+              {
                 System.out.println(e);
-            }
-        }
-    }
-
-    private void setTableItems()
-    {
-        tblVolunteers.setItems(FXCollections.observableArrayList(modelFacade.getAllUsers()));
-
-        if (tblVolunteers.getSelectionModel().getSelectedItem() == null)
-        {
-            txtNotes.setText("");
-        }
-    }
+              }
+          }
+      }
 
     @FXML
     private void onBtnClosePressed(ActionEvent event)
-    {
+      {
         Stage stage = (Stage) btnClose.getScene().getWindow();
         stage.close();
-    }
-    
+      }
+
     public void snackBarPopup(String str)
-    {
+      {
         int time = 3000;
         JFXSnackbar snackbar = new JFXSnackbar(root);
         snackbar.show(str, time);
         PauseTransition pause = new PauseTransition(Duration.millis(time));
         pause.play();
+      }
+    
+    private void setTextAll() {
+        btnAddHours.setText(modelFacade.getLang("BTN_ADD_HOURS"));
+        btnAddUser.setText(modelFacade.getLang("BTN_ADD_USER"));
+        btnClose.setText(modelFacade.getLang("BTN_CLOSE"));
+        btnEditInfo.setText(modelFacade.getLang("BTN_EDIT_INFO"));
+        btnStats.setText(modelFacade.getLang("BTN_STATS"));
+        
+        lblUserName.setText(modelFacade.getLang("LBL_USERNAME"));
+        lblNotes.setText(modelFacade.getLang("LBL_NOTES"));
+        txtSearch.setPromptText(modelFacade.getLang("PROMPT_SEARCH_USER"));
+        cmbGuildChooser.setPromptText(modelFacade.getLang("PROMPT_SEARCH_USER"));
+        colEmail.setText(modelFacade.getLang("COL_EMAIL"));
+        colPhone.setText(modelFacade.getLang("COL_PHONE"));
+        colName.setText(modelFacade.getLang("COL_NAME"));
     }
-}
+  }

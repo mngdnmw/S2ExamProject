@@ -1,11 +1,9 @@
 package GUI.Model;
 
 import BE.User;
-import BE.Volunteer;
 import BLL.BLLFacade;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.logging.Level;

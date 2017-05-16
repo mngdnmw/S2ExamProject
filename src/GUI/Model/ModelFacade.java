@@ -2,11 +2,13 @@ package GUI.Model;
 
 import BE.Day;
 import BE.EnumCache;
+import BE.EnumCache.Lang;
 import BE.Guild;
 import BE.User;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.FadeTransition;
 import javafx.scene.Node;
@@ -24,6 +26,7 @@ public class ModelFacade
     private final static LanguageModel LANG_MOD = new LanguageModel();
     private final static ViewChangerModel VIEW_CHANG_MOD = new ViewChangerModel();
     private final static VolunteerDataModel VOL_DATA_MOD = new VolunteerDataModel();
+    private ArrayList<User> allUsers = new ArrayList();
 
     //Login Model
     public Boolean logHours(String username, int hours, int guildId)
@@ -85,6 +88,11 @@ public class ModelFacade
       }
 
     //Data Model
+    public List<User> getAllSavedVolunteers()
+      {
+        return allUsers;
+      }
+
     public User getUserInfo(int userId)
       {
         return GEN_INFO_MOD.getUserInfo(userId);
@@ -95,9 +103,9 @@ public class ModelFacade
         return GEN_INFO_MOD.getAllUsers();
       }
 
-    public List<User> getAllVolunteers()
+    public void setAllVolunteersIntoArray()
       {
-        return GEN_INFO_MOD.getAllVolunteers();
+        allUsers.addAll(GEN_INFO_MOD.getAllVolunteers());
       }
 
     public List<User> getAllManagers()
@@ -120,6 +128,10 @@ public class ModelFacade
       {
         LANG_MOD.setLang(lang);
       }
+    
+    public Lang getLangProperty() {
+        return LANG_MOD.getLangProperty();
+    }
 
     public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence)
       {
