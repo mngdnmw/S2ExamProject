@@ -141,6 +141,7 @@ public class HourLoginViewController implements Initializable
         ModelFacade.setModelFacade(MOD_FACADE);
         addListener();
         setTextAll();
+        rememberThisSession();
       }
 
     public void buttonPressed(KeyEvent ke)
@@ -452,6 +453,7 @@ public class HourLoginViewController implements Initializable
         } else if(MOD_FACADE.getLangProperty().equals(Lang.DAN)){
             imgViewLngBut.setImage(iconDK);
         }
+        
       }
 
     private void loginEvent()
@@ -545,6 +547,10 @@ public class HourLoginViewController implements Initializable
 
     public void rememberThisSession()
       {
-
+          if(MOD_FACADE.loadSession() != null) {
+            txtUser.setText(MOD_FACADE.loadSession().get("lastuser"));
+            txtHours.setText(MOD_FACADE.loadSession().get("lasthours"));
+            cmbGuildChooser.getSelectionModel().select(MOD_FACADE.getGuild(Integer.parseInt(MOD_FACADE.loadSession().get("lastguild"))));
+        }
       }
   }

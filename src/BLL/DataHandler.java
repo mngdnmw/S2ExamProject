@@ -45,8 +45,8 @@ public class DataHandler
         return dataManager.getAllAdmins();
     }
     
-    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence) {
-        dataManager.updateUserInfo(userId, name, email, type, phone, note, residence);
+    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence, String residence2) {
+        dataManager.updateUserInfo(userId, name, email, type, phone, note, residence, residence2);
     }
     
     public void updateUserImage(User user, File img) throws FileNotFoundException {

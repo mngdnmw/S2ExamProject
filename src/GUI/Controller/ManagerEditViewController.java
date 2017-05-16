@@ -44,6 +44,8 @@ public class ManagerEditViewController implements Initializable
     @FXML
     private JFXTextField txtAddress;
     @FXML
+    private JFXTextField txtAddress2;
+    @FXML
     private JFXTextArea txtNotes;
     @FXML
     private JFXListView<Guild> listGuilds;
@@ -53,7 +55,7 @@ public class ManagerEditViewController implements Initializable
     private static ModelFacade modelFacade = new ModelFacade();
     private static User selectedUser;
     
- 
+    
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
@@ -73,6 +75,7 @@ public class ManagerEditViewController implements Initializable
         {
             txtName.setText(selectedUser.getName());
             txtAddress.setText(selectedUser.getResidence());
+            txtAddress2.setText(selectedUser.getResidence2());
             txtPhone.setText(String.valueOf(selectedUser.getPhone()));
             txtEmail.setText(selectedUser.getEmail());
             txtNotes.setText(selectedUser.getNote());
@@ -96,7 +99,7 @@ public class ManagerEditViewController implements Initializable
     
     private void updateUserInfo()
     {
-        modelFacade.updateUserInfo(selectedUser.getId(), txtName.getText(), txtEmail.getText(), selectedUser.getType(), Integer.parseInt(txtPhone.getText()), txtNotes.getText(), txtAddress.getText());
+        modelFacade.updateUserInfo(selectedUser.getId(), txtName.getText(), txtEmail.getText(), selectedUser.getType(), Integer.parseInt(txtPhone.getText()), txtNotes.getText(), txtAddress.getText(), txtAddress2.getText());
     }
 
     @FXML

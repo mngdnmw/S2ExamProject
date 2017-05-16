@@ -40,7 +40,6 @@ COL_DATE = Date
 COL_HOURS = Hours
 COL_GUILD = Guild
 PROMPT_SEARCH = Search
-PROMPT_SEARCH_DATE = Search date
 LBL_HRS_ALL_TEXT = Hours
 LBL_GUILDS = Guilds:
 
