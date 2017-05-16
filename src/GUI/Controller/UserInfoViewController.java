@@ -149,6 +149,7 @@ public class UserInfoViewController implements Initializable {
     JFXTreeTableColumn<Day, String> dateCol = new JFXTreeTableColumn<>();
     JFXTreeTableColumn<Day, Integer> hoursCol = new JFXTreeTableColumn<>();
     JFXTreeTableColumn<Day, String> guildCol = new JFXTreeTableColumn<>();
+    @FXML
     JFXButton btnCancel = new JFXButton();
     JFXButton higherClearanceBtn = new JFXButton();
 
@@ -183,6 +184,8 @@ public class UserInfoViewController implements Initializable {
     private JFXTextField txtFSearchDate2;
     @FXML
     private JFXTextField txtFSearchDate3;
+    @FXML
+    private Label lblResidence2;
 
     /**
      * Initializes the controller class.
