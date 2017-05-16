@@ -85,7 +85,6 @@ public class HourLoginViewController implements Initializable
     private String strContribution = "Your hours have been logged. Thank you!";
     private String strLogin = "Log In";
     private String strCancel = "Cancel";
-    private String strLanguage = "English";
     private Image iconDK, iconENG;
     private final ImageView imgViewLngBut = new ImageView();
     //Models used by this Controller
@@ -137,10 +136,11 @@ public class HourLoginViewController implements Initializable
         preloadImages();
         imgViewLngBut.setImage(iconENG);
         btnLanguage.setGraphic(imgViewLngBut);
-        btnLanguage.setText(strLanguage);
+        btnLanguage.setText(MOD_FACADE.getLang("BTN_LANGUAGE"));
         cmbGuildChooser.setItems(FXCollections.observableArrayList(MOD_FACADE.getAllGuilds()));
         ModelFacade.setModelFacade(MOD_FACADE);
         addListener();
+        setTextAll();
       }
 
     public void buttonPressed(KeyEvent ke)
@@ -358,11 +358,13 @@ public class HourLoginViewController implements Initializable
               {
                 if (event.getSource().equals(btnDanish))
                   {
-                    changeLanguage("Dansk");
+                      MOD_FACADE.setLang(Lang.DAN);
+                      imgViewLngBut.setImage(iconDK);
                   }
                 else if (event.getSource().equals(btnEnglish))
                   {
-                    changeLanguage("English");
+                      MOD_FACADE.setLang(Lang.ENG);
+                      imgViewLngBut.setImage(iconENG);
                   }
                 setTextAll();
                 MOD_FACADE.fadeOutTransition(Duration.millis(500), popup).setOnFinished(
@@ -427,25 +429,6 @@ public class HourLoginViewController implements Initializable
 
       }
 
-    public void changeLanguage(String str)
-      {
-        if (!str.equals(btnLanguage.getText()))
-          {
-            strLanguage = str;
-            btnLanguage.setText(strLanguage);
-            if (strLanguage.equals("Dansk"))
-              {
-                imgViewLngBut.setImage(iconDK);
-                MOD_FACADE.setLang(Lang.DAN);
-              }
-            else if (strLanguage.equals("English"))
-              {
-                imgViewLngBut.setImage(iconENG);
-                MOD_FACADE.setLang(Lang.ENG);
-              }
-          }
-      }
-
     public void preloadImages()
       {
         iconDK = new Image(getClass().getResourceAsStream("/GUI/Images/danish.png"));
@@ -463,6 +446,12 @@ public class HourLoginViewController implements Initializable
         cmbGuildChooser.setPromptText(MOD_FACADE.getLang("CMB_GUILDCHOOSER_PROMPT"));
         btnLogHours.setText(MOD_FACADE.getLang("BTN_LOG_HOURS"));
         btnSeeInfo.setText(MOD_FACADE.getLang("BTN_SEE_INFO"));
+        btnLanguage.setText(MOD_FACADE.getLang("BTN_LANGUAGE"));
+        if(MOD_FACADE.getLangProperty().equals(Lang.ENG)) {
+            imgViewLngBut.setImage(iconENG);
+        } else if(MOD_FACADE.getLangProperty().equals(Lang.DAN)){
+            imgViewLngBut.setImage(iconDK);
+        }
       }
 
     private void loginEvent()

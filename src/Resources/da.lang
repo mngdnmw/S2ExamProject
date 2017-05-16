@@ -1,10 +1,11 @@
-﻿#Login screeen buttons
+﻿#Login screen buttons
 LOG_THANKS = Tak!
 LOG_CONTRIB = Du har hjulpet med at forbedre vores fælleskab!
 BTN_LOGIN = Log in
 BTN_CANCEL = Annuller
 BTN_LOG_HOURS = Tilføj Timer
 BTN_SEE_INFO = Se info
+BTN_LANGUAGE = Dansk
 
 #Login screen labels
 USERNAME_TAG = Mit brugernavn er
@@ -15,3 +16,51 @@ HOUR_TAG_TWO = timer
 GUILD_TAG = til
 CMB_GUILDCHOOSER_PROMPT = Vælg et laug
 GUILD_TAG_TWO = laug
+
+########
+# USER INFO WINDOW
+########
+
+#User info buttons
+BTN_UPDATEPHOTO = Update photo
+BTN_CHANGEPASS = Change password
+BTN_EDIT = Edit
+BTN_SAVE = Save
+BTN_CANCEL = Cancel
+BTN_LOGOUT = Log out
+TAB_ALL = All
+TAB_MONTH = Month
+TAB_DAY = Day
+TAB_GRAPHS = Graphs
+BTN_HIGHER_CLEARANCE_1 = Manager functions 
+BTN_HIGHER_CLEARANCE_2 = Admin functions
+
+#User info labels
+COL_DATE = Date
+COL_HOURS = Hours
+COL_GUILD = Guild
+PROMPT_SEARCH = Search
+PROMPT_SEARCH_DATE = Search date
+LBL_HRS_ALL_TEXT = Hours
+LBL_GUILDS = Guilds:
+
+########
+#MANAGER VIEW
+########
+
+#Manager view buttons
+BTN_ADD_HOURS = Add hours
+BTN_EDIT_INFO = Edit Information
+BTN_STATS = User Statistics
+BTN_CLOSE = Close
+BTN_ADD_USER = Add user
+
+#Manager view labels
+#Remember to leave a space after LBL_USERNAME
+LBL_USERNAME = Loggen is as: 
+PROMPT_SEARCH_USER = Search user...
+PROMPT_CMB_GUILDCHOOSER = Guild Chooser
+LBL_NOTES = Notes:
+COL_NAME = Name
+COL_PHONE = Phone
+COL_EMAIL = Email

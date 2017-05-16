@@ -2,6 +2,7 @@ package GUI.Model;
 
 import BE.Day;
 import BE.EnumCache;
+import BE.EnumCache.Lang;
 import BE.Guild;
 import BE.User;
 import java.io.File;
@@ -131,6 +132,10 @@ public class ModelFacade
       {
         LANG_MOD.setLang(lang);
       }
+    
+    public Lang getLangProperty() {
+        return LANG_MOD.getLangProperty();
+    }
 
     public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence)
       {
