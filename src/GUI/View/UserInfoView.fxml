@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
@@ -338,12 +337,6 @@
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </JFXButton>
-      <ImageView fitHeight="45.0" fitWidth="43.0" layoutX="515.0" layoutY="202.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Images/tick.png" />
-         </image>
-      </ImageView>
-      <JFXTextArea fx:id="JFXTxtAreaBenefits" editable="false" layoutX="563.0" layoutY="210.0" prefHeight="72.0" prefWidth="112.0" text="Congratulations! &#10;You have earnt &#10;benefits for this year." />
       <HBox fx:id="hBoxInvisBtn" layoutX="508.0" layoutY="407.0" prefHeight="45.0" prefWidth="183.0" />
       <JFXButton fx:id="btnLogout" buttonType="RAISED" layoutX="570.0" layoutY="455.0" onAction="#handleLogout" style="-fx-background-color: #B0B0B0;" text="Log Out" textFill="WHITE">
          <padding>
