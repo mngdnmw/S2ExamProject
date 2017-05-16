@@ -132,6 +132,7 @@ public class UserInfoViewController implements Initializable {
     TextField txtPh;
     TextField txtEmail;
     TextField txtResidence;
+    TextField txtResidence2;
 
     User currentUser;
 
@@ -356,6 +357,7 @@ public class UserInfoViewController implements Initializable {
         lblPh.setText(String.valueOf(currentUser.getPhone()));
         lblEmail.setText(currentUser.getEmail());
         lblResidence.setText(currentUser.getResidence());
+        lblResidence2.setText(currentUser.getResidence2());
     }
 
     //Need to finish
@@ -391,6 +393,7 @@ public class UserInfoViewController implements Initializable {
         txtPh = new JFXTextField();
         txtEmail = new JFXTextField();
         txtResidence = new JFXTextField();
+        txtResidence2 = new JFXTextField();
 
         txtPh.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
@@ -404,12 +407,13 @@ public class UserInfoViewController implements Initializable {
         txtPh.setVisible(false);
         txtEmail.setVisible(false);
         txtResidence.setVisible(false);
+        txtResidence2.setVisible(false);
 
         gridEdit.add(txtName, 1, 0);
         gridEdit.add(txtPh, 1, 1);
         gridEdit.add(txtEmail, 1, 2);
         gridEdit.add(txtResidence, 1, 3);
-
+        gridEdit.add(txtResidence2, 1,4);
     }
 
     private void editInfo() {
@@ -420,31 +424,37 @@ public class UserInfoViewController implements Initializable {
         txtEmail.setText(lblEmail.getText());
 
         txtResidence.setText(lblResidence.getText());
+        
+        txtResidence2.setText(lblResidence2.getText());
 
         lblName.setVisible(false);
         lblPh.setVisible(false);
         lblEmail.setVisible(false);
         lblResidence.setVisible(false);
+        lblResidence2.setVisible(false);
 
         txtName.setVisible(true);
         txtPh.setVisible(true);
         txtEmail.setVisible(true);
         txtResidence.setVisible(true);
+        txtResidence2.setVisible(true);
     }
 
     private void saveInfo(User user) {
-        MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPh.getText()), user.getNote(), txtResidence.getText()); //do things in db
+        MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPh.getText()), user.getNote(), txtResidence.getText(), txtResidence2.getText()); //do things in db
 
         currentUser = MOD_FACADE.getUserInfo(user.getId());
         txtName.setVisible(false);
         txtPh.setVisible(false);
         txtEmail.setVisible(false);
         txtResidence.setVisible(false);
+        txtResidence2.setVisible(false);
 
         lblName.setVisible(true);
         lblPh.setVisible(true);
         lblEmail.setVisible(true);
         lblResidence.setVisible(true);
+        lblResidence2.setVisible(true);
 
         setUserInfo(); //update labels
     }
@@ -519,11 +529,13 @@ public class UserInfoViewController implements Initializable {
                 txtPh.setVisible(false);
                 txtEmail.setVisible(false);
                 txtResidence.setVisible(false);
+                txtResidence2.setVisible(false);
 
                 lblName.setVisible(true);
                 lblPh.setVisible(true);
                 lblEmail.setVisible(true);
                 lblResidence.setVisible(true);
+                lblResidence2.setVisible(true);
 
                 removeCancelButton(); //if cancel button clicked, it will disappear
                 editing = false;
@@ -557,9 +569,10 @@ public class UserInfoViewController implements Initializable {
         dateCol.setText(MOD_FACADE.getLang("COL_DATE"));
         hoursCol.setText(MOD_FACADE.getLang("COL_HOURS"));
         guildCol.setText(MOD_FACADE.getLang("COL_GUILD"));
-        txtFSearchDate.setText(MOD_FACADE.getLang("PROMPT_SEARCH_DATE"));
-        txtFSearchDate2.setText(MOD_FACADE.getLang("PROMPT_SEARCH_DATE"));
-        txtFSearchDate3.setText(MOD_FACADE.getLang("PROMPT_SEARCH_DATE"));
+        //txtFSearchDate.setText(MOD_FACADE.getLang("PROMPT_SEARCH_DATE"));
+        txtFSearchDate.setPromptText(MOD_FACADE.getLang("PROMPT_SEARCH"));
+        //txtFSearchDate2.setText(MOD_FACADE.getLang("PROMPT_SEARCH_DATE"));
+        //txtFSearchDate3.setText(MOD_FACADE.getLang("PROMPT_SEARCH_DATE"));
         lblHrsAll.setText(MOD_FACADE.getLang("LBL_HRS_ALL_TEXT"));
         lblHrsAll2.setText(MOD_FACADE.getLang("LBL_HRS_ALL_TEXT"));
         lblHrsAll3.setText(MOD_FACADE.getLang("LBL_HRS_ALL_TEXT"));

@@ -50,6 +50,7 @@
             <Label fx:id="lblPh" prefHeight="21.0" prefWidth="347.0" text="lblPh" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label fx:id="lblEmail" prefHeight="21.0" prefWidth="347.0" text="lblEmail" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label fx:id="lblResidence" prefHeight="21.0" prefWidth="343.0" text="lblResidence" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="lblResidence2" prefHeight="17.0" prefWidth="355.0" text="lblResidence2" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <JFXButton fx:id="btnEditSave" buttonType="RAISED" onAction="#pressedEditSaveButton" style="-fx-background-color: #00c4ad;" text="Edit" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -98,7 +99,6 @@
                   <Insets />
                </GridPane.margin>
             </ImageView>
-            <Label fx:id="lblResidence2" prefHeight="17.0" prefWidth="355.0" text="lblResidence2" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
       </GridPane>
       <TabPane fx:id="tabPaneOverview" layoutX="14.0" layoutY="153.0" onMousePressed="#handleClickTab" prefHeight="333.0" prefWidth="484.0" style="-fx-border-color: #00c4ad; -fx-background-color: #ffffff;" tabClosingPolicy="UNAVAILABLE">

@@ -36,9 +36,9 @@ public class BLLFacade
         return DAL_FAC.getAllGuilds();
     }
 
-    public void addUser(String name, String email, String password, int type, int phone, String residence, String note)
+    public void addUser(String name, String email, String password, int type, int phone, String residence, String residence2, String note)
     {
-        DAL_FAC.addUser(name, email, password, type, phone, residence, note);
+        DAL_FAC.addUser(name, email, password, type, phone, residence, residence2, note);
     }
 
     public List<Day> getWorkedDays(User user)

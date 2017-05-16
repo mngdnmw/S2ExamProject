@@ -44,6 +44,8 @@ public class ManagerAddUserController implements Initializable
     @FXML
     private JFXTextField txtAddress;
     @FXML
+    private JFXTextField txtAddress2;
+    @FXML
     private ImageView imgVwProfilePic;
     @FXML
     private JFXButton btnAccept;
@@ -65,7 +67,7 @@ public class ManagerAddUserController implements Initializable
     private JFXTextField txtPassword;
 
     ModelFacade modelFacade = new ModelFacade();
-
+    
     /**
      * Initializes the controller class.
      */
@@ -107,7 +109,7 @@ public class ManagerAddUserController implements Initializable
                     System.out.println("Phone number contains letters or special characters");
                 }
 
-                modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtNotes.getText());
+                modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
                 Stage stage = (Stage) btnAccept.getScene().getWindow();
                 stage.close();
                 System.out.println("New user added: " + txtName.getText());
