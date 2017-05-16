@@ -7,6 +7,7 @@ import BE.User;
 import GUI.Model.ModelFacade;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
@@ -74,6 +75,14 @@ public class ManagerViewController implements Initializable
 
     ModelFacade modelFacade = ModelFacade.getModelFacade();
     User selectedUser;
+    @FXML
+    private JFXComboBox<?> cmbGuildChooser;
+    @FXML
+    private Label lblNotes;
+    
+    JFXTreeTableColumn<User, String> colName = new JFXTreeTableColumn<>();
+    JFXTreeTableColumn<User, Integer> colPhone = new JFXTreeTableColumn<>();
+    JFXTreeTableColumn<User, String> colEmail = new JFXTreeTableColumn<>();
 
     /**
      * Initializes the controller class.
@@ -82,10 +91,10 @@ public class ManagerViewController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
       {
         //setTableProperties();
-
+        setTextAll(); //this has to run before setting currently logged in username
         if (modelFacade.getCurrentUser() != null)
           {
-            lblUserName.setText(lblUserName.getText() + " " + modelFacade.getCurrentUser().getName());
+            lblUserName.setText(modelFacade.getLang("LBL_USERNAME") + modelFacade.getCurrentUser().getName());
           }
         
         showTreeTable();
@@ -99,7 +108,7 @@ public class ManagerViewController implements Initializable
         //Need to do some threading for this method
 
         //Name column set up
-        JFXTreeTableColumn<User, String> colName = new JFXTreeTableColumn<>("Name");
+        
         colName.prefWidthProperty().bind(tblUsers.widthProperty().divide(3));
         colName.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<User, String>, ObservableValue<String>>()
           {
@@ -111,12 +120,12 @@ public class ManagerViewController implements Initializable
           });
 
         //Phone column set up
-        JFXTreeTableColumn<User, Integer> colPhone = new JFXTreeTableColumn<>("Phone");
+        
         colPhone.prefWidthProperty().bind(tblUsers.widthProperty().divide(3));
         colPhone.setCellValueFactory((TreeTableColumn.CellDataFeatures<User, Integer> param) -> param.getValue().getValue().phoneProperty().asObject());
 
         //Email column set up
-        JFXTreeTableColumn<User, String> colEmail = new JFXTreeTableColumn<>("Email");
+        
         colEmail.prefWidthProperty().bind(tblUsers.widthProperty().divide(3));
         colEmail.setCellValueFactory((TreeTableColumn.CellDataFeatures<User, String> param) -> param.getValue().getValue().emailProperty());
 
@@ -355,4 +364,20 @@ public class ManagerViewController implements Initializable
         PauseTransition pause = new PauseTransition(Duration.millis(time));
         pause.play();
       }
+    
+    private void setTextAll() {
+        btnAddHours.setText(modelFacade.getLang("BTN_ADD_HOURS"));
+        btnAddUser.setText(modelFacade.getLang("BTN_ADD_USER"));
+        btnClose.setText(modelFacade.getLang("BTN_CLOSE"));
+        btnEditInfo.setText(modelFacade.getLang("BTN_EDIT_INFO"));
+        btnStats.setText(modelFacade.getLang("BTN_STATS"));
+        
+        lblUserName.setText(modelFacade.getLang("LBL_USERNAME"));
+        lblNotes.setText(modelFacade.getLang("LBL_NOTES"));
+        txtSearch.setPromptText(modelFacade.getLang("PROMPT_SEARCH_USER"));
+        cmbGuildChooser.setPromptText(modelFacade.getLang("PROMPT_SEARCH_USER"));
+        colEmail.setText(modelFacade.getLang("COL_EMAIL"));
+        colPhone.setText(modelFacade.getLang("COL_PHONE"));
+        colName.setText(modelFacade.getLang("COL_NAME"));
+    }
   }

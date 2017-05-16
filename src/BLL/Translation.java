@@ -27,4 +27,5 @@ public class Translation extends LanguageManager {
     protected void set(Lang lang) {
         language = super.getLanguageFile(lang);
     }
+    
 }
