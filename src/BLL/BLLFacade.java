@@ -51,8 +51,6 @@ public class BLLFacade
       {
         DAL_FAC.changePassword(user, oldPassword, newPassword);
       }
-  }
-    }
     public HashMap<String,String> loadSession() {
         return DAL_FAC.loadSession();
     }
@@ -61,4 +59,3 @@ public class BLLFacade
         return DAL_FAC.getGuild(id);
     }
 }
-s
