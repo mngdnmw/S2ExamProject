@@ -47,9 +47,9 @@ public class BLLFacade
         return DAL_FAC.getWorkedDays(user);
       }
 
-    public void changePassword(User user, String oldPassword, String newPassword)
+    public int changePassword(User user, String oldPassword, String newPassword)
       {
-        DAL_FAC.changePassword(user, oldPassword, newPassword);
+        return DAL_FAC.changePassword(user, oldPassword, newPassword);
       }
 
     public HashMap<String, String> loadSession()

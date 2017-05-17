@@ -23,7 +23,7 @@ public class DALFacade
             LOGIN_MAN.logHours(userid, date, hours, guildId);
             LOGIN_MAN.saveSession(username, guildId, hours);
           }
-        
+
       }
 
     public void getAllAdmins()
@@ -56,27 +56,29 @@ public class DALFacade
         return LOGIN_MAN.getUserFromLogin(id, password);
       }
 
-    public void changePassword(User user, String oldPassword, String newPassword)
+    public int changePassword(User user, String oldPassword, String newPassword)
       {
-        LOGIN_MAN.changePassword(user, oldPassword, newPassword);
+        return LOGIN_MAN.changePassword(user, oldPassword, newPassword);
       }
 
     public void addUser(String name, String email, String password, int type, int phone, String residence, String residence2, String note)
-    {
+      {
         GEN_INFO_MAN.addUser(name, email, password, type, phone, residence, residence2, note);
-    }
+      }
+
     public List<Day> getWorkedDays(User user)
       {
         return HR_MAN.getWorkedDays(user);
       }
 
     //public List<Guild> getGuildsForUser()
-    
-    public HashMap<String,String> loadSession() {
+    public HashMap<String, String> loadSession()
+      {
         return LOGIN_MAN.loadSession();
-    }
-    
-    public Guild getGuild(int id) {
+      }
+
+    public Guild getGuild(int id)
+      {
         return GEN_INFO_MAN.getGuild(id);
-    }
+      }
   }
