@@ -89,7 +89,7 @@ public class ManagerViewController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
       {
         //setTableProperties();
-        setTextAll(); //this has to run before setting currently logged in username
+        //setTextAll(); //this has to run before setting currently logged in username
         if (modelFacade.getCurrentUser() != null)
           {
             lblUserName.setText(modelFacade.getLang("LBL_USERNAME") + modelFacade.getCurrentUser().getName());
