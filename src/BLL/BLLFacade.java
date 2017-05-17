@@ -38,9 +38,9 @@ public class BLLFacade
       }
 
     public void addUser(String name, String email, String password, int type, int phone, String residence, String residence2, String note)
-    {
+      {
         DAL_FAC.addUser(name, email, password, type, phone, residence, residence2, note);
-    }
+      }
 
     public List<Day> getWorkedDays(User user)
       {
@@ -51,14 +51,14 @@ public class BLLFacade
       {
         DAL_FAC.changePassword(user, oldPassword, newPassword);
       }
-  }
-    }
-    public HashMap<String,String> loadSession() {
+
+    public HashMap<String, String> loadSession()
+      {
         return DAL_FAC.loadSession();
-    }
-    
-    public Guild getGuild(int id) {
+      }
+
+    public Guild getGuild(int id)
+      {
         return DAL_FAC.getGuild(id);
-    }
-}
-s
+      }
+  }

@@ -473,11 +473,7 @@ public class UserInfoViewController implements Initializable
         txtResidence.setVisible(true);
       }
     
-    private void saveInfo(User user)
-      {
-        MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPh.getText()), user.getNote(), txtResidence.getText()); //do things in db
-        txtResidence2.setVisible(true);
-    }
+  
 
     private void saveInfo(User user) {
         MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPh.getText()), user.getNote(), txtResidence.getText(), txtResidence2.getText()); //do things in db
