@@ -37,7 +37,7 @@ import javafx.util.StringConverter;
 
 public class HourLoginViewController implements Initializable
   {
-    
+
     @FXML
     private JFXButton btnLogHours;
     @FXML
@@ -74,7 +74,7 @@ public class HourLoginViewController implements Initializable
     private JFXButton btnLogin;
     @FXML
     private JFXButton btnCancel;
-    
+
     @FXML
     private JFXButton btnIntDown;
     @FXML
@@ -89,7 +89,7 @@ public class HourLoginViewController implements Initializable
     private final ImageView imgViewLngBut = new ImageView();
     //Models used by this Controller
     private final static ModelFacade MOD_FACADE = new ModelFacade();
-    
+
     private String username;
     private int guildID;
     private int hours;
@@ -107,7 +107,7 @@ public class HourLoginViewController implements Initializable
                 protected Object call() throws Exception
                   {
                     loginEvent();
-                    
+
                     return null;
                   }
               };
@@ -131,7 +131,7 @@ public class HourLoginViewController implements Initializable
       };
     @FXML
     private Label lblPassword;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb)
       {
@@ -145,7 +145,7 @@ public class HourLoginViewController implements Initializable
         setTextAll();
 //        rememberThisSession();
       }
-    
+
     public void buttonPressed(KeyEvent ke)
       {
         if (ke.getCode() == KeyCode.ENTER)
@@ -153,7 +153,7 @@ public class HourLoginViewController implements Initializable
             loginEvent();
           }
       }
-    
+
     @FXML
     private void LogHoursAction(ActionEvent event)
       {
@@ -166,22 +166,22 @@ public class HourLoginViewController implements Initializable
             loadingScreen(true);
             serviceHours.restart();
           }
-        
+
         else
           {
             snackBarPopup("Please input information in all fields");
           }
       }
-    
+
     @FXML
     private void ChangeLanguageAction(ActionEvent event
     )
       {
         lockButtons();
         languagePopup();
-        
+
       }
-    
+
     @FXML
     private void LogInAction(ActionEvent event
     )
@@ -189,7 +189,7 @@ public class HourLoginViewController implements Initializable
         lockButtons();
         loginPopup();
       }
-    
+
     public void addListener()
       {
         txtHours.textProperty().addListener(new ChangeListener<String>()
@@ -226,12 +226,12 @@ public class HourLoginViewController implements Initializable
                     //do nothing
                   }
               }
-            
+
           });
         new GUI.Model.AutoCompleteComboBoxListener<>(cmbGuildChooser);
         cmbGuildChooser.setConverter(new StringConverter<Guild>()
           {
-            
+
             @Override
             public String toString(Guild object)
               {
@@ -241,7 +241,7 @@ public class HourLoginViewController implements Initializable
                   }
                 return object.toString();
               }
-            
+
             @Override
             public Guild fromString(String string)
               {
@@ -252,7 +252,7 @@ public class HourLoginViewController implements Initializable
                       {
                         return guild;
                       }
-                    
+
                   }
                 return findGuild;
               }
@@ -272,7 +272,7 @@ public class HourLoginViewController implements Initializable
                 e -> unlockButtons()
         );
         pause.play();
-        
+
       }
 
     /**
@@ -286,12 +286,12 @@ public class HourLoginViewController implements Initializable
         ancDarken.visibleProperty().set(true);
         MOD_FACADE.fadeInTransition(Duration.millis(500), ancDarken);
         MOD_FACADE.fadeInTransition(Duration.millis(500), loginWindow);
-        
+
         if (!txtUser.getText().isEmpty() && txtUser.getText() != null)
           {
             txtUsername.setText(txtUser.getText());
           }
-        
+
         txtPassword.setOnKeyPressed((event)
                 -> 
           {
@@ -311,14 +311,14 @@ public class HourLoginViewController implements Initializable
               {
                 if (!txtUsername.getText().isEmpty())
                   {
-                    
+
                     serviceLog.restart();
                     loadingScreen(true);
                   }
               }
           }
         );
-        
+
         btnCancel.setOnAction(
                 new EventHandler<ActionEvent>()
           {
@@ -331,11 +331,11 @@ public class HourLoginViewController implements Initializable
                                 ev -> hideLoginWind()
                         );
                 MOD_FACADE.fadeOutTransition(Duration.millis(500), ancDarken);
-                
+
               }
           }
         );
-        
+
       }
 
     /**
@@ -372,36 +372,36 @@ public class HourLoginViewController implements Initializable
                 setTextAll();
                 MOD_FACADE.fadeOutTransition(Duration.millis(500), popup).setOnFinished(
                         e -> root.getChildren().remove(anch));
-                
+
                 unlockButtons();
               }
           };
-        
+
         btnDanish.getStyleClass().add("JFXRoundedButton");
         btnDanish.setStyle("-fx-background-color:#FFFFFF");
         btnDanish.setMinSize(size, size);
         btnDanish.setPrefSize(size, size);
         btnDanish.setMaxSize(size, size);
         btnDanish.setGraphic(new ImageView(iconDK));
-        
+
         btnEnglish.getStyleClass().add("JFXRoundedButton");
         btnEnglish.setStyle(btnDanish.getStyle());
         btnEnglish.setMinSize(size, size);
         btnEnglish.setPrefSize(size, size);
         btnEnglish.setMaxSize(size, size);
         btnEnglish.setGraphic(new ImageView(iconENG));
-        
+
         root.getChildren().add(anch);
         popup.getChildren().addAll(btnDanish, btnEnglish);
         anch.setBottomAnchor(popup, 10.0);
         anch.setLeftAnchor(popup, 10.0);
         MOD_FACADE.fadeInTransition(Duration.millis(500), popup);
-        
+
         btnDanish.setOnAction(changeLanguageHandler);
         btnEnglish.setOnAction(changeLanguageHandler);
-        
+
       }
-    
+
     public void unlockButtons()
       {
         Boolean dis = false;
@@ -412,7 +412,7 @@ public class HourLoginViewController implements Initializable
         txtHours.setDisable(dis);
         cmbGuildChooser.setDisable(dis);
       }
-    
+
     public void lockButtons()
       {
         Boolean dis = true;
@@ -423,21 +423,21 @@ public class HourLoginViewController implements Initializable
         txtHours.setDisable(dis);
         cmbGuildChooser.setDisable(dis);
       }
-    
+
     public void hideLoginWind()
       {
         ancDarken.visibleProperty().set(false);
         loginWindow.visibleProperty().set(false);
         unlockButtons();
-        
+
       }
-    
+
     public void preloadImages()
       {
         iconDK = new Image(getClass().getResourceAsStream("/GUI/Images/danish.png"));
         iconENG = new Image(getClass().getResourceAsStream("/GUI/Images/english.png"));
       }
-    
+
     private void setTextAll()
       {
         lblUsernameTag.setText(MOD_FACADE.getLang("USERNAME_TAG"));
@@ -462,12 +462,12 @@ public class HourLoginViewController implements Initializable
           {
             imgViewLngBut.setImage(iconDK);
           }
-        
+
       }
-    
+
     private void loginEvent()
       {
-        
+
         MOD_FACADE.getUserFromLogin(txtUsername.getText(), txtPassword.getText());
         Platform.runLater(new Runnable()
           {
@@ -476,7 +476,7 @@ public class HourLoginViewController implements Initializable
               {
                 if (MOD_FACADE.getCurrentUser() != null)
                   {
-                    
+
                     MOD_FACADE.changeView(0);
                     Stage stage = (Stage) root.getScene().getWindow();
                     stage.close();
@@ -489,10 +489,10 @@ public class HourLoginViewController implements Initializable
               }
           });
       }
-    
+
     private void logHours()
       {
-        
+
         MOD_FACADE.logHours(username, hours, guildID);
         Platform.runLater(new Runnable()
           {
@@ -505,7 +505,7 @@ public class HourLoginViewController implements Initializable
               }
           });
       }
-    
+
     private void loadingScreen(Boolean StartLoading)
       {
         if (StartLoading == true)
@@ -517,11 +517,11 @@ public class HourLoginViewController implements Initializable
             root.getChildren().remove(MOD_FACADE.getLoadingScreen());
           }
       }
-    
+
     @FXML
     private void setNumberOfHoursEvent(ActionEvent event)
       {
-        
+
         if ((event.getSource().equals(btnIntUp)))
           {
             if (txtHours.getText().isEmpty())
@@ -531,7 +531,7 @@ public class HourLoginViewController implements Initializable
             else
               {
                 int hours = Integer.parseInt(txtHours.getText());
-                
+
                 int currentHours = Integer.parseInt(txtHours.getText());
                 currentHours++;
                 txtHours.setText(currentHours + "");
@@ -539,7 +539,7 @@ public class HourLoginViewController implements Initializable
           }
         if ((event.getSource().equals(btnIntDown)))
           {
-            
+
             if (txtHours.getText().isEmpty())
               {
                 snackBarPopup("Invalid Action");
@@ -549,16 +549,16 @@ public class HourLoginViewController implements Initializable
                 int hours = Integer.parseInt(txtHours.getText());
                 hours--;
                 txtHours.setText(hours + "");
-                
+
               }
           }
       }
-    
+
     public void rememberThisSession()
       {
         if (MOD_FACADE.loadSession() != null)
           {
-            
+
             txtUser.setText(MOD_FACADE.loadSession().get("lastuser"));
             txtHours.setText(MOD_FACADE.loadSession().get("lasthours"));
             cmbGuildChooser.getSelectionModel().select(MOD_FACADE.getGuild(Integer.parseInt(MOD_FACADE.loadSession().get("lastguild"))));
