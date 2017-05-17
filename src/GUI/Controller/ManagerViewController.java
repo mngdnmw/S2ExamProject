@@ -7,6 +7,7 @@ import BE.User;
 import GUI.Model.ModelFacade;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextArea;
@@ -83,6 +84,10 @@ public class ManagerViewController implements Initializable
     JFXTreeTableColumn<User, String> colName = new JFXTreeTableColumn<>();
     JFXTreeTableColumn<User, Integer> colPhone = new JFXTreeTableColumn<>();
     JFXTreeTableColumn<User, String> colEmail = new JFXTreeTableColumn<>();
+    @FXML
+    private JFXCheckBox chkManagers;
+    @FXML
+    private JFXCheckBox chkVolunteers;
 
     /**
      * Initializes the controller class.
@@ -98,6 +103,7 @@ public class ManagerViewController implements Initializable
           }
 
         showTreeTable();
+        chkVolunteers.selectedProperty().set(true);
       }
 
     /**
@@ -134,10 +140,33 @@ public class ManagerViewController implements Initializable
         colGuild.prefWidthProperty().bind(tblUsers.widthProperty().divide(3));
         colGuild.setCellValueFactory((TreeTableColumn.CellDataFeatures<Guild, String> param) -> param.getValue().getValue().getName());*/
         tblUsers.setPlaceholder(new Label("Nothing found"));
+        
+        
+        ObservableList<User> users = FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers());
+        chkManagers.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(chkManagers.isSelected()) {
+                    users.addAll(FXCollections.observableArrayList(modelFacade.getAllManagers()));
+                } else {
+                    users.removeAll(FXCollections.observableArrayList(modelFacade.getAllManagers()));
+                }
+            }
+            
+        });
+        chkVolunteers.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(chkVolunteers.isSelected()) {
+                    users.addAll(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
+                } else {
+                    users.removeAll(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
+                }
+            }
+            
+        });
 
-        ObservableList<User> volunteers = FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers());
-
-        final TreeItem<User> rootOfTree = new RecursiveTreeItem<>(volunteers, RecursiveTreeObject::getChildren);
+        final TreeItem<User> rootOfTree = new RecursiveTreeItem<>(users, RecursiveTreeObject::getChildren);
 
         colName.getStyleClass().add("col");
         colPhone.getStyleClass().add("col");
@@ -374,9 +403,9 @@ public class ManagerViewController implements Initializable
         btnStats.setText(modelFacade.getLang("BTN_STATS"));
         
         lblUserName.setText(modelFacade.getLang("LBL_USERNAME"));
-        //lblNotes.setText(modelFacade.getLang("LBL_NOTES"));
+        lblNotes.setText(modelFacade.getLang("LBL_NOTES"));
         txtSearch.setPromptText(modelFacade.getLang("PROMPT_SEARCH_USER"));
-        cmbGuildChooser.setPromptText(modelFacade.getLang("PROMPT_SEARCH_USER"));
+        cmbGuildChooser.setPromptText(modelFacade.getLang("PROMPT_CMB_GUILDCHOOSER"));
         colEmail.setText(modelFacade.getLang("COL_EMAIL"));
         colPhone.setText(modelFacade.getLang("COL_PHONE"));
         colName.setText(modelFacade.getLang("COL_NAME"));
