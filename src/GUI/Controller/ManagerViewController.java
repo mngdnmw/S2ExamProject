@@ -374,7 +374,7 @@ public class ManagerViewController implements Initializable
         btnStats.setText(modelFacade.getLang("BTN_STATS"));
         
         lblUserName.setText(modelFacade.getLang("LBL_USERNAME"));
-        lblNotes.setText(modelFacade.getLang("LBL_NOTES"));
+        //lblNotes.setText(modelFacade.getLang("LBL_NOTES"));
         txtSearch.setPromptText(modelFacade.getLang("PROMPT_SEARCH_USER"));
         cmbGuildChooser.setPromptText(modelFacade.getLang("PROMPT_SEARCH_USER"));
         colEmail.setText(modelFacade.getLang("COL_EMAIL"));

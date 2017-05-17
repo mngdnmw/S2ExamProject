@@ -343,7 +343,7 @@ public class UserInfoViewController implements Initializable
         else
           {
             higherClearanceBtn.setText(MOD_FACADE.getLang("BTN_HIGHER_CLEARANCE_2"));
-            GUIView = 2;
+            GUIView = 1;
             // GUIView =4; add when admin view has been made - for the moment it will go to managereditview
           }
         
