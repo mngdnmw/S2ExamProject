@@ -5,6 +5,7 @@ import BE.EnumCache;
 import BE.EnumCache.Lang;
 import BE.Guild;
 import BE.User;
+import BLL.BLLFacade;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -30,6 +31,7 @@ public class ModelFacade
     private final static ViewChangerModel VIEW_CHANG_MOD = new ViewChangerModel();
     private final static VolunteerDataModel VOL_DATA_MOD = new VolunteerDataModel();
     private ArrayList<User> allUsers = new ArrayList();
+    private final static BLLFacade BLL_FAC = new BLLFacade();
 
     //Login Model
     public Boolean logHours(String username, int hours, int guildId)
@@ -133,14 +135,15 @@ public class ModelFacade
       {
         LANG_MOD.setLang(lang);
       }
-    
-    public Lang getLangProperty() {
-        return LANG_MOD.getLangProperty();
-    }
 
-    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence)
+    public Lang getLangProperty()
       {
-        GEN_INFO_MOD.updateUserInfo(userId, name, email, type, phone, note, residence);
+        return LANG_MOD.getLangProperty();
+      }
+
+    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence, String residence2)
+      {
+        GEN_INFO_MOD.updateUserInfo(userId, name, email, type, phone, note, residence, residence2);
       }
 
     public void updateUserImage(User user, File img) throws FileNotFoundException
@@ -180,14 +183,19 @@ public class ModelFacade
         ModFac = modelfacade;
       }
 
-    public void addUser(String name, String email, String password, int type, int phone, String residence, String note)
+    public void addUser(String name, String email, String password, int type, int phone, String residence, String residence2, String note)
       {
-        GEN_INFO_MOD.addUser(name, email, password, type, phone, residence, note);
+        GEN_INFO_MOD.addUser(name, email, password, type, phone, residence, residence2, note);
       }
 
     public List<Day> getWorkedDays(User user)
       {
         return VOL_DATA_MOD.getWorkedDays(user);
+      }
+
+    public void changePassword(User user, String oldPassword, String newPassword)
+      {
+        BLL_FAC.changePassword(user, oldPassword, newPassword);
       }
     
     public HashMap<String,String> loadSession() {
