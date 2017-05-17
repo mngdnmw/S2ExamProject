@@ -5,10 +5,12 @@ import BE.EnumCache;
 import BE.EnumCache.Lang;
 import BE.Guild;
 import BE.User;
+import BLL.BLLFacade;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
@@ -29,6 +31,7 @@ public class ModelFacade
     private final static ViewChangerModel VIEW_CHANG_MOD = new ViewChangerModel();
     private final static VolunteerDataModel VOL_DATA_MOD = new VolunteerDataModel();
     private ArrayList<User> allUsers = new ArrayList();
+    private final static BLLFacade BLL_FAC = new BLLFacade();
 
     //Login Model
     public Boolean logHours(String username, int hours, int guildId)
@@ -132,10 +135,11 @@ public class ModelFacade
       {
         LANG_MOD.setLang(lang);
       }
-    
-    public Lang getLangProperty() {
+
+    public Lang getLangProperty()
+      {
         return LANG_MOD.getLangProperty();
-    }
+      }
 
     public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence, String residence2)
       {
@@ -188,4 +192,17 @@ public class ModelFacade
       {
         return VOL_DATA_MOD.getWorkedDays(user);
       }
+
+    public void changePassword(User user, String oldPassword, String newPassword)
+      {
+        BLL_FAC.changePassword(user, oldPassword, newPassword);
+      }
+    
+    public HashMap<String,String> loadSession() {
+        return LOG_MOD.loadSession();
+    }
+    
+    public Guild getGuild(int id) {
+        return GEN_INFO_MOD.getGuild(id);
+    }
   }

@@ -4,6 +4,7 @@ import BE.Day;
 import BE.Guild;
 import BE.User;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 public class DALFacade
@@ -20,8 +21,9 @@ public class DALFacade
         if (userid != -1)
           {
             LOGIN_MAN.logHours(userid, date, hours, guildId);
+            LOGIN_MAN.saveSession(username, guildId, hours);
           }
-
+        
       }
 
     public void getAllAdmins()
@@ -51,17 +53,30 @@ public class DALFacade
 
     public User getUserFromLogin(int id, String password)
       {
-       return LOGIN_MAN.getUserFromLogin(id, password);
+        return LOGIN_MAN.getUserFromLogin(id, password);
       }
-    
+
+    public void changePassword(User user, String oldPassword, String newPassword)
+      {
+        LOGIN_MAN.changePassword(user, oldPassword, newPassword);
+      }
+
     public void addUser(String name, String email, String password, int type, int phone, String residence, String residence2, String note)
     {
         GEN_INFO_MAN.addUser(name, email, password, type, phone, residence, residence2, note);
     }
-
-    public List<Day> getWorkedDays(User user){
+    public List<Day> getWorkedDays(User user)
+      {
         return HR_MAN.getWorkedDays(user);
+      }
+
+    //public List<Guild> getGuildsForUser()
+    
+    public HashMap<String,String> loadSession() {
+        return LOGIN_MAN.loadSession();
     }
     
-    //public List<Guild> getGuildsForUser()
+    public Guild getGuild(int id) {
+        return GEN_INFO_MAN.getGuild(id);
+    }
   }

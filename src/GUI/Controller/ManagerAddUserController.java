@@ -82,9 +82,13 @@ public class ManagerAddUserController implements Initializable
               {
                 @Override
                 protected Object call() throws Exception
+
                   { 
-                    modelFacade.setAllVolunteersIntoArray();
-                    return null;
+                      modelFacade.setAllVolunteersIntoArray();
+                      return null;
+                  {
+
+                    
                   }
               };
           }
