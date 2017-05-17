@@ -15,13 +15,14 @@ public abstract class User extends RecursiveTreeObject<User>
     
     private final IntegerProperty phone = new SimpleIntegerProperty();
     private final StringProperty residence = new SimpleStringProperty();
+    private final StringProperty residence2 = new SimpleStringProperty();
     private final StringProperty note = new SimpleStringProperty();
     private final StringProperty email = new SimpleStringProperty();
     private final StringProperty name = new SimpleStringProperty();
     
     List<Guild> guilds;
     
-    public User(int id, String name, String email, int phone, String note, String residence, List<Guild> guilds)
+    public User(int id, String name, String email, int phone, String note, String residence, String residence2, List<Guild> guilds)
       {
         this.id = id;
         setName(name);
@@ -29,6 +30,7 @@ public abstract class User extends RecursiveTreeObject<User>
         setPhone(phone);
         setNote(note);
         setResidence(residence);
+        setResidence2(residence2);
         setGuilds(guilds);
       }
     
@@ -122,15 +124,30 @@ public abstract class User extends RecursiveTreeObject<User>
         return residence.get();
       }
     
+    public String getResidence2()
+    {
+        return residence2.get();
+    }
+    
     public void setResidence(String value)
       {
         residence.set(value);
       }
     
+    public void setResidence2(String value)
+    {
+        residence2.set(value);
+    }
+    
     public StringProperty residenceProperty()
       {
         return residence;
       }
+    
+    public StringProperty residence2Property()
+    {
+        return residence2;
+    }
     
     public List<Guild> getGuildList()
     {

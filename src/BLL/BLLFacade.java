@@ -5,6 +5,7 @@ import BE.Guild;
 import BE.User;
 import DAL.DALFacade;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 public class BLLFacade
@@ -36,10 +37,10 @@ public class BLLFacade
         return DAL_FAC.getAllGuilds();
       }
 
-    public void addUser(String name, String email, String password, int type, int phone, String residence, String note)
-      {
-        DAL_FAC.addUser(name, email, password, type, phone, residence, note);
-      }
+    public void addUser(String name, String email, String password, int type, int phone, String residence, String residence2, String note)
+    {
+        DAL_FAC.addUser(name, email, password, type, phone, residence, residence2, note);
+    }
 
     public List<Day> getWorkedDays(User user)
       {
@@ -51,3 +52,13 @@ public class BLLFacade
         DAL_FAC.changePassword(user, oldPassword, newPassword);
       }
   }
+    }
+    public HashMap<String,String> loadSession() {
+        return DAL_FAC.loadSession();
+    }
+    
+    public Guild getGuild(int id) {
+        return DAL_FAC.getGuild(id);
+    }
+}
+s
