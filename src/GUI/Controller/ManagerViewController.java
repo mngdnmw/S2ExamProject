@@ -68,8 +68,6 @@ public class ManagerViewController implements Initializable
     @FXML
     private AnchorPane root;
     @FXML
-    private JFXButton btnStats;
-    @FXML
     private JFXButton btnClose;
     @FXML
     private JFXTreeTableView<User> tblUsers;
@@ -80,7 +78,7 @@ public class ManagerViewController implements Initializable
     private JFXComboBox<?> cmbGuildChooser;
     @FXML
     private Label lblNotes;
-    
+
     JFXTreeTableColumn<User, String> colName = new JFXTreeTableColumn<>();
     JFXTreeTableColumn<User, Integer> colPhone = new JFXTreeTableColumn<>();
     JFXTreeTableColumn<User, String> colEmail = new JFXTreeTableColumn<>();
@@ -96,7 +94,7 @@ public class ManagerViewController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
       {
         //setTableProperties();
-        setTextAll(); //this has to run before setting currently logged in username
+        //setTextAll(); //this has to run before setting currently logged in username
         if (modelFacade.getCurrentUser() != null)
           {
             lblUserName.setText(modelFacade.getLang("LBL_USERNAME") + modelFacade.getCurrentUser().getName());
@@ -114,7 +112,6 @@ public class ManagerViewController implements Initializable
         //Need to do some threading for this method
 
         //Name column set up
-        
         colName.prefWidthProperty().bind(tblUsers.widthProperty().divide(3));
         colName.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<User, String>, ObservableValue<String>>()
           {
@@ -126,12 +123,10 @@ public class ManagerViewController implements Initializable
           });
 
         //Phone column set up
-        
         colPhone.prefWidthProperty().bind(tblUsers.widthProperty().divide(3));
         colPhone.setCellValueFactory((TreeTableColumn.CellDataFeatures<User, Integer> param) -> param.getValue().getValue().phoneProperty().asObject());
 
         //Email column set up
-        
         colEmail.prefWidthProperty().bind(tblUsers.widthProperty().divide(3));
         colEmail.setCellValueFactory((TreeTableColumn.CellDataFeatures<User, String> param) -> param.getValue().getValue().emailProperty());
 
@@ -238,7 +233,7 @@ public class ManagerViewController implements Initializable
                     System.out.println("Stage is closing");
                     //setTableItems();
                     showTreeTable();
-                    
+
                   }
               });
 
@@ -394,14 +389,14 @@ public class ManagerViewController implements Initializable
         PauseTransition pause = new PauseTransition(Duration.millis(time));
         pause.play();
       }
-    
-    private void setTextAll() {
+
+    private void setTextAll()
+      {
         btnAddHours.setText(modelFacade.getLang("BTN_ADD_HOURS"));
         btnAddUser.setText(modelFacade.getLang("BTN_ADD_USER"));
         btnClose.setText(modelFacade.getLang("BTN_CLOSE"));
         btnEditInfo.setText(modelFacade.getLang("BTN_EDIT_INFO"));
-        btnStats.setText(modelFacade.getLang("BTN_STATS"));
-        
+
         lblUserName.setText(modelFacade.getLang("LBL_USERNAME"));
         lblNotes.setText(modelFacade.getLang("LBL_NOTES"));
         txtSearch.setPromptText(modelFacade.getLang("PROMPT_SEARCH_USER"));
@@ -409,5 +404,5 @@ public class ManagerViewController implements Initializable
         colEmail.setText(modelFacade.getLang("COL_EMAIL"));
         colPhone.setText(modelFacade.getLang("COL_PHONE"));
         colName.setText(modelFacade.getLang("COL_NAME"));
-    }
+      }
   }

@@ -27,6 +27,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
@@ -74,13 +75,13 @@ public class ManagerAddUserController implements Initializable
     private Service serviceAddNewUser = new Service()
       {
         @Override
-
         protected Task createTask()
           {
             return new Task()
               {
                 @Override
                 protected Object call() throws Exception
+
                   {
                     modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
                     modelFacade.setAllVolunteersIntoArray();
@@ -88,7 +89,7 @@ public class ManagerAddUserController implements Initializable
                     return null;
                   }
               };
-          }
+          };
       };
 
     /**
@@ -98,7 +99,8 @@ public class ManagerAddUserController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
       {
         setListView();
-
+        if(modelFacade.getCurrentUser().getType() == 1)
+            chkManager.disableProperty().set(true);
       }
 
     private void setListView()
@@ -110,14 +112,14 @@ public class ManagerAddUserController implements Initializable
     @FXML
     private void onBtnAcceptPressed(ActionEvent event)
       {
-        if (!txtName.getText().isEmpty())
+          if (!txtName.getText().isEmpty())
           {
-            if (txtPhone.getText().isEmpty() && txtEmail.getText().isEmpty())
+              if (txtPhone.getText().isEmpty() && txtEmail.getText().isEmpty())
               {
-                snackBarPopup("Phone number OR Email required");
-                System.out.println("User not added: missing phone or email");
+                  snackBarPopup("Phone number OR Email required");
+                  System.out.println("User not added: missing phone or email"); 
               }
-            else
+              else
               {
                 if (txtPhone.getText().equals(""))
                   {
@@ -127,32 +129,72 @@ public class ManagerAddUserController implements Initializable
                 try
                   {
                     Integer.parseInt(txtPhone.getText());
+                    
                   }
                 catch (NumberFormatException e)
                   {
                     snackBarPopup("Phone number needs to contain only numbers");
                     System.out.println("Phone number contains letters or special characters");
                   }
-
-                StackPane loading = modelFacade.getLoadingScreen();
-                rootPane.getChildren().add(loading);
-                rootPane.setTopAnchor(loading, 0.0);
-                rootPane.setBottomAnchor(loading, 0.0);
-                rootPane.setRightAnchor(loading, 0.0);
-                rootPane.setLeftAnchor(loading, 0.0);
-                serviceAddNewUser.start();
-                serviceAddNewUser.setOnSucceeded(e
-                        -> 
-                  {
+                
+                if(chkVolunteer.selectedProperty().get() == false && chkManager.selectedProperty().get() == false)
+                {
+                    snackBarPopup("User type not selected");
+                }
+                
+                else if(chkVolunteer.selectedProperty().get() == true)
+                {
+                    /*System.out.println("1");
+                    modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
                     Stage stage = (Stage) btnAccept.getScene().getWindow();
                     stage.close();
-                  });
-
-
-                modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
-                Stage stage = (Stage) btnAccept.getScene().getWindow();
-                stage.close();
-                System.out.println("New user added: " + txtName.getText());
+                    System.out.println("New Volunteer added: " + txtName.getText());*/
+                    modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
+                    StackPane loading = modelFacade.getLoadingScreen();
+                    rootPane.getChildren().add(loading);
+                    rootPane.setTopAnchor(loading, 0.0);
+                    rootPane.setBottomAnchor(loading, 0.0);
+                    rootPane.setRightAnchor(loading, 0.0);
+                    rootPane.setLeftAnchor(loading, 0.0);
+                    serviceAddNewUser.start();
+                    serviceAddNewUser.setOnSucceeded(e
+                           -> 
+                    {
+                        System.out.println("New Volunteer added: " + txtName.getText());
+                        Stage stage = (Stage) btnAccept.getScene().getWindow();
+                        stage.close();
+                    });
+                }
+                
+                else if(chkManager.selectedProperty().get() == true)
+                {
+                    /*System.out.println("2");
+                    modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 1, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
+                    Stage stage = (Stage) btnAccept.getScene().getWindow();
+                    stage.close();
+                    System.out.println("New Manager added: " + txtName.getText());*/
+                    modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 1, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
+                    StackPane loading = modelFacade.getLoadingScreen();
+                    rootPane.getChildren().add(loading);
+                    rootPane.setTopAnchor(loading, 0.0);
+                    rootPane.setBottomAnchor(loading, 0.0);
+                    rootPane.setRightAnchor(loading, 0.0);
+                    rootPane.setLeftAnchor(loading, 0.0);
+                    serviceAddNewUser.start();
+                    serviceAddNewUser.setOnSucceeded(e
+                           -> 
+                    {
+                        System.out.println("New Manager added: " + txtName.getText());
+                        Stage stage = (Stage) btnAccept.getScene().getWindow();
+                        stage.close();
+                    });
+                }
+                      
+                
+                //modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
+                //Stage stage = (Stage) btnAccept.getScene().getWindow();
+                //stage.close();
+                //System.out.println("New user added: " + txtName.getText());
               }
           }
         else
@@ -160,7 +202,6 @@ public class ManagerAddUserController implements Initializable
             snackBarPopup("Name required");
             System.out.println("User not added: missing name");
           }
-
       }
 
     @FXML
@@ -219,4 +260,25 @@ public class ManagerAddUserController implements Initializable
       {
 
       }
+
+    @FXML
+    private void onChkBoxPressed(ActionEvent event)
+    {
+        Object source = event.getSource();
+        
+        if (source instanceof JFXCheckBox) //check that the source is really a JFXCheckBox
+        {  
+                if(((JFXCheckBox) source).getText().equals("Volunteer"))
+                {
+                    chkVolunteer.selectedProperty().set(true);
+                    chkManager.selectedProperty().set(false);
+                }
+                
+                if(((JFXCheckBox) source).getText().equals("Manager"))
+                {
+                    chkVolunteer.selectedProperty().set(false);
+                    chkManager.selectedProperty().set(true);
+                }  
+        }   
+    }
   }

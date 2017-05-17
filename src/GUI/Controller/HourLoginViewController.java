@@ -35,8 +35,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 
-public class HourLoginViewController implements Initializable {
-
+public class HourLoginViewController implements Initializable
+  {
+    
     @FXML
     private JFXButton btnLogHours;
     @FXML
@@ -73,7 +74,7 @@ public class HourLoginViewController implements Initializable {
     private JFXButton btnLogin;
     @FXML
     private JFXButton btnCancel;
-
+    
     @FXML
     private JFXButton btnIntDown;
     @FXML
@@ -88,7 +89,7 @@ public class HourLoginViewController implements Initializable {
     private final ImageView imgViewLngBut = new ImageView();
     //Models used by this Controller
     private final static ModelFacade MOD_FACADE = new ModelFacade();
-
+    
     private String username;
     private int guildID;
     private int hours;
@@ -102,7 +103,7 @@ public class HourLoginViewController implements Initializable {
                 @Override
                 protected Object call() throws Exception {
                     loginEvent();
-
+                    
                     return null;
                 }
             };
@@ -116,11 +117,13 @@ public class HourLoginViewController implements Initializable {
                 protected Object call() throws Exception {
                     logHours();
                     return null;
-                }
-            };
-        }
-    };
-
+                  }
+              };
+          }
+      };
+    @FXML
+    private Label lblPassword;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         preloadImages();
@@ -268,7 +271,7 @@ public class HourLoginViewController implements Initializable {
             }
         }
         );
-
+        
         btnCancel.setOnAction(
                 new EventHandler<ActionEvent>() {
             @Override
@@ -314,7 +317,7 @@ public class HourLoginViewController implements Initializable {
                 setTextAll();
                 MOD_FACADE.fadeOutTransition(Duration.millis(500), popup).setOnFinished(
                         e -> root.getChildren().remove(anch));
-
+                
                 unlockButtons();
             }
         };
@@ -325,20 +328,20 @@ public class HourLoginViewController implements Initializable {
         btnDanish.setPrefSize(size, size);
         btnDanish.setMaxSize(size, size);
         btnDanish.setGraphic(new ImageView(iconDK));
-
+        
         btnEnglish.getStyleClass().add("JFXRoundedButton");
         btnEnglish.setStyle(btnDanish.getStyle());
         btnEnglish.setMinSize(size, size);
         btnEnglish.setPrefSize(size, size);
         btnEnglish.setMaxSize(size, size);
         btnEnglish.setGraphic(new ImageView(iconENG));
-
+        
         root.getChildren().add(anch);
         popup.getChildren().addAll(btnDanish, btnEnglish);
         anch.setBottomAnchor(popup, 10.0);
         anch.setLeftAnchor(popup, 10.0);
         MOD_FACADE.fadeInTransition(Duration.millis(500), popup);
-
+        
         btnDanish.setOnAction(changeLanguageHandler);
         btnEnglish.setOnAction(changeLanguageHandler);
 
@@ -443,7 +446,7 @@ public class HourLoginViewController implements Initializable {
                 txtHours.setText("1");
             } else {
                 int hours = Integer.parseInt(txtHours.getText());
-
+                
                 int currentHours = Integer.parseInt(txtHours.getText());
                 currentHours++;
                 txtHours.setText(currentHours + "");
