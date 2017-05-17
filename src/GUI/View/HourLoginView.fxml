@@ -171,7 +171,7 @@
                 </HBox>
                 <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                     <children>
-                        <Label styleClass="logintextAndFontLabels" text="Password" />
+                        <Label fx:id="lblPassword" styleClass="logintextAndFontLabels" text="Password" />
                         <JFXPasswordField fx:id="txtPassword" focusColor="#00e2c7" styleClass="logintextFields" />
                     </children>
                 </HBox>

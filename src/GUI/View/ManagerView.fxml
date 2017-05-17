@@ -2,38 +2,56 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerViewController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerViewController">
     <children>
         <Label fx:id="lblUserName" layoutX="19.0" layoutY="22.0" prefHeight="17.0" prefWidth="508.0" text="Logged in as:" />
-        <JFXButton fx:id="btnAddUser" buttonType="RAISED" layoutX="15.0" layoutY="456.0" onAction="#onBtnAddUserClicked" prefHeight="25.0" prefWidth="110.0" style="-fx-background-color: #029E99;" text="Add User" textFill="WHITE">
-            <font>
-                <Font name="System Bold" size="12.0" />
-            </font>
-        </JFXButton>
-        <JFXTextArea fx:id="txtNotes" editable="false" focusColor="#00e2c7" layoutX="465.0" layoutY="170.0" prefHeight="266.0" prefWidth="220.0" stylesheets="@MainLayout.css" />
-        <JFXButton fx:id="btnAddHours" buttonType="RAISED" disable="true" layoutX="275.0" layoutY="82.0" prefWidth="120.0" style="-fx-background-color: #00c4ad;" text="Add Hours" textFill="WHITE" />
-        <JFXButton fx:id="btnEditInfo" buttonType="RAISED" layoutX="416.0" layoutY="81.0" onAction="#onEditInfoPressed" prefWidth="120.0" style="-fx-background-color: #00c4ad;" text="Edit Information" textFill="WHITE" />
-        <JFXButton fx:id="btnClose" buttonType="RAISED" layoutX="466.0" layoutY="456.0" onAction="#onBtnClosePressed" prefHeight="25.0" prefWidth="220.0" styleClass="cancelButtons" text="Close" textFill="WHITE">
+        <JFXComboBox fx:id="cmbGuildChooser" layoutX="539.0" layoutY="17.0" promptText="Guild Chooser" />
+      <JFXTabPane layoutX="11.0" layoutY="58.0" prefHeight="435.0" prefWidth="678.0">
+         <tabs>
+            <Tab text="Volunteer Information">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                          <Label fx:id="lblNotes" layoutX="461.0" layoutY="20.0" text="Notes:">
+                  
+                              <font>
+                                  <Font size="20.0" />
+                              </font>
+                          </Label>
+                          <JFXTextField fx:id="txtSearch" focusColor="#00e2c7" layoutX="2.0" layoutY="15.0" prefHeight="29.0" prefWidth="171.0" promptText="Search user.." />
+                          <JFXTreeTableView fx:id="tblUsers" layoutY="55.0" onMousePressed="#onTablePressed" prefHeight="297.0" prefWidth="446.0" />
+                          <JFXButton fx:id="btnAddUser" buttonType="RAISED" layoutX="14.0" layoutY="362.0" onAction="#onBtnAddUserClicked" prefHeight="31.0" prefWidth="119.0" style="-fx-background-color: #029E99;" text="Add User" textFill="WHITE">
+                              <font>
+                                  <Font name="System Bold" size="15.0" />
+                              </font>
+                          </JFXButton>
+                          <JFXButton fx:id="btnAddHours" buttonType="RAISED" disable="true" layoutX="149.0" layoutY="362.0" prefWidth="120.0" style="-fx-background-color: #00c4ad;" text="Add Hours" textFill="WHITE" />
+                          <JFXButton fx:id="btnEditInfo" buttonType="RAISED" layoutX="284.0" layoutY="362.0" onAction="#onEditInfoPressed" prefHeight="31.0" prefWidth="147.0" style="-fx-background-color: #00c4ad;" text="Edit Information" textFill="WHITE" />
+                          <JFXTextArea fx:id="txtNotes" editable="false" focusColor="#00e2c7" layoutX="459.0" layoutY="57.0" prefHeight="287.0" prefWidth="220.0" stylesheets="@MainLayout.css" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Graphs &amp; Statistics">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="678.0" />
+              </content>
+            </Tab>
+         </tabs>
+      </JFXTabPane>
+        <JFXButton fx:id="btnClose" buttonType="RAISED" layoutX="469.0" layoutY="451.0" onAction="#onBtnClosePressed" prefHeight="25.0" prefWidth="220.0" styleClass="cancelButtons" text="Close" textFill="WHITE">
             <font>
                 <Font name="System Bold Italic" size="15.0" />
             </font>
         </JFXButton>
-        <Label layoutX="467.0" layoutY="135.0" text="Notes:">
-
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Label>
-        <JFXComboBox fx:id="cmbGuildChooser" layoutX="541.0" layoutY="27.0" promptText="Guild Chooser" />
-        <JFXTextField fx:id="txtSearch" focusColor="#00e2c7" layoutX="14.0" layoutY="82.0" prefHeight="25.0" prefWidth="241.0" promptText="Search user.." />
-        <JFXButton fx:id="btnStats" buttonType="RAISED" disable="true" layoutX="555.0" layoutY="81.0" prefWidth="120.0" style="-fx-background-color: #00c4ad;" text="User Statistics" textFill="WHITE" />
-        <JFXTreeTableView fx:id="tblUsers" layoutX="15.0" layoutY="171.0" onMousePressed="#onTablePressed" prefHeight="270.0" prefWidth="446.0" />
     </children>
 </AnchorPane>

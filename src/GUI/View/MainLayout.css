@@ -163,4 +163,29 @@
     -fx-border-color: #404040;
 }
 
+.jfx-tab-pane .headers-region {
+    -fx-background-color: #00c4ad;
+}
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #00c4ad;
+}
+.jfx-tab-pane .tab-selected-line {
+    -fx-stroke: #000000;
+    -fx-stroke-width: 3pt;
+}
+.jfx-tab-pane .tab:selected {
+    -fx-background-color: #029e99;
+}
+.tab .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #E6E6E6;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.tab:selected .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #FFFFFF;
+}
+
 
