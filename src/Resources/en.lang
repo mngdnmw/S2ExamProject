@@ -20,6 +20,8 @@ HOUR_TAG_TWO = hours
 GUILD_TAG = to the
 CMB_GUILDCHOOSER_PROMPT = Choose a guild
 GUILD_TAG_TWO = guild
+LBL_USERNAME = Username
+LBL_PASSWORD = Password
 
 ########
 # USER INFO WINDOW
@@ -60,7 +62,7 @@ BTN_ADD_USER = Add user
 
 #Manager view labels
 #Remember to leave a space after LBL_USERNAME
-LBL_USERNAME = Loggen is as: 
+LBL_USERNAME = Logged in as: 
 PROMPT_SEARCH_USER = Search user...
 PROMPT_CMB_GUILDCHOOSER = Guild Chooser
 LBL_NOTES = Notes:
