@@ -147,9 +147,9 @@ public class ManagerViewController implements Initializable
             @Override
             public void handle(ActionEvent event) {
                 if(chkManagers.isSelected()) {
-                    users.addAll(FXCollections.observableArrayList(modelFacade.getAllManagers()));
+                    users.addAll(FXCollections.observableArrayList(modelFacade.getAllSavedManagers()));
                 } else {
-                    users.removeAll(FXCollections.observableArrayList(modelFacade.getAllManagers()));
+                    users.removeAll(FXCollections.observableArrayList(modelFacade.getAllSavedManagers()));
                 }
             }
             

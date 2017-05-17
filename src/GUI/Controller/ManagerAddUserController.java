@@ -84,6 +84,7 @@ public class ManagerAddUserController implements Initializable
                   {
                     modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
                     modelFacade.setAllVolunteersIntoArray();
+                    modelFacade.setAllManagersIntoArray();
                     return null;
                   }
               };
