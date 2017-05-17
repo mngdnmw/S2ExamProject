@@ -350,7 +350,7 @@ public class GeneralInfoManager extends ConnectionManager
         List<Guild> guilds = new ArrayList<>();
         try (Connection con = super.getConnection())
           {
-            String query = "SELECT * FROM [guild] where [guildid] > 2"; //after meeting we need to delete guild LOL and ASD, but right now i dont want to fuck it up
+            String query = "SELECT * FROM [guild] where [guildid]";
             PreparedStatement pstmt = con.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next())
@@ -475,32 +475,7 @@ public class GeneralInfoManager extends ConnectionManager
           }
         catch (SQLException sqle)
           {
-            System.out.println("Exception in: DataManager: addUser method");
-            System.err.println(sqle);
-          }
-      }
-
-    public void updateUserInfo(String name, String email, String password, int type, int phone, String residence, String residence2, String note, int userid)
-      {
-        try (Connection con = super.getConnection())
-          {
-            String sqlCommand
-                    = "UPDATE [user] SET name=?, email=?, password=?, type=?, phone=?, residence=?, residence2=?, note=? WHERE userid=?";
-            PreparedStatement pstat = con.prepareStatement(sqlCommand);
-            pstat.setString(1, name);
-            pstat.setString(2, email);
-            pstat.setString(3, password);
-            pstat.setInt(4, type);
-            pstat.setInt(5, phone);
-            pstat.setString(6, residence);
-            pstat.setString(7, residence2);
-            pstat.setString(8, note);
-            pstat.setInt(9, userid);
-            pstat.executeUpdate();
-          }
-        catch (SQLException sqle)
-          {
-            System.out.println("Exception in: DataManager: updateInfo method");
+            System.out.println("Exception in: GeneralInfoManager: addUser method");
             System.err.println(sqle);
           }
       }
@@ -544,5 +519,56 @@ public class GeneralInfoManager extends ConnectionManager
             Logger.getLogger(GeneralInfoManager.class.getName()).log(Level.SEVERE, null, e);
         }
         return null;
+    }
+    
+    public void addGuild(String name)
+      {
+        try (Connection con = super.getConnection())
+          {
+            String sqlCommand
+                    = "insert into [guild] ([name]) values (?)";
+            PreparedStatement pstat = con.prepareStatement(sqlCommand);
+            pstat.setString(1, name);
+            pstat.executeUpdate();
+          }
+        catch (SQLException sqle)
+          {
+            System.out.println("Exception in: GeneralInfoManager: addGuild method");
+            System.err.println(sqle);
+          }
+      }
+
+    public void deleteGuild(int guildId)
+    {
+        try (Connection con = super.getConnection())
+          {
+            String sqlCommand
+                    = "DELETE FROM [guild] WHERE guildid=" + guildId;
+            PreparedStatement pstat = con.prepareStatement(sqlCommand);
+            pstat.executeUpdate();
+          }
+        catch (SQLException sqle)
+          {
+            System.out.println("Exception in: GeneralInfoManager: deleteGuild method");
+            System.err.println(sqle);
+          }
+    }
+    
+    public void updateGuild(int guildId, String name)
+    {
+        try (Connection con = super.getConnection())
+          {
+            String sqlCommand
+                    = "UPDATE [guild] SET name=? WHERE guildid=?";
+            PreparedStatement pstat = con.prepareStatement(sqlCommand);
+            pstat.setString(1, name);
+            pstat.setInt(2, guildId);
+            pstat.executeUpdate();
+          }
+        catch (SQLException sqle)
+          {
+            System.out.println("Exception in: GeneralInfoManager: updateGuild method");
+            System.err.println(sqle);
+          }
     }
   }
