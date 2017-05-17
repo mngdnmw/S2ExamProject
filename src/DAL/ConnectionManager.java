@@ -34,7 +34,6 @@ public class ConnectionManager extends ConfigManager
         ds.setPortNumber(Integer.parseInt(props.getProperty("PORT")));
         ds.setUser(props.getProperty("USER"));
         ds.setPassword(props.getProperty("PASSWORD"));
-        System.out.println("Connection Established to database");
     }
     
     protected Connection getConnection() throws SQLServerException

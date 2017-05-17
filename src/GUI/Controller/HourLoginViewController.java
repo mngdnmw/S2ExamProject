@@ -129,6 +129,8 @@ public class HourLoginViewController implements Initializable
               };
           }
       };
+    @FXML
+    private Label lblPassword;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -141,7 +143,9 @@ public class HourLoginViewController implements Initializable
         ModelFacade.setModelFacade(MOD_FACADE);
         addListener();
         setTextAll();
-        //rememberThisSession();
+
+//        rememberThisSession();
+
       }
 
     public void buttonPressed(KeyEvent ke)
@@ -250,7 +254,7 @@ public class HourLoginViewController implements Initializable
                       {
                         return guild;
                       }
-                   
+
                   }
                 return findGuild;
               }
@@ -359,13 +363,13 @@ public class HourLoginViewController implements Initializable
               {
                 if (event.getSource().equals(btnDanish))
                   {
-                      MOD_FACADE.setLang(Lang.DAN);
-                      imgViewLngBut.setImage(iconDK);
+                    MOD_FACADE.setLang(Lang.DAN);
+                    imgViewLngBut.setImage(iconDK);
                   }
                 else if (event.getSource().equals(btnEnglish))
                   {
-                      MOD_FACADE.setLang(Lang.ENG);
-                      imgViewLngBut.setImage(iconENG);
+                    MOD_FACADE.setLang(Lang.ENG);
+                    imgViewLngBut.setImage(iconENG);
                   }
                 setTextAll();
                 MOD_FACADE.fadeOutTransition(Duration.millis(500), popup).setOnFinished(
@@ -448,12 +452,19 @@ public class HourLoginViewController implements Initializable
         btnLogHours.setText(MOD_FACADE.getLang("BTN_LOG_HOURS"));
         btnSeeInfo.setText(MOD_FACADE.getLang("BTN_SEE_INFO"));
         btnLanguage.setText(MOD_FACADE.getLang("BTN_LANGUAGE"));
-        if(MOD_FACADE.getLangProperty().equals(Lang.ENG)) {
+        btnCancel.setText(MOD_FACADE.getLang("BTN_CANCEL"));
+        btnLogin.setText(MOD_FACADE.getLang("BTN_LOGIN"));
+        lblUsername.setText(MOD_FACADE.getLang("LB_USERNAME"));
+        lblPassword.setText(MOD_FACADE.getLang("LB_PASSWORD"));
+        if (MOD_FACADE.getLangProperty().equals(Lang.ENG))
+          {
             imgViewLngBut.setImage(iconENG);
-        } else if(MOD_FACADE.getLangProperty().equals(Lang.DAN)){
+          }
+        else if (MOD_FACADE.getLangProperty().equals(Lang.DAN))
+          {
             imgViewLngBut.setImage(iconDK);
-        }
-        
+          }
+
       }
 
     private void loginEvent()
@@ -547,10 +558,12 @@ public class HourLoginViewController implements Initializable
 
     public void rememberThisSession()
       {
-          if(MOD_FACADE.loadSession() != null) {
+        if (MOD_FACADE.loadSession() != null)
+          {
+
             txtUser.setText(MOD_FACADE.loadSession().get("lastuser"));
             txtHours.setText(MOD_FACADE.loadSession().get("lasthours"));
             cmbGuildChooser.getSelectionModel().select(MOD_FACADE.getGuild(Integer.parseInt(MOD_FACADE.loadSession().get("lastguild"))));
-        }
+          }
       }
   }

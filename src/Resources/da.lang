@@ -16,50 +16,52 @@ HOUR_TAG_TWO = timer
 GUILD_TAG = til
 CMB_GUILDCHOOSER_PROMPT = Vælg et laug
 GUILD_TAG_TWO = laug
+LB_USERNAME = Brugernavn
+LB_PASSWORD = Kodeord
 
 ########
 # USER INFO WINDOW
 ########
 
 #User info buttons
-BTN_UPDATEPHOTO = Update photo
-BTN_CHANGEPASS = Change password
-BTN_EDIT = Edit
-BTN_SAVE = Save
-BTN_CANCEL = Cancel
-BTN_LOGOUT = Log out
-TAB_ALL = All
-TAB_MONTH = Month
-TAB_DAY = Day
-TAB_GRAPHS = Graphs
-BTN_HIGHER_CLEARANCE_1 = Manager functions 
-BTN_HIGHER_CLEARANCE_2 = Admin functions
+BTN_UPDATEPHOTO = Opdater billede
+BTN_CHANGEPASS = Skift kodeord
+BTN_EDIT = Ændre
+BTN_SAVE = Gem
+BTN_CANCEL = Annuller
+BTN_LOGOUT = Log ud
+TAB_ALL = Alle
+TAB_MONTH = Måned
+TAB_DAY = Dag
+TAB_GRAPHS = Graf
+BTN_HIGHER_CLEARANCE_1 = Manager funktioner
+BTN_HIGHER_CLEARANCE_2 = Admin funktioner
 
 #User info labels
-COL_DATE = Date
-COL_HOURS = Hours
-COL_GUILD = Guild
-PROMPT_SEARCH = Search
-LBL_HRS_ALL_TEXT = Hours
-LBL_GUILDS = Guilds:
+COL_DATE = Dato
+COL_HOURS = Timer
+COL_GUILD = Laug
+PROMPT_SEARCH = Søg
+LBL_HRS_ALL_TEXT = Timer
+LBL_GUILDS = Laug:
 
 ########
 #MANAGER VIEW
 ########
 
 #Manager view buttons
-BTN_ADD_HOURS = Add hours
-BTN_EDIT_INFO = Edit Information
-BTN_STATS = User Statistics
-BTN_CLOSE = Close
-BTN_ADD_USER = Add user
+BTN_ADD_HOURS = Tilføj Timer
+BTN_EDIT_INFO = Ændre Information
+BTN_STATS = Bruger Statistikker
+BTN_CLOSE = Luk
+BTN_ADD_USER = Tilføj Bruger
 
 #Manager view labels
 #Remember to leave a space after LBL_USERNAME
-LBL_USERNAME = Loggen is as: 
-PROMPT_SEARCH_USER = Search user...
-PROMPT_CMB_GUILDCHOOSER = Guild Chooser
-LBL_NOTES = Notes:
-COL_NAME = Name
-COL_PHONE = Phone
+LBL_USERNAME = Logget ind som:  
+PROMPT_SEARCH_USER = Søg i brugere...
+PROMPT_CMB_GUILDCHOOSER = Vælg et Laug
+LBL_NOTES = Noter:
+COL_NAME = Navn
+COL_PHONE = Telefon
 COL_EMAIL = Email
