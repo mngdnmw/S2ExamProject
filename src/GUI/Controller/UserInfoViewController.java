@@ -32,6 +32,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -40,6 +41,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTablePosition;
+import javafx.scene.control.TreeTableRow;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -208,7 +212,7 @@ public class UserInfoViewController implements Initializable
         createEditFields();
         setCurrentUser(MOD_FACADE.getCurrentUser());
         setUserInfo();
-        showConstantCalendar();
+        //showConstantCalendar();
         setUserImage();
         checkTypeOfUser();
         showTreeTable();
@@ -633,13 +637,13 @@ public class UserInfoViewController implements Initializable
         btnChangePassword.setText(MOD_FACADE.getLang("BTN_CHANGEPASS"));
         btnEditSave.setText(MOD_FACADE.getLang("BTN_EDIT"));
         btnLogout.setText(MOD_FACADE.getLang("BTN_LOGOUT"));
-        btnEditOnTabDay.setText(MOD_FACADE.getLang("BTN_EDIT"));
-        btnEditOnTabMonth.setText(MOD_FACADE.getLang("BTN_EDIT"));
+//        btnEditOnTabDay.setText(MOD_FACADE.getLang("BTN_EDIT"));
+//       btnEditOnTabMonth.setText(MOD_FACADE.getLang("BTN_EDIT"));
         btnCancel.setText(MOD_FACADE.getLang("BTN_CANCEL"));
-        tabAll.setText(MOD_FACADE.getLang("TAB_ALL"));
-        tabDay.setText(MOD_FACADE.getLang("TAB_DAY"));
-        tabMonth.setText(MOD_FACADE.getLang("TAB_MONTH"));
-        tabGraphs.setText(MOD_FACADE.getLang("TAB_GRAPHS"));
+//        tabAll.setText(MOD_FACADE.getLang("TAB_ALL"));
+//        tabDay.setText(MOD_FACADE.getLang("TAB_DAY"));
+  //      tabMonth.setText(MOD_FACADE.getLang("TAB_MONTH"));
+ //       tabGraphs.setText(MOD_FACADE.getLang("TAB_GRAPHS"));
 
         dateCol.setText(MOD_FACADE.getLang("COL_DATE"));
         hoursCol.setText(MOD_FACADE.getLang("COL_HOURS"));
@@ -648,9 +652,9 @@ public class UserInfoViewController implements Initializable
         txtFSearchDate.setPromptText(MOD_FACADE.getLang("PROMPT_SEARCH"));
         //txtFSearchDate2.setText(MOD_FACADE.getLang("PROMPT_SEARCH_DATE"));
         //txtFSearchDate3.setText(MOD_FACADE.getLang("PROMPT_SEARCH_DATE"));
-        lblHrsAll.setText(MOD_FACADE.getLang("LBL_HRS_ALL_TEXT"));
-        lblHrsAll2.setText(MOD_FACADE.getLang("LBL_HRS_ALL_TEXT"));
-        lblHrsAll3.setText(MOD_FACADE.getLang("LBL_HRS_ALL_TEXT"));
+//        lblHrsAll.setText(MOD_FACADE.getLang("LBL_HRS_ALL_TEXT"));
+//        lblHrsAll2.setText(MOD_FACADE.getLang("LBL_HRS_ALL_TEXT"));
+//        lblHrsAll3.setText(MOD_FACADE.getLang("LBL_HRS_ALL_TEXT"));
         lblGuilds.setText(MOD_FACADE.getLang("LBL_GUILDS"));
 
     }
@@ -697,21 +701,39 @@ public class UserInfoViewController implements Initializable
         popup = new JFXPopup();
         JFXButton b1 = new JFXButton("Edit");
         JFXButton b2 = new JFXButton("Delete");
-        b1.setPrefWidth(b2.getWidth());
         b1.setPadding(new Insets(10));
+        b1.setMaxWidth(Double.MAX_VALUE);
         b2.setPadding(new Insets(10));
+        // b1.setStyle(b2.getStyle());
         VBox vBox = new VBox(b1, b2);
         popup.setPopupContent(vBox);
+        b1.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                rowFactoryTreeTable();
+                popup.hide();
+            }
+        });
+
     }
 
     @FXML
     private void popupEditDelete(MouseEvent event)
     {
         MouseButton button = event.getButton();
+        System.out.println("clicked");
         if (button == MouseButton.SECONDARY)
         {
             initPopup();
-            popup.show(treeViewAllHours, event.getScreenX(), event.getScreenY());
+            popup.show((Node) event.getSource(), JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, event.getX(), event.getY());
+
         }
+    }
+
+    private void rowFactoryTreeTable()
+    {
+        treeViewAllHours.setEditable(true);
     }
 }
