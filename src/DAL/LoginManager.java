@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +18,7 @@ import java.util.logging.Logger;
 public class LoginManager extends ConnectionManager
   {
 
+    private final HashMap<String,String> session = new HashMap<>();
     /**
      * Logs hours into the database using userId, guildId, hours and date.
      *
@@ -42,6 +44,26 @@ public class LoginManager extends ConnectionManager
           }
       }
 
+    public void changePassword(User user, String oldPassword, String newPassword)
+      {
+        try (Connection con = super.getConnection())
+          {
+            String query = "UPDATE [user] "
+                    + " SET [user].[password] = ? "
+                    + " WHERE [user].[userid] = ? "
+                    + " AND [user].[password] = ?";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setString(1, newPassword);
+            pstmt.setInt(2, user.getId());
+            pstmt.setString(3, oldPassword);
+            pstmt.execute();
+          }
+        catch (SQLException ex)
+          {
+            Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
+          }
+      }
+
     public User getUserFromLogin(int userid, String password)
       {
         try (Connection con = super.getConnection())
@@ -60,14 +82,17 @@ public class LoginManager extends ConnectionManager
                 int phone = rs.getInt("phone");
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
+                String residence2 = rs.getString("residence2");
                 List<Guild> guilds = new ArrayList<>();
-                switch(type){
+                switch (type)
+                  {
                     case 0:
-                        return new Volunteer(id, name, email, phone, note, residence, guilds);
+
+                        return new Volunteer(id, name, email, phone, note, residence, residence2, guilds);
                     case 1: 
-                        return new Manager(id, name, email, phone, note, residence, guilds);
+                        return new Manager(id, name, email, phone, note, residence, residence2, guilds);
                     case 2: 
-                        return new Admin(id, name, email, phone, note, residence, guilds);
+                        return new Admin(id, name, email, phone, note, residence, residence2, guilds);
                         
                 }
               }
@@ -78,4 +103,28 @@ public class LoginManager extends ConnectionManager
           }
         return null;
       }
+    
+    public void saveSession(String username, int guildid, int hours) {
+        props.setProperty("LAST_USER", username);
+        props.setProperty("LAST_GUILD", String.valueOf(guildid));
+        props.setProperty("LAST_HOURS", String.valueOf(hours));
+        super.saveConfig(props);
+    }
+    
+    public HashMap<String,String> loadSession() {
+        
+        if(props.getProperty("LAST_USER") != null) {
+            if(!props.getProperty("LAST_USER").isEmpty())
+                session.put("lastuser", props.getProperty("LAST_USER"));
+        }
+        if(props.getProperty("LAST_GUILD") != null) {
+            if(!props.getProperty("LAST_GUILD").isEmpty())
+                session.put("lastguild", props.getProperty("LAST_GUILD"));
+        }
+        if(props.getProperty("LAST_HOURS") != null) {
+            if(!props.getProperty("LAST_HOURS").isEmpty())
+                session.put("lasthours", props.getProperty("LAST_HOURS"));
+        }
+        return session;
+    }
   }

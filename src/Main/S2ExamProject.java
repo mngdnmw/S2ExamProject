@@ -1,5 +1,6 @@
 package Main;
 
+import DAL.ConfigManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,7 +13,7 @@ public class S2ExamProject extends Application
     @Override
     public void start(Stage stage) throws Exception
       {
-
+        new ConfigManager();
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/View/HourLoginView.fxml"));
         String title = "VMS - Volunteer Maintenance System";
         Scene scene = new Scene(root);

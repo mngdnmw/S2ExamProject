@@ -96,7 +96,7 @@ public class ManagerViewController implements Initializable
           {
             lblUserName.setText(modelFacade.getLang("LBL_USERNAME") + modelFacade.getCurrentUser().getName());
           }
-        
+
         showTreeTable();
       }
 
@@ -197,7 +197,7 @@ public class ManagerViewController implements Initializable
                 public void handle(WindowEvent we)
                   {
                     System.out.println("Stage on Hiding");
-                    //setTableItems();
+
                     showTreeTable();
                   }
               });
@@ -209,6 +209,7 @@ public class ManagerViewController implements Initializable
                     System.out.println("Stage is closing");
                     //setTableItems();
                     showTreeTable();
+                    
                   }
               });
 

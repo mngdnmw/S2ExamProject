@@ -33,6 +33,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
 
 public class HourLoginViewController implements Initializable
   {
@@ -89,6 +90,9 @@ public class HourLoginViewController implements Initializable
     //Models used by this Controller
     private final static ModelFacade MOD_FACADE = new ModelFacade();
 
+    private String username;
+    private int guildID;
+    private int hours;
     JFXButton btnDanish = new JFXButton();
     JFXButton btnEnglish = new JFXButton();
     boolean loggingIn = false;
@@ -137,6 +141,7 @@ public class HourLoginViewController implements Initializable
         ModelFacade.setModelFacade(MOD_FACADE);
         addListener();
         setTextAll();
+        rememberThisSession();
       }
 
     public void buttonPressed(KeyEvent ke)
@@ -153,6 +158,9 @@ public class HourLoginViewController implements Initializable
         lockButtons();
         if (!txtUser.getText().isEmpty() && !txtHours.getText().isEmpty() && !cmbGuildChooser.getSelectionModel().isEmpty())
           {
+            username = txtUser.getText();
+            hours = Integer.parseInt(txtHours.getText());
+            guildID = cmbGuildChooser.getSelectionModel().getSelectedItem().getId();
             loadingScreen(true);
             serviceHours.restart();
           }
@@ -193,19 +201,16 @@ public class HourLoginViewController implements Initializable
                       {
                         if (Integer.parseInt(newValue) >= 25)
                           {
-
                             snackBarPopup("You Cannot Exceed 24 hours");
                             txtHours.setText(oldValue);
                           }
                         else if (Integer.parseInt(newValue) <= 0)
                           {
-
                             snackBarPopup("You Cannot log 0 hours");
                             txtHours.setText(oldValue);
                           }
                         else
                           {
-
                             int value = Integer.parseInt(newValue);
                           }
                       }
@@ -222,6 +227,34 @@ public class HourLoginViewController implements Initializable
 
           });
         new GUI.Model.AutoCompleteComboBoxListener<>(cmbGuildChooser);
+        cmbGuildChooser.setConverter(new StringConverter<Guild>()
+          {
+
+            @Override
+            public String toString(Guild object)
+              {
+                if (object == null)
+                  {
+                    return null;
+                  }
+                return object.toString();
+              }
+
+            @Override
+            public Guild fromString(String string)
+              {
+                Guild findGuild = null;
+                for (Guild guild : cmbGuildChooser.getItems())
+                  {
+                    if (guild.getName().equals(string))
+                      {
+                        return guild;
+                      }
+                   
+                  }
+                return findGuild;
+              }
+          });
       }
 
     /**
@@ -420,6 +453,7 @@ public class HourLoginViewController implements Initializable
         } else if(MOD_FACADE.getLangProperty().equals(Lang.DAN)){
             imgViewLngBut.setImage(iconDK);
         }
+        
       }
 
     private void loginEvent()
@@ -450,10 +484,7 @@ public class HourLoginViewController implements Initializable
     private void logHours()
       {
 
-        MOD_FACADE.logHours(
-                txtUser.getText(), Integer.parseInt(txtHours.getText()),
-                cmbGuildChooser.getSelectionModel().getSelectedItem().getId()
-        );
+        MOD_FACADE.logHours(username, hours, guildID);
         Platform.runLater(new Runnable()
           {
             @Override
@@ -516,6 +547,10 @@ public class HourLoginViewController implements Initializable
 
     public void rememberThisSession()
       {
-
+          if(MOD_FACADE.loadSession() != null) {
+            txtUser.setText(MOD_FACADE.loadSession().get("lastuser"));
+            txtHours.setText(MOD_FACADE.loadSession().get("lasthours"));
+            cmbGuildChooser.getSelectionModel().select(MOD_FACADE.getGuild(Integer.parseInt(MOD_FACADE.loadSession().get("lastguild"))));
+        }
       }
   }
