@@ -86,9 +86,6 @@ public class ManagerAddUserController implements Initializable
                   { 
                       modelFacade.setAllVolunteersIntoArray();
                       return null;
-                  {
-
-                    
                   }
               };
           }
