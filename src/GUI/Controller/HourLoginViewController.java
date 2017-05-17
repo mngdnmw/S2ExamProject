@@ -143,7 +143,9 @@ public class HourLoginViewController implements Initializable
         ModelFacade.setModelFacade(MOD_FACADE);
         addListener();
         setTextAll();
+
 //        rememberThisSession();
+
       }
 
     public void buttonPressed(KeyEvent ke)
