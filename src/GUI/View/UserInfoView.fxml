@@ -194,7 +194,7 @@
                   <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
                      <children>
                         <JFXButton buttonType="RAISED" onAction="#changePasswordEvent" styleClass="loginbuttons" text="Change" />
-                        <JFXButton fx:id="btnCancel" buttonType="RAISED" onAction="#hsidePasswordChangerEvent" styleClass="loginbuttons" text="Cancel" />
+                        <JFXButton fx:id="btnCancel" buttonType="RAISED" onAction="#hidePasswordChangerEvent" styleClass="loginbuttons" text="Cancel" />
                      </children>
                      <padding>
                         <Insets bottom="1.0" top="8.0" />

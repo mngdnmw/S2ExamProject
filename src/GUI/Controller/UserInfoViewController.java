@@ -153,7 +153,6 @@ public class UserInfoViewController implements Initializable
                     MOD_FACADE.setAllVolunteersIntoArray();
                     finishedService = true;
                     return null;
-
                 }
             };
         }
@@ -252,21 +251,21 @@ public class UserInfoViewController implements Initializable
         treeViewAllHours.setShowRoot(false);
 
         txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                ->
-        {
-            treeViewAllHours.setPredicate((TreeItem<Day> day)
-                    ->
-            {
-                String regex = "[^a-zA-Z0-9\\s]";
-                Boolean search
-                        = day.getValue().dateProperty().getValue().replaceAll(regex, "")
-                                .contains(newValue.replaceAll(regex, ""))
-                        || day.getValue().guildProperty().getValue().toLowerCase().replaceAll(regex, "").
-                                contains(newValue.toLowerCase().replaceAll(regex, ""));
+                -> 
+                {
+                    treeViewAllHours.setPredicate((TreeItem<Day> day)
+                            -> 
+                            {
+                                String regex = "[^a-zA-Z0-9\\s]";
+                                Boolean search
+                                        = day.getValue().dateProperty().getValue().replaceAll(regex, "")
+                                        .contains(newValue.replaceAll(regex, ""))
+                                        || day.getValue().guildProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                        contains(newValue.toLowerCase().replaceAll(regex, ""));
 
-                return search;
+                                return search;
 
-            });
+                    });
         });
     }
 
@@ -338,11 +337,11 @@ public class UserInfoViewController implements Initializable
                 else
                 {
                     serviceAllVolunteers.setOnSucceeded(e
-                            ->
-                    {
+                            -> 
+                            {
 
-                        MOD_FACADE.changeView(GUIView);
-                        root.getChildren().remove(MOD_FACADE.getLoadingScreen());
+                                MOD_FACADE.changeView(GUIView);
+                                root.getChildren().remove(MOD_FACADE.getLoadingScreen());
 
                     });
 
@@ -690,10 +689,12 @@ public class UserInfoViewController implements Initializable
 
     }
 
+    @FXML
     private void hidePasswordChangerEvent(ActionEvent event)
 
     {
-        MOD_FACADE.fadeOutTransition(Duration.millis(750), stckPanePasswordChanger).setOnFinished(e -> stckPanePasswordChanger.setVisible(false));
+        MOD_FACADE.fadeOutTransition(Duration.millis(750), stckPanePasswordChanger)
+                .setOnFinished(e -> stckPanePasswordChanger.setVisible(false));
 
     }
 
@@ -736,11 +737,6 @@ public class UserInfoViewController implements Initializable
     private void rowFactoryTreeTable()
     {
         treeViewAllHours.setEditable(true);
-
     }
 
-    @FXML
-    private void hsidePasswordChangerEvent(ActionEvent event)
-    {
-    }
 }

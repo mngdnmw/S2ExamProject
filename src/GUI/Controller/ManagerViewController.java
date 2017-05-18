@@ -77,9 +77,9 @@ public class ManagerViewController implements Initializable
      */
     @Override
     public void initialize(URL url, ResourceBundle rb)
-    {
-        //setTableProperties();
-        //setTextAll(); //this has to run before setting currently logged in username
+      {
+//        setTableProperties();
+        setTextAll(); //this has to run before setting currently logged in username
         if (modelFacade.getCurrentUser() != null)
         {
             lblUserName.setText(modelFacade.getLang("LBL_USERNAME") + modelFacade.getCurrentUser().getName());
@@ -353,8 +353,7 @@ public class ManagerViewController implements Initializable
         btnAddUser.setText(modelFacade.getLang("BTN_ADD_USER"));
         btnClose.setText(modelFacade.getLang("BTN_CLOSE"));
         btnEditInfo.setText(modelFacade.getLang("BTN_EDIT_INFO"));
-        //   btnStats.setText(modelFacade.getLang("BTN_STATS"));
-
+        
         lblUserName.setText(modelFacade.getLang("LBL_USERNAME"));
         lblNotes.setText(modelFacade.getLang("LBL_NOTES"));
         txtSearch.setPromptText(modelFacade.getLang("PROMPT_SEARCH_USER"));

@@ -129,6 +129,8 @@ public class HourLoginViewController implements Initializable
             };
         }
     };
+    @FXML
+    private Label lblPassword;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -141,7 +143,8 @@ public class HourLoginViewController implements Initializable
         ModelFacade.setModelFacade(MOD_FACADE);
         addListener();
         setTextAll();
-        //rememberThisSession();
+
+//        rememberThisSession();
     }
 
     public void buttonPressed(KeyEvent ke)
@@ -163,7 +166,9 @@ public class HourLoginViewController implements Initializable
             guildID = cmbGuildChooser.getSelectionModel().getSelectedItem().getId();
             loadingScreen(true);
             serviceHours.restart();
-        } else
+        }
+
+        else
         {
             snackBarPopup("Please input information in all fields");
         }
@@ -201,19 +206,23 @@ public class HourLoginViewController implements Initializable
                         {
                             snackBarPopup("You Cannot Exceed 24 hours");
                             txtHours.setText(oldValue);
-                        } else if (Integer.parseInt(newValue) <= 0)
+                        }
+                        else if (Integer.parseInt(newValue) <= 0)
                         {
                             snackBarPopup("You Cannot log 0 hours");
                             txtHours.setText(oldValue);
-                        } else
+                        }
+                        else
                         {
                             int value = Integer.parseInt(newValue);
                         }
-                    } else
+                    }
+                    else
                     {
                         txtHours.setText(oldValue);
                     }
-                } catch (NumberFormatException ex)
+                }
+                catch (NumberFormatException ex)
                 {
                     //do nothing
                 }
@@ -246,7 +255,6 @@ public class HourLoginViewController implements Initializable
                     }
 
                 }
-
                 return findGuild;
             }
         });
@@ -286,16 +294,16 @@ public class HourLoginViewController implements Initializable
         }
 
         txtPassword.setOnKeyPressed((event)
-                ->
-        {
-            if (event.getCode() == KeyCode.ENTER)
-            {
-                if (!txtUsername.getText().isEmpty())
+                -> 
                 {
-                    serviceLog.restart();
-                    loadingScreen(true);
-                }
-            }
+                    if (event.getCode() == KeyCode.ENTER)
+                    {
+                        if (!txtUsername.getText().isEmpty())
+                        {
+                            serviceLog.restart();
+                            loadingScreen(true);
+                        }
+                    }
         });
         btnLogin.setOnAction(new EventHandler<ActionEvent>()
         {
@@ -356,12 +364,12 @@ public class HourLoginViewController implements Initializable
                 {
                     MOD_FACADE.setLang(Lang.DAN);
                     imgViewLngBut.setImage(iconDK);
-                } else if (event.getSource().equals(btnEnglish))
+                }
+                else if (event.getSource().equals(btnEnglish))
                 {
                     MOD_FACADE.setLang(Lang.ENG);
                     imgViewLngBut.setImage(iconENG);
                 }
-
                 setTextAll();
                 MOD_FACADE.fadeOutTransition(Duration.millis(500), popup).setOnFinished(
                         e -> root.getChildren().remove(anch));
@@ -447,7 +455,8 @@ public class HourLoginViewController implements Initializable
         if (MOD_FACADE.getLangProperty().equals(Lang.ENG))
         {
             imgViewLngBut.setImage(iconENG);
-        } else if (MOD_FACADE.getLangProperty().equals(Lang.DAN))
+        }
+        else if (MOD_FACADE.getLangProperty().equals(Lang.DAN))
         {
             imgViewLngBut.setImage(iconDK);
         }
@@ -469,7 +478,8 @@ public class HourLoginViewController implements Initializable
                     MOD_FACADE.changeView(0);
                     Stage stage = (Stage) root.getScene().getWindow();
                     stage.close();
-                } else
+                }
+                else
                 {
                     lblWrongPass.visibleProperty().set(true);
                 }
@@ -499,7 +509,8 @@ public class HourLoginViewController implements Initializable
         if (StartLoading == true)
         {
             root.getChildren().add(MOD_FACADE.getLoadingScreen());
-        } else
+        }
+        else
         {
             root.getChildren().remove(MOD_FACADE.getLoadingScreen());
         }
@@ -514,7 +525,8 @@ public class HourLoginViewController implements Initializable
             if (txtHours.getText().isEmpty())
             {
                 txtHours.setText("1");
-            } else
+            }
+            else
             {
                 int hours = Integer.parseInt(txtHours.getText());
 
@@ -529,7 +541,8 @@ public class HourLoginViewController implements Initializable
             if (txtHours.getText().isEmpty())
             {
                 snackBarPopup("Invalid Action");
-            } else
+            }
+            else
             {
                 int hours = Integer.parseInt(txtHours.getText());
                 hours--;
@@ -543,6 +556,7 @@ public class HourLoginViewController implements Initializable
     {
         if (MOD_FACADE.loadSession() != null)
         {
+
             txtUser.setText(MOD_FACADE.loadSession().get("lastuser"));
             txtHours.setText(MOD_FACADE.loadSession().get("lasthours"));
             cmbGuildChooser.getSelectionModel().select(MOD_FACADE.getGuild(Integer.parseInt(MOD_FACADE.loadSession().get("lastguild"))));
