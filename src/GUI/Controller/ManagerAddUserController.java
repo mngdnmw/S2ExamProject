@@ -145,17 +145,17 @@ public class ManagerAddUserController implements Initializable
                     modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
                     StackPane loading = modelFacade.getLoadingScreen();
                     rootPane.getChildren().add(loading);
-                    rootPane.setTopAnchor(loading, 0.0);
-                    rootPane.setBottomAnchor(loading, 0.0);
-                    rootPane.setRightAnchor(loading, 0.0);
-                    rootPane.setLeftAnchor(loading, 0.0);
+                    AnchorPane.setTopAnchor(loading, 0.0);
+                    AnchorPane.setBottomAnchor(loading, 0.0);
+                    AnchorPane.setRightAnchor(loading, 0.0);
+                    AnchorPane.setLeftAnchor(loading, 0.0);
                     serviceAddNewUser.start();
                     serviceAddNewUser.setOnSucceeded(e
-                            ->
-                    {
-                        System.out.println("New Volunteer added: " + txtName.getText());
-                        Stage stage = (Stage) btnAccept.getScene().getWindow();
-                        stage.close();
+                            -> 
+                            {
+                                System.out.println("New Volunteer added: " + txtName.getText());
+                                Stage stage = (Stage) btnAccept.getScene().getWindow();
+                                stage.close();
                     });
                 }
 
@@ -175,11 +175,11 @@ public class ManagerAddUserController implements Initializable
                     rootPane.setLeftAnchor(loading, 0.0);
                     serviceAddNewUser.start();
                     serviceAddNewUser.setOnSucceeded(e
-                            ->
-                    {
-                        System.out.println("New Manager added: " + txtName.getText());
-                        Stage stage = (Stage) btnAccept.getScene().getWindow();
-                        stage.close();
+                            -> 
+                            {
+                                System.out.println("New Manager added: " + txtName.getText());
+                                Stage stage = (Stage) btnAccept.getScene().getWindow();
+                                stage.close();
                     });
                 }
 
@@ -194,7 +194,6 @@ public class ManagerAddUserController implements Initializable
             snackBarPopup("Name required");
             System.out.println("User not added: missing name");
         }
-
     }
 
     @FXML

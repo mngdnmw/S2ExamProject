@@ -25,7 +25,6 @@ public class DALFacade
         {
             LOGIN_MAN.logHours(userid, date, hours, guildId);
             LOGIN_MAN.saveSession(username, guildId, hours);
-
         }
 
     }
@@ -74,9 +73,8 @@ public class DALFacade
     {
         return HR_MAN.getWorkedDays(user);
     }
-    
-    public HashMap<String, String> loadSession()
 
+    public HashMap<String, String> loadSession()
     {
         return LOGIN_MAN.loadSession();
     }
@@ -85,24 +83,42 @@ public class DALFacade
     {
         return GEN_INFO_MAN.getGuild(id);
     }
-    
+
+    public void addGuild(String name)
+    {
+        GEN_INFO_MAN.addGuild(name);
+    }
+
+    public void deleteGuild(int guildId)
+    {
+        GEN_INFO_MAN.deleteGuild(guildId);
+    }
+
+    public void updateGuild(int guildId, String name)
+    {
+        GEN_INFO_MAN.updateGuild(guildId, name);
+    }
+
     public User getUserInfo(int userId)
     {
         return GEN_INFO_MAN.getUserInfo(userId);
     }
-    
-    public List<User> getAllUsers(){
+
+    public List<User> getAllUsers()
+    {
         return GEN_INFO_MAN.getAllUsers();
     }
-    
-    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence, String residence2){
+
+    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence, String residence2)
+    {
         GEN_INFO_MAN.updateUserInfo(userId, name, email, type, phone, note, residence, residence2);
     }
-    
-    public void updateUserImage(User user, File img) throws FileNotFoundException{
+
+    public void updateUserImage(User user, File img) throws FileNotFoundException
+    {
         GEN_INFO_MAN.updateUserImage(user, img);
     }
-    
+
     public InputStream getUserImage(User user)
     {
         return GEN_INFO_MAN.getUserImage(user);
