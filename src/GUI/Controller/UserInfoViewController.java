@@ -5,6 +5,7 @@ import BE.User;
 import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.skins.JFXDatePickerSkin;
@@ -35,15 +36,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTablePosition;
-import javafx.scene.control.TreeTableRow;
-import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -76,8 +72,6 @@ public class UserInfoViewController implements Initializable
     private Label lblResidence;
     @FXML
     private ImageView imgVwProfilePic;
-    @FXML
-    private TextArea textAreaGuilds;
     @FXML
     private JFXButton btnUpdatePhoto;
     @FXML
@@ -167,6 +161,8 @@ public class UserInfoViewController implements Initializable
     private Label lblGuilds;
     @FXML
     private Label lblResidence2;
+    @FXML
+    private JFXListView<?> ListVwGuilds;
 
     /**
      * Initializes the controller class.
@@ -655,6 +651,7 @@ public class UserInfoViewController implements Initializable
     }
 
     @FXML
+
     private void changePasswordEvent(ActionEvent event)
     {
         int count;

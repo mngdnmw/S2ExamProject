@@ -96,7 +96,6 @@ public class LoginManager extends ConnectionManager
                         return new Manager(id, name, email, phone, note, residence, residence2, guilds);
                     case 2:
                         return new Admin(id, name, email, phone, note, residence, residence2, guilds);
-
                 }
             }
         }

@@ -451,10 +451,7 @@ public class HourLoginViewController implements Initializable
         btnLogHours.setText(MOD_FACADE.getLang("BTN_LOG_HOURS"));
         btnSeeInfo.setText(MOD_FACADE.getLang("BTN_SEE_INFO"));
         btnLanguage.setText(MOD_FACADE.getLang("BTN_LANGUAGE"));
-        btnCancel.setText(MOD_FACADE.getLang("BTN_CANCEL"));
-        btnLogin.setText(MOD_FACADE.getLang("BTN_LOGIN"));
-        lblUsername.setText(MOD_FACADE.getLang("LB_USERNAME"));
-        lblPassword.setText(MOD_FACADE.getLang("LB_PASSWORD"));
+
         if (MOD_FACADE.getLangProperty().equals(Lang.ENG))
         {
             imgViewLngBut.setImage(iconENG);
