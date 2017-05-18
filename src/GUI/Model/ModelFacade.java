@@ -193,9 +193,9 @@ public class ModelFacade
         return VOL_DATA_MOD.getWorkedDays(user);
     }
 
-    public void changePassword(User user, String oldPassword, String newPassword)
+    public int changePassword(User user, String oldPassword, String newPassword)
     {
-        BLL_FAC.changePassword(user, oldPassword, newPassword);
+        return BLL_FAC.changePassword(user, oldPassword, newPassword);
     }
 
     public HashMap<String, String> loadSession()

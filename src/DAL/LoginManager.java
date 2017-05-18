@@ -45,7 +45,7 @@ public class LoginManager extends ConnectionManager
         }
     }
 
-    public void changePassword(User user, String oldPassword, String newPassword)
+    public int changePassword(User user, String oldPassword, String newPassword)
     {
         try (Connection con = super.getConnection())
         {
@@ -57,11 +57,12 @@ public class LoginManager extends ConnectionManager
             pstmt.setString(1, newPassword);
             pstmt.setInt(2, user.getId());
             pstmt.setString(3, oldPassword);
-            pstmt.execute();
+            return pstmt.executeUpdate();
         } catch (SQLException ex)
         {
             Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return 0;
     }
 
     public User getUserFromLogin(int userid, String password)

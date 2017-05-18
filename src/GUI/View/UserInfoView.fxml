@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.image.Image?>
@@ -135,7 +135,7 @@
             <DropShadow />
          </effect>
       </Rectangle>
-      <ImageView fx:id="imgVwProfilePic" fitHeight="130.0" fitWidth="130.0" layoutX="534.0" layoutY="26.0" pickOnBounds="true" AnchorPane.rightAnchor="35.0">
+      <ImageView fx:id="imgVwProfilePic" fitHeight="143.0" fitWidth="141.0" layoutX="527.0" layoutY="26.0" pickOnBounds="true" AnchorPane.rightAnchor="32.0">
          <image>
             <Image url="@../Images/labeouf.jpg" />
          </image>
@@ -143,27 +143,13 @@
             <Reflection fraction="0.11" topOffset="-4.0" topOpacity="0.35" />
          </effect>
       </ImageView>
-      <VBox layoutX="516.0" layoutY="307.0" prefHeight="58.0" prefWidth="161.0">
-         <children>
-            <VBox prefHeight="8.0" prefWidth="133.0">
-               <children>
-                  <Label fx:id="lblGuilds" style="-fx-background-color: #00c4ad;" text="Guilds:" textFill="WHITE" />
-               </children>
-            </VBox>
-            <VBox prefHeight="45.0" prefWidth="133.0">
-               <children>
-                  <TextArea fx:id="textAreaGuilds" editable="false" prefHeight="0.0" prefWidth="167.0" style="-fx-background-color: #ffffff; -fx-border-color: #ffffff;" />
-               </children>
-            </VBox>
-         </children>
-      </VBox>
-      <JFXButton fx:id="btnUpdatePhoto" buttonType="RAISED" layoutX="528.0" layoutY="177.0" maxHeight="25.0" minHeight="19.0" onAction="#pressedChangeImage" prefHeight="7.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Update Photo" textFill="WHITE" AnchorPane.rightAnchor="31.0">
+      <JFXButton fx:id="btnUpdatePhoto" buttonType="RAISED" layoutX="528.0" layoutY="183.0" maxHeight="25.0" minHeight="19.0" onAction="#pressedChangeImage" prefHeight="7.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Update Photo" textFill="WHITE" AnchorPane.rightAnchor="31.0">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </JFXButton>
-      <HBox fx:id="hBoxInvisBtn" layoutX="508.0" layoutY="407.0" prefHeight="45.0" prefWidth="183.0" />
-      <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="528.0" layoutY="206.0" maxHeight="25.0" minHeight="19.0" onAction="#OpenPasswordChangerEvent" prefHeight="19.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Change Password" textFill="WHITE" AnchorPane.rightAnchor="31.0">
+      <HBox fx:id="hBoxInvisBtn" layoutX="508.0" layoutY="430.0" prefHeight="45.0" prefWidth="183.0" />
+      <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="528.0" layoutY="212.0" maxHeight="25.0" minHeight="19.0" onAction="#OpenPasswordChangerEvent" prefHeight="19.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Change Password" textFill="WHITE" AnchorPane.rightAnchor="31.0">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
@@ -248,5 +234,7 @@
             </HBox>
          </children>
       </Pane>
+      <JFXListView fx:id="ListVwGuilds" layoutX="527.0" layoutY="277.0" maxWidth="141.0" prefHeight="127.0" prefWidth="141.0" style="-fx-border-width: 0px;" />
+      <Label fx:id="lblGuilds" layoutX="527.0" layoutY="260.0" style="-fx-background-color: #00c4ad;" text="Guilds:" textFill="WHITE" />
     </children>
 </AnchorPane>

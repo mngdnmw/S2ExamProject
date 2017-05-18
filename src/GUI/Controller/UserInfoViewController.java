@@ -5,6 +5,7 @@ import BE.User;
 import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.skins.JFXDatePickerSkin;
@@ -35,15 +36,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTablePosition;
-import javafx.scene.control.TreeTableRow;
-import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -77,19 +73,10 @@ public class UserInfoViewController implements Initializable
     @FXML
     private ImageView imgVwProfilePic;
     @FXML
-    private TextArea textAreaGuilds;
-    @FXML
     private JFXButton btnUpdatePhoto;
     @FXML
     private HBox hBoxCalAll;
-    @FXML
     private HBox hBoxCalMth;
-    @FXML
-    private HBox hBoxCalDay;
-    @FXML
-    private Label lblHrsAll;
-    @FXML
-    private AnchorPane anchorGraph;
     @FXML
     private GridPane gridEdit;
     @FXML
@@ -98,16 +85,7 @@ public class UserInfoViewController implements Initializable
     @FXML
     private AnchorPane root;
 
-    @FXML
-    private Tab tabAll;
-    @FXML
-    private Tab tabMonth;
-    @FXML
-    private Tab tabDay;
-    @FXML
     private TabPane tabPaneOverview;
-    @FXML
-    private Tab tabGraphs;
     @FXML
     private HBox hBoxInvisBtn;
 
@@ -115,10 +93,6 @@ public class UserInfoViewController implements Initializable
     private JFXTreeTableView<Day> treeViewAllHours;
     @FXML
     private JFXTextField txtFSearchDate;
-    @FXML
-    private Label lblHrsAll2;
-    @FXML
-    private Label lblHrsAll3;
     @FXML
     private JFXButton btnLogout;
     @FXML
@@ -184,23 +158,11 @@ public class UserInfoViewController implements Initializable
         }
     };
     @FXML
-    private Label lblHrsAllText;
-    @FXML
-    private Label lblHrsAllText2;
-    @FXML
-    private JFXButton btnEditOnTabMonth;
-    @FXML
-    private Label lblHrsAllText3;
-    @FXML
-    private JFXButton btnEditOnTabDay;
-    @FXML
     private Label lblGuilds;
     @FXML
-    private JFXTextField txtFSearchDate2;
-    @FXML
-    private JFXTextField txtFSearchDate3;
-    @FXML
     private Label lblResidence2;
+    @FXML
+    private JFXListView<?> ListVwGuilds;
 
     /**
      * Initializes the controller class.
@@ -405,7 +367,6 @@ public class UserInfoViewController implements Initializable
     }
 
     //Need to finish
-    @FXML
     private void handleClickTab(MouseEvent event)
 
     {
@@ -686,11 +647,10 @@ public class UserInfoViewController implements Initializable
     @FXML
     private void ChangePasswordEvent(ActionEvent event)
     {
-        //int count;
-        int count = 0;
+        int count;
         if (txtNPassword.getText().equals(txtNPasswordTwo.getText()))
         {
-            //count = MOD_FACADE.changePassword(currentUser, txtOPassword.getText(), txtNPassword.getText());
+            count = MOD_FACADE.changePassword(currentUser, txtOPassword.getText(), txtNPassword.getText());
         } else
         {
             count = -1;
