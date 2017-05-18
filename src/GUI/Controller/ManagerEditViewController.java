@@ -17,7 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-
 public class ManagerEditViewController implements Initializable
 {
 
@@ -51,24 +50,23 @@ public class ManagerEditViewController implements Initializable
     private JFXListView<Guild> listGuilds;
     ManagerViewController mevController;
     boolean edit = false;
-    
+
     private static ModelFacade modelFacade = new ModelFacade();
     private static User selectedUser;
-    
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
         boolean edit = false;
         setText();
         listGuilds.setItems(FXCollections.observableArrayList(selectedUser.getGuildList()));
-    }    
-    
+    }
+
     public void setController(ManagerViewController c)
     {
         this.mevController = c;
     }
-    
+
     public void setText()
     {
         if (selectedUser != null)
@@ -79,8 +77,7 @@ public class ManagerEditViewController implements Initializable
             txtPhone.setText(String.valueOf(selectedUser.getPhone()));
             txtEmail.setText(selectedUser.getEmail());
             txtNotes.setText(selectedUser.getNote());
-        }
-        else
+        } else
         {
             System.out.println("selected user is null");
         }
@@ -89,14 +86,14 @@ public class ManagerEditViewController implements Initializable
     @FXML
     private void onBtnUpdatePhotoPressed(ActionEvent event)
     {
-        
+
     }
-    
+
     public static void setSelectedUser(User user)
     {
         selectedUser = user;
     }
-    
+
     private void updateUserInfo()
     {
         modelFacade.updateUserInfo(selectedUser.getId(), txtName.getText(), txtEmail.getText(), selectedUser.getType(), Integer.parseInt(txtPhone.getText()), txtNotes.getText(), txtAddress.getText(), txtAddress2.getText());
@@ -106,7 +103,7 @@ public class ManagerEditViewController implements Initializable
     private void onBtnAcceptPressed(ActionEvent event)
     {
         updateUserInfo();
-        
+
         System.out.println("Updated info saved. ");
         Stage stage = (Stage) JFXBtnAccept.getScene().getWindow();
         stage.close();

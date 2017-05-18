@@ -7,23 +7,33 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ConfigManager {
+public class ConfigManager
+{
+
     private final String file = "src//Resources//Config.cfg";
     protected final Properties props = new Properties();
-    public ConfigManager() {
-        try {
+
+    public ConfigManager()
+    {
+        try
+        {
             props.load(new FileReader(file));
-        } catch(IOException e) {
+        } catch (IOException e)
+        {
             Logger.getLogger(ConfigManager.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("couldn't load config file idk y check if exists or somethin'");
         }
     }
-    
-    protected void saveConfig(Properties props) {
-        if(props != null) {
-            try {
-                props.store(new FileWriter(file),"Atomic Choice config file");
-            } catch(IOException e) {
+
+    protected void saveConfig(Properties props)
+    {
+        if (props != null)
+        {
+            try
+            {
+                props.store(new FileWriter(file), "Atomic Choice config file");
+            } catch (IOException e)
+            {
                 Logger.getLogger(ConfigManager.class.getName()).log(Level.SEVERE, null, e);
                 System.out.println("file not found or something?");
             }

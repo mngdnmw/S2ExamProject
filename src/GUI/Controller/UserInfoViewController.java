@@ -5,6 +5,7 @@ import BE.User;
 import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.skins.JFXDatePickerSkin;
@@ -35,15 +36,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTablePosition;
-import javafx.scene.control.TreeTableRow;
-import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -64,7 +60,7 @@ import javafx.util.Duration;
 
 public class UserInfoViewController implements Initializable
 
-  {
+{
 
     @FXML
     private Label lblName;
@@ -76,8 +72,6 @@ public class UserInfoViewController implements Initializable
     private Label lblResidence;
     @FXML
     private ImageView imgVwProfilePic;
-    @FXML
-    private TextArea textAreaGuilds;
     @FXML
     private JFXButton btnUpdatePhoto;
     @FXML
@@ -146,27 +140,30 @@ public class UserInfoViewController implements Initializable
 
     boolean finishedService;
     private final Service serviceAllVolunteers = new Service()
-      {
+    {
         @Override
         protected Task createTask()
-          {
+        {
             return new Task()
-              {
+            {
                 @Override
                 protected Object call() throws Exception
-                  {
+                {
                     finishedService = false;
                     MOD_FACADE.setAllVolunteersIntoArray();
                     finishedService = true;
                     return null;
-                  }
-              };
-          }
-      };
+
+                }
+            };
+        }
+    };
     @FXML
     private Label lblGuilds;
     @FXML
     private Label lblResidence2;
+    @FXML
+    private JFXListView<?> ListVwGuilds;
 
     /**
      * Initializes the controller class.
@@ -174,7 +171,7 @@ public class UserInfoViewController implements Initializable
     @Override
 
     public void initialize(URL url, ResourceBundle rb)
-      {
+    {
         createEditFields();
         setCurrentUser(MOD_FACADE.getCurrentUser());
         setUserInfo();
@@ -183,24 +180,24 @@ public class UserInfoViewController implements Initializable
         checkTypeOfUser();
         showTreeTable();
         if (currentUser.getType() >= 1)
-          {
+        {
             serviceAllVolunteers.start();
 
-          }
+        }
 
         setTextAll();
-      }
+    }
 
     public void setCurrentUser(User currentUser)
-      {
+    {
         this.currentUser = currentUser;
-      }
+    }
 
     /**
      * Makes the calendar in the Month tab
      */
     private void showConstantCalendar()
-      {
+    {
         JFXDatePicker calendar = new JFXDatePicker();
 
         JFXDatePickerSkin skin = new JFXDatePickerSkin(calendar);
@@ -210,27 +207,27 @@ public class UserInfoViewController implements Initializable
         hBoxCalMth.setPadding(new Insets(0, 10, 0, 0));
         hBoxCalMth.getChildren().add(POPUP_CAL);
 
-      }
+    }
 
     /**
      * Initialises the tree table containing information about the User
      */
     private void showTreeTable()
 
-      {
+    {
         //Need to do some threading for this method
 
         //Date column set up
         dateCol.prefWidthProperty().bind(treeViewAllHours.widthProperty().divide(3));
         dateCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Day, String>, ObservableValue<String>>()
 
-          {
+        {
             @Override
             public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Day, String> param)
-              {
+            {
                 return param.getValue().getValue().dateProperty();
-              }
-          });
+            }
+        });
 
         //Hours column set up
         hoursCol.prefWidthProperty().bind(treeViewAllHours.widthProperty().divide(3));
@@ -255,23 +252,23 @@ public class UserInfoViewController implements Initializable
         treeViewAllHours.setShowRoot(false);
 
         txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                -> 
-          {
+                ->
+        {
             treeViewAllHours.setPredicate((TreeItem<Day> day)
-                    -> 
-              {
+                    ->
+            {
                 String regex = "[^a-zA-Z0-9\\s]";
                 Boolean search
                         = day.getValue().dateProperty().getValue().replaceAll(regex, "")
-                        .contains(newValue.replaceAll(regex, ""))
+                                .contains(newValue.replaceAll(regex, ""))
                         || day.getValue().guildProperty().getValue().toLowerCase().replaceAll(regex, "").
-                        contains(newValue.toLowerCase().replaceAll(regex, ""));
+                                contains(newValue.toLowerCase().replaceAll(regex, ""));
 
                 return search;
 
-              });
-          });
-      }
+            });
+        });
+    }
 
     /**
      * Check what type of User this is, if it's a Manager or Administrator, a
@@ -281,9 +278,9 @@ public class UserInfoViewController implements Initializable
      */
     private void checkTypeOfUser()
 
-      {
+    {
         switch (currentUser.getType())
-          {
+        {
             case 0:
                 break;
             case 1:
@@ -293,8 +290,8 @@ public class UserInfoViewController implements Initializable
             case 2:
                 createHighClearanceButton(2);
                 break;
-          }
-      }
+        }
+    }
 
     /**
      * Displays additional button for Manager and Administrators.
@@ -303,7 +300,7 @@ public class UserInfoViewController implements Initializable
      */
     private void createHighClearanceButton(int type)
 
-      {
+    {
         //int GUIView;
 
         higherClearanceBtn.setId("higherClearanceBtn");
@@ -316,38 +313,38 @@ public class UserInfoViewController implements Initializable
         higherClearanceBtn.getStylesheets().add(STYLESHEET);
 
         if (type == 1)
-          {
+        {
             higherClearanceBtn.setText(MOD_FACADE.getLang("BTN_HIGHER_CLEARANCE_1"));
             GUIView = 1;
 
-          }
+        }
         else
-          {
+        {
             higherClearanceBtn.setText(MOD_FACADE.getLang("BTN_HIGHER_CLEARANCE_2"));
             GUIView = 1;
             // GUIView =4; add when admin view has been made - for the moment it will go to managereditview
 
-          }
+        }
 
         higherClearanceBtn.setOnAction(new EventHandler<ActionEvent>()
-          {
+        {
             @Override
             public void handle(ActionEvent event)
-              {
+            {
                 if (finishedService)
-                  {
+                {
                     MOD_FACADE.changeView(GUIView);
-                  }
+                }
                 else
-                  {
+                {
                     serviceAllVolunteers.setOnSucceeded(e
-                            -> 
-                      {
+                            ->
+                    {
 
                         MOD_FACADE.changeView(GUIView);
                         root.getChildren().remove(MOD_FACADE.getLoadingScreen());
 
-                      });
+                    });
 
                     root.getChildren().add(MOD_FACADE.getLoadingScreen());
                     root.setTopAnchor(MOD_FACADE.getLoadingScreen(), 0.0);
@@ -356,64 +353,64 @@ public class UserInfoViewController implements Initializable
                     root.setLeftAnchor(MOD_FACADE.getLoadingScreen(), 0.0);
                     root.setRightAnchor(MOD_FACADE.getLoadingScreen(), 0.0);
 
-                  }
-              }
-          });
+                }
+            }
+        });
 
-      }
+    }
 
     private void setUserInfo()
-      {
+    {
 
         lblName.setText(currentUser.getName());
         lblPh.setText(String.valueOf(currentUser.getPhone()));
         lblEmail.setText(currentUser.getEmail());
         lblResidence.setText(currentUser.getResidence());
         lblResidence2.setText(currentUser.getResidence2());
-      }
+    }
 
     //Need to finish
     private void handleClickTab(MouseEvent event)
 
-      {
+    {
 
         tabPaneOverview.getSelectionModel().getSelectedIndex();
 
-      }
+    }
 
     @FXML
     private void pressedEditSaveButton(ActionEvent event)
 
-      {
+    {
         if (!editing)
-          {
+        {
             editInfo();
             editing = true;
             btnEditSave.setText(MOD_FACADE.getLang("BTN_SAVE"));
             checkTextFields();
             addCancelButton();
 
-          }
+        }
         else
-          {
+        {
             if (isIncorrect && btnEditSave.isDisabled())
-              {
+            {
 
                 JFXSnackbar b = new JFXSnackbar(root);
                 b.show("Please enter valid information in the fields!", 2000);
                 return;
-              }
+            }
             saveInfo(currentUser);
             editing = false;
             btnEditSave.setText(MOD_FACADE.getLang("BTN_EDIT"));
             checkTextFields();
             removeCancelButton();
 
-          }
-      }
+        }
+    }
 
     private void createEditFields()
-      {
+    {
         txtName = new JFXTextField();
         txtPh = new JFXTextField();
         txtEmail = new JFXTextField();
@@ -423,15 +420,15 @@ public class UserInfoViewController implements Initializable
 
         txtPh.setOnKeyReleased(new EventHandler<KeyEvent>()
 
-          {
+        {
             @Override
             public void handle(KeyEvent event)
-              {
+            {
                 checkTextFields();
 
-              }
+            }
 
-          });
+        });
 
         txtName.setVisible(false);
         txtPh.setVisible(false);
@@ -445,10 +442,10 @@ public class UserInfoViewController implements Initializable
         gridEdit.add(txtResidence, 1, 3);
         gridEdit.add(txtResidence2, 1, 4);
 
-      }
+    }
 
     private void editInfo()
-      {
+    {
         txtName.setText(lblName.getText());
 
         txtPh.setText(lblPh.getText());
@@ -468,10 +465,10 @@ public class UserInfoViewController implements Initializable
         txtEmail.setVisible(true);
         txtResidence.setVisible(true);
 
-      }
+    }
 
     private void saveInfo(User user)
-      {
+    {
         MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPh.getText()), user.getNote(), txtResidence.getText(), txtResidence2.getText()); //do things in db
 
         currentUser = MOD_FACADE.getUserInfo(user.getId());
@@ -487,81 +484,81 @@ public class UserInfoViewController implements Initializable
         lblResidence2.setVisible(true);
         setUserInfo(); //update labels
 
-      }
+    }
 
     private void checkTextFields()
-      {
+    {
         boolean success = false;
         try
-          {
+        {
             Integer.parseInt(txtPh.getText());
             success = true;
-          }
+        }
         catch (NumberFormatException e)
-          {
+        {
             success = false;
             txtPh.setStyle("-fx-background-color:red;");
             btnEditSave.setDisable(true);
-          }
+        }
         if (success)
-          {
+        {
             btnEditSave.setDisable(false);
             txtPh.setStyle("");
             isIncorrect = false;
-          }
+        }
         else
-          {
+        {
             txtPh.setStyle("-fx-background-color:red;");
             btnEditSave.setDisable(true);
             isIncorrect = true;
 
-          }
-      }
+        }
+    }
 
     @FXML
     private void pressedChangeImage(ActionEvent event)
 
-      {
+    {
         FileChooser c = new FileChooser();
         c.setTitle("Select a new image");
         String[] extensions
                 =
 
-                  {
+                {
                     "jpg", "jpeg", "png", "gif"
-                  };
+                };
         c.setSelectedExtensionFilter(new ExtensionFilter("Image files only", extensions));
         File newImg = c.showOpenDialog(btnUpdatePhoto.getScene().getWindow());
 
         if (newImg != null)
-          {
+        {
             try
-              {
+            {
                 MOD_FACADE.updateUserImage(currentUser, newImg);
-              }
+            }
             catch (FileNotFoundException e)
-              {
+            {
                 System.out.println(e);
                 Alert a = new Alert(Alert.AlertType.ERROR);
                 a.setHeaderText("Selected image is not found");
                 a.setContentText("File not found!");
-              }
-          }
+            }
+        }
         setUserImage();
 
-      }
+    }
 
     public void setUserImage()
-      {
+    {
         if (MOD_FACADE.getUserImage(currentUser) != null)
-          {
+        {
             imgVwProfilePic.setImage(new Image(MOD_FACADE.getUserImage(currentUser)));
 
-          }
-      }
+        }
+    }
 
     private void addCancelButton()
-      {
+    {
 
         int btnSavePosCol = GridPane.getColumnIndex(btnEditSave); //saving position
         int btnSavePosRow = GridPane.getRowIndex(btnEditSave);
@@ -576,10 +573,10 @@ public class UserInfoViewController implements Initializable
         gridEdit.add(btnCancel, btnSavePosCol, btnSavePosRow); //adding to the old position of save btn
         btnCancel.setOnAction(new EventHandler<ActionEvent>()
 
-          { //setting onAction, nothing changed, just show old labels again
+        { //setting onAction, nothing changed, just show old labels again
             @Override
             public void handle(ActionEvent event)
-              {
+            {
 
                 txtName.setVisible(false);
                 txtPh.setVisible(false);
@@ -597,23 +594,23 @@ public class UserInfoViewController implements Initializable
                 btnEditSave.setText("Edit");
                 btnEditSave.setStyle("-fx-background-color:#00c4ad;");
 
-              }
-          });
-      }
+            }
+        });
+    }
 
     private void removeCancelButton()
-      {
+    {
         GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) + 1); //moving save button one down
         gridEdit.getChildren().remove(btnCancel); //deleting cancel button from gridpane
         if (btnEditSave.isDisabled())
-          {
+        {
             btnEditSave.setDisable(false);
 
-          }
-      }
+        }
+    }
 
     private void setTextAll()
-      {
+    {
         btnUpdatePhoto.setText(MOD_FACADE.getLang("BTN_UPDATEPHOTO"));
         btnChangePassword.setText(MOD_FACADE.getLang("BTN_CHANGEPASS"));
         btnEditSave.setText(MOD_FACADE.getLang("BTN_EDIT"));
@@ -638,11 +635,11 @@ public class UserInfoViewController implements Initializable
 //        lblHrsAll3.setText(MOD_FACADE.getLang("LBL_HRS_ALL_TEXT"));
         lblGuilds.setText(MOD_FACADE.getLang("LBL_GUILDS"));
 
-      }
+    }
 
     @FXML
     private void handleLogout(ActionEvent event) throws IOException
-      {
+    {
 
         //Need to refactor this method next sprint - no time today!
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/HourLoginView.fxml"));
@@ -652,55 +649,56 @@ public class UserInfoViewController implements Initializable
         Stage stage = (Stage) btnEditSave.getScene().getWindow();
         stage.close();
 
-      }
+    }
 
     @FXML
+
     private void changePasswordEvent(ActionEvent event)
-      {
+    {
         int count;
         if (txtNPassword.getText().equals(txtNPasswordTwo.getText()))
-          {
+        {
             count = MOD_FACADE.changePassword(currentUser, txtOPassword.getText(), txtNPassword.getText());
-          }
+        }
         else
-          {
+        {
             count = -1;
-          }
+        }
         if (count > 0)
-          {
+        {
             JFXSnackbar b = new JFXSnackbar(root);
             b.show("Password has succesfully changed", 2000);
-          }
+        }
         else if (count == -1)
-          {
+        {
             JFXSnackbar b = new JFXSnackbar(root);
             b.show("Password do not match", 2000);
-          }
+        }
         else
-          {
+        {
             JFXSnackbar b = new JFXSnackbar(root);
             b.show("Old password is wrong", 2000);
-          }
+        }
 
-      }
+    }
 
     @FXML
     private void openPasswordChangerEvent(ActionEvent event)
-      {
+    {
         stckPanePasswordChanger.setVisible(true);
         MOD_FACADE.fadeInTransition(Duration.millis(750), stckPanePasswordChanger);
 
-      }
+    }
 
     private void hidePasswordChangerEvent(ActionEvent event)
 
-      {
+    {
         MOD_FACADE.fadeOutTransition(Duration.millis(750), stckPanePasswordChanger).setOnFinished(e -> stckPanePasswordChanger.setVisible(false));
 
-      }
+    }
 
     private void initPopup()
-      {
+    {
         popup = new JFXPopup();
         JFXButton b1 = new JFXButton("Edit");
         JFXButton b2 = new JFXButton("Delete");
@@ -711,37 +709,38 @@ public class UserInfoViewController implements Initializable
         VBox vBox = new VBox(b1, b2);
         popup.setPopupContent(vBox);
         b1.setOnAction(new EventHandler<ActionEvent>()
-          {
+        {
             @Override
             public void handle(ActionEvent event)
-              {
+            {
                 rowFactoryTreeTable();
                 popup.hide();
-              }
-          });
+            }
+        });
 
-      }
+    }
 
     @FXML
     private void popupEditDelete(MouseEvent event)
-      {
+    {
         MouseButton button = event.getButton();
         System.out.println("clicked");
         if (button == MouseButton.SECONDARY)
-          {
+        {
             initPopup();
             popup.show((Node) event.getSource(), JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, event.getX(), event.getY());
 
-          }
-      }
+        }
+    }
 
     private void rowFactoryTreeTable()
-      {
+    {
         treeViewAllHours.setEditable(true);
-      }
+
+    }
 
     @FXML
     private void hsidePasswordChangerEvent(ActionEvent event)
-      {
-      }
-  }
+    {
+    }
+}
