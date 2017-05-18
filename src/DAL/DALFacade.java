@@ -80,5 +80,20 @@ public class DALFacade
     public Guild getGuild(int id)
     {
         return GEN_INFO_MAN.getGuild(id);
+      }
+    
+    public void addGuild(String name)
+    {
+        GEN_INFO_MAN.addGuild(name);
     }
-}
+    
+    public void deleteGuild(int guildId)
+    {
+        GEN_INFO_MAN.deleteGuild(guildId);
+    }
+    
+    public void updateGuild(int guildId, String name)
+    {
+        GEN_INFO_MAN.updateGuild(guildId, name);
+    }
+  }

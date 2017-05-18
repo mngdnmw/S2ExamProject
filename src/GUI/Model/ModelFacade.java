@@ -206,5 +206,20 @@ public class ModelFacade
     public Guild getGuild(int id)
     {
         return GEN_INFO_MOD.getGuild(id);
+      }
+    
+    public void addGuild(String name)
+    {
+        BLL_FAC.addGuild(name);
     }
-}
+    
+    public void deleteGuild(int guildId)
+    {
+        BLL_FAC.deleteGuild(guildId);
+    }
+    
+    public void updateGuild(int guildId, String name)
+    {
+        BLL_FAC.updateGuild(guildId, name);
+    }
+  }

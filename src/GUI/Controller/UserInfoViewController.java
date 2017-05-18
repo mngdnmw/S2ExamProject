@@ -76,6 +76,7 @@ public class UserInfoViewController implements Initializable
     private JFXButton btnUpdatePhoto;
     @FXML
     private HBox hBoxCalAll;
+    @FXML
     private HBox hBoxCalMth;
     @FXML
     private GridPane gridEdit;
@@ -109,13 +110,19 @@ public class UserInfoViewController implements Initializable
     private JFXPasswordField txtNPassword;
     @FXML
     private JFXPasswordField txtNPasswordTwo;
-
-    TextField txtName;
-    TextField txtPh;
-    TextField txtEmail;
-    TextField txtResidence;
-    TextField txtResidence2;
-
+    @FXML
+    private Label lblGuilds;
+    @FXML
+    private JFXTextField txtName;
+    @FXML
+    private JFXTextField txtEmail;
+    @FXML
+    private JFXTextField txtPhone;
+    @FXML
+    private JFXTextField txtAddress;
+    @FXML
+    private JFXTextField txtAddress2;
+    
     User currentUser;
 
     boolean editing = false;
@@ -153,16 +160,12 @@ public class UserInfoViewController implements Initializable
                     MOD_FACADE.setAllVolunteersIntoArray();
                     finishedService = true;
                     return null;
-                }
-            };
-        }
-    };
-    @FXML
-    private Label lblGuilds;
-    @FXML
-    private Label lblResidence2;
-    @FXML
-    private JFXListView<?> ListVwGuilds;
+
+                  }
+              };
+          }
+      };
+               
 
     /**
      * Initializes the controller class.
@@ -360,13 +363,12 @@ public class UserInfoViewController implements Initializable
 
     private void setUserInfo()
     {
-
-        lblName.setText(currentUser.getName());
-        lblPh.setText(String.valueOf(currentUser.getPhone()));
-        lblEmail.setText(currentUser.getEmail());
-        lblResidence.setText(currentUser.getResidence());
-        lblResidence2.setText(currentUser.getResidence2());
-    }
+        txtName.setText(currentUser.getName());
+        txtPhone.setText(String.valueOf(currentUser.getPhone()));
+        txtEmail.setText(currentUser.getEmail());
+        txtAddress.setText(currentUser.getResidence());
+        txtAddress2.setText(currentUser.getResidence2());
+      }
 
     //Need to finish
     private void handleClickTab(MouseEvent event)
@@ -409,15 +411,10 @@ public class UserInfoViewController implements Initializable
     }
 
     private void createEditFields()
-    {
-        txtName = new JFXTextField();
-        txtPh = new JFXTextField();
-        txtEmail = new JFXTextField();
-        txtResidence = new JFXTextField();
 
-        txtResidence2 = new JFXTextField();
+      {
 
-        txtPh.setOnKeyReleased(new EventHandler<KeyEvent>()
+        txtPhone.setOnKeyReleased(new EventHandler<KeyEvent>()
 
         {
             @Override
@@ -427,60 +424,29 @@ public class UserInfoViewController implements Initializable
 
             }
 
-        });
-
-        txtName.setVisible(false);
-        txtPh.setVisible(false);
-        txtEmail.setVisible(false);
-        txtResidence.setVisible(false);
-        txtResidence2.setVisible(false);
-
-        gridEdit.add(txtName, 1, 0);
-        gridEdit.add(txtPh, 1, 1);
-        gridEdit.add(txtEmail, 1, 2);
-        gridEdit.add(txtResidence, 1, 3);
-        gridEdit.add(txtResidence2, 1, 4);
-
-    }
+          });
+      }
 
     private void editInfo()
-    {
-        txtName.setText(lblName.getText());
+      {
+        txtName.setEditable(true);
+        txtEmail.setEditable(true);
+        txtPhone.setEditable(true);
+        txtAddress.setEditable(true);
+        txtAddress2.setEditable(true);
+      }
 
-        txtPh.setText(lblPh.getText());
-
-        txtEmail.setText(lblEmail.getText());
-
-        txtResidence.setText(lblResidence.getText());
-
-        lblName.setVisible(false);
-        lblPh.setVisible(false);
-        lblEmail.setVisible(false);
-        lblResidence.setVisible(false);
-        lblResidence2.setVisible(false);
-
-        txtName.setVisible(true);
-        txtPh.setVisible(true);
-        txtEmail.setVisible(true);
-        txtResidence.setVisible(true);
-
-    }
 
     private void saveInfo(User user)
     {
-        MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPh.getText()), user.getNote(), txtResidence.getText(), txtResidence2.getText()); //do things in db
+        MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPhone.getText()), user.getNote(), txtAddress.getText(), txtAddress2.getText()); 
 
         currentUser = MOD_FACADE.getUserInfo(user.getId());
-        txtName.setVisible(false);
-        txtPh.setVisible(false);
-        txtEmail.setVisible(false);
-        txtResidence.setVisible(false);
-        txtResidence2.setVisible(false);
-        lblName.setVisible(true);
-        lblPh.setVisible(true);
-        lblEmail.setVisible(true);
-        lblResidence.setVisible(true);
-        lblResidence2.setVisible(true);
+        txtName.setEditable(false);
+        txtEmail.setEditable(false);
+        txtPhone.setEditable(false);
+        txtAddress.setEditable(false);
+        txtAddress2.setEditable(false);
         setUserInfo(); //update labels
 
     }
@@ -489,25 +455,26 @@ public class UserInfoViewController implements Initializable
     {
         boolean success = false;
         try
-        {
-            Integer.parseInt(txtPh.getText());
+
+          {
+            Integer.parseInt(txtPhone.getText());
             success = true;
         }
         catch (NumberFormatException e)
         {
             success = false;
-            txtPh.setStyle("-fx-background-color:red;");
+            txtPhone.setStyle("-fx-background-color:red;");
             btnEditSave.setDisable(true);
         }
         if (success)
         {
             btnEditSave.setDisable(false);
-            txtPh.setStyle("");
+            txtPhone.setStyle("");
             isIncorrect = false;
         }
         else
-        {
-            txtPh.setStyle("-fx-background-color:red;");
+          {
+            txtPhone.setStyle("-fx-background-color:red;");
             btnEditSave.setDisable(true);
             isIncorrect = true;
 
@@ -575,18 +542,12 @@ public class UserInfoViewController implements Initializable
         { //setting onAction, nothing changed, just show old labels again
             @Override
             public void handle(ActionEvent event)
-            {
-
-                txtName.setVisible(false);
-                txtPh.setVisible(false);
-                txtEmail.setVisible(false);
-                txtResidence.setVisible(false);
-                txtResidence2.setVisible(false);
-                lblName.setVisible(true);
-                lblPh.setVisible(true);
-                lblEmail.setVisible(true);
-                lblResidence.setVisible(true);
-                lblResidence2.setVisible(true);
+             {
+                  txtName.setEditable(false);
+                  txtEmail.setEditable(false);
+                  txtPhone.setEditable(false);
+                  txtAddress.setEditable(false);
+                  txtAddress2.setEditable(false);
 
                 removeCancelButton(); //if cancel button clicked, it will disappear
                 editing = false;

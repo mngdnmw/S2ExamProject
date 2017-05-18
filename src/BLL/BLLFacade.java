@@ -60,5 +60,21 @@ public class BLLFacade
     public Guild getGuild(int id)
     {
         return DAL_FAC.getGuild(id);
+
+      }
+    
+    public void addGuild(String name)
+    {
+        DAL_FAC.addGuild(name);
     }
-}
+    
+    public void deleteGuild(int guildId)
+    {
+        DAL_FAC.deleteGuild(guildId);
+    }
+    
+    public void updateGuild(int guildId, String name)
+    {
+        DAL_FAC.updateGuild(guildId, name);
+    }
+  }
