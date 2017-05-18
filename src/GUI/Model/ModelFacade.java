@@ -31,6 +31,7 @@ public class ModelFacade
     private final static ViewChangerModel VIEW_CHANG_MOD = new ViewChangerModel();
     private final static VolunteerDataModel VOL_DATA_MOD = new VolunteerDataModel();
     private ArrayList<User> allUsers = new ArrayList();
+    private ArrayList<Guild> allGuilds = new ArrayList();
     private final static BLLFacade BLL_FAC = new BLLFacade();
 
     //Login Model
@@ -93,7 +94,7 @@ public class ModelFacade
     }
 
     //Data Model
-    public List<User> getAllSavedVolunteers()
+    public List<User> getAllVolunteersFromModel()
     {
 
         return allUsers;
@@ -109,10 +110,11 @@ public class ModelFacade
         return GEN_INFO_MOD.getAllUsers();
     }
 
-    public void setAllVolunteersIntoArray()
+    public List<User> getAllVolunteers()
     {
         allUsers.clear();
         allUsers.addAll(GEN_INFO_MOD.getAllVolunteers());
+        return allUsers;
     }
 
     public List<User> getAllManagers()
@@ -158,7 +160,15 @@ public class ModelFacade
 
     public List<Guild> getAllGuilds()
     {
-        return GEN_INFO_MOD.getAllGuilds();
+        allGuilds.clear();
+        allGuilds.addAll(GEN_INFO_MOD.getAllGuilds());
+        return allGuilds;
+
+    }
+
+    public List<Guild> getAllGuildsFromModel()
+    {
+        return allGuilds;
     }
 
     /**

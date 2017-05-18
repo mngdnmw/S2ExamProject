@@ -495,7 +495,7 @@ public class GeneralInfoManager extends ConnectionManager
         {
             String query = "SELECT DISTINCT a.guildid, a.name\n"
                     + "FROM    guild a,\n"
-                    + "[hour] b\n"
+                    + "[hour] b \n"
                     + "WHERE   b.guildid = a.guildid AND b.userid = " + userId;
             PreparedStatement pstmt = con.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();

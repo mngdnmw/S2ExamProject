@@ -23,7 +23,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerEditViewController">
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerEditViewController">
     <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="216.0" layoutX="13.0" layoutY="11.0" stroke="TRANSPARENT" strokeType="INSIDE" width="491.0">
          <effect>
@@ -110,7 +110,7 @@
                                     </JFXTextField>
                                  </children>
                               </VBox>
-                              <JFXTreeTableView fx:id="treeViewAllHours" onMousePressed="#popupEditDelete" prefHeight="225.0" prefWidth="384.0" stylesheets="@UserInfoCSS.css">
+                              <JFXTreeTableView fx:id="treeViewAllHours" prefHeight="225.0" prefWidth="384.0" stylesheets="@UserInfoCSS.css">
                                  <HBox.margin>
                                     <Insets left="15.0" />
                                  </HBox.margin>
@@ -183,7 +183,7 @@
          </font>
       </JFXButton>
       <JFXListView fx:id="listGuilds" layoutX="524.0" layoutY="288.0" prefHeight="145.0" prefWidth="141.0" style="-fx-border-image-width: 0px;" />
-      <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="530.0" layoutY="208.0" maxHeight="30.0" minHeight="-Infinity" onAction="#OpenPasswordChangerEvent" prefHeight="19.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Change Password" textFill="WHITE">
+      <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="530.0" layoutY="208.0" maxHeight="30.0" minHeight="-Infinity" prefHeight="19.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Change Password" textFill="WHITE">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>

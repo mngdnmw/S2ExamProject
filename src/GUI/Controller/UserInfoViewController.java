@@ -150,7 +150,7 @@ public class UserInfoViewController implements Initializable
                 protected Object call() throws Exception
                 {
                     finishedService = false;
-                    MOD_FACADE.setAllVolunteersIntoArray();
+                    MOD_FACADE.getAllVolunteers();
                     finishedService = true;
                     return null;
                 }

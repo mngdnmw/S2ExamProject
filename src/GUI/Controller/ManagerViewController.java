@@ -120,7 +120,7 @@ public class ManagerViewController implements Initializable
         colGuild.setCellValueFactory((TreeTableColumn.CellDataFeatures<Guild, String> param) -> param.getValue().getValue().getName());*/
         tblUsers.setPlaceholder(new Label("Nothing found"));
 
-        ObservableList<User> volunteers = FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers());
+        ObservableList<User> volunteers = FXCollections.observableArrayList(modelFacade.getAllVolunteersFromModel());
 
         final TreeItem<User> rootOfTree = new RecursiveTreeItem<>(volunteers, RecursiveTreeObject::getChildren);
 

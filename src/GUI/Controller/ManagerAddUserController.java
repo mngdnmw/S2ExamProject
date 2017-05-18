@@ -72,7 +72,7 @@ public class ManagerAddUserController implements Initializable
                 protected Object call() throws Exception
 
                 {
-                    modelFacade.setAllVolunteersIntoArray();
+                    modelFacade.getAllVolunteers();
                     return null;
 
                 }
