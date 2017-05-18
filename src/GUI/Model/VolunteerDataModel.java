@@ -7,9 +7,10 @@ import java.util.List;
 
 public class VolunteerDataModel
 {
-        private final static BLLFacade BLL_FAC = new BLLFacade();
-        
-        public List<Day> getWorkedDays(User user)
+
+    private final static BLLFacade BLL_FAC = new BLLFacade();
+
+    public List<Day> getWorkedDays(User user)
     {
         return BLL_FAC.getWorkedDays(user);
     }

@@ -13,17 +13,16 @@ public class Day extends RecursiveTreeObject<Day>
     private final StringProperty date = new SimpleStringProperty();
     private final IntegerProperty hour = new SimpleIntegerProperty();
     private final StringProperty guild = new SimpleStringProperty();
-    
 
     public Day(String date, int hours, String guild)
     {
-         //this.date = new SimpleStringProperty(date);
+        //this.date = new SimpleStringProperty(date);
         this.date.set(date);
         this.hour.set(hours);
         this.guild.set(guild);
-        
+
     }
-    
+
     public String getDate()
     {
         return date.get();
