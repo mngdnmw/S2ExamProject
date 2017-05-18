@@ -20,8 +20,8 @@ HOUR_TAG_TWO = hours
 GUILD_TAG = to the
 CMB_GUILDCHOOSER_PROMPT = Choose a guild
 GUILD_TAG_TWO = guild
-LBL_USERNAME = Username
-LBL_PASSWORD = Password
+LB_USERNAME = Username
+LB_PASSWORD = Password
 
 ########
 # USER INFO WINDOW
