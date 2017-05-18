@@ -350,7 +350,7 @@ public class GeneralInfoManager extends ConnectionManager
         List<Guild> guilds = new ArrayList<>();
         try (Connection con = super.getConnection())
           {
-            String query = "SELECT * FROM [guild] where [guildid]";
+            String query = "SELECT * FROM [guild]";
             PreparedStatement pstmt = con.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next())
