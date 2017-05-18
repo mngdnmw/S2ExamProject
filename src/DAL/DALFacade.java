@@ -3,6 +3,9 @@ package DAL;
 import BE.Day;
 import BE.Guild;
 import BE.User;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -27,19 +30,19 @@ public class DALFacade
 
     }
 
-    public void getAllAdmins()
+    public List<User> getAllAdmins()
     {
-        GEN_INFO_MAN.getAllAdmins();
+        return GEN_INFO_MAN.getAllAdmins();
     }
 
-    public void getAllManagers()
+    public List<User> getAllManagers()
     {
-        GEN_INFO_MAN.getAllManagers();
+        return GEN_INFO_MAN.getAllManagers();
     }
 
-    public void getAllVolunteers()
+    public List<User> getAllVolunteers()
     {
-        GEN_INFO_MAN.getAllVolunteers();
+        return GEN_INFO_MAN.getAllVolunteers();
     }
 
     public List<Guild> getAllGuilds()
@@ -71,8 +74,7 @@ public class DALFacade
     {
         return HR_MAN.getWorkedDays(user);
     }
-
-    //public List<Guild> getGuildsForUser()
+    
     public HashMap<String, String> loadSession()
 
     {
@@ -82,5 +84,32 @@ public class DALFacade
     public Guild getGuild(int id)
     {
         return GEN_INFO_MAN.getGuild(id);
+    }
+    
+    public User getUserInfo(int userId)
+    {
+        return GEN_INFO_MAN.getUserInfo(userId);
+    }
+    
+    public List<User> getAllUsers(){
+        return GEN_INFO_MAN.getAllUsers();
+    }
+    
+    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence, String residence2){
+        GEN_INFO_MAN.updateUserInfo(userId, name, email, type, phone, note, residence, residence2);
+    }
+    
+    public void updateUserImage(User user, File img) throws FileNotFoundException{
+        GEN_INFO_MAN.updateUserImage(user, img);
+    }
+    
+    public InputStream getUserImage(User user)
+    {
+        return GEN_INFO_MAN.getUserImage(user);
+    }
+
+    public List<Guild> getGuildsForUser(User user)
+    {
+        return GEN_INFO_MAN.getGuildsForUser(user.getId());
     }
 }

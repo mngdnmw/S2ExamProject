@@ -4,6 +4,9 @@ import BE.Day;
 import BE.Guild;
 import BE.User;
 import DAL.DALFacade;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -60,5 +63,51 @@ public class BLLFacade
     public Guild getGuild(int id)
     {
         return DAL_FAC.getGuild(id);
+    }
+
+    public List<User> getAllVolunteers()
+    {
+
+        return DAL_FAC.getAllVolunteers();
+    }
+
+    public User getUserInfo(int userId)
+    {
+        return DAL_FAC.getUserInfo(userId);
+    }
+
+    public List<User> getAllUsers()
+    {
+        return DAL_FAC.getAllUsers();
+    }
+
+    public List<User> getAllManagers()
+    {
+        return DAL_FAC.getAllManagers();
+    }
+
+    public List<User> getAllAdmins()
+    {
+        return DAL_FAC.getAllAdmins();
+    }
+
+    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence, String residence2)
+    {
+        DAL_FAC.updateUserInfo(userId, name, email, type, phone, note, residence, residence2);
+    }
+
+    public void updateUserImage(User user, File img) throws FileNotFoundException
+    {
+        DAL_FAC.updateUserImage(user, img);
+    }
+
+    public InputStream getUserImage(User user)
+    {
+        return DAL_FAC.getUserImage(user);
+    }
+
+    public List<Guild> getGuildsForUser(User user)
+    {
+        return DAL_FAC.getGuildsForUser(user);
     }
 }

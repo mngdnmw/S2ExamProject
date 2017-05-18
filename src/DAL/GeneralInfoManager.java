@@ -8,11 +8,8 @@ import BE.Manager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
-import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -54,7 +51,7 @@ public class GeneralInfoManager extends ConnectionManager
                 String residence = rs.getString("residence");
                 String residence2 = rs.getString("residence2");
 
-                List<Guild> guilds = getGuildsForUser(userId);
+                List<Guild> guilds = GeneralInfoManager.this.getGuildsForUser(userId);
 
                 //If it's a volunteer
                 if (type == 0)
@@ -118,7 +115,7 @@ public class GeneralInfoManager extends ConnectionManager
                 String residence = rs.getString("residence");
                 String residence2 = rs.getString("residence2");
 
-                List<Guild> guilds = getGuildsForUser(id);
+                List<Guild> guilds = GeneralInfoManager.this.getGuildsForUser(id);
 
                 switch (type)
                 {
@@ -183,7 +180,7 @@ public class GeneralInfoManager extends ConnectionManager
                 String residence = rs.getString("residence");
                 String residence2 = rs.getString("residence2");
 
-                List<Guild> guilds = getGuildsForUser(id);
+                List<Guild> guilds = GeneralInfoManager.this.getGuildsForUser(id);
 
                 Volunteer volunteer = null;
                 //(id, name, email, password, type, phone, note);
@@ -219,7 +216,7 @@ public class GeneralInfoManager extends ConnectionManager
                 String residence = rs.getString("residence");
                 String residence2 = rs.getString("residence2");
 
-                List<Guild> guilds = getGuildsForUser(id);
+                List<Guild> guilds = GeneralInfoManager.this.getGuildsForUser(id);
 
                 Manager manager = null;
                 //(id, name, email, password, type, phone, note);
@@ -254,7 +251,7 @@ public class GeneralInfoManager extends ConnectionManager
                 String residence = rs.getString("residence");
                 String residence2 = rs.getString("residence2");
 
-                List<Guild> guilds = getGuildsForUser(id);
+                List<Guild> guilds = GeneralInfoManager.this.getGuildsForUser(id);
 
                 Admin admin = null;
                 //(id, name, email, password, type, phone, note);
@@ -380,7 +377,7 @@ public class GeneralInfoManager extends ConnectionManager
         }
     }
 
-    public void updateUserImage(User user, File img) throws FileNotFoundException
+    public void updateUserImage(User user, File img) throws FileNotFoundException 
     {
         List<Integer> hasImg = new ArrayList<>();
         String checkQuery = "select [userid] from [image]";
@@ -531,4 +528,5 @@ public class GeneralInfoManager extends ConnectionManager
         }
         return null;
     }
+
 }
