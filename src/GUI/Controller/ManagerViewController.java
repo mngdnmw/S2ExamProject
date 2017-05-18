@@ -1,8 +1,5 @@
 package GUI.Controller;
 
-import BE.Day;
-import BE.Guild;
-
 import BE.User;
 import GUI.Model.ModelFacade;
 
@@ -19,13 +16,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.animation.PauseTransition;
-import javafx.beans.property.ReadOnlyObjectWrapper;
 
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -34,13 +28,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
@@ -67,8 +57,6 @@ public class ManagerViewController implements Initializable
     @FXML
     private AnchorPane root;
     @FXML
-    private JFXButton btnStats;
-    @FXML
     private JFXButton btnClose;
     @FXML
     private JFXTreeTableView<User> tblUsers;
@@ -91,7 +79,7 @@ public class ManagerViewController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
     {
         //setTableProperties();
-        setTextAll(); //this has to run before setting currently logged in username
+        //setTextAll(); //this has to run before setting currently logged in username
         if (modelFacade.getCurrentUser() != null)
         {
             lblUserName.setText(modelFacade.getLang("LBL_USERNAME") + modelFacade.getCurrentUser().getName());
@@ -206,7 +194,6 @@ public class ManagerViewController implements Initializable
                     System.out.println("Stage is closing");
                     //setTableItems();
                     showTreeTable();
-
                 }
             });
 
@@ -356,20 +343,22 @@ public class ManagerViewController implements Initializable
         snackbar.show(str, time);
         PauseTransition pause = new PauseTransition(Duration.millis(time));
         pause.play();
+
     }
 
     private void setTextAll()
     {
+
         btnAddHours.setText(modelFacade.getLang("BTN_ADD_HOURS"));
         btnAddUser.setText(modelFacade.getLang("BTN_ADD_USER"));
         btnClose.setText(modelFacade.getLang("BTN_CLOSE"));
         btnEditInfo.setText(modelFacade.getLang("BTN_EDIT_INFO"));
-        btnStats.setText(modelFacade.getLang("BTN_STATS"));
+        //   btnStats.setText(modelFacade.getLang("BTN_STATS"));
 
         lblUserName.setText(modelFacade.getLang("LBL_USERNAME"));
         lblNotes.setText(modelFacade.getLang("LBL_NOTES"));
         txtSearch.setPromptText(modelFacade.getLang("PROMPT_SEARCH_USER"));
-        cmbGuildChooser.setPromptText(modelFacade.getLang("PROMPT_SEARCH_USER"));
+        cmbGuildChooser.setPromptText(modelFacade.getLang("PROMPT_CMB_GUILDCHOOSER"));
         colEmail.setText(modelFacade.getLang("COL_EMAIL"));
         colPhone.setText(modelFacade.getLang("COL_PHONE"));
         colName.setText(modelFacade.getLang("COL_NAME"));

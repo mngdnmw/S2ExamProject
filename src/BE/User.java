@@ -1,6 +1,7 @@
 package BE;
 
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;

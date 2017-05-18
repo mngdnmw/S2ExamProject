@@ -219,10 +219,10 @@ public class UserInfoViewController implements Initializable
         if (currentUser.getType() >= 1)
         {
             serviceAllVolunteers.start();
+
         }
 
         setTextAll();
-
     }
 
     public void setCurrentUser(User currentUser)
@@ -357,8 +357,9 @@ public class UserInfoViewController implements Initializable
         } else
         {
             higherClearanceBtn.setText(MOD_FACADE.getLang("BTN_HIGHER_CLEARANCE_2"));
-            GUIView = 2;
+            GUIView = 1;
             // GUIView =4; add when admin view has been made - for the moment it will go to managereditview
+
         }
 
         higherClearanceBtn.setOnAction(new EventHandler<ActionEvent>()
@@ -377,6 +378,7 @@ public class UserInfoViewController implements Initializable
 
                         MOD_FACADE.changeView(GUIView);
                         root.getChildren().remove(MOD_FACADE.getLoadingScreen());
+
                     });
 
                     root.getChildren().add(MOD_FACADE.getLoadingScreen());
@@ -409,6 +411,7 @@ public class UserInfoViewController implements Initializable
     {
 
         tabPaneOverview.getSelectionModel().getSelectedIndex();
+
     }
 
     @FXML
@@ -451,11 +454,13 @@ public class UserInfoViewController implements Initializable
         txtResidence2 = new JFXTextField();
 
         txtPh.setOnKeyReleased(new EventHandler<KeyEvent>()
+
         {
             @Override
             public void handle(KeyEvent event)
             {
                 checkTextFields();
+
             }
 
         });
@@ -471,6 +476,7 @@ public class UserInfoViewController implements Initializable
         gridEdit.add(txtEmail, 1, 2);
         gridEdit.add(txtResidence, 1, 3);
         gridEdit.add(txtResidence2, 1, 4);
+
     }
 
     private void editInfo()
@@ -493,6 +499,7 @@ public class UserInfoViewController implements Initializable
         txtPh.setVisible(true);
         txtEmail.setVisible(true);
         txtResidence.setVisible(true);
+
     }
 
     private void saveInfo(User user)
@@ -537,6 +544,7 @@ public class UserInfoViewController implements Initializable
             txtPh.setStyle("-fx-background-color:red;");
             btnEditSave.setDisable(true);
             isIncorrect = true;
+
         }
     }
 
@@ -577,6 +585,7 @@ public class UserInfoViewController implements Initializable
         if (MOD_FACADE.getUserImage(currentUser) != null)
         {
             imgVwProfilePic.setImage(new Image(MOD_FACADE.getUserImage(currentUser)));
+
         }
     }
 
@@ -628,6 +637,7 @@ public class UserInfoViewController implements Initializable
         if (btnEditSave.isDisabled())
         {
             btnEditSave.setDisable(false);
+
         }
     }
 
@@ -640,11 +650,11 @@ public class UserInfoViewController implements Initializable
 //        btnEditOnTabDay.setText(MOD_FACADE.getLang("BTN_EDIT"));
 //       btnEditOnTabMonth.setText(MOD_FACADE.getLang("BTN_EDIT"));
         btnCancel.setText(MOD_FACADE.getLang("BTN_CANCEL"));
+
 //        tabAll.setText(MOD_FACADE.getLang("TAB_ALL"));
 //        tabDay.setText(MOD_FACADE.getLang("TAB_DAY"));
         //      tabMonth.setText(MOD_FACADE.getLang("TAB_MONTH"));
         //       tabGraphs.setText(MOD_FACADE.getLang("TAB_GRAPHS"));
-
         dateCol.setText(MOD_FACADE.getLang("COL_DATE"));
         hoursCol.setText(MOD_FACADE.getLang("COL_HOURS"));
         guildCol.setText(MOD_FACADE.getLang("COL_GUILD"));
@@ -670,15 +680,35 @@ public class UserInfoViewController implements Initializable
         MOD_FACADE.changeView(3);
         Stage stage = (Stage) btnEditSave.getScene().getWindow();
         stage.close();
+
     }
 
     @FXML
     private void ChangePasswordEvent(ActionEvent event)
     {
+        //int count;
+        int count = 0;
         if (txtNPassword.getText().equals(txtNPasswordTwo.getText()))
         {
-            MOD_FACADE.changePassword(currentUser, txtOPassword.getText(), txtNPassword.getText());
+            //count = MOD_FACADE.changePassword(currentUser, txtOPassword.getText(), txtNPassword.getText());
+        } else
+        {
+            count = -1;
         }
+        if (count > 0)
+        {
+            JFXSnackbar b = new JFXSnackbar(root);
+            b.show("Password has succesfully changed", 2000);
+        } else if (count == -1)
+        {
+            JFXSnackbar b = new JFXSnackbar(root);
+            b.show("Password do not match", 2000);
+        } else
+        {
+            JFXSnackbar b = new JFXSnackbar(root);
+            b.show("Old password is wrong", 2000);
+        }
+
     }
 
     @FXML
@@ -694,6 +724,7 @@ public class UserInfoViewController implements Initializable
 
     {
         MOD_FACADE.fadeOutTransition(Duration.millis(750), stckPanePasswordChanger).setOnFinished(e -> stckPanePasswordChanger.setVisible(false));
+
     }
 
     private void initPopup()

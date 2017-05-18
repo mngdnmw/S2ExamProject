@@ -93,22 +93,25 @@ public class LoginManager extends ConnectionManager
                         return new Manager(id, name, email, phone, note, residence, residence2, guilds);
                     case 2:
                         return new Admin(id, name, email, phone, note, residence, residence2, guilds);
-
                 }
             }
         } catch (SQLException ex)
         {
+
             Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+
     }
 
     public void saveSession(String username, int guildid, int hours)
     {
+
         props.setProperty("LAST_USER", username);
         props.setProperty("LAST_GUILD", String.valueOf(guildid));
         props.setProperty("LAST_HOURS", String.valueOf(hours));
         super.saveConfig(props);
+
     }
 
     public HashMap<String, String> loadSession()

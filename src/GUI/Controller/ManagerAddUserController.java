@@ -1,18 +1,13 @@
 package GUI.Controller;
 
 import BE.Guild;
-import BE.User;
 import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
@@ -21,16 +16,11 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -80,6 +70,7 @@ public class ManagerAddUserController implements Initializable
             {
                 @Override
                 protected Object call() throws Exception
+
                 {
                     modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
                     modelFacade.setAllVolunteersIntoArray();
@@ -97,8 +88,10 @@ public class ManagerAddUserController implements Initializable
     {
         setListView();
 
+    
     }
 
+    
     private void setListView()
     {
         ObservableList<Guild> items = FXCollections.observableArrayList(modelFacade.getAllGuilds());
@@ -106,7 +99,7 @@ public class ManagerAddUserController implements Initializable
     }
 
     @FXML
-    private void onBtnAcceptPressed(ActionEvent event)
+        private void onBtnAcceptPressed(ActionEvent event)
     {
         if (!txtName.getText().isEmpty())
         {
@@ -116,6 +109,7 @@ public class ManagerAddUserController implements Initializable
                 System.out.println("User not added: missing phone or email");
             } else
             {
+
                 if (txtPhone.getText().equals(""))
                 {
                     txtPhone.setText("0");
@@ -157,8 +151,9 @@ public class ManagerAddUserController implements Initializable
 
     }
 
+
     @FXML
-    private void onBtnCancelPressed(ActionEvent event)
+        private void onBtnCancelPressed(ActionEvent event)
     {
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
@@ -209,8 +204,9 @@ public class ManagerAddUserController implements Initializable
         }
     }*/
     @FXML
-    private void pressedChangeImage(ActionEvent e)
+        private void pressedChangeImage(ActionEvent e)
     {
 
     }
 }
+

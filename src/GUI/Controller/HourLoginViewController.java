@@ -246,6 +246,7 @@ public class HourLoginViewController implements Initializable
                     }
 
                 }
+
                 return findGuild;
             }
         });
@@ -360,6 +361,7 @@ public class HourLoginViewController implements Initializable
                     MOD_FACADE.setLang(Lang.ENG);
                     imgViewLngBut.setImage(iconENG);
                 }
+
                 setTextAll();
                 MOD_FACADE.fadeOutTransition(Duration.millis(500), popup).setOnFinished(
                         e -> root.getChildren().remove(anch));
@@ -441,6 +443,7 @@ public class HourLoginViewController implements Initializable
         btnLogHours.setText(MOD_FACADE.getLang("BTN_LOG_HOURS"));
         btnSeeInfo.setText(MOD_FACADE.getLang("BTN_SEE_INFO"));
         btnLanguage.setText(MOD_FACADE.getLang("BTN_LANGUAGE"));
+
         if (MOD_FACADE.getLangProperty().equals(Lang.ENG))
         {
             imgViewLngBut.setImage(iconENG);

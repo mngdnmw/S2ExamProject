@@ -22,6 +22,7 @@ public class DALFacade
         {
             LOGIN_MAN.logHours(userid, date, hours, guildId);
             LOGIN_MAN.saveSession(username, guildId, hours);
+
         }
 
     }
@@ -73,6 +74,7 @@ public class DALFacade
 
     //public List<Guild> getGuildsForUser()
     public HashMap<String, String> loadSession()
+
     {
         return LOGIN_MAN.loadSession();
     }
