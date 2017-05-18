@@ -642,8 +642,8 @@ public class UserInfoViewController implements Initializable
         btnCancel.setText(MOD_FACADE.getLang("BTN_CANCEL"));
 //        tabAll.setText(MOD_FACADE.getLang("TAB_ALL"));
 //        tabDay.setText(MOD_FACADE.getLang("TAB_DAY"));
-  //      tabMonth.setText(MOD_FACADE.getLang("TAB_MONTH"));
- //       tabGraphs.setText(MOD_FACADE.getLang("TAB_GRAPHS"));
+        //      tabMonth.setText(MOD_FACADE.getLang("TAB_MONTH"));
+        //       tabGraphs.setText(MOD_FACADE.getLang("TAB_GRAPHS"));
 
         dateCol.setText(MOD_FACADE.getLang("COL_DATE"));
         hoursCol.setText(MOD_FACADE.getLang("COL_HOURS"));
