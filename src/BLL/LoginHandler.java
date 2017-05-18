@@ -11,6 +11,7 @@ public class LoginHandler
     public User getUserFromLogin(String username, String password)
     {
         int id = DAL_FAC.getUserId(username);
+        
         if (id != -1)
         {
             return DAL_FAC.getUserFromLogin(id, password);

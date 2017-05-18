@@ -1,21 +1,16 @@
 package GUI.Controller;
 
 import BE.Day;
+import BE.Guild;
 import BE.User;
 import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXPopup;
-import com.jfoenix.skins.JFXDatePickerSkin;
 
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,7 +18,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -36,10 +32,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -48,14 +43,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import javafx.util.Duration;
 
 public class UserInfoViewController implements Initializable
@@ -63,35 +56,17 @@ public class UserInfoViewController implements Initializable
 {
 
     @FXML
-    private Label lblName;
-    @FXML
-    private Label lblPh;
-    @FXML
-    private Label lblEmail;
-    @FXML
-    private Label lblResidence;
-    @FXML
     private ImageView imgVwProfilePic;
     @FXML
     private JFXButton btnUpdatePhoto;
     @FXML
-    private HBox hBoxCalAll;
-    @FXML
-    private HBox hBoxCalMth;
-    @FXML
     private GridPane gridEdit;
     @FXML
     private JFXButton btnEditSave;
-
     @FXML
     private AnchorPane root;
-
-    private TabPane tabPaneOverview;
     @FXML
     private HBox hBoxInvisBtn;
-
-    @FXML
-    private JFXTreeTableView<Day> treeViewAllHours;
     @FXML
     private JFXTextField txtFSearchDate;
     @FXML
@@ -101,10 +76,6 @@ public class UserInfoViewController implements Initializable
     @FXML
     private StackPane stckPanePasswordChanger;
     @FXML
-    private VBox loginWindow;
-    @FXML
-    private Label lblUsername;
-    @FXML
     private JFXPasswordField txtOPassword;
     @FXML
     private JFXPasswordField txtNPassword;
@@ -113,39 +84,69 @@ public class UserInfoViewController implements Initializable
     @FXML
     private Label lblGuilds;
     @FXML
-    private JFXTextField txtName;
+    private TableView<Day> tableViewMain;
     @FXML
-    private JFXTextField txtEmail;
+    private TableColumn<Day, String> colDate;
     @FXML
-    private JFXTextField txtPhone;
+    private TableColumn<Day, String> colGuild;
     @FXML
-    private JFXTextField txtAddress;
+    private TableColumn<Day, Integer> colHours;
     @FXML
-    private JFXTextField txtAddress2;
-    
+    private JFXListView<Guild> listVwGuilds;
+
+    @FXML
+    TextField txtName;
+    @FXML
+    TextField txtPhone;
+    @FXML
+    TextField txtEmail;
+    @FXML
+    TextField txtAddress;
+    @FXML
+    TextField txtAddress2;
+
+    @FXML
+    private Label lblOldPassword;
+    @FXML
+    private Label lblNewPassword;
+    @FXML
+    private Label lblNewPassword2;
+    @FXML
+    private JFXButton btnChangePWConfirm;
+
     User currentUser;
+    JFXPopup popup;
+    JFXButton higherClearanceBtn = new JFXButton();
+    JFXButton btnCancel = new JFXButton();
 
     boolean editing = false;
     boolean isIncorrect = false;
-
-    private static Region POPUP_CAL;
-
-    private JFXPopup popup;
-
+    boolean finishedService;
     private final String STYLESHEET = "GUI/View/UserInfoCSS.css";
-
     private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
 
-    private int GUIView;
+    /**
+     * Initializes the controller class.
+     */
+    @Override
 
-    JFXTreeTableColumn<Day, String> dateCol = new JFXTreeTableColumn<>();
-    JFXTreeTableColumn<Day, Integer> hoursCol = new JFXTreeTableColumn<>();
-    JFXTreeTableColumn<Day, String> guildCol = new JFXTreeTableColumn<>();
-    @FXML
-    JFXButton btnCancel = new JFXButton();
-    JFXButton higherClearanceBtn = new JFXButton();
+    public void initialize(URL url, ResourceBundle rb)
+    {
 
-    boolean finishedService;
+        setCurrentUser(MOD_FACADE.getCurrentUser());
+        setUserInfo();
+        setUserImage();
+        checkTypeOfUser();
+        createEditFields();
+        setTextAll();
+        setupTableView();
+
+        if (currentUser.getType() >= 1)
+        {
+            serviceAllVolunteers.start();
+        }
+
+    }
     private final Service serviceAllVolunteers = new Service()
     {
         @Override
@@ -157,119 +158,62 @@ public class UserInfoViewController implements Initializable
                 protected Object call() throws Exception
                 {
                     finishedService = false;
+
                     MOD_FACADE.setAllVolunteersIntoArray();
                     finishedService = true;
                     return null;
 
-                  }
-              };
-          }
-      };
-               
-
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-
-    public void initialize(URL url, ResourceBundle rb)
-    {
-        createEditFields();
-        setCurrentUser(MOD_FACADE.getCurrentUser());
-        setUserInfo();
-        //showConstantCalendar();
-        setUserImage();
-        checkTypeOfUser();
-        showTreeTable();
-        if (currentUser.getType() >= 1)
-        {
-            serviceAllVolunteers.start();
-
+                }
+            };
         }
-
-        setTextAll();
-    }
+    };
 
     public void setCurrentUser(User currentUser)
     {
         this.currentUser = currentUser;
     }
 
-    /**
-     * Makes the calendar in the Month tab
-     */
-    private void showConstantCalendar()
+    private void setupTableView()
     {
-        JFXDatePicker calendar = new JFXDatePicker();
 
-        JFXDatePickerSkin skin = new JFXDatePickerSkin(calendar);
-        POPUP_CAL = (Region) skin.getPopupContent();
+        colDate.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
+        colHours.setCellValueFactory(val -> val.getValue().hourProperty().asObject());
+        colGuild.setCellValueFactory(cellData -> cellData.getValue().guildProperty());
 
-        POPUP_CAL.getStylesheets().add(STYLESHEET);
-        hBoxCalMth.setPadding(new Insets(0, 10, 0, 0));
-        hBoxCalMth.getChildren().add(POPUP_CAL);
+        FilteredList<Day> filteredData = new FilteredList<>(FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(currentUser)), p -> true);
+
+        txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
+                ->
+        {
+            filteredData.setPredicate(day
+                    ->
+            {
+                String regex = "[^a-zA-Z0-9\\s]";
+                Boolean search
+                        = day.dateProperty().getValue().replaceAll(regex, "")
+                                .contains(newValue.replaceAll(regex, ""))
+                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                contains(newValue.toLowerCase().replaceAll(regex, ""));
+
+                return search;
+
+            });
+        });
+
+        SortedList<Day> sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(tableViewMain.comparatorProperty());
+        tableViewMain.setItems(sortedData);
 
     }
 
-    /**
-     * Initialises the tree table containing information about the User
-     */
-    private void showTreeTable()
-
+    private void setupGuildList()
     {
-        //Need to do some threading for this method
-
-        //Date column set up
-        dateCol.prefWidthProperty().bind(treeViewAllHours.widthProperty().divide(3));
-        dateCol.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<Day, String>, ObservableValue<String>>()
-
+        for (Guild guild : MOD_FACADE.getGuildsForUser(currentUser))
         {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<Day, String> param)
-            {
-                return param.getValue().getValue().dateProperty();
-            }
-        });
+            System.out.println(guild.getName());
 
-        //Hours column set up
-        hoursCol.prefWidthProperty().bind(treeViewAllHours.widthProperty().divide(3));
-        hoursCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Day, Integer> param) -> param.getValue().getValue().hourProperty().asObject());
-
-        //Guild column set up
-        guildCol.prefWidthProperty().bind(treeViewAllHours.widthProperty().divide(3));
-        guildCol.setCellValueFactory((TreeTableColumn.CellDataFeatures<Day, String> param) -> param.getValue().getValue().guildProperty());
-
-        treeViewAllHours.setPlaceholder(new Label("Nothing found"));
-
-        ObservableList<Day> daysWorked = FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(currentUser));
-
-        final TreeItem<Day> rootOfTree = new RecursiveTreeItem<>(daysWorked, RecursiveTreeObject::getChildren);
-
-        dateCol.getStyleClass().add("col");
-        hoursCol.getStyleClass().add("col");
-        guildCol.getStyleClass().add("col");
-
-        treeViewAllHours.getColumns().setAll(dateCol, hoursCol, guildCol);
-        treeViewAllHours.setRoot(rootOfTree);
-        treeViewAllHours.setShowRoot(false);
-
-        txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                -> 
-                {
-                    treeViewAllHours.setPredicate((TreeItem<Day> day)
-                            -> 
-                            {
-                                String regex = "[^a-zA-Z0-9\\s]";
-                                Boolean search
-                                        = day.getValue().dateProperty().getValue().replaceAll(regex, "")
-                                        .contains(newValue.replaceAll(regex, ""))
-                                        || day.getValue().guildProperty().getValue().toLowerCase().replaceAll(regex, "").
-                                        contains(newValue.toLowerCase().replaceAll(regex, ""));
-
-                                return search;
-
-                    });
-        });
+        }
+        listVwGuilds.setItems(FXCollections.observableArrayList(MOD_FACADE.getGuildsForUser(currentUser)));
     }
 
     /**
@@ -303,7 +247,7 @@ public class UserInfoViewController implements Initializable
     private void createHighClearanceButton(int type)
 
     {
-        //int GUIView;
+        int GUIView;
 
         higherClearanceBtn.setId("higherClearanceBtn");
         higherClearanceBtn.toFront();
@@ -340,11 +284,11 @@ public class UserInfoViewController implements Initializable
                 else
                 {
                     serviceAllVolunteers.setOnSucceeded(e
-                            -> 
-                            {
+                            ->
+                    {
 
-                                MOD_FACADE.changeView(GUIView);
-                                root.getChildren().remove(MOD_FACADE.getLoadingScreen());
+                        MOD_FACADE.changeView(GUIView);
+                        root.getChildren().remove(MOD_FACADE.getLoadingScreen());
 
                     });
 
@@ -368,15 +312,6 @@ public class UserInfoViewController implements Initializable
         txtEmail.setText(currentUser.getEmail());
         txtAddress.setText(currentUser.getResidence());
         txtAddress2.setText(currentUser.getResidence2());
-      }
-
-    //Need to finish
-    private void handleClickTab(MouseEvent event)
-
-    {
-
-        tabPaneOverview.getSelectionModel().getSelectedIndex();
-
     }
 
     @FXML
@@ -412,7 +347,7 @@ public class UserInfoViewController implements Initializable
 
     private void createEditFields()
 
-      {
+    {
 
         txtPhone.setOnKeyReleased(new EventHandler<KeyEvent>()
 
@@ -424,24 +359,24 @@ public class UserInfoViewController implements Initializable
 
             }
 
-          });
-      }
+        });
+    }
 
     private void editInfo()
-      {
+    {
         txtName.setEditable(true);
         txtEmail.setEditable(true);
         txtPhone.setEditable(true);
         txtAddress.setEditable(true);
         txtAddress2.setEditable(true);
-      }
-
+    }
 
     private void saveInfo(User user)
     {
-        MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPhone.getText()), user.getNote(), txtAddress.getText(), txtAddress2.getText()); 
+        MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPhone.getText()), user.getNote(), txtAddress.getText(), txtAddress2.getText());
 
         currentUser = MOD_FACADE.getUserInfo(user.getId());
+
         txtName.setEditable(false);
         txtEmail.setEditable(false);
         txtPhone.setEditable(false);
@@ -456,7 +391,7 @@ public class UserInfoViewController implements Initializable
         boolean success = false;
         try
 
-          {
+        {
             Integer.parseInt(txtPhone.getText());
             success = true;
         }
@@ -473,7 +408,7 @@ public class UserInfoViewController implements Initializable
             isIncorrect = false;
         }
         else
-          {
+        {
             txtPhone.setStyle("-fx-background-color:red;");
             btnEditSave.setDisable(true);
             isIncorrect = true;
@@ -542,12 +477,12 @@ public class UserInfoViewController implements Initializable
         { //setting onAction, nothing changed, just show old labels again
             @Override
             public void handle(ActionEvent event)
-             {
-                  txtName.setEditable(false);
-                  txtEmail.setEditable(false);
-                  txtPhone.setEditable(false);
-                  txtAddress.setEditable(false);
-                  txtAddress2.setEditable(false);
+            {
+                txtName.setEditable(false);
+                txtEmail.setEditable(false);
+                txtPhone.setEditable(false);
+                txtAddress.setEditable(false);
+                txtAddress2.setEditable(false);
 
                 removeCancelButton(); //if cancel button clicked, it will disappear
                 editing = false;
@@ -575,24 +510,12 @@ public class UserInfoViewController implements Initializable
         btnChangePassword.setText(MOD_FACADE.getLang("BTN_CHANGEPASS"));
         btnEditSave.setText(MOD_FACADE.getLang("BTN_EDIT"));
         btnLogout.setText(MOD_FACADE.getLang("BTN_LOGOUT"));
-//        btnEditOnTabDay.setText(MOD_FACADE.getLang("BTN_EDIT"));
-//       btnEditOnTabMonth.setText(MOD_FACADE.getLang("BTN_EDIT"));
         btnCancel.setText(MOD_FACADE.getLang("BTN_CANCEL"));
 
-//        tabAll.setText(MOD_FACADE.getLang("TAB_ALL"));
-//        tabDay.setText(MOD_FACADE.getLang("TAB_DAY"));
-        //      tabMonth.setText(MOD_FACADE.getLang("TAB_MONTH"));
-        //       tabGraphs.setText(MOD_FACADE.getLang("TAB_GRAPHS"));
-        dateCol.setText(MOD_FACADE.getLang("COL_DATE"));
-        hoursCol.setText(MOD_FACADE.getLang("COL_HOURS"));
-        guildCol.setText(MOD_FACADE.getLang("COL_GUILD"));
-        //txtFSearchDate.setText(MOD_FACADE.getLang("PROMPT_SEARCH_DATE"));
+        colDate.setText(MOD_FACADE.getLang("COL_DATE"));
+        colHours.setText(MOD_FACADE.getLang("COL_HOURS"));
+        colGuild.setText(MOD_FACADE.getLang("COL_GUILD"));
         txtFSearchDate.setPromptText(MOD_FACADE.getLang("PROMPT_SEARCH"));
-        //txtFSearchDate2.setText(MOD_FACADE.getLang("PROMPT_SEARCH_DATE"));
-        //txtFSearchDate3.setText(MOD_FACADE.getLang("PROMPT_SEARCH_DATE"));
-//        lblHrsAll.setText(MOD_FACADE.getLang("LBL_HRS_ALL_TEXT"));
-//        lblHrsAll2.setText(MOD_FACADE.getLang("LBL_HRS_ALL_TEXT"));
-//        lblHrsAll3.setText(MOD_FACADE.getLang("LBL_HRS_ALL_TEXT"));
         lblGuilds.setText(MOD_FACADE.getLang("LBL_GUILDS"));
 
     }
@@ -601,7 +524,6 @@ public class UserInfoViewController implements Initializable
     private void handleLogout(ActionEvent event) throws IOException
     {
 
-        //Need to refactor this method next sprint - no time today!
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/HourLoginView.fxml"));
         StackPane page = (StackPane) loader.load();
 
@@ -667,7 +589,6 @@ public class UserInfoViewController implements Initializable
         b1.setPadding(new Insets(10));
         b1.setMaxWidth(Double.MAX_VALUE);
         b2.setPadding(new Insets(10));
-        // b1.setStyle(b2.getStyle());
         VBox vBox = new VBox(b1, b2);
         popup.setPopupContent(vBox);
         b1.setOnAction(new EventHandler<ActionEvent>()
@@ -675,14 +596,13 @@ public class UserInfoViewController implements Initializable
             @Override
             public void handle(ActionEvent event)
             {
-                rowFactoryTreeTable();
+                //rowFactoryTreeTable();
                 popup.hide();
             }
         });
 
     }
 
-    @FXML
     private void popupEditDelete(MouseEvent event)
     {
         MouseButton button = event.getButton();
@@ -693,11 +613,6 @@ public class UserInfoViewController implements Initializable
             popup.show((Node) event.getSource(), JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, event.getX(), event.getY());
 
         }
-    }
-
-    private void rowFactoryTreeTable()
-    {
-        treeViewAllHours.setEditable(true);
     }
 
 }
