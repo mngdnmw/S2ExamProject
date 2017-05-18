@@ -22,7 +22,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
 
 
     <children>
@@ -136,6 +136,7 @@
          </effect>
       </Rectangle>
       <ImageView fx:id="imgVwProfilePic" fitHeight="143.0" fitWidth="141.0" layoutX="527.0" layoutY="26.0" pickOnBounds="true" AnchorPane.rightAnchor="32.0">
+
          <image>
             <Image url="@../Images/labeouf.jpg" />
          </image>
@@ -144,12 +145,14 @@
          </effect>
       </ImageView>
       <JFXButton fx:id="btnUpdatePhoto" buttonType="RAISED" layoutX="528.0" layoutY="183.0" maxHeight="25.0" minHeight="19.0" onAction="#pressedChangeImage" prefHeight="7.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Update Photo" textFill="WHITE" AnchorPane.rightAnchor="31.0">
+
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </JFXButton>
       <HBox fx:id="hBoxInvisBtn" layoutX="508.0" layoutY="430.0" prefHeight="45.0" prefWidth="183.0" />
-      <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="528.0" layoutY="212.0" maxHeight="25.0" minHeight="19.0" onAction="#OpenPasswordChangerEvent" prefHeight="19.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Change Password" textFill="WHITE" AnchorPane.rightAnchor="31.0">
+      <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="528.0" layoutY="212.0" maxHeight="25.0" minHeight="19.0" onAction="#openPasswordChangerEvent" prefHeight="19.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Change Password" textFill="WHITE" AnchorPane.rightAnchor="31.0">
+
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
@@ -190,8 +193,8 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
                      <children>
-                        <JFXButton buttonType="RAISED" onAction="#ChangePasswordEvent" styleClass="loginbuttons" text="Change" />
-                        <JFXButton fx:id="btnCancel" buttonType="RAISED" onAction="#HidePasswordChangerEvent" styleClass="loginbuttons" text="Cancel" />
+                        <JFXButton buttonType="RAISED" onAction="#changePasswordEvent" styleClass="loginbuttons" text="Change" />
+                        <JFXButton fx:id="btnCancel" buttonType="RAISED" onAction="#hsidePasswordChangerEvent" styleClass="loginbuttons" text="Cancel" />
                      </children>
                      <padding>
                         <Insets bottom="1.0" top="8.0" />

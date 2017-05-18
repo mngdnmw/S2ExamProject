@@ -153,6 +153,7 @@ public class UserInfoViewController implements Initializable
                     MOD_FACADE.setAllVolunteersIntoArray();
                     finishedService = true;
                     return null;
+
                 }
             };
         }
@@ -316,7 +317,8 @@ public class UserInfoViewController implements Initializable
             higherClearanceBtn.setText(MOD_FACADE.getLang("BTN_HIGHER_CLEARANCE_1"));
             GUIView = 1;
 
-        } else
+        }
+        else
         {
             higherClearanceBtn.setText(MOD_FACADE.getLang("BTN_HIGHER_CLEARANCE_2"));
             GUIView = 1;
@@ -332,7 +334,8 @@ public class UserInfoViewController implements Initializable
                 if (finishedService)
                 {
                     MOD_FACADE.changeView(GUIView);
-                } else
+                }
+                else
                 {
                     serviceAllVolunteers.setOnSucceeded(e
                             ->
@@ -387,7 +390,8 @@ public class UserInfoViewController implements Initializable
             checkTextFields();
             addCancelButton();
 
-        } else
+        }
+        else
         {
             if (isIncorrect && btnEditSave.isDisabled())
             {
@@ -489,7 +493,8 @@ public class UserInfoViewController implements Initializable
         {
             Integer.parseInt(txtPh.getText());
             success = true;
-        } catch (NumberFormatException e)
+        }
+        catch (NumberFormatException e)
         {
             success = false;
             txtPh.setStyle("-fx-background-color:red;");
@@ -500,7 +505,8 @@ public class UserInfoViewController implements Initializable
             btnEditSave.setDisable(false);
             txtPh.setStyle("");
             isIncorrect = false;
-        } else
+        }
+        else
         {
             txtPh.setStyle("-fx-background-color:red;");
             btnEditSave.setDisable(true);
@@ -529,7 +535,8 @@ public class UserInfoViewController implements Initializable
             try
             {
                 MOD_FACADE.updateUserImage(currentUser, newImg);
-            } catch (FileNotFoundException e)
+            }
+            catch (FileNotFoundException e)
             {
                 System.out.println(e);
                 Alert a = new Alert(Alert.AlertType.ERROR);
@@ -645,13 +652,15 @@ public class UserInfoViewController implements Initializable
     }
 
     @FXML
-    private void ChangePasswordEvent(ActionEvent event)
+
+    private void changePasswordEvent(ActionEvent event)
     {
         int count;
         if (txtNPassword.getText().equals(txtNPasswordTwo.getText()))
         {
             count = MOD_FACADE.changePassword(currentUser, txtOPassword.getText(), txtNPassword.getText());
-        } else
+        }
+        else
         {
             count = -1;
         }
@@ -659,11 +668,13 @@ public class UserInfoViewController implements Initializable
         {
             JFXSnackbar b = new JFXSnackbar(root);
             b.show("Password has succesfully changed", 2000);
-        } else if (count == -1)
+        }
+        else if (count == -1)
         {
             JFXSnackbar b = new JFXSnackbar(root);
             b.show("Password do not match", 2000);
-        } else
+        }
+        else
         {
             JFXSnackbar b = new JFXSnackbar(root);
             b.show("Old password is wrong", 2000);
@@ -672,15 +683,14 @@ public class UserInfoViewController implements Initializable
     }
 
     @FXML
-    private void OpenPasswordChangerEvent(ActionEvent event)
+    private void openPasswordChangerEvent(ActionEvent event)
     {
         stckPanePasswordChanger.setVisible(true);
         MOD_FACADE.fadeInTransition(Duration.millis(750), stckPanePasswordChanger);
 
     }
 
-    @FXML
-    private void HidePasswordChangerEvent(ActionEvent event)
+    private void hidePasswordChangerEvent(ActionEvent event)
 
     {
         MOD_FACADE.fadeOutTransition(Duration.millis(750), stckPanePasswordChanger).setOnFinished(e -> stckPanePasswordChanger.setVisible(false));
@@ -726,5 +736,11 @@ public class UserInfoViewController implements Initializable
     private void rowFactoryTreeTable()
     {
         treeViewAllHours.setEditable(true);
+
+    }
+
+    @FXML
+    private void hsidePasswordChangerEvent(ActionEvent event)
+    {
     }
 }

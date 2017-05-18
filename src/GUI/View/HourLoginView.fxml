@@ -93,7 +93,7 @@
                                  <graphic>
                                     <ImageView fitHeight="40.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="file:/C:/Users/Mecaa/Desktop/School/SecondSemester/S2ExamProject/src/Resources/arrowcoloredleft.png" />
+                                          <Image url="@../../Resources/arrowcoloredleft.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
