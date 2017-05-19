@@ -1,5 +1,6 @@
 package GUI.Controller;
 
+import BE.Guild;
 import BE.User;
 import GUI.Model.ModelFacade;
 
@@ -64,7 +65,7 @@ public class ManagerViewController implements Initializable
     ModelFacade modelFacade = ModelFacade.getModelFacade();
     User selectedUser;
     @FXML
-    private JFXComboBox<?> cmbGuildChooser;
+    private JFXComboBox<Guild> cmbGuildChooser;
     @FXML
     private Label lblNotes;
 
@@ -77,12 +78,13 @@ public class ManagerViewController implements Initializable
      */
     @Override
     public void initialize(URL url, ResourceBundle rb)
-      {
+    {
 //        setTableProperties();
         setTextAll(); //this has to run before setting currently logged in username
         if (modelFacade.getCurrentUser() != null)
         {
             lblUserName.setText(modelFacade.getLang("LBL_USERNAME") + modelFacade.getCurrentUser().getName());
+            cmbGuildChooser.setItems(FXCollections.observableArrayList(modelFacade.getCurrentUser().getGuildList()));
         }
 
         showTreeTable();
@@ -120,7 +122,7 @@ public class ManagerViewController implements Initializable
         colGuild.setCellValueFactory((TreeTableColumn.CellDataFeatures<Guild, String> param) -> param.getValue().getValue().getName());*/
         tblUsers.setPlaceholder(new Label("Nothing found"));
 
-        ObservableList<User> volunteers = FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers() );
+        ObservableList<User> volunteers = FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers());
 
         final TreeItem<User> rootOfTree = new RecursiveTreeItem<>(volunteers, RecursiveTreeObject::getChildren);
 
@@ -133,22 +135,22 @@ public class ManagerViewController implements Initializable
         tblUsers.setShowRoot(false);
 
         txtSearch.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                ->
-        {
-            tblUsers.setPredicate((TreeItem<User> user)
-                    ->
-            {
-                String regex = "[^a-zA-Z0-9\\s]";
-                Boolean search
-                        = user.getValue().nameProperty().getValue().toLowerCase().replaceAll(regex, "")
-                                .contains(newValue.toLowerCase().replaceAll(regex, ""))
-                        || user.getValue().emailProperty().getValue().toLowerCase().replaceAll(regex, "").
-                                contains(newValue.toLowerCase().replaceAll(regex, ""))
-                        || user.getValue().phoneProperty().getValue().toString().replaceAll(regex, "")
-                                .contains(newValue.toLowerCase().replaceAll(regex, ""));
+                -> 
+                {
+                    tblUsers.setPredicate((TreeItem<User> user)
+                            -> 
+                            {
+                                String regex = "[^a-zA-Z0-9\\s]";
+                                Boolean search
+                                        = user.getValue().nameProperty().getValue().toLowerCase().replaceAll(regex, "")
+                                        .contains(newValue.toLowerCase().replaceAll(regex, ""))
+                                        || user.getValue().emailProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                        contains(newValue.toLowerCase().replaceAll(regex, ""))
+                                        || user.getValue().phoneProperty().getValue().toString().replaceAll(regex, "")
+                                        .contains(newValue.toLowerCase().replaceAll(regex, ""));
 
-                return search;
-            });
+                                return search;
+                    });
         });
     }
 
@@ -201,7 +203,8 @@ public class ManagerViewController implements Initializable
             stageView.initOwner(primStage);
 
             stageView.show();
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             System.out.println(e);
         }
@@ -256,12 +259,14 @@ public class ManagerViewController implements Initializable
                 stageView.initOwner(primStage);
 
                 stageView.show();
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 System.out.println(e);
                 e.printStackTrace();
             }
-        } else
+        }
+        else
         {
             snackBarPopup("You need to select a user first.");
             System.out.println("Selected user missing");
@@ -278,7 +283,8 @@ public class ManagerViewController implements Initializable
             selectedUser = tblUsers.getSelectionModel().getSelectedItem().getValue();
 
             txtNotes.setText(selectedUser.getNote());
-        } else if (event.isPrimaryButtonDown() && event.getClickCount() == 2)
+        }
+        else if (event.isPrimaryButtonDown() && event.getClickCount() == 2)
         {
             try
             {
@@ -322,7 +328,8 @@ public class ManagerViewController implements Initializable
                 stageView.initOwner(primStage);
 
                 stageView.show();
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 System.out.println(e);
             }
@@ -353,7 +360,7 @@ public class ManagerViewController implements Initializable
         btnAddUser.setText(modelFacade.getLang("BTN_ADD_USER"));
         btnClose.setText(modelFacade.getLang("BTN_CLOSE"));
         btnEditInfo.setText(modelFacade.getLang("BTN_EDIT_INFO"));
-        
+
         lblUserName.setText(modelFacade.getLang("LBL_USERNAME"));
         lblNotes.setText(modelFacade.getLang("LBL_NOTES"));
         txtSearch.setPromptText(modelFacade.getLang("PROMPT_SEARCH_USER"));
