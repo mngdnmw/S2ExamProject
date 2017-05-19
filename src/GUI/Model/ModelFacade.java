@@ -9,6 +9,7 @@ import BLL.BLLFacade;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javafx.animation.FadeTransition;
@@ -26,6 +27,8 @@ public class ModelFacade
     private final static LanguageModel LANG_MOD = new LanguageModel();
     private final static ViewChangerModel VIEW_CHANG_MOD = new ViewChangerModel();
     private final static VolunteerDataModel VOL_DATA_MOD = new VolunteerDataModel();
+    private ArrayList<User> allUsers = new ArrayList();
+    private ArrayList<User> allManagers = new ArrayList<>();
     private final static BLLFacade BLL_FAC = new BLLFacade();
 
     public static ModelFacade getModelFacade()
@@ -100,7 +103,7 @@ public class ModelFacade
     public StackPane getLoadingScreen()
     {
         return ANIM_MOD.getLoadingScreen();
-    }
+      }
 
     //Language Model
     public String getLang(String key)
@@ -108,7 +111,7 @@ public class ModelFacade
         return LANG_MOD.getLang(key);
     }
 
-    public void setLang(EnumCache.Lang lang)
+    public void setLang(Lang lang)
     {
         LANG_MOD.setLang(lang);
     }
@@ -196,10 +199,17 @@ public class ModelFacade
     {
         return VOL_DATA_MOD.getAllSavedVolunteers();
     }
+    
+    public List<User> getAllSavedManagers() {
+        return VOL_DATA_MOD.getAllSavedManagers();
+    }
 
     public void setAllVolunteersIntoArray()
     {
         VOL_DATA_MOD.setAllVolunteersIntoArray();
+    }
+    public void setAllManagersIntoArray() {
+        VOL_DATA_MOD.setAllManagersIntoArray();;
     }
 
     //BLL facade

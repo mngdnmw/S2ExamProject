@@ -63,7 +63,6 @@ public class ManagerAddUserController implements Initializable
     private Service serviceAddNewUser = new Service()
     {
         @Override
-
         protected Task createTask()
         {
             return new Task()
@@ -71,14 +70,15 @@ public class ManagerAddUserController implements Initializable
                 @Override
                 protected Object call() throws Exception
 
-                {
-                    modelFacade.getAllVolunteers();
+                  {
+                    modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
+                    modelFacade.setAllVolunteersIntoArray();
+                    modelFacade.setAllManagersIntoArray();
                     return null;
-
-                }
-            };
-        }
-    };
+                  }
+              };
+          };
+      };
 
     /**
      * Initializes the controller class.

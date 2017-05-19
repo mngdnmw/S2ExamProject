@@ -4,6 +4,7 @@ import BE.User;
 import GUI.Model.ModelFacade;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextArea;
@@ -71,6 +72,10 @@ public class ManagerViewController implements Initializable
     JFXTreeTableColumn<User, String> colName = new JFXTreeTableColumn<>();
     JFXTreeTableColumn<User, Integer> colPhone = new JFXTreeTableColumn<>();
     JFXTreeTableColumn<User, String> colEmail = new JFXTreeTableColumn<>();
+    @FXML
+    private JFXCheckBox chkManagers;
+    @FXML
+    private JFXCheckBox chkVolunteers;
 
     /**
      * Initializes the controller class.
@@ -86,7 +91,8 @@ public class ManagerViewController implements Initializable
         }
 
         showTreeTable();
-    }
+        chkVolunteers.selectedProperty().set(true);
+      }
 
     /**
      * Initialises the tree table containing information about the User
@@ -119,10 +125,33 @@ public class ManagerViewController implements Initializable
         colGuild.prefWidthProperty().bind(tblUsers.widthProperty().divide(3));
         colGuild.setCellValueFactory((TreeTableColumn.CellDataFeatures<Guild, String> param) -> param.getValue().getValue().getName());*/
         tblUsers.setPlaceholder(new Label("Nothing found"));
+        
+        
+        ObservableList<User> users = FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers());
+        chkManagers.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(chkManagers.isSelected()) {
+                    users.addAll(FXCollections.observableArrayList(modelFacade.getAllSavedManagers()));
+                } else {
+                    users.removeAll(FXCollections.observableArrayList(modelFacade.getAllSavedManagers()));
+                }
+            }
+            
+        });
+        chkVolunteers.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(chkVolunteers.isSelected()) {
+                    users.addAll(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
+                } else {
+                    users.removeAll(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
+                }
+            }
+            
+        });
 
-        ObservableList<User> volunteers = FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers());
-
-        final TreeItem<User> rootOfTree = new RecursiveTreeItem<>(volunteers, RecursiveTreeObject::getChildren);
+        final TreeItem<User> rootOfTree = new RecursiveTreeItem<>(users, RecursiveTreeObject::getChildren);
 
         colName.getStyleClass().add("col");
         colPhone.getStyleClass().add("col");

@@ -139,6 +139,7 @@ public class UserInfoViewController implements Initializable
                 {
                     finishedService = false;
                     MOD_FACADE.setAllVolunteersIntoArray();
+                    MOD_FACADE.setAllManagersIntoArray();
                     finishedService = true;
                     return null;
 

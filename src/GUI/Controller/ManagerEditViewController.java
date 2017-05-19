@@ -57,7 +57,7 @@ public class ManagerEditViewController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        boolean edit = false;
+        edit = false;
         setText();
         listGuilds.setItems(FXCollections.observableArrayList(selectedUser.getGuildList()));
     }
