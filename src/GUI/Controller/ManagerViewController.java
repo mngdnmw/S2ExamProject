@@ -1,5 +1,6 @@
 package GUI.Controller;
 
+import BE.Guild;
 import BE.User;
 import GUI.Model.ModelFacade;
 
@@ -61,7 +62,7 @@ public class ManagerViewController implements Initializable
     @FXML
     private TableView<User> tblUsers;
     @FXML
-    private JFXComboBox<?> cmbGuildChooser;
+    private JFXComboBox<Guild> cmbGuildChooser;
     @FXML
     private Label lblNotes;
     @FXML
@@ -70,7 +71,6 @@ public class ManagerViewController implements Initializable
     private TableColumn<User, Integer> colPhone;
     @FXML
     private TableColumn<User, String> colEmail;
-    
     ModelFacade modelFacade = ModelFacade.getModelFacade();
     User selectedUser;
     @FXML
@@ -81,16 +81,18 @@ public class ManagerViewController implements Initializable
     private JFXCheckBox chkManagers;
     @FXML
     private Tab tabGraphStats;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb)
-      {
+    {
         setTextAll(); //this has to run before setting currently logged in username
         if (modelFacade.getCurrentUser() != null)
         {
             lblUserName.setText(modelFacade.getLang("LBL_USERNAME") + modelFacade.getCurrentUser().getName());
+            cmbGuildChooser.setItems(FXCollections.observableArrayList(modelFacade.getCurrentUser().getGuildList()));
         }
         setTableProperties();
         setTableItems();
@@ -105,11 +107,11 @@ public class ManagerViewController implements Initializable
 
     public void setTableItems()
     {
-        if(modelFacade.getCurrentUser().getType() == 1)
+        if (modelFacade.getCurrentUser().getType() == 1)
         {
             tblUsers.setItems(FXCollections.observableArrayList(modelFacade.getAllVolunteers()));
         }
-        if(modelFacade.getCurrentUser().getType() == 2)
+        if (modelFacade.getCurrentUser().getType() == 2)
 
         {
             tblUsers.setItems(FXCollections.observableArrayList(modelFacade.getAllUsers()));
@@ -164,7 +166,8 @@ public class ManagerViewController implements Initializable
             stageView.initOwner(primStage);
 
             stageView.show();
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             System.out.println(e);
         }
@@ -217,12 +220,14 @@ public class ManagerViewController implements Initializable
                 stageView.initOwner(primStage);
 
                 stageView.show();
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 System.out.println(e);
                 e.printStackTrace();
             }
-        } else
+        }
+        else
         {
             snackBarPopup("You need to select a user first.");
             System.out.println("Selected user missing");
@@ -239,7 +244,8 @@ public class ManagerViewController implements Initializable
             selectedUser = tblUsers.getSelectionModel().getSelectedItem();
 
             txtNotes.setText(selectedUser.getNote());
-        } else if (event.isPrimaryButtonDown() && event.getClickCount() == 2)
+        }
+        else if (event.isPrimaryButtonDown() && event.getClickCount() == 2)
         {
             try
             {
@@ -281,23 +287,23 @@ public class ManagerViewController implements Initializable
                 stageView.initOwner(primStage);
 
                 stageView.show();
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 System.out.println(e);
             }
         }
-        
-        
+
         selectedUser = tblUsers.getSelectionModel().getSelectedItem();
-        
+
         ContextMenu contextMenu = new ContextMenu();
         MenuItem thisEmailItem = new MenuItem("Copy this email to clipboard");
         contextMenu.getItems().add(thisEmailItem);
         MenuItem allEmailItem = new MenuItem("Copy all emails to clipboard");
         contextMenu.getItems().add(allEmailItem);
-        
+
         tblUsers.setContextMenu(contextMenu);
-        
+
         EventHandler thisEmailEvent = new EventHandler()
         {
             @Override
@@ -311,7 +317,7 @@ public class ManagerViewController implements Initializable
             }
         };
         thisEmailItem.setOnAction(thisEmailEvent);
-        
+
         EventHandler allEmailEvent = new EventHandler()
         {
             @Override
@@ -332,7 +338,7 @@ public class ManagerViewController implements Initializable
                 System.out.println("All Emails to Clipboard");
             }
         };
-        
+
         allEmailItem.setOnAction(allEmailEvent);
     }
 
@@ -362,7 +368,7 @@ public class ManagerViewController implements Initializable
         btnEditInfo.setText(modelFacade.getLang("BTN_EDIT_INFO"));
         chkManagers.setText(modelFacade.getLang("CHK_MANAGERS"));
         chkVolunteers.setText(modelFacade.getLang("CHK_VOLUNTEERS"));
-        
+
         lblUserName.setText(modelFacade.getLang("LBL_USERNAME"));
         lblNotes.setText(modelFacade.getLang("LBL_NOTES"));
         txtSearch.setPromptText(modelFacade.getLang("PROMPT_SEARCH_USER"));
