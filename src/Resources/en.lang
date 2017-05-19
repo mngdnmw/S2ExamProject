@@ -32,7 +32,8 @@ BTN_UPDATEPHOTO = Update photo
 BTN_CHANGEPASS = Change password
 BTN_EDIT = Edit
 BTN_SAVE = Save
-BTN_CANCEL = Cancel
+#BTN_CANCEL = Cancel #Already exists
+BTN_DELETE = Delete
 BTN_LOGOUT = Log out
 TAB_ALL = All
 TAB_MONTH = Month
@@ -59,6 +60,8 @@ BTN_EDIT_INFO = Edit Information
 BTN_STATS = User Statistics
 BTN_CLOSE = Close
 BTN_ADD_USER = Add user
+CHK_MANAGERS = Managers
+CHK_VOLUNTEERS = Volunteers
 
 #Manager view labels
 #Remember to leave a space after LBL_USERNAME
@@ -69,3 +72,5 @@ LBL_NOTES = Notes:
 COL_NAME = Name
 COL_PHONE = Phone
 COL_EMAIL = Email
+TAB_VOLUN_INFO = Volunteer Information
+TAB_GRAPH_STATS = Graphs & statistics
