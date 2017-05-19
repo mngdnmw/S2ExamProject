@@ -26,6 +26,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -72,6 +73,14 @@ public class ManagerViewController implements Initializable
     
     ModelFacade modelFacade = ModelFacade.getModelFacade();
     User selectedUser;
+    @FXML
+    private Tab tabVolunInfo;
+    @FXML
+    private JFXCheckBox chkVolunteers;
+    @FXML
+    private JFXCheckBox chkManagers;
+    @FXML
+    private Tab tabGraphStats;
     /**
      * Initializes the controller class.
      */
