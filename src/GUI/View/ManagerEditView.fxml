@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
@@ -19,11 +20,12 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerEditViewController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerEditViewController">
     <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="216.0" layoutX="13.0" layoutY="11.0" stroke="TRANSPARENT" strokeType="INSIDE" width="491.0">
          <effect>
@@ -183,10 +185,60 @@
          </font>
       </JFXButton>
       <JFXListView fx:id="listGuilds" layoutX="524.0" layoutY="288.0" prefHeight="145.0" prefWidth="141.0" style="-fx-border-image-width: 0px;" />
-      <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="530.0" layoutY="208.0" maxHeight="30.0" minHeight="-Infinity" prefHeight="19.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Change Password" textFill="WHITE">
+      <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="530.0" layoutY="208.0" maxHeight="30.0" minHeight="-Infinity" onAction="#openPasswordChangerEvent" prefHeight="19.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Change Password" textFill="WHITE">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </JFXButton>
+      <StackPane fx:id="stckPanePasswordChanger" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false">
+         <children>
+            <VBox alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="200.0" prefWidth="463.0" spacing="10.0" styleClass="loginwindow" stylesheets="@MainLayout.css">
+               <children>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                     <children>
+                        <Label fx:id="lblOldPassword" text="Old Password">
+                           <font>
+                              <Font name="System Bold Italic" size="16.0" />
+                           </font>
+                        </Label>
+                        <JFXPasswordField fx:id="txtOPassword" prefHeight="29.0" prefWidth="221.0" styleClass="logintextFields" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                     <children>
+                        <Label fx:id="lblNewPassword" text="New Password">
+                           <font>
+                              <Font name="System Bold Italic" size="16.0" />
+                           </font>
+                        </Label>
+                        <JFXPasswordField fx:id="txtNPassword" focusColor="#00e2c7" styleClass="logintextFields" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                     <children>
+                        <Label fx:id="lblNewPassword2" text="New Password Again">
+                           <font>
+                              <Font name="System Bold Italic" size="16.0" />
+                           </font>
+                        </Label>
+                        <JFXPasswordField fx:id="txtNPasswordTwo" focusColor="#00e2c7" styleClass="logintextFields" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
+                     <children>
+                        <JFXButton fx:id="btnChangePWConfirm" buttonType="RAISED" onAction="#changePasswordEvent" styleClass="loginbuttons" text="Change" />
+                        <JFXButton fx:id="btnCancel" buttonType="RAISED" onAction="#hidePasswordChangerEvent" styleClass="loginbuttons" text="Cancel" />
+                     </children>
+                     <padding>
+                        <Insets bottom="1.0" top="8.0" />
+                     </padding>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </VBox>
+         </children>
+      </StackPane>
     </children>
 </AnchorPane>

@@ -548,6 +548,7 @@ public class UserInfoViewController implements Initializable
         {
             JFXSnackbar b = new JFXSnackbar(root);
             b.show("Password has succesfully changed", 2000);
+            hidePasswordChangerEvent();
         }
         else if (count == -1)
         {
@@ -571,7 +572,7 @@ public class UserInfoViewController implements Initializable
     }
 
     @FXML
-    private void hidePasswordChangerEvent(ActionEvent event)
+    private void hidePasswordChangerEvent()
 
     {
         MOD_FACADE.fadeOutTransition(Duration.millis(750), stckPanePasswordChanger)
