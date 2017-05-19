@@ -124,7 +124,6 @@ public class UserInfoViewController implements Initializable
     boolean editing = false;
     boolean isIncorrect = false;
     boolean finishedService;
-    private final String STYLESHEET = "GUI/View/UserInfoCSS.css";
     private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
 
     private final Service serviceAllVolunteers = new Service()
@@ -162,6 +161,7 @@ public class UserInfoViewController implements Initializable
         createEditFields();
         setTextAll();
         setupTableView();
+        setupGuildList();
 
         if (currentUser.getType() >= 1)
         {
@@ -245,8 +245,8 @@ public class UserInfoViewController implements Initializable
     private void createHighClearanceButton(int type)
 
     {
-        int GUIView;
 
+        higherClearanceBtn.setPrefWidth(140);
         higherClearanceBtn.setId("higherClearanceBtn");
         higherClearanceBtn.toFront();
         higherClearanceBtn.setVisible(true);
@@ -254,19 +254,16 @@ public class UserInfoViewController implements Initializable
         hBoxInvisBtn.setAlignment(Pos.CENTER);
         hBoxInvisBtn.getChildren().add(higherClearanceBtn);
 
-        higherClearanceBtn.getStylesheets().add(STYLESHEET);
+        higherClearanceBtn.getStylesheets().add("GUI/View/MainLayout.css");
 
         if (type == 1)
         {
-            higherClearanceBtn.setText(MOD_FACADE.getLang("BTN_HIGHER_CLEARANCE_1"));
-            GUIView = 1;
+            higherClearanceBtn.setText(MOD_FACADE.getLang("BTN_HIGHER_CLEARANCE_1"));          
 
         }
         else
         {
             higherClearanceBtn.setText(MOD_FACADE.getLang("BTN_HIGHER_CLEARANCE_2"));
-            GUIView = 1;
-            // GUIView =4; add when admin view has been made - for the moment it will go to managereditview
 
         }
 
@@ -277,7 +274,7 @@ public class UserInfoViewController implements Initializable
             {
                 if (finishedService)
                 {
-                    MOD_FACADE.changeView(GUIView);
+                    MOD_FACADE.changeView(1);
                 }
                 else
                 {
@@ -285,7 +282,7 @@ public class UserInfoViewController implements Initializable
                             -> 
                             {
 
-                                MOD_FACADE.changeView(GUIView);
+                                MOD_FACADE.changeView(1);
                                 root.getChildren().remove(MOD_FACADE.getLoadingScreen());
 
                     });
@@ -599,7 +596,6 @@ public class UserInfoViewController implements Initializable
             @Override
             public void handle(ActionEvent event)
             {
-                //rowFactoryTreeTable();
                 popup.hide();
             }
         });

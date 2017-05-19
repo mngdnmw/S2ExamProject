@@ -202,7 +202,7 @@ public class ManagerViewController implements Initializable
                 {
                     public void handle(WindowEvent we)
                     {
-                        System.out.println("Stage on Hiding");
+
                         setTableItems();
                     }
                 });
@@ -211,7 +211,7 @@ public class ManagerViewController implements Initializable
                 {
                     public void handle(WindowEvent we)
                     {
-                        System.out.println("Stage is closing");
+
                         setTableItems();
                     }
                 });
