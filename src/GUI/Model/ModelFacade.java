@@ -199,6 +199,10 @@ public class ModelFacade
     {
         return VOL_DATA_MOD.getAllSavedVolunteers();
     }
+    
+    public List<User> getAllSavedManagers() {
+        return VOL_DATA_MOD.getAllSavedManagers();
+    }
 
     public void setAllVolunteersIntoArray()
     {

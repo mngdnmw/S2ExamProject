@@ -91,7 +91,7 @@ public class ManagerViewController implements Initializable
         }
 
         showTreeTable();
-        //chkVolunteers.selectedProperty().set(true);
+        chkVolunteers.selectedProperty().set(true);
       }
 
     /**
@@ -128,7 +128,7 @@ public class ManagerViewController implements Initializable
         
         
         ObservableList<User> users = FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers());
-        /*chkManagers.setOnAction(new EventHandler<ActionEvent>() {
+        chkManagers.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 if(chkManagers.isSelected()) {
@@ -149,7 +149,7 @@ public class ManagerViewController implements Initializable
                 }
             }
             
-        });*/
+        });
 
         final TreeItem<User> rootOfTree = new RecursiveTreeItem<>(users, RecursiveTreeObject::getChildren);
 
