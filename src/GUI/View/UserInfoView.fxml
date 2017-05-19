@@ -121,8 +121,8 @@
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </JFXButton>
-      <HBox fx:id="hBoxInvisBtn" layoutX="508.0" layoutY="430.0" prefHeight="45.0" prefWidth="183.0" />
-      <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="528.0" layoutY="212.0" maxHeight="25.0" minHeight="19.0" onAction="#openPasswordChangerEvent" prefHeight="19.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Change Password" textFill="WHITE" AnchorPane.rightAnchor="31.0">
+      <HBox fx:id="hBoxInvisBtn" layoutX="506.0" layoutY="430.0" prefHeight="45.0" prefWidth="183.0" />
+      <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="528.0" layoutY="212.0" maxHeight="25.0" minHeight="19.0" onAction="#openPasswordChangerEvent" prefHeight="19.0" prefWidth="141.0" text="Change Password" textFill="WHITE" AnchorPane.rightAnchor="31.0">
 
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -215,7 +215,7 @@
             </HBox>
          </children>
       </Pane>
-      <JFXListView fx:id="listVwGuilds" layoutX="527.0" layoutY="277.0" maxWidth="141.0" prefHeight="127.0" prefWidth="141.0" style="-fx-border-width: 0px;" />
+      <JFXListView fx:id="listVwGuilds" layoutX="527.0" layoutY="277.0" maxHeight="162.0" maxWidth="141.0" prefHeight="162.0" prefWidth="141.0" />
       <Label fx:id="lblGuilds" layoutX="527.0" layoutY="260.0" style="-fx-background-color: #00c4ad;" text="Guilds:" textFill="WHITE" />
 
     </children>
