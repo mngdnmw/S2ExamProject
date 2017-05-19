@@ -46,7 +46,8 @@ public class ViewChangerModel
             nxtStage.setScene(scene);
             nxtStage.show();
             nxtStage.setTitle(title);
-        } catch (IOException ex)
+        }
+        catch (IOException ex)
         {
             Logger.getLogger(ViewChangerModel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -67,7 +68,7 @@ public class ViewChangerModel
                 title = "VMS - Manager Editing";
                 return ViewPath + ManagerEditString;
             case 3:
-                title = "VMS - Volunteer Maintenance System";
+                title = "VMS - Volunteer Managing System";
                 return ViewPath + HourLoginString;
             case 4:
                 title = "VMS - Add New volunteer";
