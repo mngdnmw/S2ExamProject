@@ -340,7 +340,7 @@ public class UserInfoViewController implements Initializable
             btnEditSave.setText(MOD_FACADE.getLang("BTN_EDIT"));
             checkTextFields();
             removeCancelButton();
-
+            btnEditSave.setStyle("-fx-background-color:#00c4ad;");
         }
     }
 
@@ -499,7 +499,6 @@ public class UserInfoViewController implements Initializable
         if (btnEditSave.isDisabled())
         {
             btnEditSave.setDisable(false);
-
         }
     }
 
