@@ -57,12 +57,15 @@ public class ManagerAddUserController implements Initializable
     private JFXCheckBox chkManager;
     @FXML
     private JFXTextField txtPassword;
+    @FXML
+    private JFXCheckBox chkAdmin;
 
     ModelFacade modelFacade = ModelFacade.getModelFacade();
 
     private Service serviceAddNewUser = new Service()
     {
         @Override
+
         protected Task createTask()
         {
             return new Task()
@@ -70,28 +73,27 @@ public class ManagerAddUserController implements Initializable
                 @Override
                 protected Object call() throws Exception
 
-                  {
-                    modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
-                    modelFacade.setAllVolunteersIntoArray();
-                    modelFacade.setAllManagersIntoArray();
+                {
+                    modelFacade.getAllVolunteers();
                     return null;
-                  }
-              };
-          };
-      };
 
+                }
+            };
+        }
+    };
+    
     /**
      * Initializes the controller class.
      */
     @Override
 
-    public void initialize(URL url, ResourceBundle rb
-    )
+    public void initialize(URL url, ResourceBundle rb)
     {
         setListView();
         if (modelFacade.getCurrentUser().getType() == 1)
         {
             chkManager.disableProperty().set(true);
+            chkAdmin.disableProperty().set(true);
         }
     }
 
@@ -130,18 +132,13 @@ public class ManagerAddUserController implements Initializable
                     System.out.println("Phone number contains letters or special characters");
                 }
 
-                if (chkVolunteer.selectedProperty().get() == false && chkManager.selectedProperty().get() == false)
+                if (chkVolunteer.selectedProperty().get() == false && chkManager.selectedProperty().get() == false && chkAdmin.selectedProperty().get() == false)
                 {
                     snackBarPopup("User type not selected");
                 }
 
                 else if (chkVolunteer.selectedProperty().get() == true)
                 {
-                    /*System.out.println("1");
-                    modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
-                    Stage stage = (Stage) btnAccept.getScene().getWindow();
-                    stage.close();
-                    System.out.println("New Volunteer added: " + txtName.getText());*/
                     modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
                     StackPane loading = modelFacade.getLoadingScreen();
                     rootPane.getChildren().add(loading);
@@ -161,11 +158,6 @@ public class ManagerAddUserController implements Initializable
 
                 else if (chkManager.selectedProperty().get() == true)
                 {
-                    /*System.out.println("2");
-                    modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 1, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
-                    Stage stage = (Stage) btnAccept.getScene().getWindow();
-                    stage.close();
-                    System.out.println("New Manager added: " + txtName.getText());*/
                     modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 1, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
                     StackPane loading = modelFacade.getLoadingScreen();
                     rootPane.getChildren().add(loading);
@@ -182,11 +174,25 @@ public class ManagerAddUserController implements Initializable
                                 stage.close();
                     });
                 }
-
-                //modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
-                //Stage stage = (Stage) btnAccept.getScene().getWindow();
-                //stage.close();
-                //System.out.println("New user added: " + txtName.getText());
+                
+                else if (chkAdmin.selectedProperty().get() == true)
+                {
+                    modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 2, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
+                    StackPane loading = modelFacade.getLoadingScreen();
+                    rootPane.getChildren().add(loading);
+                    rootPane.setTopAnchor(loading, 0.0);
+                    rootPane.setBottomAnchor(loading, 0.0);
+                    rootPane.setRightAnchor(loading, 0.0);
+                    rootPane.setLeftAnchor(loading, 0.0);
+                    serviceAddNewUser.start();
+                    serviceAddNewUser.setOnSucceeded(e
+                            -> 
+                            {
+                                System.out.println("New Admin added: " + txtName.getText());
+                                Stage stage = (Stage) btnAccept.getScene().getWindow();
+                                stage.close();
+                    });
+                }
             }
         }
         else
@@ -265,12 +271,21 @@ public class ManagerAddUserController implements Initializable
             {
                 chkVolunteer.selectedProperty().set(true);
                 chkManager.selectedProperty().set(false);
+                chkAdmin.selectedProperty().set(false);
             }
 
             if (((JFXCheckBox) source).getText().equals("Manager"))
             {
                 chkVolunteer.selectedProperty().set(false);
                 chkManager.selectedProperty().set(true);
+                chkAdmin.selectedProperty().set(false);
+            }
+            
+            if(((JFXCheckBox) source).getText().equals("Admin"))
+            {
+                chkVolunteer.selectedProperty().set(false);
+                chkManager.selectedProperty().set(false);
+                chkAdmin.selectedProperty().set(true);
             }
         }
     }
