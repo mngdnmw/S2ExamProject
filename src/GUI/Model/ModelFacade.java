@@ -9,12 +9,9 @@ import BLL.BLLFacade;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javafx.animation.FadeTransition;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
@@ -24,20 +21,32 @@ public class ModelFacade
 {
 
     private static ModelFacade ModFac;
-    private final static GeneralInfoModel GEN_INFO_MOD = new GeneralInfoModel();
     private final static LoginModel LOG_MOD = new LoginModel();
     private final static AnimationModel ANIM_MOD = new AnimationModel();
     private final static LanguageModel LANG_MOD = new LanguageModel();
     private final static ViewChangerModel VIEW_CHANG_MOD = new ViewChangerModel();
     private final static VolunteerDataModel VOL_DATA_MOD = new VolunteerDataModel();
-    private ArrayList<User> allUsers = new ArrayList();
-    private ArrayList<Guild> allGuilds = new ArrayList();
     private final static BLLFacade BLL_FAC = new BLLFacade();
+
+    public static ModelFacade getModelFacade()
+    {
+        return ModFac;
+    }
+
+    public static void setModelFacade(ModelFacade modelfacade)
+    {
+        ModFac = modelfacade;
+    }
 
     //Login Model
     public Boolean logHours(String username, int hours, int guildId)
     {
         return LOG_MOD.logHours(username, hours, guildId);
+    }
+
+    public HashMap<String, String> loadSession()
+    {
+        return LOG_MOD.loadSession();
     }
 
     public void getUserFromLogin(String username, String password)
@@ -93,40 +102,6 @@ public class ModelFacade
         return ANIM_MOD.getLoadingScreen();
     }
 
-    //Data Model
-    public List<User> getAllVolunteersFromModel()
-    {
-
-        return allUsers;
-    }
-
-    public User getUserInfo(int userId)
-    {
-        return GEN_INFO_MOD.getUserInfo(userId);
-    }
-
-    public List<User> getAllUsers()
-    {
-        return GEN_INFO_MOD.getAllUsers();
-    }
-
-    public List<User> getAllVolunteers()
-    {
-        allUsers.clear();
-        allUsers.addAll(GEN_INFO_MOD.getAllVolunteers());
-        return allUsers;
-    }
-
-    public List<User> getAllManagers()
-    {
-        return GEN_INFO_MOD.getAllManagers();
-    }
-
-    public List<User> getAllAdmins()
-    {
-        return GEN_INFO_MOD.getAllAdmins();
-    }
-
     //Language Model
     public String getLang(String key)
     {
@@ -143,32 +118,59 @@ public class ModelFacade
         return LANG_MOD.getLangProperty();
     }
 
-    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence, String residence2)
+    public List<User> getAllVolunteers()
     {
-        GEN_INFO_MOD.updateUserInfo(userId, name, email, type, phone, note, residence, residence2);
-    }
-
-    public void updateUserImage(User user, File img) throws FileNotFoundException
-    {
-        GEN_INFO_MOD.updateUserImage(user, img);
-    }
-
-    public InputStream getUserImage(User user)
-    {
-        return GEN_INFO_MOD.getUserImage(user);
+        return BLL_FAC.getAllVolunteers();
     }
 
     public List<Guild> getAllGuilds()
     {
-        allGuilds.clear();
-        allGuilds.addAll(GEN_INFO_MOD.getAllGuilds());
-        return allGuilds;
-
+        return BLL_FAC.getAllGuilds();
     }
 
-    public List<Guild> getAllGuildsFromModel()
+    public User getUserInfo(int userId)
     {
-        return allGuilds;
+        return BLL_FAC.getUserInfo(userId);
+    }
+
+    public List<User> getAllUsers()
+    {
+        return BLL_FAC.getAllUsers();
+    }
+
+    public List<User> getAllManagers()
+    {
+        return BLL_FAC.getAllManagers();
+    }
+
+    public List<User> getAllAdmins()
+    {
+        return BLL_FAC.getAllAdmins();
+    }
+
+    public void updateUserInfo(int userId, String name, String email, int type, int phone, String note, String residence, String residence2)
+    {
+        BLL_FAC.updateUserInfo(userId, name, email, type, phone, note, residence, residence2);
+    }
+
+    public void updateUserImage(User user, File img) throws FileNotFoundException
+    {
+        BLL_FAC.updateUserImage(user, img);
+    }
+
+    public InputStream getUserImage(User user)
+    {
+        return BLL_FAC.getUserImage(user);
+    }
+
+    public void addUser(String name, String email, String password, int type, int phone, String residence, String residence2, String note)
+    {
+        BLL_FAC.addUser(name, email, password, type, phone, residence, residence2, note);
+    }
+
+    public Guild getGuild(int id)
+    {
+        return BLL_FAC.getGuild(id);
     }
 
     /**
@@ -178,43 +180,51 @@ public class ModelFacade
      * @param GUINumb
      *
      */
+    //Change view model
     public void changeView(int GUINumb)
     {
         VIEW_CHANG_MOD.changeView(GUINumb);
     }
 
-    public static ModelFacade getModelFacade()
-    {
-        return ModFac;
-    }
-
-    public static void setModelFacade(ModelFacade modelfacade)
-    {
-        ModFac = modelfacade;
-    }
-
-    public void addUser(String name, String email, String password, int type, int phone, String residence, String residence2, String note)
-    {
-        GEN_INFO_MOD.addUser(name, email, password, type, phone, residence, residence2, note);
-    }
-
+    //Volunteer data model
     public List<Day> getWorkedDays(User user)
     {
         return VOL_DATA_MOD.getWorkedDays(user);
     }
 
+    public List<User> getAllSavedVolunteers()
+    {
+        return VOL_DATA_MOD.getAllSavedVolunteers();
+    }
+
+    public void setAllVolunteersIntoArray()
+    {
+        VOL_DATA_MOD.setAllVolunteersIntoArray();
+    }
+
+    //BLL facade
     public int changePassword(User user, String oldPassword, String newPassword)
     {
         return BLL_FAC.changePassword(user, oldPassword, newPassword);
     }
 
-    public HashMap<String, String> loadSession()
+    public List<Guild> getGuildsForUser(User user)
     {
-        return LOG_MOD.loadSession();
+        return BLL_FAC.getGuildsForUser(user);
     }
-
-    public Guild getGuild(int id)
+    
+    public void addGuild(String name)
     {
-        return GEN_INFO_MOD.getGuild(id);
+        BLL_FAC.addGuild(name);
     }
-}
+    
+    public void deleteGuild(int guildId)
+    {
+        BLL_FAC.deleteGuild(guildId);
+    }
+    
+    public void updateGuild(int guildId, String name)
+    {
+        BLL_FAC.updateGuild(guildId, name);
+    }
+  }
