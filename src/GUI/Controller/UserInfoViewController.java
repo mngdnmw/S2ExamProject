@@ -93,7 +93,7 @@ public class UserInfoViewController implements Initializable
     private TableColumn<Day, Integer> colHours;
     @FXML
     private JFXListView<Guild> listVwGuilds;
-
+    //FXML Textfields
     @FXML
     TextField txtName;
     @FXML
@@ -104,7 +104,7 @@ public class UserInfoViewController implements Initializable
     TextField txtAddress;
     @FXML
     TextField txtAddress2;
-
+    //FXML Labels
     @FXML
     private Label lblOldPassword;
     @FXML
@@ -113,12 +113,12 @@ public class UserInfoViewController implements Initializable
     private Label lblNewPassword2;
     @FXML
     private JFXButton btnChangePWConfirm;
-
+    //Objects Used
     User currentUser;
     JFXPopup popup;
     JFXButton higherClearanceBtn = new JFXButton();
     JFXButton btnCancel = new JFXButton();
-
+    //Variables Used
     boolean editing = false;
     boolean isIncorrect = false;
     boolean finishedService;
@@ -136,7 +136,7 @@ public class UserInfoViewController implements Initializable
                 protected Object call() throws Exception
                 {
                     finishedService = false;
-                    MOD_FACADE.getAllVolunteers();
+                    MOD_FACADE.setAllVolunteersIntoArray();
                     finishedService = true;
                     return null;
 
