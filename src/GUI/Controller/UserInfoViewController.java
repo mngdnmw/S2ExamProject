@@ -94,7 +94,7 @@ public class UserInfoViewController implements Initializable
     private TableColumn<Day, Integer> colHours;
     @FXML
     private JFXListView<Guild> listVwGuilds;
-
+    //FXML Textfields
     @FXML
     TextField txtName;
     @FXML
@@ -105,7 +105,7 @@ public class UserInfoViewController implements Initializable
     TextField txtAddress;
     @FXML
     TextField txtAddress2;
-
+    //FXML Labels
     @FXML
     private Label lblOldPassword;
     @FXML
@@ -114,24 +114,43 @@ public class UserInfoViewController implements Initializable
     private Label lblNewPassword2;
     @FXML
     private JFXButton btnChangePWConfirm;
-
+    //Objects Used
     User currentUser;
     JFXPopup popup;
     JFXButton higherClearanceBtn = new JFXButton();
     @FXML
     JFXButton btnCancel = new JFXButton();
-
+    //Variables Used
     boolean editing = false;
     boolean isIncorrect = false;
     boolean finishedService;
     private final String STYLESHEET = "GUI/View/UserInfoCSS.css";
     private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
 
+    private final Service serviceAllVolunteers = new Service()
+    {
+        @Override
+        protected Task createTask()
+        {
+            return new Task()
+            {
+                @Override
+                protected Object call() throws Exception
+                {
+                    finishedService = false;
+                    MOD_FACADE.setAllVolunteersIntoArray();
+                    finishedService = true;
+                    return null;
+
+                }
+            };
+        }
+    };
+
     /**
      * Initializes the controller class.
      */
     @Override
-
     public void initialize(URL url, ResourceBundle rb)
     {
 
@@ -149,26 +168,6 @@ public class UserInfoViewController implements Initializable
         }
 
     }
-    private final Service serviceAllVolunteers = new Service()
-    {
-        @Override
-        protected Task createTask()
-        {
-            return new Task()
-            {
-                @Override
-                protected Object call() throws Exception
-                {
-                    finishedService = false;
-
-                    MOD_FACADE.setAllVolunteersIntoArray();
-                    finishedService = true;
-                    return null;
-
-                }
-            };
-        }
-    };
 
     public void setCurrentUser(User currentUser)
     {
@@ -186,21 +185,21 @@ public class UserInfoViewController implements Initializable
         FilteredList<Day> filteredData = new FilteredList<>(FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(currentUser)), p -> true);
 
         txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                ->
-        {
-            filteredData.setPredicate(day
-                    ->
-            {
-                String regex = "[^a-zA-Z0-9\\s]";
-                Boolean search
-                        = day.dateProperty().getValue().replaceAll(regex, "")
-                                .contains(newValue.replaceAll(regex, ""))
-                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
-                                contains(newValue.toLowerCase().replaceAll(regex, ""));
+                -> 
+                {
+                    filteredData.setPredicate(day
+                            -> 
+                            {
+                                String regex = "[^a-zA-Z0-9\\s]";
+                                Boolean search
+                                        = day.dateProperty().getValue().replaceAll(regex, "")
+                                        .contains(newValue.replaceAll(regex, ""))
+                                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                        contains(newValue.toLowerCase().replaceAll(regex, ""));
 
-                return search;
+                                return search;
 
-            });
+                    });
         });
 
         SortedList<Day> sortedData = new SortedList<>(filteredData);
@@ -282,11 +281,11 @@ public class UserInfoViewController implements Initializable
                 else
                 {
                     serviceAllVolunteers.setOnSucceeded(e
-                            ->
-                    {
+                            -> 
+                            {
 
-                        MOD_FACADE.changeView(GUIView);
-                        root.getChildren().remove(MOD_FACADE.getLoadingScreen());
+                                MOD_FACADE.changeView(GUIView);
+                                root.getChildren().remove(MOD_FACADE.getLoadingScreen());
 
                     });
 
