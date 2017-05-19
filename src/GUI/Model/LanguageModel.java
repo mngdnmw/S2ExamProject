@@ -1,24 +1,25 @@
 package GUI.Model;
 
 import BE.EnumCache.Lang;
-import BLL.Translation;
+import BLL.BLLFacade;
 
-public class LanguageModel extends Translation
+public class LanguageModel
 {
 
+    private final static BLLFacade bllFac = new BLLFacade();
+    
     public String getLang(String key)
     {
-        return super.get(key);
+        return bllFac.getLang(key);
     }
 
     public void setLang(Lang lang)
     {
-        super.set(lang);
+        bllFac.setLang(lang);
     }
 
-    @Override
     public Lang getLangProperty()
     {
-        return super.getLangProperty();
+        return bllFac.getLangProperty();
     }
 }

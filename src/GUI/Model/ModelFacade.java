@@ -111,7 +111,7 @@ public class ModelFacade
         return LANG_MOD.getLang(key);
     }
 
-    public void setLang(EnumCache.Lang lang)
+    public void setLang(Lang lang)
     {
         LANG_MOD.setLang(lang);
     }
