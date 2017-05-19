@@ -204,7 +204,7 @@
                         </JFXButton>
                      </children>
                   </VBox>
-                  <TableView fx:id="tableViewMain" prefHeight="225.0" prefWidth="371.0">
+                  <TableView fx:id="tableViewMain" onMouseClicked="#popupEditDelete" prefHeight="225.0" prefWidth="371.0">
                     <columns>
                       <TableColumn fx:id="colDate" prefWidth="127.0" style="-fx-alignment: CENTER;" text="Date" />
                       <TableColumn fx:id="colHours" prefWidth="56.0" style="-fx-alignment: CENTER;" text="Hours" />

@@ -18,6 +18,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Service;
@@ -117,6 +118,7 @@ public class UserInfoViewController implements Initializable
     User currentUser;
     JFXPopup popup;
     JFXButton higherClearanceBtn = new JFXButton();
+    @FXML
     JFXButton btnCancel = new JFXButton();
     //Variables Used
     boolean editing = false;
@@ -175,6 +177,7 @@ public class UserInfoViewController implements Initializable
     private void setupTableView()
     {
 
+        tableViewMain.setPlaceholder(new Label("Nothing found :("));
         colDate.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
         colHours.setCellValueFactory(val -> val.getValue().hourProperty().asObject());
         colGuild.setCellValueFactory(cellData -> cellData.getValue().guildProperty());
@@ -207,12 +210,7 @@ public class UserInfoViewController implements Initializable
 
     private void setupGuildList()
     {
-        for (Guild guild : MOD_FACADE.getGuildsForUser(currentUser))
-        {
-            System.out.println(guild.getName());
-
-        }
-        listVwGuilds.setItems(FXCollections.observableArrayList(MOD_FACADE.getGuildsForUser(currentUser)));
+        listVwGuilds.setItems(FXCollections.observableArrayList(currentUser.getGuildList()));
     }
 
     /**
@@ -370,8 +368,9 @@ public class UserInfoViewController implements Initializable
         txtAddress2.setEditable(true);
     }
 
-    private void saveInfo(User user) {
-        MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPhone.getText()), user.getNote(), txtAddress.getText(), txtAddress2.getText()); //do things in db
+    private void saveInfo(User user)
+    {
+        MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPhone.getText()), user.getNote(), txtAddress.getText(), txtAddress2.getText());
 
         currentUser = MOD_FACADE.getUserInfo(user.getId());
 
@@ -582,14 +581,19 @@ public class UserInfoViewController implements Initializable
     private void initPopup()
     {
         popup = new JFXPopup();
-        JFXButton b1 = new JFXButton("Edit");
-        JFXButton b2 = new JFXButton("Delete");
-        b1.setPadding(new Insets(10));
-        b1.setMaxWidth(Double.MAX_VALUE);
-        b2.setPadding(new Insets(10));
-        VBox vBox = new VBox(b1, b2);
+        JFXButton btnEdit = new JFXButton("Edit");
+        JFXButton btnDelete = new JFXButton("Delete");
+        btnEdit.setPadding(new Insets(10));
+        btnEdit.setMaxWidth(Double.MAX_VALUE);
+        btnDelete.setPadding(new Insets(10));
+        VBox vBox = new VBox(btnEdit, btnDelete);
         popup.setPopupContent(vBox);
-        b1.setOnAction(new EventHandler<ActionEvent>()
+        
+        ObservableList<Day> daysSelected, allDays;
+        allDays = tableViewMain.getItems();
+        daysSelected =tableViewMain.getSelectionModel().getSelectedItems();
+        
+        btnEdit.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
             public void handle(ActionEvent event)
@@ -598,13 +602,22 @@ public class UserInfoViewController implements Initializable
                 popup.hide();
             }
         });
+        
+        btnDelete.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event)
+            {
+                daysSelected.forEach(allDays::remove);
+            }
+            
+        });
 
     }
 
+    @FXML
     private void popupEditDelete(MouseEvent event)
     {
         MouseButton button = event.getButton();
-        System.out.println("clicked");
         if (button == MouseButton.SECONDARY)
         {
             initPopup();
