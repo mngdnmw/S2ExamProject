@@ -29,6 +29,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 
@@ -76,6 +77,10 @@ public class ManagerViewController implements Initializable
     private JFXCheckBox chkManagers;
     @FXML
     private JFXCheckBox chkVolunteers;
+    @FXML
+    private Tab tabVolunInfo;
+    @FXML
+    private Tab tabGraphStats;
 
     /**
      * Initializes the controller class.
@@ -382,6 +387,8 @@ public class ManagerViewController implements Initializable
         btnAddUser.setText(modelFacade.getLang("BTN_ADD_USER"));
         btnClose.setText(modelFacade.getLang("BTN_CLOSE"));
         btnEditInfo.setText(modelFacade.getLang("BTN_EDIT_INFO"));
+        chkManagers.setText(modelFacade.getLang("CHK_MANAGERS"));
+        chkVolunteers.setText(modelFacade.getLang("CHK_VOLUNTEERS"));
         
         lblUserName.setText(modelFacade.getLang("LBL_USERNAME"));
         lblNotes.setText(modelFacade.getLang("LBL_NOTES"));
@@ -390,5 +397,7 @@ public class ManagerViewController implements Initializable
         colEmail.setText(modelFacade.getLang("COL_EMAIL"));
         colPhone.setText(modelFacade.getLang("COL_PHONE"));
         colName.setText(modelFacade.getLang("COL_NAME"));
+        tabVolunInfo.setText(modelFacade.getLang("TAB_VOLUN_INFO"));
+        tabGraphStats.setText(modelFacade.getLang("TAB_GRAPH_STATS"));
     }
 }

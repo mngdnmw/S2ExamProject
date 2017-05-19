@@ -18,7 +18,7 @@
         <JFXComboBox fx:id="cmbGuildChooser" layoutX="517.0" layoutY="17.0" prefHeight="31.0" prefWidth="169.0" promptText="Guild Chooser" />
       <JFXTabPane layoutX="11.0" layoutY="58.0" prefHeight="435.0" prefWidth="678.0">
          <tabs>
-            <Tab text="Volunteer Information">
+            <Tab fx:id="tabVolunInfo" text="Volunteer Information">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -44,7 +44,7 @@
                   </AnchorPane>
               </content>
             </Tab>
-            <Tab text="Graphs &amp; Statistics">
+            <Tab fx:id="tabGraphStats" text="Graphs &amp; Statistics">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="678.0" />
               </content>
