@@ -18,8 +18,7 @@ import java.util.logging.Logger;
 public class LoginManager extends ConnectionManager
 {
 
-    private final HashMap<String, String> session = new HashMap<>();
-
+    private HashMap<String,String> session;
     /**
      * Logs hours into the database using userId, guildId, hours and date.
      *
@@ -122,28 +121,13 @@ public class LoginManager extends ConnectionManager
         props.setProperty("LAST_HOURS", String.valueOf(hours));
         super.saveConfig(props);
     }
-
-    public HashMap<String, String> loadSession()
-    {
-
-        if (props.getProperty("LAST_USER") != null)
-        {
-            if (!props.getProperty("LAST_USER").isEmpty())
-            {
+    
+    public HashMap<String,String> loadSession() {
+        if(props.getProperty("LAST_USER") != null && props.getProperty("LAST_GUILD") != null && props.getProperty("LAST_HOURS") != null) {
+            if(!props.getProperty("LAST_USER").isEmpty() && !props.getProperty("LAST_GUILD").isEmpty() && !props.getProperty("LAST_HOURS").isEmpty()) {
+                session = new HashMap<>();
                 session.put("lastuser", props.getProperty("LAST_USER"));
-            }
-        }
-        if (props.getProperty("LAST_GUILD") != null)
-        {
-            if (!props.getProperty("LAST_GUILD").isEmpty())
-            {
                 session.put("lastguild", props.getProperty("LAST_GUILD"));
-            }
-        }
-        if (props.getProperty("LAST_HOURS") != null)
-        {
-            if (!props.getProperty("LAST_HOURS").isEmpty())
-            {
                 session.put("lasthours", props.getProperty("LAST_HOURS"));
             }
         }

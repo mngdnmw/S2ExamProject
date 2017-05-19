@@ -85,21 +85,18 @@
                   <Insets bottom="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
             </JFXListView>
-            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
                <padding>
                   <Insets top="10.0" />
                </padding>
                <children>
                   <JFXCheckBox fx:id="chkVolunteer" checkedColor="#1cbf6e" contentDisplay="CENTER" onAction="#onChkBoxPressed" text="Volunteer" unCheckedColor="#949292">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                   </JFXCheckBox>
-                  <JFXCheckBox fx:id="chkManager" checkedColor="#1cbf6e" contentDisplay="CENTER" onAction="#onChkBoxPressed" text="Manager" unCheckedColor="#949292">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </JFXCheckBox>
+                  <JFXCheckBox fx:id="chkManager" checkedColor="#1cbf6e" contentDisplay="CENTER" onAction="#onChkBoxPressed" text="Manager" unCheckedColor="#949292" />
+                  <JFXCheckBox fx:id="chkAdmin" checkedColor="#1cbf6e" contentDisplay="CENTER" onAction="#onChkBoxPressed" text="Admin" unCheckedColor="#949292" />
                </children>
             </HBox>
             <Label prefHeight="17.0" prefWidth="44.0" style="-fx-background-color: #00c4ad;" text="Notes" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="TOP">
