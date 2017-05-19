@@ -4,9 +4,10 @@
 <?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.image.Image?>
@@ -22,7 +23,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
 
 
     <children>
@@ -127,38 +128,7 @@
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
       </JFXButton>
-      <Pane layoutX="13.0" layoutY="251.0" prefHeight="225.0" prefWidth="474.0">
-         <children>
-            <HBox fx:id="hBoxCalAll" layoutX="4.0" prefHeight="225.0" prefWidth="471.0">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="225.0" prefWidth="147.0" spacing="170.0">
-                     <children>
-                        <JFXTextField fx:id="txtFSearchDate" focusColor="#00c4ad" prefHeight="26.0" prefWidth="133.0" promptText="Search ">
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </JFXTextField>
-                        <JFXButton fx:id="btnLogout" buttonType="RAISED" onAction="#handleLogout" style="-fx-background-color: #B0B0B0;" text="Log Out" textFill="WHITE">
-                           <padding>
-                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                           </padding>
-                        </JFXButton>
-                     </children>
-                  </VBox>
-                  <JFXTreeTableView fx:id="treeViewAllHours" onMousePressed="#popupEditDelete" prefHeight="225.0" prefWidth="384.0" stylesheets="@UserInfoCSS.css">
-                     <HBox.margin>
-                        <Insets left="15.0" />
-                     </HBox.margin>
-                  </JFXTreeTableView>
-               </children>
-            </HBox>
-         </children>
-      </Pane>
-      <JFXListView fx:id="ListVwGuilds" layoutX="527.0" layoutY="277.0" maxWidth="141.0" prefHeight="127.0" prefWidth="141.0" style="-fx-border-width: 0px;" />
-      <Label fx:id="lblGuilds" layoutX="527.0" layoutY="260.0" style="-fx-background-color: #00c4ad;" text="Guilds:" textFill="WHITE" />
+      
       <StackPane fx:id="stckPanePasswordChanger" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="200.0" prefWidth="463.0" spacing="10.0" styleClass="loginwindow" stylesheets="@MainLayout.css">
@@ -209,5 +179,44 @@
             </VBox>
          </children>
       </StackPane>
+
+      <Pane layoutX="13.0" layoutY="251.0" prefHeight="225.0" prefWidth="474.0">
+         <children>
+            <HBox layoutX="4.0" prefHeight="225.0" prefWidth="471.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="225.0" prefWidth="145.0" spacing="170.0">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                     <children>
+                        <JFXTextField fx:id="txtFSearchDate" focusColor="#00c4ad" prefHeight="26.0" prefWidth="113.0" promptText="Search ">
+                           <padding>
+                              <Insets left="5.0" right="5.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </JFXTextField>
+                        <JFXButton fx:id="btnLogout" buttonType="RAISED" onAction="#handleLogout" style="-fx-background-color: #B0B0B0;" text="Log Out" textFill="WHITE">
+                           <padding>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </padding>
+                        </JFXButton>
+                     </children>
+                  </VBox>
+                  <TableView fx:id="tableViewMain" prefHeight="225.0" prefWidth="371.0">
+                    <columns>
+                      <TableColumn fx:id="colDate" prefWidth="127.0" style="-fx-alignment: CENTER;" text="Date" />
+                      <TableColumn fx:id="colHours" prefWidth="56.0" style="-fx-alignment: CENTER;" text="Hours" />
+                        <TableColumn fx:id="colGuild" prefWidth="159.0" style="-fx-alignment: CENTER;" text="Guild" />
+                    </columns>
+                  </TableView>
+               </children>
+            </HBox>
+         </children>
+      </Pane>
+      <JFXListView fx:id="listVwGuilds" layoutX="527.0" layoutY="277.0" maxWidth="141.0" prefHeight="127.0" prefWidth="141.0" style="-fx-border-width: 0px;" />
+      <Label fx:id="lblGuilds" layoutX="527.0" layoutY="260.0" style="-fx-background-color: #00c4ad;" text="Guilds:" textFill="WHITE" />
+
     </children>
 </AnchorPane>
