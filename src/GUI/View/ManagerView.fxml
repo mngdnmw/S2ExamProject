@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextArea?>
@@ -12,13 +13,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerViewController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerViewController">
     <children>
         <Label fx:id="lblUserName" layoutX="19.0" layoutY="22.0" prefHeight="17.0" prefWidth="508.0" text="Logged in as:" />
         <JFXComboBox fx:id="cmbGuildChooser" layoutX="517.0" layoutY="17.0" prefHeight="31.0" prefWidth="169.0" promptText="Guild Chooser" />
       <JFXTabPane layoutX="11.0" layoutY="58.0" prefHeight="435.0" prefWidth="678.0">
          <tabs>
-            <Tab text="Volunteer Information">
+            <Tab fx:id="tabVolunInfo" text="Volunteer Information">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -48,7 +49,7 @@
                   </AnchorPane>
               </content>
             </Tab>
-            <Tab text="Graphs &amp; Statistics">
+            <Tab fx:id="tabGraphStats" text="Graphs &amp; Statistics">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="678.0" />
               </content>

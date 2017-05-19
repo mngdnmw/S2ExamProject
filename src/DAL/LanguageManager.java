@@ -35,7 +35,7 @@ public class LanguageManager extends ConfigManager
         }
     }
 
-    protected Properties getLanguageFile()
+    public Properties getLanguageFile()
     {
         if (file != null)
         {
@@ -53,7 +53,7 @@ public class LanguageManager extends ConfigManager
         return null;
     }
 
-    protected Properties getLanguageFile(Lang lang)
+    public Properties getLanguageFile(Lang lang)
     {
 
         if (lang != null)
@@ -85,7 +85,7 @@ public class LanguageManager extends ConfigManager
         return null;
     }
 
-    protected Lang getLangProperty()
+    public Lang getLangProperty()
     {
         return langprop;
     }

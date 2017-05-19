@@ -1,6 +1,7 @@
 package BLL;
 
 import BE.Day;
+import BE.EnumCache.Lang;
 import BE.Guild;
 import BE.User;
 import DAL.DALFacade;
@@ -16,6 +17,7 @@ public class BLLFacade
 
     private final static DALFacade DAL_FAC = new DALFacade();
     private final static LoginHandler LOG_HAND = new LoginHandler();
+    private final static LanguageHandler LANG_HAND = new LanguageHandler();
 
     public User getUserFromLogin(String username, String password)
     {
@@ -125,5 +127,17 @@ public class BLLFacade
     public List<Guild> getGuildsForUser(User user)
     {
         return DAL_FAC.getGuildsForUser(user);
+    }
+    
+    public Lang getLangProperty() {
+        return LANG_HAND.getLangProperty();
+    }
+    
+    public String getLang(String key) {
+        return LANG_HAND.getLang(key);
+    }
+    
+    public void setLang(Lang lang) {
+        LANG_HAND.setLang(lang);
     }
 }

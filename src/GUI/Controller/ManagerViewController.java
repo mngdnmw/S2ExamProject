@@ -4,6 +4,7 @@ import BE.User;
 import GUI.Model.ModelFacade;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextArea;
@@ -77,7 +78,6 @@ public class ManagerViewController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
       {
-//        setTableProperties();
         setTextAll(); //this has to run before setting currently logged in username
         if (modelFacade.getCurrentUser() != null)
         {
@@ -85,7 +85,6 @@ public class ManagerViewController implements Initializable
         }
         setTableProperties();
         setTableItems();
-
     }
 
     private void setTableProperties()
@@ -102,6 +101,7 @@ public class ManagerViewController implements Initializable
             tblUsers.setItems(FXCollections.observableArrayList(modelFacade.getAllVolunteers()));
         }
         if(modelFacade.getCurrentUser().getType() == 2)
+
         {
             tblUsers.setItems(FXCollections.observableArrayList(modelFacade.getAllUsers()));
         }
@@ -351,6 +351,8 @@ public class ManagerViewController implements Initializable
         btnAddUser.setText(modelFacade.getLang("BTN_ADD_USER"));
         btnClose.setText(modelFacade.getLang("BTN_CLOSE"));
         btnEditInfo.setText(modelFacade.getLang("BTN_EDIT_INFO"));
+        chkManagers.setText(modelFacade.getLang("CHK_MANAGERS"));
+        chkVolunteers.setText(modelFacade.getLang("CHK_VOLUNTEERS"));
         
         lblUserName.setText(modelFacade.getLang("LBL_USERNAME"));
         lblNotes.setText(modelFacade.getLang("LBL_NOTES"));
@@ -359,5 +361,7 @@ public class ManagerViewController implements Initializable
         colEmail.setText(modelFacade.getLang("COL_EMAIL"));
         colPhone.setText(modelFacade.getLang("COL_PHONE"));
         colName.setText(modelFacade.getLang("COL_NAME"));
+        tabVolunInfo.setText(modelFacade.getLang("TAB_VOLUN_INFO"));
+        tabGraphStats.setText(modelFacade.getLang("TAB_GRAPH_STATS"));
     }
 }
