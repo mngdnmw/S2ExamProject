@@ -9,36 +9,34 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
-
 import javafx.animation.PauseTransition;
-
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
-
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.util.Callback;
 import javafx.util.Duration;
 
 public class ManagerViewController implements Initializable
@@ -61,129 +59,61 @@ public class ManagerViewController implements Initializable
     @FXML
     private JFXButton btnClose;
     @FXML
-    private JFXTreeTableView<User> tblUsers;
-
-    ModelFacade modelFacade = ModelFacade.getModelFacade();
-    User selectedUser;
+    private TableView<User> tblUsers;
     @FXML
     private JFXComboBox<?> cmbGuildChooser;
     @FXML
     private Label lblNotes;
-
-    JFXTreeTableColumn<User, String> colName = new JFXTreeTableColumn<>();
-    JFXTreeTableColumn<User, Integer> colPhone = new JFXTreeTableColumn<>();
-    JFXTreeTableColumn<User, String> colEmail = new JFXTreeTableColumn<>();
     @FXML
-    private JFXCheckBox chkManagers;
+    private TableColumn<User, String> colName;
     @FXML
-    private JFXCheckBox chkVolunteers;
+    private TableColumn<User, Integer> colPhone;
+    @FXML
+    private TableColumn<User, String> colEmail;
+    
+    ModelFacade modelFacade = ModelFacade.getModelFacade();
+    User selectedUser;
     @FXML
     private Tab tabVolunInfo;
     @FXML
+    private JFXCheckBox chkVolunteers;
+    @FXML
+    private JFXCheckBox chkManagers;
+    @FXML
     private Tab tabGraphStats;
-
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb)
       {
-//        setTableProperties();
         setTextAll(); //this has to run before setting currently logged in username
         if (modelFacade.getCurrentUser() != null)
         {
             lblUserName.setText(modelFacade.getLang("LBL_USERNAME") + modelFacade.getCurrentUser().getName());
         }
+        setTableProperties();
+        setTableItems();
+    }
 
-        showTreeTable();
-        chkVolunteers.selectedProperty().set(true);
-      }
-
-    /**
-     * Initialises the tree table containing information about the User
-     */
-    private void showTreeTable()
+    private void setTableProperties()
     {
-        //Need to do some threading for this method
+        colName.setCellValueFactory(new PropertyValueFactory("name"));
+        colPhone.setCellValueFactory(new PropertyValueFactory("phone"));
+        colEmail.setCellValueFactory(new PropertyValueFactory("email"));
+    }
 
-        //Name column set up
-        colName.prefWidthProperty().bind(tblUsers.widthProperty().divide(3));
-        colName.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<User, String>, ObservableValue<String>>()
+    public void setTableItems()
+    {
+        if(modelFacade.getCurrentUser().getType() == 1)
         {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<User, String> param)
-            {
-                return param.getValue().getValue().nameProperty();
-            }
-        });
+            tblUsers.setItems(FXCollections.observableArrayList(modelFacade.getAllVolunteers()));
+        }
+        if(modelFacade.getCurrentUser().getType() == 2)
 
-        //Phone column set up
-        colPhone.prefWidthProperty().bind(tblUsers.widthProperty().divide(3));
-        colPhone.setCellValueFactory((TreeTableColumn.CellDataFeatures<User, Integer> param) -> param.getValue().getValue().phoneProperty().asObject());
-
-        //Email column set up
-        colEmail.prefWidthProperty().bind(tblUsers.widthProperty().divide(3));
-        colEmail.setCellValueFactory((TreeTableColumn.CellDataFeatures<User, String> param) -> param.getValue().getValue().emailProperty());
-
-        /*//Guild column set up
-        JFXTreeTableColumn<Guild, String> colGuild = new JFXTreeTableColumn<>("Guild");
-        colGuild.prefWidthProperty().bind(tblUsers.widthProperty().divide(3));
-        colGuild.setCellValueFactory((TreeTableColumn.CellDataFeatures<Guild, String> param) -> param.getValue().getValue().getName());*/
-        tblUsers.setPlaceholder(new Label("Nothing found"));
-        
-        
-        ObservableList<User> users = FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers());
-        chkManagers.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(chkManagers.isSelected()) {
-                    users.addAll(FXCollections.observableArrayList(modelFacade.getAllSavedManagers()));
-                } else {
-                    users.removeAll(FXCollections.observableArrayList(modelFacade.getAllSavedManagers()));
-                }
-            }
-            
-        });
-        chkVolunteers.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(chkVolunteers.isSelected()) {
-                    users.addAll(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
-                } else {
-                    users.removeAll(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
-                }
-            }
-            
-        });
-
-        final TreeItem<User> rootOfTree = new RecursiveTreeItem<>(users, RecursiveTreeObject::getChildren);
-
-        colName.getStyleClass().add("col");
-        colPhone.getStyleClass().add("col");
-        colEmail.getStyleClass().add("col");
-
-        tblUsers.getColumns().setAll(colName, colPhone, colEmail);
-        tblUsers.setRoot(rootOfTree);
-        tblUsers.setShowRoot(false);
-
-        txtSearch.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                ->
         {
-            tblUsers.setPredicate((TreeItem<User> user)
-                    ->
-            {
-                String regex = "[^a-zA-Z0-9\\s]";
-                Boolean search
-                        = user.getValue().nameProperty().getValue().toLowerCase().replaceAll(regex, "")
-                                .contains(newValue.toLowerCase().replaceAll(regex, ""))
-                        || user.getValue().emailProperty().getValue().toLowerCase().replaceAll(regex, "").
-                                contains(newValue.toLowerCase().replaceAll(regex, ""))
-                        || user.getValue().phoneProperty().getValue().toString().replaceAll(regex, "")
-                                .contains(newValue.toLowerCase().replaceAll(regex, ""));
-
-                return search;
-            });
-        });
+            tblUsers.setItems(FXCollections.observableArrayList(modelFacade.getAllUsers()));
+        }
     }
 
     @FXML
@@ -217,7 +147,7 @@ public class ManagerViewController implements Initializable
                 {
                     System.out.println("Stage on Hiding");
 
-                    showTreeTable();
+                    setTableItems();
                 }
             });
 
@@ -226,8 +156,7 @@ public class ManagerViewController implements Initializable
                 public void handle(WindowEvent we)
                 {
                     System.out.println("Stage is closing");
-                    //setTableItems();
-                    showTreeTable();
+                    setTableItems();
                 }
             });
 
@@ -251,7 +180,7 @@ public class ManagerViewController implements Initializable
         {
             try
             {
-                selectedUser = tblUsers.getSelectionModel().getSelectedItem().getValue();
+                selectedUser = tblUsers.getSelectionModel().getSelectedItem();
                 Stage primStage = (Stage) tblUsers.getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/ManagerEditView.fxml"));
                 ManagerEditViewController.setSelectedUser(selectedUser);
@@ -271,8 +200,7 @@ public class ManagerViewController implements Initializable
                     public void handle(WindowEvent we)
                     {
                         System.out.println("Stage on Hiding");
-                        //setTableItems();
-                        showTreeTable();
+                        setTableItems();
                     }
                 });
 
@@ -281,8 +209,7 @@ public class ManagerViewController implements Initializable
                     public void handle(WindowEvent we)
                     {
                         System.out.println("Stage is closing");
-                        //setTableItems();
-                        showTreeTable();
+                        setTableItems();
                     }
                 });
 
@@ -309,14 +236,14 @@ public class ManagerViewController implements Initializable
 
         if (event.isPrimaryButtonDown() && event.getClickCount() == 1)
         {
-            selectedUser = tblUsers.getSelectionModel().getSelectedItem().getValue();
+            selectedUser = tblUsers.getSelectionModel().getSelectedItem();
 
             txtNotes.setText(selectedUser.getNote());
         } else if (event.isPrimaryButtonDown() && event.getClickCount() == 2)
         {
             try
             {
-                selectedUser = tblUsers.getSelectionModel().getSelectedItem().getValue();
+                selectedUser = tblUsers.getSelectionModel().getSelectedItem();
                 Stage primStage = (Stage) tblUsers.getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/ManagerEditView.fxml"));
 
@@ -337,8 +264,7 @@ public class ManagerViewController implements Initializable
                     public void handle(WindowEvent we)
                     {
                         System.out.println("Stage on Hiding");
-                        //setTableItems();
-                        showTreeTable();
+                        setTableItems();
                     }
                 });
 
@@ -347,8 +273,7 @@ public class ManagerViewController implements Initializable
                     public void handle(WindowEvent we)
                     {
                         System.out.println("Stage is closing");
-                        //setTableItems();
-                        showTreeTable();
+                        setTableItems();
                     }
                 });
 
@@ -361,6 +286,54 @@ public class ManagerViewController implements Initializable
                 System.out.println(e);
             }
         }
+        
+        
+        selectedUser = tblUsers.getSelectionModel().getSelectedItem();
+        
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem thisEmailItem = new MenuItem("Copy this email to clipboard");
+        contextMenu.getItems().add(thisEmailItem);
+        MenuItem allEmailItem = new MenuItem("Copy all emails to clipboard");
+        contextMenu.getItems().add(allEmailItem);
+        
+        tblUsers.setContextMenu(contextMenu);
+        
+        EventHandler thisEmailEvent = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                final Clipboard clipboard = Clipboard.getSystemClipboard();
+                final ClipboardContent content = new ClipboardContent();
+                content.putString(selectedUser.getEmail());
+                clipboard.setContent(content);
+                System.out.println("This email to clipboard");
+            }
+        };
+        thisEmailItem.setOnAction(thisEmailEvent);
+        
+        EventHandler allEmailEvent = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                TableColumn<User, String> column = colEmail;
+
+                List<String> columnData = new ArrayList<>();
+                for (User item : tblUsers.getItems())
+                {
+                    columnData.add(colEmail.getCellObservableValue(item).getValue());
+                    System.out.println(columnData);
+                }
+                final Clipboard clipboard = Clipboard.getSystemClipboard();
+                final ClipboardContent content = new ClipboardContent();
+                content.putString(columnData.toString());
+                clipboard.setContent(content);
+                System.out.println("All Emails to Clipboard");
+            }
+        };
+        
+        allEmailItem.setOnAction(allEmailEvent);
     }
 
     @FXML

@@ -162,7 +162,7 @@
             <Reflection fraction="0.11" topOffset="-4.0" topOpacity="0.35" />
          </effect>
       </ImageView>
-      <JFXButton fx:id="JFXBtnUpdatePhoto" buttonType="RAISED" layoutX="530.0" layoutY="180.0" maxHeight="30.0" minHeight="-Infinity" onAction="#onBtnUpdatePhotoPressed" prefHeight="19.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Update Photo" textFill="WHITE">
+      <JFXButton fx:id="JFXBtnUpdatePhoto" buttonType="RAISED" layoutX="530.0" layoutY="180.0" maxHeight="30.0" minHeight="-Infinity" onAction="#onBtnUpdatePhotoPressed" prefHeight="25.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Update Photo" textFill="WHITE">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
