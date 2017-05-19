@@ -5,9 +5,10 @@
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -28,7 +29,6 @@
                               </font>
                           </Label>
                           <JFXTextField fx:id="txtSearch" focusColor="#00e2c7" layoutX="2.0" layoutY="15.0" prefHeight="29.0" prefWidth="171.0" promptText="Search user.." />
-                          <JFXTreeTableView fx:id="tblUsers" layoutY="55.0" onMousePressed="#onTablePressed" prefHeight="297.0" prefWidth="446.0" />
                           <JFXButton fx:id="btnAddUser" buttonType="RAISED" layoutX="14.0" layoutY="362.0" onAction="#onBtnAddUserClicked" prefHeight="31.0" prefWidth="119.0" style="-fx-background-color: #029E99;" text="Add User" textFill="WHITE">
                               <font>
                                   <Font name="System Bold" size="15.0" />
@@ -37,6 +37,13 @@
                           <JFXButton fx:id="btnAddHours" buttonType="RAISED" disable="true" layoutX="149.0" layoutY="362.0" prefWidth="120.0" style="-fx-background-color: #00c4ad;" text="Add Hours" textFill="WHITE" />
                           <JFXButton fx:id="btnEditInfo" buttonType="RAISED" layoutX="284.0" layoutY="362.0" onAction="#onEditInfoPressed" prefHeight="31.0" prefWidth="147.0" style="-fx-background-color: #00c4ad;" text="Edit Information" textFill="WHITE" />
                           <JFXTextArea fx:id="txtNotes" editable="false" focusColor="#00e2c7" layoutX="459.0" layoutY="57.0" prefHeight="287.0" prefWidth="220.0" stylesheets="@MainLayout.css" />
+                        <TableView fx:id="tblUsers" layoutX="2.0" layoutY="57.0" prefHeight="293.0" prefWidth="451.0">
+                          <columns>
+                            <TableColumn fx:id="colName" prefWidth="148.0" text="Name" />
+                            <TableColumn fx:id="colPhone" prefWidth="130.0" text="Phone" />
+                              <TableColumn fx:id="colEmail" prefWidth="171.0" text="Email" />
+                          </columns>
+                        </TableView>
                      </children>
                   </AnchorPane>
               </content>

@@ -28,8 +28,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -59,19 +62,20 @@ public class ManagerViewController implements Initializable
     @FXML
     private JFXButton btnClose;
     @FXML
-    private JFXTreeTableView<User> tblUsers;
-
-    ModelFacade modelFacade = ModelFacade.getModelFacade();
-    User selectedUser;
+    private TableView<User> tblUsers;
     @FXML
     private JFXComboBox<?> cmbGuildChooser;
     @FXML
     private Label lblNotes;
-
-    JFXTreeTableColumn<User, String> colName = new JFXTreeTableColumn<>();
-    JFXTreeTableColumn<User, Integer> colPhone = new JFXTreeTableColumn<>();
-    JFXTreeTableColumn<User, String> colEmail = new JFXTreeTableColumn<>();
-
+    @FXML
+    private TableColumn<User, String> colName;
+    @FXML
+    private TableColumn<User, Integer> colPhone;
+    @FXML
+    private TableColumn<User, String> colEmail;
+    
+    ModelFacade modelFacade = ModelFacade.getModelFacade();
+    User selectedUser;
     /**
      * Initializes the controller class.
      */
@@ -84,72 +88,28 @@ public class ManagerViewController implements Initializable
         {
             lblUserName.setText(modelFacade.getLang("LBL_USERNAME") + modelFacade.getCurrentUser().getName());
         }
+        setTableProperties();
+        setTableItems();
 
-        showTreeTable();
     }
 
-    /**
-     * Initialises the tree table containing information about the User
-     */
-    private void showTreeTable()
+    private void setTableProperties()
     {
-        //Need to do some threading for this method
+        colName.setCellValueFactory(new PropertyValueFactory("name"));
+        colPhone.setCellValueFactory(new PropertyValueFactory("phone"));
+        colEmail.setCellValueFactory(new PropertyValueFactory("email"));
+    }
 
-        //Name column set up
-        colName.prefWidthProperty().bind(tblUsers.widthProperty().divide(3));
-        colName.setCellValueFactory(new Callback<TreeTableColumn.CellDataFeatures<User, String>, ObservableValue<String>>()
+    public void setTableItems()
+    {
+        if(modelFacade.getCurrentUser().getType() == 1)
         {
-            @Override
-            public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<User, String> param)
-            {
-                return param.getValue().getValue().nameProperty();
-            }
-        });
-
-        //Phone column set up
-        colPhone.prefWidthProperty().bind(tblUsers.widthProperty().divide(3));
-        colPhone.setCellValueFactory((TreeTableColumn.CellDataFeatures<User, Integer> param) -> param.getValue().getValue().phoneProperty().asObject());
-
-        //Email column set up
-        colEmail.prefWidthProperty().bind(tblUsers.widthProperty().divide(3));
-        colEmail.setCellValueFactory((TreeTableColumn.CellDataFeatures<User, String> param) -> param.getValue().getValue().emailProperty());
-
-        /*//Guild column set up
-        JFXTreeTableColumn<Guild, String> colGuild = new JFXTreeTableColumn<>("Guild");
-        colGuild.prefWidthProperty().bind(tblUsers.widthProperty().divide(3));
-        colGuild.setCellValueFactory((TreeTableColumn.CellDataFeatures<Guild, String> param) -> param.getValue().getValue().getName());*/
-        tblUsers.setPlaceholder(new Label("Nothing found"));
-
-        ObservableList<User> volunteers = FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers());
-
-        final TreeItem<User> rootOfTree = new RecursiveTreeItem<>(volunteers, RecursiveTreeObject::getChildren);
-
-        colName.getStyleClass().add("col");
-        colPhone.getStyleClass().add("col");
-        colEmail.getStyleClass().add("col");
-
-        tblUsers.getColumns().setAll(colName, colPhone, colEmail);
-        tblUsers.setRoot(rootOfTree);
-        tblUsers.setShowRoot(false);
-
-        txtSearch.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                ->
+            tblUsers.setItems(FXCollections.observableArrayList(modelFacade.getAllVolunteers()));
+        }
+        if(modelFacade.getCurrentUser().getType() == 2)
         {
-            tblUsers.setPredicate((TreeItem<User> user)
-                    ->
-            {
-                String regex = "[^a-zA-Z0-9\\s]";
-                Boolean search
-                        = user.getValue().nameProperty().getValue().toLowerCase().replaceAll(regex, "")
-                                .contains(newValue.toLowerCase().replaceAll(regex, ""))
-                        || user.getValue().emailProperty().getValue().toLowerCase().replaceAll(regex, "").
-                                contains(newValue.toLowerCase().replaceAll(regex, ""))
-                        || user.getValue().phoneProperty().getValue().toString().replaceAll(regex, "")
-                                .contains(newValue.toLowerCase().replaceAll(regex, ""));
-
-                return search;
-            });
-        });
+            tblUsers.setItems(FXCollections.observableArrayList(modelFacade.getAllUsers()));
+        }
     }
 
     @FXML
@@ -183,7 +143,7 @@ public class ManagerViewController implements Initializable
                 {
                     System.out.println("Stage on Hiding");
 
-                    showTreeTable();
+                    setTableItems();
                 }
             });
 
@@ -192,8 +152,7 @@ public class ManagerViewController implements Initializable
                 public void handle(WindowEvent we)
                 {
                     System.out.println("Stage is closing");
-                    //setTableItems();
-                    showTreeTable();
+                    setTableItems();
                 }
             });
 
@@ -217,7 +176,7 @@ public class ManagerViewController implements Initializable
         {
             try
             {
-                selectedUser = tblUsers.getSelectionModel().getSelectedItem().getValue();
+                selectedUser = tblUsers.getSelectionModel().getSelectedItem();
                 Stage primStage = (Stage) tblUsers.getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/ManagerEditView.fxml"));
                 ManagerEditViewController.setSelectedUser(selectedUser);
@@ -237,8 +196,7 @@ public class ManagerViewController implements Initializable
                     public void handle(WindowEvent we)
                     {
                         System.out.println("Stage on Hiding");
-                        //setTableItems();
-                        showTreeTable();
+                        setTableItems();
                     }
                 });
 
@@ -247,8 +205,7 @@ public class ManagerViewController implements Initializable
                     public void handle(WindowEvent we)
                     {
                         System.out.println("Stage is closing");
-                        //setTableItems();
-                        showTreeTable();
+                        setTableItems();
                     }
                 });
 
@@ -268,21 +225,20 @@ public class ManagerViewController implements Initializable
         }
     }
 
-    @FXML
     private void onTablePressed(MouseEvent event)
     {
         selectedUser = null;
 
         if (event.isPrimaryButtonDown() && event.getClickCount() == 1)
         {
-            selectedUser = tblUsers.getSelectionModel().getSelectedItem().getValue();
+            selectedUser = tblUsers.getSelectionModel().getSelectedItem();
 
             txtNotes.setText(selectedUser.getNote());
         } else if (event.isPrimaryButtonDown() && event.getClickCount() == 2)
         {
             try
             {
-                selectedUser = tblUsers.getSelectionModel().getSelectedItem().getValue();
+                selectedUser = tblUsers.getSelectionModel().getSelectedItem();
                 Stage primStage = (Stage) tblUsers.getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/ManagerEditView.fxml"));
 
@@ -303,8 +259,7 @@ public class ManagerViewController implements Initializable
                     public void handle(WindowEvent we)
                     {
                         System.out.println("Stage on Hiding");
-                        //setTableItems();
-                        showTreeTable();
+                        setTableItems();
                     }
                 });
 
@@ -313,8 +268,7 @@ public class ManagerViewController implements Initializable
                     public void handle(WindowEvent we)
                     {
                         System.out.println("Stage is closing");
-                        //setTableItems();
-                        showTreeTable();
+                        setTableItems();
                     }
                 });
 
