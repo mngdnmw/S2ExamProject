@@ -12,10 +12,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class HourManager extends ConnectionManager
-  {
+{
 
     public List<Day> getWorkedDays(User user)
-      {
+    {
         ArrayList<Day> workedDays = new ArrayList<>();
 
         int userId = user.getId();
@@ -25,11 +25,11 @@ public class HourManager extends ConnectionManager
                 + "WHERE [h].[userid] = " + userId + "AND [g].[guildid] = [h].[guildid]";
 
         try (Connection con = super.getConnection())
-          {
+        {
             PreparedStatement pstmt = con.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next())
-              {
+            {
 
                 String dateString = rs.getDate("date").toString();
                 int hours = rs.getInt("hours");
@@ -39,15 +39,14 @@ public class HourManager extends ConnectionManager
                 Day dayworked = new Day(dateString, hours, guild);
                 workedDays.add(dayworked);
 
-              }
-          }
-        catch (SQLException ex)
-          {
+            }
+        } catch (SQLException ex)
+        {
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
             System.err.print(ex + "Can't get list of days worked!!!");
-          }
+        }
 
         return workedDays;
-      }
+    }
 
-  }
+}

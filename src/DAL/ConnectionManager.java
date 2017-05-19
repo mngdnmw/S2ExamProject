@@ -10,13 +10,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ConnectionManager extends ConfigManager
-  {
+{
 
     //private static final String CONFIG_FILE_NAME = "src//Resources//Connection.cfg";
     private final SQLServerDataSource ds;
 
     public ConnectionManager()
-      {
+    {
         /*Properties props = new Properties();
         try
           {
@@ -34,12 +34,11 @@ public class ConnectionManager extends ConfigManager
         ds.setPortNumber(Integer.parseInt(props.getProperty("PORT")));
         ds.setUser(props.getProperty("USER"));
         ds.setPassword(props.getProperty("PASSWORD"));
-        System.out.println("Connection Established to database");
     }
-    
+
     protected Connection getConnection() throws SQLServerException
     {
         return ds.getConnection();
-      }
+    }
 
-  }
+}

@@ -5,14 +5,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
 public class ViewChangerModel
-  {
+{
 
     private String ViewPath = "GUI/View/";
     private String HourLoginString = "HourLoginView.fxml";
@@ -33,12 +32,12 @@ public class ViewChangerModel
      *
      */
     public void changeView(int GUINumb)
-      {
+    {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource(switcher(GUINumb)));
 
         try
-          {
+        {
             Pane page = (Pane) loader.load();
             Stage nxtStage = new Stage();
             nxtStage.initOwner(stage);
@@ -47,18 +46,17 @@ public class ViewChangerModel
             nxtStage.setScene(scene);
             nxtStage.show();
             nxtStage.setTitle(title);
-          }
-        catch (IOException ex)
-          {
+        } catch (IOException ex)
+        {
             Logger.getLogger(ViewChangerModel.class.getName()).log(Level.SEVERE, null, ex);
-          }
+        }
 
-      }
+    }
 
     private String switcher(int GUINumb)
-      {
+    {
         switch (GUINumb)
-          {
+        {
             case 0:
                 title = "VMS - User Information";
                 return ViewPath + UserInfoString;
@@ -75,7 +73,7 @@ public class ViewChangerModel
                 title = "VMS - Add New volunteer";
                 return ViewPath + ManagerAddUserString;
 
-          }
+        }
         return null;
-      }
-  }
+    }
+}
