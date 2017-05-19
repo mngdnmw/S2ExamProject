@@ -89,9 +89,18 @@ public class LoginManager extends ConnectionManager
                 switch (type)
                 {
                     case 0:
-
+                        GeneralInfoManager genInfoMan = new GeneralInfoManager();
+                        guilds.addAll(genInfoMan.getGuildsForUser(id));
                         return new Volunteer(id, name, email, phone, note, residence, residence2, guilds);
                     case 1:
+                        String query2 = "SELECT * FROM [guild] WHERE [guild].[guildid] in "
+                                + "(SELECT [managerguild].[guildid] FROM [managerguild] WHERE [managerguild].[managerid] =" + id + ")";
+                        PreparedStatement pstmt2 = con.prepareStatement(query2);
+                        ResultSet rs2 = pstmt2.executeQuery();
+                        while (rs2.next())
+                        {
+                            guilds.add(new Guild(rs2.getInt("guildid"), rs2.getString("name")));
+                        }
                         return new Manager(id, name, email, phone, note, residence, residence2, guilds);
                     case 2:
                         return new Admin(id, name, email, phone, note, residence, residence2, guilds);
