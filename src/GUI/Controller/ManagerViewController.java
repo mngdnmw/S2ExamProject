@@ -13,6 +13,8 @@ import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.animation.PauseTransition;
@@ -21,18 +23,23 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -225,6 +232,7 @@ public class ManagerViewController implements Initializable
         }
     }
 
+    @FXML
     private void onTablePressed(MouseEvent event)
     {
         selectedUser = null;
@@ -281,6 +289,54 @@ public class ManagerViewController implements Initializable
                 System.out.println(e);
             }
         }
+        
+        
+        selectedUser = tblUsers.getSelectionModel().getSelectedItem();
+        
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem thisEmailItem = new MenuItem("Copy this email to clipboard");
+        contextMenu.getItems().add(thisEmailItem);
+        MenuItem allEmailItem = new MenuItem("Copy all emails to clipboard");
+        contextMenu.getItems().add(allEmailItem);
+        
+        tblUsers.setContextMenu(contextMenu);
+        
+        EventHandler thisEmailEvent = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                final Clipboard clipboard = Clipboard.getSystemClipboard();
+                final ClipboardContent content = new ClipboardContent();
+                content.putString(selectedUser.getEmail());
+                clipboard.setContent(content);
+                System.out.println("This email to clipboard");
+            }
+        };
+        thisEmailItem.setOnAction(thisEmailEvent);
+        
+        EventHandler allEmailEvent = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                TableColumn<User, String> column = colEmail;
+
+                List<String> columnData = new ArrayList<>();
+                for (User item : tblUsers.getItems())
+                {
+                    columnData.add(colEmail.getCellObservableValue(item).getValue());
+                    System.out.println(columnData);
+                }
+                final Clipboard clipboard = Clipboard.getSystemClipboard();
+                final ClipboardContent content = new ClipboardContent();
+                content.putString(columnData.toString());
+                clipboard.setContent(content);
+                System.out.println("All Emails to Clipboard");
+            }
+        };
+        
+        allEmailItem.setOnAction(allEmailEvent);
     }
 
     @FXML
