@@ -138,6 +138,7 @@ public class UserInfoViewController implements Initializable
                 {
                     finishedService = false;
                     MOD_FACADE.setAllVolunteersIntoArray();
+                    MOD_FACADE.setAllManagersIntoArray();
                     finishedService = true;
                     return null;
 
@@ -335,7 +336,7 @@ public class UserInfoViewController implements Initializable
             btnEditSave.setText(MOD_FACADE.getLang("BTN_EDIT"));
             checkTextFields();
             removeCancelButton();
-
+            btnEditSave.setStyle("-fx-background-color:#00c4ad;");
         }
     }
 
@@ -460,7 +461,7 @@ public class UserInfoViewController implements Initializable
         btnEditSave.setStyle("-fx-background-color: #61B329;");
         GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) - 1); //moving save button one up
 
-        btnCancel.setText("Cancel"); //preparing cancel button
+        btnCancel.setText(MOD_FACADE.getLang("BTN_CANCEL")); //preparing cancel button
         btnCancel.setButtonType(JFXButton.ButtonType.RAISED);
         btnCancel.setStyle("-fx-background-color: #ff0000;");
         btnCancel.setTextFill(Color.WHITE);
@@ -480,7 +481,7 @@ public class UserInfoViewController implements Initializable
 
                 removeCancelButton(); //if cancel button clicked, it will disappear
                 editing = false;
-                btnEditSave.setText("Edit");
+                btnEditSave.setText(MOD_FACADE.getLang("BTN_EDIT"));
                 btnEditSave.setStyle("-fx-background-color:#00c4ad;");
 
             }
@@ -494,7 +495,6 @@ public class UserInfoViewController implements Initializable
         if (btnEditSave.isDisabled())
         {
             btnEditSave.setDisable(false);
-
         }
     }
 
@@ -578,8 +578,8 @@ public class UserInfoViewController implements Initializable
     private void initPopup()
     {
         popup = new JFXPopup();
-        JFXButton btnEdit = new JFXButton("Edit");
-        JFXButton btnDelete = new JFXButton("Delete");
+        JFXButton btnEdit = new JFXButton(MOD_FACADE.getLang("BTN_EDIT"));
+        JFXButton btnDelete = new JFXButton(MOD_FACADE.getLang("BTN_DELETE"));
         btnEdit.setPadding(new Insets(10));
         btnEdit.setMaxWidth(Double.MAX_VALUE);
         btnDelete.setPadding(new Insets(10));

@@ -96,16 +96,12 @@ public class HourLoginViewController implements Initializable
     JFXButton btnDanish = new JFXButton();
     JFXButton btnEnglish = new JFXButton();
     boolean loggingIn = false;
-    private final Service serviceLog = new Service()
-    {
+    private final Service serviceLog = new Service() {
         @Override
-        protected Task createTask()
-        {
-            return new Task()
-            {
+        protected Task createTask() {
+            return new Task() {
                 @Override
-                protected Object call() throws Exception
-                {
+                protected Object call() throws Exception {
                     loginEvent();
                     
                     return null;
@@ -113,16 +109,12 @@ public class HourLoginViewController implements Initializable
             };
         }
     };
-    private final Service serviceHours = new Service()
-    {
+    private final Service serviceHours = new Service() {
         @Override
-        protected Task createTask()
-        {
-            return new Task()
-            {
+        protected Task createTask() {
+            return new Task() {
                 @Override
-                protected Object call() throws Exception
-                {
+                protected Object call() throws Exception {
                     logHours();
                     return null;
                 }
@@ -133,8 +125,7 @@ public class HourLoginViewController implements Initializable
     private Label lblPassword;
     
     @Override
-    public void initialize(URL url, ResourceBundle rb)
-    {
+    public void initialize(URL url, ResourceBundle rb) {
         preloadImages();
         imgViewLngBut.setImage(iconENG);
         btnLanguage.setGraphic(imgViewLngBut);
@@ -196,34 +187,22 @@ public class HourLoginViewController implements Initializable
         txtHours.textProperty().addListener(new ChangeListener<String>()
         {
             @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
-            {
-                try
-                {
-                    if (newValue.matches("\\d*") && newValue.length() < 3)
-                    {
-                        if (Integer.parseInt(newValue) >= 25)
-                        {
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                try {
+                    if (newValue.matches("\\d*") && newValue.length() < 3) {
+                        if (Integer.parseInt(newValue) >= 25) {
                             snackBarPopup("You Cannot Exceed 24 hours");
                             txtHours.setText(oldValue);
-                        }
-                        else if (Integer.parseInt(newValue) <= 0)
-                        {
+                        } else if (Integer.parseInt(newValue) <= 0) {
                             snackBarPopup("You Cannot log 0 hours");
                             txtHours.setText(oldValue);
-                        }
-                        else
-                        {
+                        } else {
                             int value = Integer.parseInt(newValue);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         txtHours.setText(oldValue);
                     }
-                }
-                catch (NumberFormatException ex)
-                {
+                } catch (NumberFormatException ex) {
                     //do nothing
                 }
             }
@@ -234,23 +213,18 @@ public class HourLoginViewController implements Initializable
         {
             
             @Override
-            public String toString(Guild object)
-            {
-                if (object == null)
-                {
+            public String toString(Guild object) {
+                if (object == null) {
                     return null;
                 }
                 return object.toString();
             }
             
             @Override
-            public Guild fromString(String string)
-            {
+            public Guild fromString(String string) {
                 Guild findGuild = null;
-                for (Guild guild : cmbGuildChooser.getItems())
-                {
-                    if (guild.getName().equals(string))
-                    {
+                for (Guild guild : cmbGuildChooser.getItems()) {
+                    if (guild.getName().equals(string)) {
                         return guild;
                     }
                     
@@ -263,8 +237,7 @@ public class HourLoginViewController implements Initializable
     /**
      * pops up a bordered VBox that disappear after a short moment.
      */
-    public void snackBarPopup(String str)
-    {
+    public void snackBarPopup(String str) {
         int time = 3000;
         JFXSnackbar snackbar = new JFXSnackbar(root);
         snackbar.show(str, time);
@@ -280,8 +253,7 @@ public class HourLoginViewController implements Initializable
      * Pops up a login view that plays a short fade in transition. Contains
      * event for the buttons that are within.
      */
-    public void loginPopup()
-    {
+    public void loginPopup() {
         //popup for the login
         loginWindow.visibleProperty().set(true);
         ancDarken.visibleProperty().set(true);
@@ -294,19 +266,15 @@ public class HourLoginViewController implements Initializable
         }
         
         txtPassword.setOnKeyPressed((event)
-                -> 
-                {
-                    if (event.getCode() == KeyCode.ENTER)
-                    {
-                        if (!txtUsername.getText().isEmpty())
-                        {
-                            serviceLog.restart();
-                            loadingScreen(true);
-                        }
-                    }
+                -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                if (!txtUsername.getText().isEmpty()) {
+                    serviceLog.restart();
+                    loadingScreen(true);
+                }
+            }
         });
-        btnLogin.setOnAction(new EventHandler<ActionEvent>()
-        {
+        btnLogin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e)
             {
@@ -321,12 +289,10 @@ public class HourLoginViewController implements Initializable
         );
         
         btnCancel.setOnAction(
-                new EventHandler<ActionEvent>()
-        {
+                new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e
-            )
-            {
+            ) {
                 MOD_FACADE.fadeOutTransition(Duration.millis(500), loginWindow)
                         .setOnFinished(
                                 ev -> hideLoginWind()
@@ -342,8 +308,7 @@ public class HourLoginViewController implements Initializable
     /**
      * Pops up with a language selector
      */
-    public void languagePopup()
-    {
+    public void languagePopup() {
         //contains buttons = languages
         AnchorPane anch = new AnchorPane();
         int size = 75;
@@ -355,18 +320,13 @@ public class HourLoginViewController implements Initializable
         popup.setPrefSize(size, size);
         popup.setMaxSize(size * 3, size * 3);
         anch.getChildren().add(popup);
-        EventHandler changeLanguageHandler = new EventHandler<ActionEvent>()
-        {
+        EventHandler changeLanguageHandler = new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
-                if (event.getSource().equals(btnDanish))
-                {
+            public void handle(ActionEvent event) {
+                if (event.getSource().equals(btnDanish)) {
                     MOD_FACADE.setLang(Lang.DAN);
                     imgViewLngBut.setImage(iconDK);
-                }
-                else if (event.getSource().equals(btnEnglish))
-                {
+                } else if (event.getSource().equals(btnEnglish)) {
                     MOD_FACADE.setLang(Lang.ENG);
                     imgViewLngBut.setImage(iconENG);
                 }
@@ -452,9 +412,7 @@ public class HourLoginViewController implements Initializable
         if (MOD_FACADE.getLangProperty().equals(Lang.ENG))
         {
             imgViewLngBut.setImage(iconENG);
-        }
-        else if (MOD_FACADE.getLangProperty().equals(Lang.DAN))
-        {
+        } else if (MOD_FACADE.getLangProperty().equals(Lang.DAN)) {
             imgViewLngBut.setImage(iconDK);
         }
         
@@ -464,8 +422,7 @@ public class HourLoginViewController implements Initializable
     {
         
         MOD_FACADE.getUserFromLogin(txtUsername.getText(), txtPassword.getText());
-        Platform.runLater(new Runnable()
-        {
+        Platform.runLater(new Runnable() {
             @Override
             public void run()
             {

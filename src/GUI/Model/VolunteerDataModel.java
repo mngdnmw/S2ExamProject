@@ -12,6 +12,7 @@ public class VolunteerDataModel
     private final static BLLFacade BLL_FAC = new BLLFacade();
     
     private ArrayList<User> allUsers = new ArrayList();
+    private ArrayList<User> allManagers = new ArrayList<>();
 
     public List<Day> getWorkedDays(User user)
     {
@@ -27,5 +28,15 @@ public class VolunteerDataModel
     public List<User> getAllSavedVolunteers()
     {
         return allUsers;
+    }
+    
+    public void setAllManagersIntoArray() {
+        allManagers.clear();
+        allManagers.addAll(BLL_FAC.getAllManagers());
+    }
+    
+    
+    public List<User> getAllSavedManagers() {
+        return allManagers;
     }
 }

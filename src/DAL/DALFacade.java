@@ -1,6 +1,7 @@
 package DAL;
 
 import BE.Day;
+import BE.EnumCache.Lang;
 import BE.Guild;
 import BE.User;
 import java.io.File;
@@ -9,6 +10,7 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 public class DALFacade
 {
@@ -16,6 +18,7 @@ public class DALFacade
     private final static GeneralInfoManager GEN_INFO_MAN = new GeneralInfoManager();
     private final static LoginManager LOGIN_MAN = new LoginManager();
     private final static HourManager HR_MAN = new HourManager();
+    private final static LanguageManager LANG_MAN = new LanguageManager();
 
     public void logHours(String username, String date, int hours, int guildId) throws SQLException
     {
@@ -127,5 +130,17 @@ public class DALFacade
     public List<Guild> getGuildsForUser(User user)
     {
         return GEN_INFO_MAN.getGuildsForUser(user.getId());
+    }
+    
+    public Properties getLanguageFile() {
+        return LANG_MAN.getLanguageFile();
+    }
+    
+    public Properties getLanguageFile(Lang lang) {
+        return LANG_MAN.getLanguageFile(lang);
+    }
+    
+    public Lang getLangProperty() {
+        return LANG_MAN.getLangProperty();
     }
 }

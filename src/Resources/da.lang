@@ -28,7 +28,8 @@ BTN_UPDATEPHOTO = Opdater billede
 BTN_CHANGEPASS = Skift kodeord
 BTN_EDIT = Ændre
 BTN_SAVE = Gem
-BTN_CANCEL = Annuller
+#BTN_CANCEL = Annuller #Already exists
+BTN_DELETE = Slet
 BTN_LOGOUT = Log ud
 TAB_ALL = Alle
 TAB_MONTH = Måned
@@ -55,6 +56,8 @@ BTN_EDIT_INFO = Ændre Information
 BTN_STATS = Bruger Statistikker
 BTN_CLOSE = Luk
 BTN_ADD_USER = Tilføj Bruger
+CHK_MANAGERS = Managers
+CHK_VOLUNTEERS = Volunteers
 
 #Manager view labels
 #Remember to leave a space after LBL_USERNAME
@@ -65,3 +68,5 @@ LBL_NOTES = Noter:
 COL_NAME = Navn
 COL_PHONE = Telefon
 COL_EMAIL = Email
+TAB_VOLUN_INFO = Volunteer Information
+TAB_GRAPH_STATS = Graphs & statistics
