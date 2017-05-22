@@ -466,6 +466,8 @@ public class UserInfoViewController implements Initializable
         btnCancel.setStyle("-fx-background-color: #ff0000;");
         btnCancel.setTextFill(Color.WHITE);
         btnCancel.setPadding(btnEditSave.getPadding());
+        btnCancel.setScaleX(0.7);
+        btnCancel.setScaleY(0.7);
         gridEdit.add(btnCancel, btnSavePosCol, btnSavePosRow); //adding to the old position of save btn
         btnCancel.setOnAction(new EventHandler<ActionEvent>()
 
