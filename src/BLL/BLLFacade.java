@@ -140,4 +140,8 @@ public class BLLFacade
     public void setLang(Lang lang) {
         LANG_HAND.setLang(lang);
     }
+    
+     public void deleteWorkedDay(User user, Day day){
+        DAL_FAC.deleteWorkedDay(user, day);
+    }
 }

@@ -18,11 +18,9 @@ public class HourManager extends ConnectionManager
     {
         ArrayList<Day> workedDays = new ArrayList<>();
 
-        int userId = user.getId();
-
         String query = "SELECT [h].[date], [h].[hours], [h].[guildid], [g].[name], [g].[guildid] "
                 + "FROM [hour] [h], [guild] [g] "
-                + "WHERE [h].[userid] = " + userId + "AND [g].[guildid] = [h].[guildid]";
+                + "WHERE [h].[userid] = " + user.getId() + "AND [g].[guildid] = [h].[guildid]";
 
         try (Connection con = super.getConnection())
         {
@@ -34,11 +32,13 @@ public class HourManager extends ConnectionManager
                 String dateString = rs.getDate("date").toString();
                 int hours = rs.getInt("hours");
                 String guild = rs.getString("name");
-                Day dayworked = new Day(dateString, hours, guild);
+                int guildId = rs.getInt("guildId");
+                Day dayworked = new Day(dateString, hours, guild, guildId);
                 workedDays.add(dayworked);
 
             }
-        } catch (SQLException ex)
+        }
+        catch (SQLException ex)
         {
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
             System.err.print(ex + "Can't get list of days worked!!!");
@@ -47,4 +47,41 @@ public class HourManager extends ConnectionManager
         return workedDays;
     }
 
+    public void editWorkedDay(Day day, User user, String date, int hour, String guild)
+    {
+
+        try (Connection con = super.getConnection())
+        {
+
+        }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void deleteWorkedDay(User user, Day day)
+    {
+        String query ="DELETE FROM [hour] WHERE [userid]=? AND [date]=? AND [guildid]=?";
+        
+        try (Connection con = super.getConnection())
+        {
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setInt(1, user.getId());
+            pstmt.setString(2, day.getDate());
+            pstmt.setInt(3, day.getGuildId());
+            
+            pstmt.execute();
+            
+        }
+
+        catch (SQLException ex)
+        {
+            Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Could not delete worked day");
+
+        }
+
+    }
 }
