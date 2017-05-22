@@ -58,6 +58,11 @@
                      </children></AnchorPane>
               </content>
             </Tab>
+            <Tab fx:id="tabGuildManagement" onSelectionChanged="#loadGuildView" text="Guild Management">
+              <content>
+                <AnchorPane fx:id="anchorPaneGuild" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
          </tabs>
       </JFXTabPane>
         <JFXButton fx:id="btnClose" buttonType="RAISED" layoutX="469.0" layoutY="451.0" onAction="#onBtnClosePressed" prefHeight="25.0" prefWidth="220.0" styleClass="cancelButtons" text="Close" textFill="WHITE">
