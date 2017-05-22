@@ -8,6 +8,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXSnackbar;
+import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.io.IOException;
@@ -35,6 +36,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -88,6 +90,10 @@ public class ManagerViewController implements Initializable
     private Tab tabGuildManagement;
     @FXML
     private AnchorPane anchorPaneGuild;
+    @FXML
+    private JFXTabPane tabPane;
+    
+    Boolean hasLoadedGuild= false ;
 
     /**
      * Initializes the controller class.
@@ -390,7 +396,12 @@ public class ManagerViewController implements Initializable
     @FXML
     private void loadGuildView(Event event) throws IOException
     {
-        Pane newLoadedPane =  FXMLLoader.load(getClass().getResource("/GUI/View/GuildManagementView.fxml"));           
-        anchorPaneGuild.getChildren().add(newLoadedPane);
+        if(tabPane.getSelectionModel().getSelectedItem() == tabGuildManagement && !hasLoadedGuild)
+        {
+            Pane newLoadedPane =  FXMLLoader.load(getClass().getResource("/GUI/View/GuildManagementView.fxml"));           
+            anchorPaneGuild.getChildren().add(newLoadedPane);
+            hasLoadedGuild = true;
+        }
+        System.out.println(tabPane.getSelectionModel().getSelectedItem().getId());
     }
 }
