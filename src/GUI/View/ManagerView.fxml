@@ -16,8 +16,8 @@
 <AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerViewController">
     <children>
         <Label fx:id="lblUserName" layoutX="19.0" layoutY="22.0" prefHeight="17.0" prefWidth="508.0" text="Logged in as:" />
-        <JFXComboBox fx:id="cmbGuildChooser" layoutX="517.0" layoutY="17.0" prefHeight="31.0" prefWidth="169.0" promptText="Guild Chooser" />
-      <JFXTabPane layoutX="11.0" layoutY="58.0" prefHeight="435.0" prefWidth="678.0">
+        <JFXComboBox fx:id="cmbGuildChooser" focusColor="#00c4ad" labelFloat="true" layoutX="517.0" layoutY="17.0" prefHeight="31.0" prefWidth="169.0" promptText="Guild Chooser" />
+      <JFXTabPane layoutX="11.0" layoutY="58.0" prefHeight="435.0" prefWidth="678.0" styleClass="jfx-tab-pane">
          <tabs>
             <Tab fx:id="tabVolunInfo" text="Volunteer Information">
               <content>
@@ -53,7 +53,9 @@
             </Tab>
             <Tab fx:id="tabGraphStats" text="Graphs &amp; Statistics">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="678.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="678.0">
+                     <children>
+                     </children></AnchorPane>
               </content>
             </Tab>
          </tabs>

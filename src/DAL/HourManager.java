@@ -34,8 +34,6 @@ public class HourManager extends ConnectionManager
                 String dateString = rs.getDate("date").toString();
                 int hours = rs.getInt("hours");
                 String guild = rs.getString("name");
-
-                //System.out.println("Date: "+dateString+" | Hours: "+hours+" | Guild: "+guild);
                 Day dayworked = new Day(dateString, hours, guild);
                 workedDays.add(dayworked);
 
