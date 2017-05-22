@@ -10,12 +10,14 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -35,10 +37,13 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
+import javax.swing.JFileChooser;
 
 public class ManagerViewController implements Initializable
 {
@@ -96,6 +101,9 @@ public class ManagerViewController implements Initializable
         }
         setTableProperties();
         setTableItems();
+        chkVolunteers.selectedProperty().set(true);
+        
+        
     }
 
     private void setTableProperties()
@@ -114,7 +122,32 @@ public class ManagerViewController implements Initializable
         if (modelFacade.getCurrentUser().getType() == 2)
 
         {
-            tblUsers.setItems(FXCollections.observableArrayList(modelFacade.getAllUsers()));
+        ObservableList<User> users = FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers());
+        chkManagers.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(chkManagers.isSelected()) {
+                    users.addAll(FXCollections.observableArrayList(modelFacade.getAllSavedManagers()));
+                } else {
+                    users.removeAll(FXCollections.observableArrayList(modelFacade.getAllSavedManagers()));
+                }
+                tblUsers.setItems(FXCollections.observableArrayList(users));
+            }
+            
+        });
+        chkVolunteers.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(chkVolunteers.isSelected()) {
+                    users.addAll(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
+                } else {
+                    users.removeAll(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
+                }
+                tblUsers.setItems(FXCollections.observableArrayList(users));
+            }
+            
+        });
+            tblUsers.setItems(FXCollections.observableArrayList(users));
         }
     }
 
@@ -301,6 +334,8 @@ public class ManagerViewController implements Initializable
         contextMenu.getItems().add(thisEmailItem);
         MenuItem allEmailItem = new MenuItem("Copy all emails to clipboard");
         contextMenu.getItems().add(allEmailItem);
+        MenuItem exportData = new MenuItem("Export users in table");
+        contextMenu.getItems().add(exportData);
 
         tblUsers.setContextMenu(contextMenu);
 
@@ -340,6 +375,14 @@ public class ManagerViewController implements Initializable
         };
 
         allEmailItem.setOnAction(allEmailEvent);
+        
+        exportData.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                exportUsers();
+            }
+            
+        });
     }
 
     @FXML
@@ -357,6 +400,22 @@ public class ManagerViewController implements Initializable
         PauseTransition pause = new PauseTransition(Duration.millis(time));
         pause.play();
 
+    }
+    
+    private void exportUsers() {
+        FileChooser chooser = new FileChooser();
+        chooser.getExtensionFilters().add(new ExtensionFilter("Only CSV file", new ArrayList<String>() {
+            {
+                add(".csv");
+            }
+        }));
+        chooser.setTitle("Choose where to export CSV file");
+        chooser.setInitialDirectory(new File("."));
+        File chose = chooser.showSaveDialog(root.getScene().getWindow());
+        if(chose != null) {
+            modelFacade.writeExport(chose, modelFacade.parseExport(tblUsers.getItems()));
+        }
+        
     }
 
     private void setTextAll()

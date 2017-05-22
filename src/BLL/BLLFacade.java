@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class BLLFacade
     private final static DALFacade DAL_FAC = new DALFacade();
     private final static LoginHandler LOG_HAND = new LoginHandler();
     private final static LanguageHandler LANG_HAND = new LanguageHandler();
+    private final static ExportParser exportParser = new ExportParser();
 
     public User getUserFromLogin(String username, String password)
     {
@@ -139,5 +141,13 @@ public class BLLFacade
     
     public void setLang(Lang lang) {
         LANG_HAND.setLang(lang);
+    }
+    
+    public String parseExport(List<User> users) {
+        return exportParser.parse(users);
+    }
+    
+    public void writeExport(File file,String input) {
+        DAL_FAC.writeExport(file, input);
     }
 }
