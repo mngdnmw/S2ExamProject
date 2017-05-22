@@ -284,11 +284,10 @@ public class UserInfoViewController implements Initializable
                     serviceAllVolunteers.setOnSucceeded(e
                             -> 
                             {
-
                                 MOD_FACADE.changeView(GUIView);
                                 root.getChildren().remove(MOD_FACADE.getLoadingScreen());
-
-                    });
+                    }
+                    );
 
                     root.getChildren().add(MOD_FACADE.getLoadingScreen());
                     root.setTopAnchor(MOD_FACADE.getLoadingScreen(), 0.0);
@@ -589,11 +588,11 @@ public class UserInfoViewController implements Initializable
         btnDelete.setPadding(new Insets(10));
         VBox vBox = new VBox(btnEdit, btnDelete);
         popup.setPopupContent(vBox);
-        
+
         ObservableList<Day> daysSelected, allDays;
         allDays = tableViewMain.getItems();
-        daysSelected =tableViewMain.getSelectionModel().getSelectedItems();
-        
+        daysSelected = tableViewMain.getSelectionModel().getSelectedItems();
+
         btnEdit.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -603,14 +602,15 @@ public class UserInfoViewController implements Initializable
                 popup.hide();
             }
         });
-        
-        btnDelete.setOnAction(new EventHandler<ActionEvent>(){
+
+        btnDelete.setOnAction(new EventHandler<ActionEvent>()
+        {
             @Override
             public void handle(ActionEvent event)
             {
                 daysSelected.forEach(allDays::remove);
             }
-            
+
         });
 
     }

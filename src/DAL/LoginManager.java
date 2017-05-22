@@ -130,6 +130,7 @@ public class LoginManager extends ConnectionManager
                 session.put("lastguild", props.getProperty("LAST_GUILD"));
                 session.put("lasthours", props.getProperty("LAST_HOURS"));
             }
+            
         }
         return session;
     }

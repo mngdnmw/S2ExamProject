@@ -109,7 +109,7 @@ public class ManagerViewController implements Initializable
     {
         if (modelFacade.getCurrentUser().getType() == 1)
         {
-            tblUsers.setItems(FXCollections.observableArrayList(modelFacade.getAllVolunteers()));
+            tblUsers.setItems(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
         }
         if (modelFacade.getCurrentUser().getType() == 2)
 
