@@ -466,13 +466,16 @@ public class UserInfoViewController implements Initializable
         btnEditSave.setStyle("-fx-background-color: #61B329;");
         GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) - 1); //moving save button one up
 
-        btnNewCancel.setText(MOD_FACADE.getLang("BTN_CANCEL")); //preparing cancel button
-        btnNewCancel.setButtonType(JFXButton.ButtonType.RAISED);
-        btnNewCancel.setStyle("-fx-background-color: #ff0000;");
-        btnNewCancel.setTextFill(Color.WHITE);
-        btnNewCancel.setPadding(btnEditSave.getPadding());
-        gridEdit.add(btnNewCancel, btnSavePosCol, btnSavePosRow); //adding to the old position of save btn
-        btnNewCancel.setOnAction(new EventHandler<ActionEvent>()
+
+        btnCancel.setText(MOD_FACADE.getLang("BTN_CANCEL")); //preparing cancel button
+        btnCancel.setButtonType(JFXButton.ButtonType.RAISED);
+        btnCancel.setStyle("-fx-background-color: #ff0000;");
+        btnCancel.setTextFill(Color.WHITE);
+        btnCancel.setPadding(btnEditSave.getPadding());
+        btnCancel.setScaleX(0.7);
+        btnCancel.setScaleY(0.7);
+        gridEdit.add(btnCancel, btnSavePosCol, btnSavePosRow); //adding to the old position of save btn
+        btnCancel.setOnAction(new EventHandler<ActionEvent>()
 
         { //setting onAction, nothing changed, just show old labels again
             @Override
