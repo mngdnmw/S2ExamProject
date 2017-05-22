@@ -156,4 +156,8 @@ public class DALFacade
     {
         return LANG_MAN.getLangProperty();
     }
+    
+    public void deleteWorkedDay(User user, Day day){
+        HR_MAN.deleteWorkedDay(user, day);
+    }
 }

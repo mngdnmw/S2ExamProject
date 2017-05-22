@@ -1,7 +1,6 @@
 package GUI.Model;
 
 import BE.Day;
-import BE.EnumCache;
 import BE.EnumCache.Lang;
 import BE.Guild;
 import BE.User;
@@ -9,7 +8,6 @@ import BLL.BLLFacade;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javafx.animation.FadeTransition;
@@ -27,10 +25,7 @@ public class ModelFacade
     private final static LanguageModel LANG_MOD = new LanguageModel();
     private final static ViewChangerModel VIEW_CHANG_MOD = new ViewChangerModel();
     private final static VolunteerDataModel VOL_DATA_MOD = new VolunteerDataModel();
-    
     private final static GraphSorterModel GRAPH_MOD = new GraphSorterModel();
-    private ArrayList<User> allUsers = new ArrayList();
-    private ArrayList<User> allManagers = new ArrayList<>();
     private final static BLLFacade BLL_FAC = new BLLFacade();
 
     public static ModelFacade getModelFacade()
@@ -238,5 +233,9 @@ public class ModelFacade
     public void updateGuild(int guildId, String name)
     {
         BLL_FAC.updateGuild(guildId, name);
+    }
+    
+     public void deleteWorkedDay(User user, Day day){
+        BLL_FAC.deleteWorkedDay(user, day);
     }
   }

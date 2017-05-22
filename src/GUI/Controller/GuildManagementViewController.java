@@ -97,6 +97,7 @@ public class GuildManagementViewController implements Initializable
             stckPaneNew.setVisible(true);
             modelFacade.fadeInTransition(Duration.millis(750), stckPaneNew);
             txtName.setText(listGuilds.getSelectionModel().getSelectedItem().getName());
+            btnAddNew.setVisible(false);
         }
         
         else
@@ -119,6 +120,7 @@ public class GuildManagementViewController implements Initializable
         modelFacade.updateGuild(selectedGuild.getId(), txtName.getText());
         modelFacade.fadeOutTransition(Duration.millis(750), stckPaneNew);
         stckPaneNew.setVisible(false);
+        setListItems();
     }
 
     @FXML

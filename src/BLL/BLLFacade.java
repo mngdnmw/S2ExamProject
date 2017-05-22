@@ -146,8 +146,13 @@ public class BLLFacade
         LANG_HAND.setLang(lang);
     }
 
+    public void deleteWorkedDay(User user, Day day)
+    {
+        DAL_FAC.deleteWorkedDay(user, day);
+    }
+
     public ArrayList<HashMap<Integer, Integer>> graphSorter(Guild guild)
     {
-       return GRAPH_HAND.sorter(guild);
+        return GRAPH_HAND.sorter(guild);
     }
 }
