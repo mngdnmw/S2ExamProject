@@ -23,8 +23,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
 
 
 
@@ -157,7 +156,7 @@
                         </JFXButton>
                      </children>
                   </VBox>
-                  <TableView fx:id="tableViewMain" onMouseClicked="#popupEditDelete" prefHeight="225.0" prefWidth="371.0">
+                  <TableView fx:id="tableViewMain" onMouseClicked="#onTablePressed" prefHeight="225.0" prefWidth="371.0">
                     <columns>
                       <TableColumn fx:id="colDate" prefWidth="127.0" style="-fx-alignment: CENTER;" text="Date" />
                       <TableColumn fx:id="colHours" prefWidth="56.0" style="-fx-alignment: CENTER;" text="Hours" />
@@ -168,7 +167,7 @@
             </HBox>
          </children>
       </Pane>
-      <JFXListView fx:id="listVwGuilds" layoutX="527.0" layoutY="277.0" maxWidth="141.0" prefHeight="127.0" prefWidth="141.0" style="-fx-border-width: 0px;" />
+      <JFXListView fx:id="listVwGuilds" layoutX="527.0" layoutY="277.0" maxWidth="141.0" prefHeight="162.0" prefWidth="141.0" style="-fx-border-width: 0px;" />
       <Label fx:id="lblGuilds" layoutX="527.0" layoutY="260.0" style="-fx-background-color: #00c4ad;" text="Guilds:" textFill="WHITE" />
       
       <StackPane fx:id="stckPanePasswordChanger" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
