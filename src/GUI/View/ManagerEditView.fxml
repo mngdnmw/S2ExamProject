@@ -208,7 +208,6 @@
       </JFXButton>
       <JFXListView fx:id="listGuilds" layoutX="524.0" layoutY="288.0" prefHeight="145.0" prefWidth="141.0" style="-fx-border-image-width: 0px;" />
       <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="530.0" layoutY="208.0" maxHeight="30.0" minHeight="-Infinity" onAction="#openPasswordChangerEvent" prefHeight="19.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Change Password" textFill="WHITE">
-
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
