@@ -18,39 +18,41 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.util.converter.IntegerStringConverter;
+import javafx.util.converter.NumberStringConverter;
 
 public class UserInfoViewController implements Initializable
 
@@ -114,12 +116,14 @@ public class UserInfoViewController implements Initializable
     private Label lblNewPassword2;
     @FXML
     private JFXButton btnChangePWConfirm;
+    @FXML
+    private JFXButton btnCancel;
     //Objects Used
     User currentUser;
     JFXPopup popup;
     JFXButton higherClearanceBtn = new JFXButton();
-    @FXML
-    JFXButton btnCancel = new JFXButton();
+    JFXButton btnNewCancel = new JFXButton();
+
     //Variables Used
     boolean editing = false;
     boolean isIncorrect = false;
@@ -186,24 +190,25 @@ public class UserInfoViewController implements Initializable
         FilteredList<Day> filteredData = new FilteredList<>(FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(currentUser)), p -> true);
 
         txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                -> 
-                {
-                    filteredData.setPredicate(day
-                            -> 
-                            {
-                                String regex = "[^a-zA-Z0-9\\s]";
-                                Boolean search
-                                        = day.dateProperty().getValue().replaceAll(regex, "")
-                                        .contains(newValue.replaceAll(regex, ""))
-                                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
-                                        contains(newValue.toLowerCase().replaceAll(regex, ""));
+                ->
+        {
+            filteredData.setPredicate(day
+                    ->
+            {
+                String regex = "[^a-zA-Z0-9\\s]";
+                Boolean search
+                        = day.dateProperty().getValue().replaceAll(regex, "")
+                                .contains(newValue.replaceAll(regex, ""))
+                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                contains(newValue.toLowerCase().replaceAll(regex, ""));
 
-                                return search;
+                return search;
 
-                    });
+            });
         });
 
         SortedList<Day> sortedData = new SortedList<>(filteredData);
+
         sortedData.comparatorProperty().bind(tableViewMain.comparatorProperty());
         tableViewMain.setItems(sortedData);
 
@@ -258,7 +263,7 @@ public class UserInfoViewController implements Initializable
 
         if (type == 1)
         {
-            higherClearanceBtn.setText(MOD_FACADE.getLang("BTN_HIGHER_CLEARANCE_1"));          
+            higherClearanceBtn.setText(MOD_FACADE.getLang("BTN_HIGHER_CLEARANCE_1"));
 
         }
         else
@@ -279,11 +284,11 @@ public class UserInfoViewController implements Initializable
                 else
                 {
                     serviceAllVolunteers.setOnSucceeded(e
-                            -> 
-                            {
+                            ->
+                    {
 
-                                MOD_FACADE.changeView(1);
-                                root.getChildren().remove(MOD_FACADE.getLoadingScreen());
+                        MOD_FACADE.changeView(1);
+                        root.getChildren().remove(MOD_FACADE.getLoadingScreen());
 
                     });
 
@@ -461,13 +466,13 @@ public class UserInfoViewController implements Initializable
         btnEditSave.setStyle("-fx-background-color: #61B329;");
         GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) - 1); //moving save button one up
 
-        btnCancel.setText(MOD_FACADE.getLang("BTN_CANCEL")); //preparing cancel button
-        btnCancel.setButtonType(JFXButton.ButtonType.RAISED);
-        btnCancel.setStyle("-fx-background-color: #ff0000;");
-        btnCancel.setTextFill(Color.WHITE);
-        btnCancel.setPadding(btnEditSave.getPadding());
-        gridEdit.add(btnCancel, btnSavePosCol, btnSavePosRow); //adding to the old position of save btn
-        btnCancel.setOnAction(new EventHandler<ActionEvent>()
+        btnNewCancel.setText(MOD_FACADE.getLang("BTN_CANCEL")); //preparing cancel button
+        btnNewCancel.setButtonType(JFXButton.ButtonType.RAISED);
+        btnNewCancel.setStyle("-fx-background-color: #ff0000;");
+        btnNewCancel.setTextFill(Color.WHITE);
+        btnNewCancel.setPadding(btnEditSave.getPadding());
+        gridEdit.add(btnNewCancel, btnSavePosCol, btnSavePosRow); //adding to the old position of save btn
+        btnNewCancel.setOnAction(new EventHandler<ActionEvent>()
 
         { //setting onAction, nothing changed, just show old labels again
             @Override
@@ -491,7 +496,7 @@ public class UserInfoViewController implements Initializable
     private void removeCancelButton()
     {
         GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) + 1); //moving save button one down
-        gridEdit.getChildren().remove(btnCancel); //deleting cancel button from gridpane
+        gridEdit.getChildren().remove(btnNewCancel); //deleting cancel button from gridpane
         if (btnEditSave.isDisabled())
         {
             btnEditSave.setDisable(false);
@@ -576,51 +581,75 @@ public class UserInfoViewController implements Initializable
 
     }
 
-    private void initPopup()
+    @FXML
+    private void onTablePressed(MouseEvent click)
     {
-        popup = new JFXPopup();
-        JFXButton btnEdit = new JFXButton(MOD_FACADE.getLang("BTN_EDIT"));
-        JFXButton btnDelete = new JFXButton(MOD_FACADE.getLang("BTN_DELETE"));
-        btnEdit.setPadding(new Insets(10));
-        btnEdit.setMaxWidth(Double.MAX_VALUE);
-        btnDelete.setPadding(new Insets(10));
-        VBox vBox = new VBox(btnEdit, btnDelete);
-        popup.setPopupContent(vBox);
-        
-        ObservableList<Day> daysSelected, allDays;
-        allDays = tableViewMain.getItems();
-        daysSelected =tableViewMain.getSelectionModel().getSelectedItems();
-        
-        btnEdit.setOnAction(new EventHandler<ActionEvent>()
+
+        ContextMenu popupContext = new ContextMenu();
+        MenuItem editDay = new MenuItem("Edit");
+        popupContext.getItems().add(editDay);
+        MenuItem deleteDay = new MenuItem("Delete");
+        popupContext.getItems().add(deleteDay);
+
+        tableViewMain.setContextMenu(popupContext);
+
+        EventHandler editDayEvent = new EventHandler()
         {
             @Override
-            public void handle(ActionEvent event)
+            public void handle(Event event)
             {
-                popup.hide();
+                tableViewMain.setEditable(true);
+                editingTable();
             }
-        });
-        
-        btnDelete.setOnAction(new EventHandler<ActionEvent>(){
+        };
+        editDay.setOnAction(editDayEvent);
+
+        EventHandler deleteDayEvent = new EventHandler()
+        {
             @Override
-            public void handle(ActionEvent event)
+            public void handle(Event event)
             {
-                daysSelected.forEach(allDays::remove);
+                Day selectedDay = tableViewMain.getSelectionModel().getSelectedItem();
+                MOD_FACADE.deleteWorkedDay(currentUser, selectedDay);
+                setupTableView();
             }
-            
-        });
+
+        };
+        deleteDay.setOnAction(deleteDayEvent);
 
     }
 
-    @FXML
-    private void popupEditDelete(MouseEvent event)
+    private void editingTable()
     {
-        MouseButton button = event.getButton();
-        if (button == MouseButton.SECONDARY)
+        colDate.setCellFactory(TextFieldTableCell.forTableColumn());
+        colDate.setOnEditCommit(new EventHandler<CellEditEvent<Day, String>>()
         {
-            initPopup();
-            popup.show((Node) event.getSource(), JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, event.getX(), event.getY());
+            @Override
+            public void handle(CellEditEvent<Day, String> event)
+            {
+                ((Day) event.getTableView().getItems().get(event.getTablePosition().getRow())).setDate(event.getNewValue());
+            }
+        });
 
-        }
+        colHours.setCellFactory(TextFieldTableCell.<Day, Integer>forTableColumn(new IntegerStringConverter()));
+        colHours.setOnEditCommit(new EventHandler<CellEditEvent<Day, Integer>>()
+        {
+            @Override
+            public void handle(CellEditEvent<Day, Integer> event)
+            {
+                ((Day) event.getTableView().getItems().get(event.getTablePosition().getRow())).setHour(event.getNewValue());
+            }
+        });
+
+        colGuild.setCellFactory(TextFieldTableCell.forTableColumn());
+        colGuild.setOnEditCommit(new EventHandler<CellEditEvent<Day, String>>()
+        {
+            @Override
+            public void handle(CellEditEvent<Day, String> event)
+            {
+                ((Day) event.getTableView().getItems().get(event.getTablePosition().getRow())).setDate(event.getNewValue());
+            }
+        });
     }
 
 }

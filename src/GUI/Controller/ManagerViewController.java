@@ -323,7 +323,7 @@ public class ManagerViewController implements Initializable
             @Override
             public void handle(Event event)
             {
-                TableColumn<User, String> column = colEmail;
+                //TableColumn<User, String> column = colEmail;
 
                 List<String> columnData = new ArrayList<>();
                 for (User item : tblUsers.getItems())
