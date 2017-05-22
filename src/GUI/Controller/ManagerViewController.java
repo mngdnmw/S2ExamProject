@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
@@ -35,6 +37,7 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -81,6 +84,10 @@ public class ManagerViewController implements Initializable
     private JFXCheckBox chkManagers;
     @FXML
     private Tab tabGraphStats;
+    @FXML
+    private Tab tabGuildManagement;
+    @FXML
+    private AnchorPane anchorPaneGuild;
 
     /**
      * Initializes the controller class.
@@ -202,7 +209,7 @@ public class ManagerViewController implements Initializable
                 {
                     public void handle(WindowEvent we)
                     {
-                        System.out.println("Stage on Hiding");
+
                         setTableItems();
                     }
                 });
@@ -211,7 +218,7 @@ public class ManagerViewController implements Initializable
                 {
                     public void handle(WindowEvent we)
                     {
-                        System.out.println("Stage is closing");
+
                         setTableItems();
                     }
                 });
@@ -378,5 +385,12 @@ public class ManagerViewController implements Initializable
         colName.setText(modelFacade.getLang("COL_NAME"));
         tabVolunInfo.setText(modelFacade.getLang("TAB_VOLUN_INFO"));
         tabGraphStats.setText(modelFacade.getLang("TAB_GRAPH_STATS"));
+    }
+
+    @FXML
+    private void loadGuildView(Event event) throws IOException
+    {
+        Pane newLoadedPane =  FXMLLoader.load(getClass().getResource("/GUI/View/GuildManagementView.fxml"));           
+        anchorPaneGuild.getChildren().add(newLoadedPane);
     }
 }

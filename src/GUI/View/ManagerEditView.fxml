@@ -2,7 +2,11 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXListView?>
+<<<<<<< HEAD
+<?import com.jfoenix.controls.JFXTabPane?>
+=======
 <?import com.jfoenix.controls.JFXPasswordField?>
+>>>>>>> Development
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
@@ -25,7 +29,11 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
+<<<<<<< HEAD
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerEditViewController">
+=======
 <AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerEditViewController">
+>>>>>>> Development
     <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="216.0" layoutX="13.0" layoutY="11.0" stroke="TRANSPARENT" strokeType="INSIDE" width="491.0">
          <effect>
@@ -92,6 +100,20 @@
             <JFXTextField fx:id="txtAddress2" focusColor="#00e2c7" promptText="Address" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
       </GridPane>
+      <JFXTabPane>
+         <tabs>
+            <Tab text="Untitled Tab">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+            <Tab text="Untitled Tab">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+         </tabs>
+      </JFXTabPane>
       <TabPane layoutX="14.0" layoutY="234.0" prefHeight="254.0" prefWidth="482.0" style="-fx-border-color: #00c4ad; -fx-background-color: #ffffff;" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="All">
@@ -186,7 +208,6 @@
       </JFXButton>
       <JFXListView fx:id="listGuilds" layoutX="524.0" layoutY="288.0" prefHeight="145.0" prefWidth="141.0" style="-fx-border-image-width: 0px;" />
       <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="530.0" layoutY="208.0" maxHeight="30.0" minHeight="-Infinity" onAction="#openPasswordChangerEvent" prefHeight="19.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Change Password" textFill="WHITE">
-
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
