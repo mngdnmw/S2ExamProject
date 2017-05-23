@@ -99,6 +99,7 @@ public class ManagerViewController implements Initializable
     Boolean hasLoadedGuild= false ;
     ModelFacade modelFacade = ModelFacade.getModelFacade();
     User selectedUser;
+    User cur;
     /**
      * Initializes the controller class.
      */
@@ -114,6 +115,7 @@ public class ManagerViewController implements Initializable
         setTableProperties();
         setTableItems();
         chkVolunteers.selectedProperty().set(true);
+        cur = modelFacade.getCurrentUser();
         
         
     }

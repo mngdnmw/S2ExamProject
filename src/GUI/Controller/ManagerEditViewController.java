@@ -20,8 +20,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -29,12 +33,6 @@ import javafx.util.Duration;
 public class ManagerEditViewController implements Initializable
 {
 
-    @FXML
-    private Label lblHrsAll;
-    @FXML
-    private Label lblHrsMth;
-    @FXML
-    private Label lblHrsDay;
     @FXML
     private JFXButton JFXBtnAccept;
     @FXML
@@ -72,13 +70,39 @@ public class ManagerEditViewController implements Initializable
 
     private static ModelFacade modelFacade = new ModelFacade();
     private static User selectedUser;
+    @FXML
+    private HBox hBoxCalAll;
+    @FXML
+    private JFXTextField txtFSearchDate;
+    @FXML
+    private TableView<Day> tblMain;
+    @FXML
+    private TableColumn<Day, String> colDate;
+    @FXML
+    private TableColumn<Day, Integer> colHours;
+    @FXML
+    private TableColumn<Day, String> colGuild;
+    @FXML
+    private JFXButton btnChangePassword;
+    @FXML
+    private Label lblOldPassword;
+    @FXML
+    private Label lblNewPassword;
+    @FXML
+    private Label lblNewPassword2;
+    @FXML
+    private JFXButton btnChangePWConfirm;
+    @FXML
+    private JFXButton btnCancel;
 
+    private boolean isIncorrect;
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
         edit = false;
         setText();
         listGuilds.setItems(FXCollections.observableArrayList(selectedUser.getGuildList()));
+        setupTableView();
     }
 
     public void setController(ManagerViewController c)
@@ -181,15 +205,15 @@ public class ManagerEditViewController implements Initializable
                 .setOnFinished(e -> stckPanePasswordChanger.setVisible(false));
 
     }
-    /*private void setupTableView()
+    private void setupTableView()
     {
 
-        tableViewMain.setPlaceholder(new Label("Nothing found :("));
+        tblMain.setPlaceholder(new Label("Nothing found :("));
         colDate.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
         colHours.setCellValueFactory(val -> val.getValue().hourProperty().asObject());
         colGuild.setCellValueFactory(cellData -> cellData.getValue().guildProperty());
 
-        FilteredList<Day> filteredData = new FilteredList<>(FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(currentUser)), p -> true);
+        FilteredList<Day> filteredData = new FilteredList<>(FXCollections.observableArrayList(modelFacade.getWorkedDays(selectedUser)), p -> true);
 
         txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
                 ->
@@ -211,8 +235,39 @@ public class ManagerEditViewController implements Initializable
 
         SortedList<Day> sortedData = new SortedList<>(filteredData);
 
-        sortedData.comparatorProperty().bind(tableViewMain.comparatorProperty());
-        tableViewMain.setItems(sortedData);
+        sortedData.comparatorProperty().bind(tblMain.comparatorProperty());
+        tblMain.setItems(sortedData);
 
-    }*/
+    }
+    
+    @FXML
+    private void checkTextFields(KeyEvent event)
+    {
+        boolean success = false;
+        try
+
+        {
+            Integer.parseInt(txtPhone.getText());
+            success = true;
+        }
+        catch (NumberFormatException e)
+        {
+            success = false;
+            txtPhone.setStyle("-fx-background-color:red;");
+            JFXBtnAccept.setDisable(true);
+        }
+        if (success)
+        {
+            JFXBtnAccept.setDisable(false);
+            txtPhone.setStyle("");
+            isIncorrect = false;
+        }
+        else
+        {
+            txtPhone.setStyle("-fx-background-color:red;");
+            JFXBtnAccept.setDisable(true);
+            isIncorrect = true;
+
+        }
+    }
 }
