@@ -25,7 +25,7 @@ public class GraphSorterModel
         ArrayList<HashMap<Integer, Integer>> sortedData = bllFac.graphSorter(guild);
 
         ArrayList<XYChart.Series<Number, Number>> graphData = new ArrayList<>();
-
+      
         XYChart.Series<Number, Number> seriesManager = new XYChart.Series<>();
         XYChart.Series<Number, Number> seriesVolunteer = new XYChart.Series<>();
 
@@ -51,7 +51,7 @@ public class GraphSorterModel
         }
         graphData.add(seriesManager);
         graphData.add(seriesVolunteer);
-
+        
         return graphData;
     }
 

@@ -11,9 +11,11 @@ import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
@@ -21,6 +23,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -30,6 +33,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -42,11 +48,14 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
+import javax.swing.JFileChooser;
 
 public class ManagerViewController implements Initializable
 {
@@ -95,13 +104,22 @@ public class ManagerViewController implements Initializable
     private AnchorPane anchorPaneGuild;
     @FXML
     private JFXTabPane tabPane;
+
+    @FXML
+    private AnchorPane GraphRoot;
+    @FXML
+    private LineChart<Number, Number> lineChartGuildHours;
     
-    Boolean hasLoadedGuild= false ;
+    @FXML
+    private NumberAxis yAxis;
+    @FXML
+    private NumberAxis xAxis;
+    
+    Boolean hasLoadedGuild = false;
     ModelFacade modelFacade = ModelFacade.getModelFacade();
     User selectedUser;
     
     List<User> filteredList = new ArrayList<>();
-    
     /**
      * Initializes the controller class.
      */
@@ -125,6 +143,7 @@ public class ManagerViewController implements Initializable
             chkManagers.setVisible(false);
             chkVolunteers.setVisible(false);
         }
+
     }
 
     private void setTableProperties()
@@ -142,7 +161,32 @@ public class ManagerViewController implements Initializable
         }
         if (modelFacade.getCurrentUser().getType() == 2)
         {
-            tblUsers.setItems(FXCollections.observableArrayList(modelFacade.getAllUsers()));
+        ObservableList<User> users = FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers());
+        chkManagers.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(chkManagers.isSelected()) {
+                    users.addAll(FXCollections.observableArrayList(modelFacade.getAllSavedManagers()));
+                } else {
+                    users.removeAll(FXCollections.observableArrayList(modelFacade.getAllSavedManagers()));
+                }
+                tblUsers.setItems(FXCollections.observableArrayList(users));
+            }
+            
+        });
+        chkVolunteers.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(chkVolunteers.isSelected()) {
+                    users.addAll(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
+                } else {
+                    users.removeAll(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
+                }
+                tblUsers.setItems(FXCollections.observableArrayList(users));
+            }
+            
+        });
+            tblUsers.setItems(FXCollections.observableArrayList(users));
         }
     }
 
@@ -332,6 +376,8 @@ public class ManagerViewController implements Initializable
         contextMenu.getItems().add(thisEmailItem);
         MenuItem allEmailItem = new MenuItem("Copy all emails to clipboard");
         contextMenu.getItems().add(allEmailItem);
+        MenuItem exportData = new MenuItem("Export users in table (except notes)");
+        contextMenu.getItems().add(exportData);
 
         tblUsers.setContextMenu(contextMenu);
 
@@ -371,6 +417,14 @@ public class ManagerViewController implements Initializable
         };
 
         allEmailItem.setOnAction(allEmailEvent);
+        
+        exportData.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                exportUsers();
+            }
+            
+        });
     }
 
     @FXML
@@ -388,6 +442,22 @@ public class ManagerViewController implements Initializable
         PauseTransition pause = new PauseTransition(Duration.millis(time));
         pause.play();
 
+    }
+    
+    private void exportUsers() {
+        FileChooser chooser = new FileChooser();
+        chooser.getExtensionFilters().add(new ExtensionFilter("Comma separated files", new ArrayList<String>() {
+            {
+                add("*.csv");
+            }
+        }));
+        chooser.setTitle("Choose where to export CSV file");
+        chooser.setInitialDirectory(new File("."));
+        File chose = chooser.showSaveDialog(root.getScene().getWindow());
+        if(chose != null) {
+            modelFacade.writeExport(chose, modelFacade.parseExportUsers(tblUsers.getItems()));
+        }
+        
     }
 
     private void setTextAll()
@@ -413,14 +483,34 @@ public class ManagerViewController implements Initializable
     @FXML
     private void loadGuildView(Event event) throws IOException
     {
-        if(tabPane.getSelectionModel().getSelectedItem() == tabGuildManagement && !hasLoadedGuild)
+        if (tabPane.getSelectionModel().getSelectedItem() == tabGuildManagement && !hasLoadedGuild)
         {
-            Pane newLoadedPane =  FXMLLoader.load(getClass().getResource("/GUI/View/GuildManagementView.fxml"));           
+            Pane newLoadedPane = FXMLLoader.load(getClass().getResource("/GUI/View/GuildManagementView.fxml"));
             anchorPaneGuild.getChildren().add(newLoadedPane);
             hasLoadedGuild = true;
         }
-        System.out.println(tabPane.getSelectionModel().getSelectedItem().getId());
+        else if (tabPane.getSelectionModel().getSelectedItem() == tabGraphStats)
+        {
+            xAxis.setLabel("Month number");
+            xAxis.setAutoRanging(false);
+            xAxis.setLowerBound(1);
+            xAxis.setUpperBound(12);
+            xAxis.setTickUnit(1);
+            if (cmbGuildChooser.getSelectionModel().getSelectedItem() != null)
+            {
+                List<XYChart.Series<Number, Number>> Temp = modelFacade.graphSort(cmbGuildChooser.getSelectionModel().getSelectedItem());
+
+                System.out.println("stop here");
+                for (XYChart.Series<Number, Number> series : Temp)
+                {
+                    lineChartGuildHours.getData().add(series);
+                }
+                Calendar cal = Calendar.getInstance();
+                lineChartGuildHours.setTitle("Work contribution graph for " + cmbGuildChooser.getSelectionModel().getSelectedItem().getName() + " " + cal.get(Calendar.YEAR));
+            }
+        }
     }
+
 
     @FXML
     private void onCheckBoxAction(ActionEvent event)

@@ -5,6 +5,8 @@ import BE.Guild;
 import BE.User;
 import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXPopup;
@@ -15,9 +17,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
+import javafx.animation.PauseTransition;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
@@ -33,6 +37,8 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
@@ -52,7 +58,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
 public class UserInfoViewController implements Initializable
@@ -99,6 +107,25 @@ public class UserInfoViewController implements Initializable
     private TableColumn<Day, Integer> colHours;
     @FXML
     private JFXListView<Guild> listVwGuilds;
+    @FXML
+    private JFXDatePicker datePickerInPop;
+    @FXML
+    private JFXButton btnIntDown;
+    @FXML
+    private JFXTextField txtfldHours;
+    @FXML
+    private JFXButton btnIntUp;
+    @FXML
+    private JFXComboBox<Guild> comboboxGuild;
+    @FXML
+    private Label lblDateInPop;
+    @FXML
+    private Label lblHoursInPop;
+    @FXML
+    private Label lblGuildInPop;
+    @FXML
+    private StackPane stckPaneAddHours;
+
     //FXML Textfields
     @FXML
     TextField txtName;
@@ -120,12 +147,18 @@ public class UserInfoViewController implements Initializable
     @FXML
     private JFXButton btnChangePWConfirm;
     @FXML
-    private JFXButton btnCancel;
+    private JFXButton btnCancelPW;
+    @FXML
+    private JFXButton btnAddHoursPOP;
+    @FXML
+    private JFXButton btnCancelPOP;
+
     //Objects Used
     User currentUser;
     JFXPopup popup;
     JFXButton higherClearanceBtn = new JFXButton();
-    JFXButton btnNewCancel = new JFXButton();
+    JFXButton btnCancelEditInfo;
+    //JFXButton btnNewCancel = new JFXButton();
 
     //Variables Used
     boolean editing = false;
@@ -469,15 +502,15 @@ public class UserInfoViewController implements Initializable
         btnEditSave.setStyle("-fx-background-color: #61B329;");
         GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) - 1); //moving save button one up
 
-        btnCancel.setText(MOD_FACADE.getLang("BTN_CANCEL")); //preparing cancel button
-        btnCancel.setButtonType(JFXButton.ButtonType.RAISED);
-        btnCancel.setStyle("-fx-background-color: #ff0000;");
-        btnCancel.setTextFill(Color.WHITE);
-        btnCancel.setPadding(btnEditSave.getPadding());
-        btnCancel.setScaleX(0.7);
-        btnCancel.setScaleY(0.7);
-        gridEdit.add(btnCancel, btnSavePosCol, btnSavePosRow); //adding to the old position of save btn
-        btnCancel.setOnAction(new EventHandler<ActionEvent>()
+        btnCancelEditInfo.setText(MOD_FACADE.getLang("BTN_CANCEL")); //preparing cancel button
+        btnCancelEditInfo.setButtonType(JFXButton.ButtonType.RAISED);
+        btnCancelEditInfo.setStyle("-fx-background-color: #ff0000;");
+        btnCancelEditInfo.setTextFill(Color.WHITE);
+        btnCancelEditInfo.setPadding(btnEditSave.getPadding());
+        btnCancelEditInfo.setScaleX(0.7);
+        btnCancelEditInfo.setScaleY(0.7);
+        gridEdit.add(btnCancelEditInfo, btnSavePosCol, btnSavePosRow); //adding to the old position of save btn
+        btnCancelEditInfo.setOnAction(new EventHandler<ActionEvent>()
 
         { //setting onAction, nothing changed, just show old labels again
             @Override
@@ -501,7 +534,7 @@ public class UserInfoViewController implements Initializable
     private void removeCancelButton()
     {
         GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) + 1); //moving save button one down
-        gridEdit.getChildren().remove(btnNewCancel); //deleting cancel button from gridpane
+        gridEdit.getChildren().remove(btnCancelEditInfo); //deleting cancel button from gridpane
         if (btnEditSave.isDisabled())
         {
             btnEditSave.setDisable(false);
@@ -514,7 +547,6 @@ public class UserInfoViewController implements Initializable
         btnChangePassword.setText(MOD_FACADE.getLang("BTN_CHANGEPASS"));
         btnEditSave.setText(MOD_FACADE.getLang("BTN_EDIT"));
         btnLogout.setText(MOD_FACADE.getLang("BTN_LOGOUT"));
-        btnCancel.setText(MOD_FACADE.getLang("BTN_CANCEL"));
 
         colDate.setText(MOD_FACADE.getLang("COL_DATE"));
         colHours.setText(MOD_FACADE.getLang("COL_HOURS"));
@@ -564,15 +596,290 @@ public class UserInfoViewController implements Initializable
         else
         {
             JFXSnackbar b = new JFXSnackbar(root);
-            b.show("Old password is wrong", 2000);
+            b.show("Old password is incorrect", 2000);
         }
 
     }
 
     @FXML
-    private void handAddHours(ActionEvent event)
+    private void openAddHoursPopup(ActionEvent event)
+    {
+        //Clears everything from previous
+        datePickerInPop.setValue(null);
+        buttonsLocking(false);
+        txtfldHours.clear();
+
+        setupAddHoursPopup();
+        stckPaneAddHours.setVisible(true);
+        MOD_FACADE.fadeInTransition(Duration.millis(750), stckPaneAddHours);
+
+    }
+
+    public void snackBarPopup(String str)
+    {
+        int time = 3000;
+        JFXSnackbar snackbar = new JFXSnackbar(root);
+        snackbar.show(str, time);
+        PauseTransition pause = new PauseTransition(Duration.millis(time - 2000));
+        pause.setOnFinished(
+                e -> buttonsLocking(false)
+        );
+        pause.play();
+
+    }
+
+    public void buttonsLocking(Boolean dis)
+    {
+        datePickerInPop.setDisable(dis);
+        btnIntUp.setDisable(dis);
+        btnIntDown.setDisable(dis);
+        comboboxGuild.setDisable(dis);
+
+    }
+
+    private void formatCalendar()
+    {
+        StringConverter converter = new StringConverter<LocalDate>()
+        {
+            DateTimeFormatter dateFormatter
+                    = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            @Override
+            public String toString(LocalDate date)
+            {
+                if (date != null)
+                {
+                    return dateFormatter.format(date);
+                }
+                else
+                {
+                    return "";
+                }
+            }
+
+            @Override
+            public LocalDate fromString(String string)
+            {
+                if (string != null && !string.isEmpty())
+                {
+                    return LocalDate.parse(string, dateFormatter);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        };
+        datePickerInPop.setConverter(converter);
+
+        // Create a day cell factory
+        datePickerInPop.setDayCellFactory(new Callback<DatePicker, DateCell>()
+        {
+
+            @Override
+            public DateCell call(final DatePicker datepicker)
+            {
+                return new DateCell()
+                {
+                    @Override
+
+                    public void updateItem(LocalDate item, boolean empty)
+
+                    {
+
+                        // Must call super
+                        super.updateItem(item, empty);
+
+                        // Disable all future date cells
+                        if (item.isAfter(LocalDate.now()))
+
+                        {
+
+                            this.setDisable(true);
+
+                        }
+
+                    }
+                };
+            }
+
+        });
+    }
+
+    private void setupAddHoursPopup()
+    {
+        formatCalendar();
+        comboboxGuild.setItems(FXCollections.observableArrayList(MOD_FACADE.getAllGuilds()));
+
+        txtfldHours.textProperty().addListener(new ChangeListener<String>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
+            {
+                try
+                {
+                    if (newValue.matches("\\d*") && newValue.length() < 3)
+                    {
+                        if (Integer.parseInt(newValue) >= 25)
+                        {
+                            snackBarPopup("You cannot exceed 24 hours");
+
+                            txtfldHours.setText(oldValue);
+                        }
+                        else if (Integer.parseInt(newValue) <= 0)
+                        {
+                            snackBarPopup("You cannot log 0 hours");
+                            txtfldHours.setText(oldValue);
+                        }
+                        else
+                        {
+                            int value = Integer.parseInt(newValue);
+                        }
+                    }
+                    else
+                    {
+                        txtfldHours.setText(oldValue);
+                    }
+                }
+                catch (NumberFormatException ex)
+                {
+                    //do nothing
+                }
+            }
+
+        });
+        new GUI.Model.AutoCompleteComboBoxListener<>(comboboxGuild);
+
+        comboboxGuild.setConverter(new StringConverter<Guild>()
+        {
+
+            @Override
+            public String toString(Guild object)
+            {
+                if (object == null)
+                {
+                    return null;
+                }
+                return object.toString();
+            }
+
+            @Override
+            public Guild fromString(String string)
+            {
+                Guild findGuild = null;
+                for (Guild guild : comboboxGuild.getItems())
+                {
+                    if (guild.getName().equals(string))
+                    {
+                        return guild;
+                    }
+
+                }
+                return findGuild;
+            }
+        });
+    }
+
+    @FXML
+    private void setNumberOfHoursEvent(ActionEvent event)
     {
 
+        if ((event.getSource().equals(btnIntUp)))
+        {
+            if (txtfldHours.getText().isEmpty())
+            {
+                txtfldHours.setText("1");
+            }
+            else
+            {
+                int hours = Integer.parseInt(txtfldHours.getText());
+
+                int currentHours = Integer.parseInt(txtfldHours.getText());
+                currentHours++;
+                txtfldHours.setText(currentHours + "");
+            }
+        }
+        if ((event.getSource().equals(btnIntDown)))
+        {
+
+            if (txtfldHours.getText().isEmpty())
+            {
+                snackBarPopup("Invalid Action");
+            }
+            else
+            {
+                int hours = Integer.parseInt(txtfldHours.getText());
+                hours--;
+                txtfldHours.setText(hours + "");
+
+            }
+        }
+    }
+
+    @FXML
+    private void handleAddHours(ActionEvent event)
+    {
+
+        buttonsLocking(true);
+
+        if (datePickerInPop.getValue() != null && !txtfldHours.getText().isEmpty() && !comboboxGuild.getSelectionModel().isEmpty())
+        {
+
+            String date = datePickerInPop.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+            int hours = Integer.parseInt(txtfldHours.getText());
+
+            int guildID = comboboxGuild.getSelectionModel().getSelectedItem().getId();
+
+            if (currentUser.getEmail() != null)
+            {
+                //DANIEL WILL FIX THIS 
+                if (MOD_FACADE.logHours(currentUser.getEmail(), date, hours, guildID) == false)
+                {
+                    snackBarPopup("Error: hours have already been added for this particular guild on this day.");
+                }
+                else
+                {
+                    MOD_FACADE.logHours(currentUser.getEmail(), date, hours, guildID);
+                    JFXSnackbar b = new JFXSnackbar(root);
+                    b.show("Hours successfully logged", 2000);
+                    closeAddHoursPopup();
+                    setupTableView();
+                }
+
+            }
+            else if (currentUser.getPhone() != 0)
+
+            {    //DANIEL WILL FIX THIS
+                if (MOD_FACADE.logHours(currentUser.getPhone() + "", date, hours, guildID) == false)
+                {
+                    snackBarPopup("Error: hours have already been added for this particular guild on this day.");
+                }
+                else
+                {
+                    MOD_FACADE.logHours(currentUser.getPhone() + "", date, hours, guildID);
+                    JFXSnackbar b = new JFXSnackbar(root);
+                    b.show("Hours successfully logged", 2000);
+                    closeAddHoursPopup();
+                    setupTableView();
+                }
+
+            }
+
+        }
+
+        else
+        {
+            snackBarPopup("Please input information in all fields");
+        }
+
+    }
+
+    @FXML
+    private void closeAddHoursPopup()
+    {
+        MOD_FACADE.fadeOutTransition(Duration.millis(750), stckPaneAddHours)
+                .setOnFinished(e -> stckPaneAddHours.setVisible(false));
     }
 
     @FXML
@@ -620,11 +927,13 @@ public class UserInfoViewController implements Initializable
             @Override
             public void handle(Event event)
             {
-                List selectedDay = new ArrayList(tableViewMain.getSelectionModel().getSelectedItems());
-                for (Object day : selectedDay)
-                {
-                    MOD_FACADE.deleteWorkedDay(currentUser, (Day) day);
-                }
+//                List selectedDay = new ArrayList(tableViewMain.getSelectionModel().getSelectedItems());
+//                for (Object day : selectedDay)
+//                {
+//                    MOD_FACADE.deleteWorkedDay(currentUser, (Day) day);
+//                }
+
+                MOD_FACADE.deleteWorkedDay(currentUser, tableViewMain.getSelectionModel().getSelectedItem());
 
                 setupTableView();
             }

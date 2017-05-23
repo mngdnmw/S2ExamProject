@@ -25,7 +25,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
 
 
 
@@ -167,7 +167,7 @@
                               <TableColumn fx:id="colGuild" prefWidth="159.0" style="-fx-alignment: CENTER;" text="Guild" />
                           </columns>
                         </TableView>
-                        <JFXButton fx:id="btnAddHours" buttonType="RAISED" onAction="#handAddHours" style="-fx-background-color: #029e99;" text="Add Hours" textFill="WHITE">
+                        <JFXButton fx:id="btnAddHours" buttonType="RAISED" onAction="#openAddHoursPopup" style="-fx-background-color: #029e99;" text="Add Hours" textFill="WHITE">
                            <padding>
                               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                            </padding>
@@ -221,7 +221,7 @@
                   <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
                      <children>
                         <JFXButton fx:id="btnChangePWConfirm" buttonType="RAISED" onAction="#changePasswordEvent" styleClass="loginbuttons" text="Change" />
-                        <JFXButton fx:id="btnCancel" buttonType="RAISED" onAction="#hidePasswordChangerEvent" styleClass="loginbuttons" text="Cancel" />
+                        <JFXButton fx:id="btnCancelPW" buttonType="RAISED" onAction="#hidePasswordChangerEvent" styleClass="loginbuttons" text="Cancel" />
                      </children>
                      <padding>
                         <Insets bottom="1.0" top="8.0" />
@@ -234,52 +234,75 @@
             </VBox>
          </children>
       </StackPane>
-      <StackPane fx:id="stckPanePasswordChanger1" prefHeight="510.0" prefWidth="710.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false">
+      <StackPane fx:id="stckPaneAddHours" prefHeight="510.0" prefWidth="710.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false">
          <children>
             <VBox alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="200.0" prefWidth="463.0" spacing="10.0" styleClass="loginwindow" stylesheets="@MainLayout.css">
                <children>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="25.0">
+                  <HBox alignment="CENTER_RIGHT" prefHeight="54.0" prefWidth="401.0" spacing="25.0">
                      <children>
-                        <Label fx:id="lblOldPassword1" prefHeight="20.0" prefWidth="52.0" text="Date">
+                        <Label fx:id="lblDateInPop" alignment="TOP_LEFT" prefHeight="20.0" prefWidth="52.0" text="Date">
                            <font>
                               <Font name="System Bold Italic" size="16.0" />
                            </font>
                         </Label>
-                        <JFXDatePicker prefHeight="29.0" prefWidth="337.0" />
+                        <JFXDatePicker fx:id="datePickerInPop" prefHeight="29.0" prefWidth="241.0" style="-jfx-focus-color: #00c4ad;">
+                           <HBox.margin>
+                              <Insets left="50.0" right="30.0" />
+                           </HBox.margin></JFXDatePicker>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="363.0" spacing="10.0">
                      <children>
-                        <Label fx:id="lblNewPassword1" prefHeight="20.0" prefWidth="64.0" text="Hours">
+                        <Label fx:id="lblHoursInPop" prefHeight="20.0" prefWidth="64.0" text="Hours">
                            <font>
                               <Font name="System Bold Italic" size="16.0" />
                            </font>
-                        </Label>
-                        <JFXPasswordField fx:id="txtNPassword1" focusColor="#00e2c7" prefHeight="31.0" prefWidth="301.0" styleClass="logintextFields">
                            <HBox.margin>
-                              <Insets right="35.0" />
+                              <Insets left="2.0" />
                            </HBox.margin>
-                        </JFXPasswordField>
+                        </Label>
+                        <JFXButton fx:id="btnIntDown" alignment="BOTTOM_CENTER" contentDisplay="CENTER" onAction="#setNumberOfHoursEvent" prefHeight="55.0" prefWidth="52.0" style="-fx-background-color: rgba(0,0,0,0); -fx-background-radius: 50%;" text=" ">
+                           <graphic>
+                              <ImageView fitHeight="40.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../Resources/arrowcoloredleft.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                        <JFXTextField fx:id="txtfldHours" prefHeight="25.0" prefWidth="220.0" style="-jfx-focus-color: #00c4ad;" />
+                        <JFXButton fx:id="btnIntUp" alignment="BOTTOM_CENTER" contentDisplay="CENTER" onAction="#setNumberOfHoursEvent" prefHeight="55.0" prefWidth="43.0" style="-fx-background-color: rgba(0,0,0,0); -fx-background-radius: 50%;" text=" ">
+                           <graphic>
+                              <ImageView fitHeight="40.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../Resources/arrowcolored.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="25.0">
                      <children>
-                        <Label fx:id="lblNewPassword21" text="Guild">
+                        <Label fx:id="lblGuildInPop" text="Guild">
                            <font>
                               <Font name="System Bold Italic" size="16.0" />
                            </font>
                         </Label>
-                        <JFXComboBox prefHeight="27.0" prefWidth="333.0">
+                        <JFXComboBox fx:id="comboboxGuild" editable="true" labelFloat="true" prefHeight="27.0" prefWidth="333.0" style="-jfx-focus-color: #00c4ad;">
                            <padding>
-                              <Insets right="33.0" />
+                              <Insets left="65.0" right="67.0" />
                            </padding>
                         </JFXComboBox>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
                      <children>
-                        <JFXButton fx:id="btnChangePWConfirm1" buttonType="RAISED" maxHeight="30.0" onAction="#changePasswordEvent" prefHeight="30.0" styleClass="loginbuttons" text="Add" />
-                        <JFXButton fx:id="btnCancel1" buttonType="RAISED" maxHeight="30.0" onAction="#hidePasswordChangerEvent" prefHeight="30.0" styleClass="loginbuttons" text="Cancel" />
+                        <JFXButton fx:id="btnAddHoursPOP" buttonType="RAISED" maxHeight="30.0" onAction="#handleAddHours" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #029e99;" text="Add" textFill="WHITE" />
+                        <JFXButton fx:id="btnCancelPOP" buttonType="RAISED" maxHeight="30.0" onAction="#closeAddHoursPopup" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #B0B0B0;" text="Cancel" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin></JFXButton>
                      </children>
                      <padding>
                         <Insets bottom="1.0" right="20.0" top="8.0" />

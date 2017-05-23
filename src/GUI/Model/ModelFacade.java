@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import javafx.animation.FadeTransition;
 import javafx.scene.Node;
+import javafx.scene.chart.XYChart;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
@@ -39,9 +40,9 @@ public class ModelFacade
     }
 
     //Login Model
-    public Boolean logHours(String username, int hours, int guildId)
+    public Boolean logHours(String username, String date, int hours, int guildId)
     {
-        return LOG_MOD.logHours(username, hours, guildId);
+        return LOG_MOD.logHours(username, date, hours, guildId);
     }
 
     public HashMap<String, String> loadSession()
@@ -100,7 +101,7 @@ public class ModelFacade
     public StackPane getLoadingScreen()
     {
         return ANIM_MOD.getLoadingScreen();
-      }
+    }
 
     //Language Model
     public String getLang(String key)
@@ -196,8 +197,9 @@ public class ModelFacade
     {
         return VOL_DATA_MOD.getAllSavedVolunteers();
     }
-    
-    public List<User> getAllSavedManagers() {
+
+    public List<User> getAllSavedManagers()
+    {
         return VOL_DATA_MOD.getAllSavedManagers();
     }
     
@@ -210,6 +212,7 @@ public class ModelFacade
     {
         VOL_DATA_MOD.setAllVolunteersIntoArray();
     }
+
     public void setAllManagersIntoArray() {
         VOL_DATA_MOD.setAllManagersIntoArray();
     }
@@ -228,23 +231,37 @@ public class ModelFacade
     {
         return BLL_FAC.getGuildsForUser(user);
     }
-    
+
     public void addGuild(String name)
     {
         BLL_FAC.addGuild(name);
     }
-    
+
     public void deleteGuild(int guildId)
     {
         BLL_FAC.deleteGuild(guildId);
     }
-    
+
     public void updateGuild(int guildId, String name)
     {
         BLL_FAC.updateGuild(guildId, name);
     }
     
-     public void deleteWorkedDay(User user, Day day){
+    public String parseExportUsers(List<User> users) {
+        return BLL_FAC.parseExport(users);
+    }
+    
+    public void writeExport(File file, String input) {
+        BLL_FAC.writeExport(file, input);
+    }
+
+    public void deleteWorkedDay(User user, Day day)
+    {
         BLL_FAC.deleteWorkedDay(user, day);
     }
-  }
+
+    public List<XYChart.Series<Number, Number>> graphSort(Guild guild)
+    {
+        return GRAPH_MOD.sortGraph(guild);
+    }
+}
