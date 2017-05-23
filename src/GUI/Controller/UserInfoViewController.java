@@ -147,12 +147,18 @@ public class UserInfoViewController implements Initializable
     @FXML
     private JFXButton btnChangePWConfirm;
     @FXML
-    private JFXButton btnCancel;
+    private JFXButton btnCancelPW;
+    @FXML
+    private JFXButton btnAddHoursPOP;
+    @FXML
+    private JFXButton btnCancelPOP;
+
     //Objects Used
     User currentUser;
     JFXPopup popup;
     JFXButton higherClearanceBtn = new JFXButton();
-    JFXButton btnNewCancel = new JFXButton();
+    JFXButton btnCancelEditInfo;
+    //JFXButton btnNewCancel = new JFXButton();
 
     //Variables Used
     boolean editing = false;
@@ -496,15 +502,15 @@ public class UserInfoViewController implements Initializable
         btnEditSave.setStyle("-fx-background-color: #61B329;");
         GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) - 1); //moving save button one up
 
-        btnCancel.setText(MOD_FACADE.getLang("BTN_CANCEL")); //preparing cancel button
-        btnCancel.setButtonType(JFXButton.ButtonType.RAISED);
-        btnCancel.setStyle("-fx-background-color: #ff0000;");
-        btnCancel.setTextFill(Color.WHITE);
-        btnCancel.setPadding(btnEditSave.getPadding());
-        btnCancel.setScaleX(0.7);
-        btnCancel.setScaleY(0.7);
-        gridEdit.add(btnCancel, btnSavePosCol, btnSavePosRow); //adding to the old position of save btn
-        btnCancel.setOnAction(new EventHandler<ActionEvent>()
+        btnCancelEditInfo.setText(MOD_FACADE.getLang("BTN_CANCEL")); //preparing cancel button
+        btnCancelEditInfo.setButtonType(JFXButton.ButtonType.RAISED);
+        btnCancelEditInfo.setStyle("-fx-background-color: #ff0000;");
+        btnCancelEditInfo.setTextFill(Color.WHITE);
+        btnCancelEditInfo.setPadding(btnEditSave.getPadding());
+        btnCancelEditInfo.setScaleX(0.7);
+        btnCancelEditInfo.setScaleY(0.7);
+        gridEdit.add(btnCancelEditInfo, btnSavePosCol, btnSavePosRow); //adding to the old position of save btn
+        btnCancelEditInfo.setOnAction(new EventHandler<ActionEvent>()
 
         { //setting onAction, nothing changed, just show old labels again
             @Override
@@ -528,7 +534,7 @@ public class UserInfoViewController implements Initializable
     private void removeCancelButton()
     {
         GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) + 1); //moving save button one down
-        gridEdit.getChildren().remove(btnNewCancel); //deleting cancel button from gridpane
+        gridEdit.getChildren().remove(btnCancelEditInfo); //deleting cancel button from gridpane
         if (btnEditSave.isDisabled())
         {
             btnEditSave.setDisable(false);
@@ -541,7 +547,6 @@ public class UserInfoViewController implements Initializable
         btnChangePassword.setText(MOD_FACADE.getLang("BTN_CHANGEPASS"));
         btnEditSave.setText(MOD_FACADE.getLang("BTN_EDIT"));
         btnLogout.setText(MOD_FACADE.getLang("BTN_LOGOUT"));
-        btnCancel.setText(MOD_FACADE.getLang("BTN_CANCEL"));
 
         colDate.setText(MOD_FACADE.getLang("COL_DATE"));
         colHours.setText(MOD_FACADE.getLang("COL_HOURS"));

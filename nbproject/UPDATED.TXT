@@ -7,6 +7,7 @@ as compliant with this version of NetBeans JavaFX support module. To ensure corr
 and complete functionality within this NetBeans installation the script file has been
 backed up to jfx-impl_backup_9.xml and then updated to the currently supported state.
 
+
 FX Project build script auto-update may be triggered on project open either after
 NetBeans installation update or by manual changes in jfx-impl.xml. Please note that
 changing jfx-impl.xml manually is not recommended. Any build customization code should

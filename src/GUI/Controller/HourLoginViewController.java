@@ -146,8 +146,7 @@ public class HourLoginViewController implements Initializable
         ModelFacade.setModelFacade(MOD_FACADE);
         addListener();
         setTextAll();
-
-//        rememberThisSession();
+        rememberThisSession();
     }
 
     public void buttonPressed(KeyEvent ke)
@@ -561,7 +560,6 @@ public class HourLoginViewController implements Initializable
     {
         if (MOD_FACADE.loadSession() != null)
         {
-
             txtUser.setText(MOD_FACADE.loadSession().get("lastuser"));
             txtHours.setText(MOD_FACADE.loadSession().get("lasthours"));
             cmbGuildChooser.getSelectionModel().select(MOD_FACADE.getGuild(Integer.parseInt(MOD_FACADE.loadSession().get("lastguild"))));

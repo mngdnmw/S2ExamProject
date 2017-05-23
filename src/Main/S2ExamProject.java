@@ -2,7 +2,6 @@ package Main;
 
 import BE.Guild;
 import DAL.ConfigManager;
-import DAL.HourManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -24,8 +23,6 @@ public class S2ExamProject extends Application
         stage.show();
         stage.setTitle(title);
         
-        HourManager hManager = new HourManager();
-        hManager.getHoursForGuild(new Guild(5, "title"));
       }
 
     /**
