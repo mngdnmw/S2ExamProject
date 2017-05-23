@@ -8,9 +8,11 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXSnackbar;
+import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
@@ -35,10 +38,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -86,6 +91,14 @@ public class ManagerViewController implements Initializable
     private JFXCheckBox chkManagers;
     @FXML
     private Tab tabGraphStats;
+    @FXML
+    private Tab tabGuildManagement;
+    @FXML
+    private AnchorPane anchorPaneGuild;
+    @FXML
+    private JFXTabPane tabPane;
+    
+    Boolean hasLoadedGuild= false ;
 
     /**
      * Initializes the controller class.
@@ -117,7 +130,7 @@ public class ManagerViewController implements Initializable
     {
         if (modelFacade.getCurrentUser().getType() == 1)
         {
-            tblUsers.setItems(FXCollections.observableArrayList(modelFacade.getAllVolunteers()));
+            tblUsers.setItems(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
         }
         if (modelFacade.getCurrentUser().getType() == 2)
 
@@ -358,7 +371,7 @@ public class ManagerViewController implements Initializable
             @Override
             public void handle(Event event)
             {
-                TableColumn<User, String> column = colEmail;
+                //TableColumn<User, String> column = colEmail;
 
                 List<String> columnData = new ArrayList<>();
                 for (User item : tblUsers.getItems())
@@ -437,5 +450,17 @@ public class ManagerViewController implements Initializable
         colName.setText(modelFacade.getLang("COL_NAME"));
         tabVolunInfo.setText(modelFacade.getLang("TAB_VOLUN_INFO"));
         tabGraphStats.setText(modelFacade.getLang("TAB_GRAPH_STATS"));
+    }
+
+    @FXML
+    private void loadGuildView(Event event) throws IOException
+    {
+        if(tabPane.getSelectionModel().getSelectedItem() == tabGuildManagement && !hasLoadedGuild)
+        {
+            Pane newLoadedPane =  FXMLLoader.load(getClass().getResource("/GUI/View/GuildManagementView.fxml"));           
+            anchorPaneGuild.getChildren().add(newLoadedPane);
+            hasLoadedGuild = true;
+        }
+        System.out.println(tabPane.getSelectionModel().getSelectedItem().getId());
     }
 }

@@ -20,6 +20,7 @@ public class BLLFacade
     private final static LoginHandler LOG_HAND = new LoginHandler();
     private final static LanguageHandler LANG_HAND = new LanguageHandler();
     private final static ExportParser exportParser = new ExportParser();
+    private final static GraphHandler GRAPH_HAND = new GraphHandler();
 
     public User getUserFromLogin(String username, String password)
     {
@@ -130,16 +131,19 @@ public class BLLFacade
     {
         return DAL_FAC.getGuildsForUser(user);
     }
-    
-    public Lang getLangProperty() {
+
+    public Lang getLangProperty()
+    {
         return LANG_HAND.getLangProperty();
     }
-    
-    public String getLang(String key) {
+
+    public String getLang(String key)
+    {
         return LANG_HAND.getLang(key);
     }
-    
-    public void setLang(Lang lang) {
+
+    public void setLang(Lang lang)
+    {
         LANG_HAND.setLang(lang);
     }
     
@@ -149,5 +153,14 @@ public class BLLFacade
     
     public void writeExport(File file,String input) {
         DAL_FAC.writeExport(file, input);
+    }
+    public void deleteWorkedDay(User user, Day day)
+    {
+        DAL_FAC.deleteWorkedDay(user, day);
+    }
+
+    public ArrayList<HashMap<Integer, Integer>> graphSorter(Guild guild)
+    {
+        return GRAPH_HAND.sorter(guild);
     }
 }

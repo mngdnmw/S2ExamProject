@@ -1,25 +1,24 @@
 package BE;
 
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Day extends RecursiveTreeObject<Day>
+public class Day
 {
 
-    //private final StringProperty date;
     private final StringProperty date = new SimpleStringProperty();
     private final IntegerProperty hour = new SimpleIntegerProperty();
     private final StringProperty guild = new SimpleStringProperty();
+    private final IntegerProperty guildId = new SimpleIntegerProperty();
 
-    public Day(String date, int hours, String guild)
+    public Day(String date, int hours, String guild, int guildId)
     {
-        //this.date = new SimpleStringProperty(date);
         this.date.set(date);
         this.hour.set(hours);
         this.guild.set(guild);
+        this.guildId.set(guildId);
 
     }
 
@@ -68,4 +67,8 @@ public class Day extends RecursiveTreeObject<Day>
         return guild;
     }
 
+    public int getGuildId()
+    {
+        return guildId.get();
+    }
 }
