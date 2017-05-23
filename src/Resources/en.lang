@@ -32,7 +32,6 @@ BTN_UPDATEPHOTO = Update photo
 BTN_CHANGEPASS = Change password
 BTN_EDIT = Edit
 BTN_SAVE = Save
-#BTN_CANCEL = Cancel #Already exists
 BTN_DELETE = Delete
 BTN_LOGOUT = Log out
 TAB_ALL = All
@@ -74,3 +73,8 @@ COL_PHONE = Phone
 COL_EMAIL = Email
 TAB_VOLUN_INFO = Volunteer Information
 TAB_GRAPH_STATS = Graphs & statistics
+
+#ErrorCode
+STR_NO_ERROR_CONTRIBUTION = Your hours have been logged. Thank you!
+STR_ERROR_2627 = Error: hours have already been added for this particular guild on this day.
+STR_FIRST_TIME_ERROR = Error: Unknown Error: 

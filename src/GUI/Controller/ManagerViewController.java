@@ -155,7 +155,6 @@ public class ManagerViewController implements Initializable
         }
         setTableProperties();
         setTableItems();
-
         setupTableView();
 
         if (modelFacade.getCurrentUser().getType() < 2)
