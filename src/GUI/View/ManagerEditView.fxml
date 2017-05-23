@@ -6,12 +6,13 @@
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.image.Image?>
@@ -93,20 +94,6 @@
             <JFXTextField fx:id="txtAddress2" focusColor="#00e2c7" promptText="Address" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
       </GridPane>
-      <JFXTabPane>
-         <tabs>
-            <Tab text="Untitled Tab">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-              </content>
-            </Tab>
-            <Tab text="Untitled Tab">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-              </content>
-            </Tab>
-         </tabs>
-      </JFXTabPane>
       <TabPane layoutX="14.0" layoutY="234.0" prefHeight="254.0" prefWidth="482.0" style="-fx-border-color: #00c4ad; -fx-background-color: #ffffff;" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="All">
@@ -127,11 +114,13 @@
                                     </JFXTextField>
                                  </children>
                               </VBox>
-                              <JFXTreeTableView fx:id="treeViewAllHours" prefHeight="225.0" prefWidth="384.0" stylesheets="@UserInfoCSS.css">
-                                 <HBox.margin>
-                                    <Insets left="15.0" />
-                                 </HBox.margin>
-                              </JFXTreeTableView>
+                              <TableView fx:id="tblMain" prefHeight="225.0" prefWidth="329.0">
+                                <columns>
+                                  <TableColumn fx:id="colDate" prefWidth="138.0" text="Date" />
+                                  <TableColumn fx:id="colHours" prefWidth="62.0" text="Hours" />
+                                    <TableColumn fx:id="colGuild" prefWidth="126.0" text="Guild" />
+                                </columns>
+                              </TableView>
                            </children>
                         </HBox>
                      </children></AnchorPane>
@@ -191,7 +180,7 @@
             <Font size="13.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="JFXBtnCancel" layoutX="603.0" layoutY="451.0" maxHeight="30.0" minHeight="-Infinity" onAction="#onBtnCancelPressed" prefHeight="19.0" prefWidth="78.0" style="-fx-background-color: B0B0B0;" text="Cancel Edit" textFill="WHITE">
+      <JFXButton fx:id="JFXBtnCancel" layoutX="603.0" layoutY="452.0" maxHeight="30.0" minHeight="-Infinity" onAction="#onBtnCancelPressed" prefHeight="19.0" prefWidth="78.0" style="-fx-background-color: B0B0B0;" text="Cancel Edit" textFill="WHITE">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
@@ -200,7 +189,7 @@
          </font>
       </JFXButton>
       <JFXListView fx:id="listGuilds" layoutX="524.0" layoutY="288.0" prefHeight="145.0" prefWidth="141.0" style="-fx-border-image-width: 0px;" />
-      <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="530.0" layoutY="208.0" maxHeight="30.0" minHeight="-Infinity" onAction="#openPasswordChangerEvent" prefHeight="19.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Change Password" textFill="WHITE">
+      <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="530.0" layoutY="208.0" maxHeight="30.0" minHeight="-Infinity" onAction="#openPasswordChangerEvent" prefHeight="25.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Change Password" textFill="WHITE">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
