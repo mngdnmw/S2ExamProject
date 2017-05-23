@@ -26,7 +26,7 @@ public class DALFacade
         userid = getUserId(username);
         if (userid != -1)
         {
-            LOGIN_MAN.logHours(userid, date, hours, guildId);
+            HR_MAN.logHours(userid, date, hours, guildId);
             LOGIN_MAN.saveSession(username, guildId, hours);
         }
 
