@@ -25,7 +25,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
 
 
 
@@ -184,7 +184,7 @@
       <JFXListView fx:id="listVwGuilds" layoutX="527.0" layoutY="277.0" maxWidth="141.0" prefHeight="162.0" prefWidth="141.0" style="-fx-border-width: 0px;" />
       <Label fx:id="lblGuilds" layoutX="527.0" layoutY="260.0" style="-fx-background-color: #00c4ad;" text="Guilds:" textFill="WHITE" />
       
-      <StackPane fx:id="stckPanePasswordChanger" layoutX="-25.0" prefHeight="510.0" prefWidth="710.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane fx:id="stckPanePasswordChanger" layoutX="-25.0" prefHeight="510.0" prefWidth="710.0" style="-fx-background-color: rgba(0,0,0,0.5);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="200.0" prefWidth="463.0" spacing="10.0" styleClass="loginwindow" stylesheets="@MainLayout.css">
                <children>
@@ -195,7 +195,7 @@
                               <Font name="System Bold Italic" size="16.0" />
                            </font>
                         </Label>
-                        <JFXPasswordField fx:id="txtOPassword" prefHeight="29.0" prefWidth="221.0" styleClass="logintextFields" />
+                        <JFXPasswordField fx:id="txtOPassword" prefHeight="31.0" prefWidth="210.0" styleClass="logintextFields" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">

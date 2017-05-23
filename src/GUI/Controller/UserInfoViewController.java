@@ -867,6 +867,7 @@ public class UserInfoViewController implements Initializable
     private void handleAddHours(ActionEvent event)
     {
 
+        root.getChildren().add(MOD_FACADE.getLoadingScreen());
         buttonsLocking(true);
 
         if (datePickerInPop.getValue() != null && !txtfldHours.getText().isEmpty() && !comboboxGuild.getSelectionModel().isEmpty())
@@ -881,15 +882,17 @@ public class UserInfoViewController implements Initializable
             if (currentUser.getEmail() != null)
             {
 
+                
                 int errorCode = MOD_FACADE.logHours(currentUser.getEmail(), date, hours, guildID);
+                root.getChildren().remove(MOD_FACADE.getLoadingScreen());
                 contributionSnackBarHandler(errorCode);
 
             }
             else if (currentUser.getPhone() != 0)
 
-            {    //DANIEL WILL FIX THIS
+            {   
                 int errorCode = MOD_FACADE.logHours(currentUser.getPhone() + "", date, hours, guildID);
-
+                root.getChildren().remove(MOD_FACADE.getLoadingScreen());
                 contributionSnackBarHandler(errorCode);
 
             }
@@ -974,14 +977,18 @@ public class UserInfoViewController implements Initializable
             @Override
             public void handle(Event event)
             {
+                //Might be able to select multiple days in the future
 //                List selectedDay = new ArrayList(tableViewMain.getSelectionModel().getSelectedItems());
 //                for (Object day : selectedDay)
 //                {
 //                    MOD_FACADE.deleteWorkedDay(currentUser, (Day) day);
 //                }
 
-                MOD_FACADE.deleteWorkedDay(currentUser, tableViewMain.getSelectionModel().getSelectedItem());
+                Day selectedDay=tableViewMain.getSelectionModel().getSelectedItem();
+                MOD_FACADE.deleteWorkedDay(currentUser,selectedDay);
+                
 
+                snackBarPopup("Contribution for " +selectedDay.getGuild()+" on the "+ selectedDay.getDate()+" has been deleted.");
                 serviceInitializer.restart();
             }
 

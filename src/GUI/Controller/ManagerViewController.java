@@ -77,6 +77,7 @@ public class ManagerViewController implements Initializable
     private JFXButton btnEditInfo;
     @FXML
     private AnchorPane root;
+    @FXML
     private JFXButton btnClose;
     @FXML
     private TableView<User> tblUsers;
@@ -459,6 +460,7 @@ public class ManagerViewController implements Initializable
         });
     }
 
+    @FXML
     private void onBtnClosePressed(ActionEvent event)
     {
         Stage stage = (Stage) btnClose.getScene().getWindow();
