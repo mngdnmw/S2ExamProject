@@ -21,11 +21,14 @@ import javafx.collections.FXCollections;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -562,10 +565,7 @@ public class HourLoginViewController implements Initializable
         {
             txtUser.setText(MOD_FACADE.loadSession().get("lastuser"));
             txtHours.setText(MOD_FACADE.loadSession().get("lasthours"));
-            cmbGuildChooser.getSelectionModel().select(MOD_FACADE.getGuild(Integer.parseInt(MOD_FACADE.loadSession().get("lastguild"))));
-            //cmbGuildChooser.setValue(MOD_FACADE.getGuild(Integer.parseInt(MOD_FACADE.loadSession().get("lastguild"))));
-            //cmbGuildChooser.arm();
-            //cmbGuildChooser.requestFocus();
+            cmbGuildChooser.getSelectionModel().select(cmbGuildChooser.getItems().get(Integer.parseInt(MOD_FACADE.loadSession().get("lastguild"))));
         }
     }
 }
