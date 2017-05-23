@@ -110,6 +110,7 @@ public class HourManager extends ConnectionManager
         }
 
     }
+
     /**
      * Gets all hours worked for a guild for the current year
      *
@@ -137,22 +138,23 @@ public class HourManager extends ConnectionManager
             while (rs.next())
             {
                 String date = rs.getString("date");
-                String guildName =  guild.getName();
+                String guildName = guild.getName();
                 int guildid = guild.getId();
-                int hour =rs.getInt("hours");
+                int hour = rs.getInt("hours");
                 if (genMan.getUserInfo(rs.getInt("userid")).getType() >= 1)
                 {
-                    managerHours.add(new Day(date,hour ,guildName,guildid));
+                    managerHours.add(new Day(date, hour, guildName, guildid));
                 }
                 else
                 {
-                    volunteerHours.add(new Day(date,hour ,guildName,guildid));
+                    volunteerHours.add(new Day(date, hour, guildName, guildid));
                 }
-                allHours.add(managerHours);
-                allHours.add(volunteerHours);
-                return allHours;
+
             }
-            
+
+            allHours.add(managerHours);
+            allHours.add(volunteerHours);
+            return allHours;
         }
         catch (SQLException ex)
         {
