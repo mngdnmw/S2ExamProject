@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
@@ -29,6 +30,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -95,11 +99,21 @@ public class ManagerViewController implements Initializable
     private AnchorPane anchorPaneGuild;
     @FXML
     private JFXTabPane tabPane;
+
+    @FXML
+    private AnchorPane GraphRoot;
+    @FXML
+    private LineChart<Number, Number> lineChartGuildHours;
     
-    Boolean hasLoadedGuild= false ;
+    @FXML
+    private NumberAxis yAxis;
+    @FXML
+    private NumberAxis xAxis;
+    
+    Boolean hasLoadedGuild = false;
     ModelFacade modelFacade = ModelFacade.getModelFacade();
     User selectedUser;
-    User cur;
+
     /**
      * Initializes the controller class.
      */
@@ -115,9 +129,6 @@ public class ManagerViewController implements Initializable
         setTableProperties();
         setTableItems();
         chkVolunteers.selectedProperty().set(true);
-        cur = modelFacade.getCurrentUser();
-        
-        
     }
 
     private void setTableProperties()
@@ -457,12 +468,31 @@ public class ManagerViewController implements Initializable
     @FXML
     private void loadGuildView(Event event) throws IOException
     {
-        if(tabPane.getSelectionModel().getSelectedItem() == tabGuildManagement && !hasLoadedGuild)
+        if (tabPane.getSelectionModel().getSelectedItem() == tabGuildManagement && !hasLoadedGuild)
         {
-            Pane newLoadedPane =  FXMLLoader.load(getClass().getResource("/GUI/View/GuildManagementView.fxml"));           
+            Pane newLoadedPane = FXMLLoader.load(getClass().getResource("/GUI/View/GuildManagementView.fxml"));
             anchorPaneGuild.getChildren().add(newLoadedPane);
             hasLoadedGuild = true;
         }
-        System.out.println(tabPane.getSelectionModel().getSelectedItem().getId());
+        else if (tabPane.getSelectionModel().getSelectedItem() == tabGraphStats)
+        {
+            xAxis.setLabel("Month number");
+            xAxis.setAutoRanging(false);
+            xAxis.setLowerBound(1);
+            xAxis.setUpperBound(12);
+            xAxis.setTickUnit(1);
+            if (cmbGuildChooser.getSelectionModel().getSelectedItem() != null)
+            {
+                List<XYChart.Series<Number, Number>> Temp = modelFacade.graphSort(cmbGuildChooser.getSelectionModel().getSelectedItem());
+
+                System.out.println("stop here");
+                for (XYChart.Series<Number, Number> series : Temp)
+                {
+                    lineChartGuildHours.getData().add(series);
+                }
+                Calendar cal = Calendar.getInstance();
+                lineChartGuildHours.setTitle("Work contribution graph for " + cmbGuildChooser.getSelectionModel().getSelectedItem().getName() + " " + cal.get(Calendar.YEAR));
+            }
+        }
     }
 }

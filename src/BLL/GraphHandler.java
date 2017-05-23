@@ -46,9 +46,9 @@ public class GraphHandler
             {
                 try
                 {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                     sdf.parse(day.getDate());
-                    int month = sdf.getCalendar().MONTH;
+                    int month = sdf.getCalendar().get(Calendar.MONTH);
                     if (i == 0)
                     {
                         int addHours = sortedDataMan.get(month) + day.getHour();
@@ -56,7 +56,7 @@ public class GraphHandler
                     }
                     else
                     {
-                         int addHours = sortedDataVolun.get(month) + day.getHour();
+                        int addHours = sortedDataVolun.get(month) + day.getHour();
                         sortedDataVolun.put(month, addHours);
                     }
 
