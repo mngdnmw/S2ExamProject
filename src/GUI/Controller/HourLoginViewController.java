@@ -9,6 +9,9 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -175,8 +178,7 @@ public class HourLoginViewController implements Initializable
     }
 
     @FXML
-    private void ChangeLanguageAction(ActionEvent event
-    )
+    private void ChangeLanguageAction(ActionEvent event)
     {
         buttonsLocking(true);
         languagePopup();
@@ -184,8 +186,7 @@ public class HourLoginViewController implements Initializable
     }
 
     @FXML
-    private void LogInAction(ActionEvent event
-    )
+    private void LogInAction(ActionEvent event)
     {
         buttonsLocking(true);
         loginPopup();
@@ -230,6 +231,7 @@ public class HourLoginViewController implements Initializable
 
         });
         new GUI.Model.AutoCompleteComboBoxListener<>(cmbGuildChooser);
+
         cmbGuildChooser.setConverter(new StringConverter<Guild>()
         {
 
@@ -294,16 +296,16 @@ public class HourLoginViewController implements Initializable
         }
 
         txtPassword.setOnKeyPressed((event)
-                -> 
+                ->
+        {
+            if (event.getCode() == KeyCode.ENTER)
+            {
+                if (!txtUsername.getText().isEmpty())
                 {
-                    if (event.getCode() == KeyCode.ENTER)
-                    {
-                        if (!txtUsername.getText().isEmpty())
-                        {
-                            serviceLog.restart();
-                            loadingScreen(true);
-                        }
-                    }
+                    serviceLog.restart();
+                    loadingScreen(true);
+                }
+            }
         });
         btnLogin.setOnAction(new EventHandler<ActionEvent>()
         {
@@ -487,8 +489,14 @@ public class HourLoginViewController implements Initializable
 
     private void logHours()
     {
+        
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
 
-        MOD_FACADE.logHours(username, hours, guildID);
+        String dateString = sdf.format(date);
+
+        MOD_FACADE.logHours(username, dateString,hours, guildID);
+        
         Platform.runLater(new Runnable()
         {
             @Override

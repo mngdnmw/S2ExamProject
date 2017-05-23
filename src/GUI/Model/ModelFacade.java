@@ -39,9 +39,9 @@ public class ModelFacade
     }
 
     //Login Model
-    public Boolean logHours(String username, int hours, int guildId)
+    public Boolean logHours(String username, String date, int hours, int guildId)
     {
-        return LOG_MOD.logHours(username, hours, guildId);
+        return LOG_MOD.logHours(username, date, hours, guildId);
     }
 
     public HashMap<String, String> loadSession()
