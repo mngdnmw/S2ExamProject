@@ -572,7 +572,6 @@ public class HourLoginViewController implements Initializable
                     return;
                 }
             }
-            //cmbGuildChooser.getSelectionModel().select(cmbGuildChooser.getItems().get(Integer.parseInt(MOD_FACADE.loadSession().get("lastguild"))));
         }
     }
 }
