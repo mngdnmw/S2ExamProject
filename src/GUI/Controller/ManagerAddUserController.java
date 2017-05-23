@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -66,6 +68,8 @@ public class ManagerAddUserController implements Initializable
     private JFXCheckBox chkAdmin;
 
     ModelFacade modelFacade = ModelFacade.getModelFacade();
+    
+    File newImg = null;
 
     private Service serviceAddNewUser = new Service()
     {
@@ -157,6 +161,16 @@ public class ManagerAddUserController implements Initializable
                             {
                                 System.out.println("New Volunteer added: " + txtName.getText());
                                 Stage stage = (Stage) btnAccept.getScene().getWindow();
+                                
+                                try
+                                {
+                                    modelFacade.updateUserImage(modelFacade.getAllUsers().get(modelFacade.getAllUsers().size() - 1), newImg);
+                                }
+                                catch (FileNotFoundException ex)
+                                {
+                                    Logger.getLogger(ManagerAddUserController.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                
                                 stage.close();
                     });
                 }
@@ -176,6 +190,16 @@ public class ManagerAddUserController implements Initializable
                             {
                                 System.out.println("New Manager added: " + txtName.getText());
                                 Stage stage = (Stage) btnAccept.getScene().getWindow();
+
+                                try
+                                {
+                                    modelFacade.updateUserImage(modelFacade.getAllUsers().get(modelFacade.getAllUsers().size() - 1), newImg);
+                                }
+                                catch (FileNotFoundException ex)
+                                {
+                                    Logger.getLogger(ManagerAddUserController.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                
                                 stage.close();
                     });
                 }
@@ -195,6 +219,16 @@ public class ManagerAddUserController implements Initializable
                             {
                                 System.out.println("New Admin added: " + txtName.getText());
                                 Stage stage = (Stage) btnAccept.getScene().getWindow();
+                                
+                                try
+                                {
+                                    modelFacade.updateUserImage(modelFacade.getAllUsers().get(modelFacade.getAllUsers().size() - 1), newImg);
+                                }
+                                catch (FileNotFoundException ex)
+                                {
+                                    Logger.getLogger(ManagerAddUserController.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                
                                 stage.close();
                     });
                 }
@@ -233,29 +267,11 @@ public class ManagerAddUserController implements Initializable
             "jpg", "jpeg", "png", "gif"
         };
         c.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Image files only", extensions));
-        File newImg = c.showOpenDialog(JFXBtnAddPhoto.getScene().getWindow());
+        newImg = c.showOpenDialog(JFXBtnAddPhoto.getScene().getWindow());
 
         if (newImg != null)
         {
-            try
-            {
-                modelFacade.updateUserImage(modelFacade.getAllUsers().get(modelFacade.getAllUsers().size()-1), newImg);
-            } catch (FileNotFoundException e)
-            {
-                System.out.println(e);
-                Alert a = new Alert(Alert.AlertType.ERROR);
-                a.setHeaderText("Selected image is not found");
-                a.setContentText("File not found!");
-            }
-        }
-        setUserImage();
-    }
-
-    public void setUserImage()
-    {
-        if (modelFacade.getUserImage(modelFacade.getAllUsers().get(modelFacade.getAllUsers().size()-1)) != null)
-        {
-            imgVwProfilePic.setImage(new Image(modelFacade.getUserImage(modelFacade.getAllUsers().get(modelFacade.getAllUsers().size()-1))));
+                imgVwProfilePic.setImage(new Image(newImg.toURI().toString()));
         }
     }
 

@@ -45,8 +45,9 @@
                               <TableColumn fx:id="colEmail" prefWidth="171.0" text="Email" />
                           </columns>
                         </TableView>
-                        <JFXCheckBox fx:id="chkVolunteers" layoutX="197.0" layoutY="27.0" text="Volunteers" />
-                        <JFXCheckBox fx:id="chkManagers" layoutX="307.0" layoutY="27.0" text="Managers" />
+                        <JFXCheckBox fx:id="chkVolunteers" layoutX="182.0" layoutY="27.0" onAction="#onCheckBoxAction" text="Volunteers" />
+                        <JFXCheckBox fx:id="chkManagers" layoutX="284.0" layoutY="27.0" onAction="#onCheckBoxAction" text="Managers" />
+                        <JFXCheckBox fx:id="chkAdmins" layoutX="372.0" layoutY="27.0" onAction="#onCheckBoxAction" text="Admins" />
                      </children>
                   </AnchorPane>
               </content>

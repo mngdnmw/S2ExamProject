@@ -17,7 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -83,6 +86,8 @@ public class ManagerViewController implements Initializable
     @FXML
     private JFXCheckBox chkManagers;
     @FXML
+    private JFXCheckBox chkAdmins;
+    @FXML
     private Tab tabGraphStats;
     @FXML
     private Tab tabGuildManagement;
@@ -94,6 +99,9 @@ public class ManagerViewController implements Initializable
     Boolean hasLoadedGuild= false ;
     ModelFacade modelFacade = ModelFacade.getModelFacade();
     User selectedUser;
+    
+    List<User> filteredList = new ArrayList<>();
+    
     /**
      * Initializes the controller class.
      */
@@ -108,6 +116,15 @@ public class ManagerViewController implements Initializable
         }
         setTableProperties();
         setTableItems();
+        
+        setupTableView();
+        
+        if(modelFacade.getCurrentUser().getType() < 2)
+        {
+            chkAdmins.setVisible(false);
+            chkManagers.setVisible(false);
+            chkVolunteers.setVisible(false);
+        }
     }
 
     private void setTableProperties()
@@ -403,5 +420,68 @@ public class ManagerViewController implements Initializable
             hasLoadedGuild = true;
         }
         System.out.println(tabPane.getSelectionModel().getSelectedItem().getId());
+    }
+
+    @FXML
+    private void onCheckBoxAction(ActionEvent event)
+    {
+        filteredList.clear();
+        
+        if(chkAdmins.selectedProperty().get() == false && chkManagers.selectedProperty().get() == false && chkVolunteers.selectedProperty().get() == false)
+        {
+            filteredList.clear();
+            tblUsers.setItems(FXCollections.observableArrayList(filteredList));
+        }
+        
+        if(chkAdmins.selectedProperty().get() == true)
+        {
+            filteredList.addAll(modelFacade.getAllAdmins());
+            tblUsers.setItems(FXCollections.observableArrayList(filteredList));
+        }
+        if(chkManagers.selectedProperty().get() == true)
+        {
+            filteredList.addAll(modelFacade.getAllManagers());
+            tblUsers.setItems(FXCollections.observableArrayList(filteredList));
+        }
+        if(chkVolunteers.selectedProperty().get() == true)
+        {
+            filteredList.addAll(modelFacade.getAllVolunteers());
+            tblUsers.setItems(FXCollections.observableArrayList(filteredList));
+        }
+    }
+    
+    private void setupTableView()
+    {
+
+        tblUsers.setPlaceholder(new Label("Nothing found :("));
+        colName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+        colPhone.setCellValueFactory(val -> val.getValue().phoneProperty().asObject());
+        colEmail.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
+
+        FilteredList<User> filteredData = new FilteredList<>(FXCollections.observableArrayList(modelFacade.getAllUsers()), p -> true);
+
+        txtSearch.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
+                ->
+        {
+            filteredData.setPredicate(user
+                    ->
+            {
+                String regex = "[^a-zA-Z0-9\\s]";
+                Boolean search
+                        = user.emailProperty().getValue().replaceAll(regex, "")
+                                .contains(newValue.replaceAll(regex, ""))
+                        || user.nameProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                contains(newValue.toLowerCase().replaceAll(regex, ""));
+
+                return search;
+
+            });
+        });
+
+        SortedList<User> sortedData = new SortedList<>(filteredData);
+
+        sortedData.comparatorProperty().bind(tblUsers.comparatorProperty());
+        tblUsers.setItems(sortedData);
+
     }
 }

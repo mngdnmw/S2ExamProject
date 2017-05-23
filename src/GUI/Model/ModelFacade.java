@@ -200,13 +200,22 @@ public class ModelFacade
     public List<User> getAllSavedManagers() {
         return VOL_DATA_MOD.getAllSavedManagers();
     }
+    
+    public List<User> getAllSavedAdmins()
+    {
+        return VOL_DATA_MOD.getAllSavedAdmins();
+    }
 
     public void setAllVolunteersIntoArray()
     {
         VOL_DATA_MOD.setAllVolunteersIntoArray();
     }
     public void setAllManagersIntoArray() {
-        VOL_DATA_MOD.setAllManagersIntoArray();;
+        VOL_DATA_MOD.setAllManagersIntoArray();
+    }
+    public void setAllAdminsIntoArray()
+    {
+        VOL_DATA_MOD.setAllAdminsIntoArray();
     }
 
     //BLL facade
