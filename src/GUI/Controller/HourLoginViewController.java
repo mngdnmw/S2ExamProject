@@ -552,6 +552,7 @@ public class HourLoginViewController implements Initializable
     {
         if (MOD_FACADE.loadSession() != null)
         {
+            cmbGuildChooser.setPromptText("");
             txtUser.setText(MOD_FACADE.loadSession().get("lastuser"));
             txtHours.setText(MOD_FACADE.loadSession().get("lasthours"));
             cmbGuildChooser.getSelectionModel().select(MOD_FACADE.getGuild(Integer.parseInt(MOD_FACADE.loadSession().get("lastguild"))));

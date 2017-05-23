@@ -34,9 +34,9 @@ public class LoginModel
 
     }
 
-    public Boolean logHours(String username, int hours, int guildId)
+    public int logHours(String username, int hours, int guildId)
     {
-
+        int errorCode;
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
 
@@ -47,9 +47,10 @@ public class LoginModel
         } catch (SQLException ex)
         {
             Logger.getLogger(LoginModel.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+            
+            System.out.println(ex.getErrorCode());
         }
-        return true;
+        return 0;
 
     }
 

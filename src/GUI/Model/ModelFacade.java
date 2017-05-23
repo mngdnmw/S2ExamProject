@@ -40,7 +40,7 @@ public class ModelFacade
     }
 
     //Login Model
-    public Boolean logHours(String username, int hours, int guildId)
+    public int logHours(String username, int hours, int guildId)
     {
         return LOG_MOD.logHours(username, hours, guildId);
     }
