@@ -40,9 +40,9 @@ public class ModelFacade
     }
 
     //Login Model
-    public Boolean logHours(String username, int hours, int guildId)
+    public Boolean logHours(String username, String date, int hours, int guildId)
     {
-        return LOG_MOD.logHours(username, hours, guildId);
+        return LOG_MOD.logHours(username, date, hours, guildId);
     }
 
     public HashMap<String, String> loadSession()
@@ -202,15 +202,23 @@ public class ModelFacade
     {
         return VOL_DATA_MOD.getAllSavedManagers();
     }
+    
+    public List<User> getAllSavedAdmins()
+    {
+        return VOL_DATA_MOD.getAllSavedAdmins();
+    }
 
     public void setAllVolunteersIntoArray()
     {
         VOL_DATA_MOD.setAllVolunteersIntoArray();
     }
 
-    public void setAllManagersIntoArray()
+    public void setAllManagersIntoArray() {
+        VOL_DATA_MOD.setAllManagersIntoArray();
+    }
+    public void setAllAdminsIntoArray()
     {
-        VOL_DATA_MOD.setAllManagersIntoArray();;
+        VOL_DATA_MOD.setAllAdminsIntoArray();
     }
 
     //BLL facade
