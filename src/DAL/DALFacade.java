@@ -76,6 +76,16 @@ public class DALFacade
     {
         return HR_MAN.getWorkedDays(user);
     }
+ /**
+  * returns an arraylist that contains two lists
+  * 0 being all manager(and admin) hours and 1 being all volunteer hours
+  * @param guild
+  * @return 
+  */
+    public List<List<Day>> getHoursForGuild(Guild guild)
+    {
+        return HR_MAN.getHoursForGuild(guild);
+    }
 
     public HashMap<String, String> loadSession()
     {
@@ -131,16 +141,19 @@ public class DALFacade
     {
         return GEN_INFO_MAN.getGuildsForUser(user.getId());
     }
-    
-    public Properties getLanguageFile() {
+
+    public Properties getLanguageFile()
+    {
         return LANG_MAN.getLanguageFile();
     }
-    
-    public Properties getLanguageFile(Lang lang) {
+
+    public Properties getLanguageFile(Lang lang)
+    {
         return LANG_MAN.getLanguageFile(lang);
     }
-    
-    public Lang getLangProperty() {
+
+    public Lang getLangProperty()
+    {
         return LANG_MAN.getLangProperty();
     }
     

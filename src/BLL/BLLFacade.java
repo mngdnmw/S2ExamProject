@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class BLLFacade
     private final static DALFacade DAL_FAC = new DALFacade();
     private final static LoginHandler LOG_HAND = new LoginHandler();
     private final static LanguageHandler LANG_HAND = new LanguageHandler();
+    private final static GraphHandler GRAPH_HAND = new GraphHandler();
 
     public User getUserFromLogin(String username, String password)
     {
@@ -128,20 +130,29 @@ public class BLLFacade
     {
         return DAL_FAC.getGuildsForUser(user);
     }
-    
-    public Lang getLangProperty() {
+
+    public Lang getLangProperty()
+    {
         return LANG_HAND.getLangProperty();
     }
-    
-    public String getLang(String key) {
+
+    public String getLang(String key)
+    {
         return LANG_HAND.getLang(key);
     }
-    
-    public void setLang(Lang lang) {
+
+    public void setLang(Lang lang)
+    {
         LANG_HAND.setLang(lang);
     }
-    
-     public void deleteWorkedDay(User user, Day day){
+
+    public void deleteWorkedDay(User user, Day day)
+    {
         DAL_FAC.deleteWorkedDay(user, day);
+    }
+
+    public ArrayList<HashMap<Integer, Integer>> graphSorter(Guild guild)
+    {
+        return GRAPH_HAND.sorter(guild);
     }
 }
