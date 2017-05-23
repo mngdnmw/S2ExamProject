@@ -14,6 +14,30 @@ import java.util.logging.Logger;
 public class HourManager extends ConnectionManager
 {
 
+    /**
+     * Logs hours into the database using userId, guildId, hours and date.
+     *
+     * @param userId
+     * @param date
+     * @param hours
+     * @param guildId
+     */
+    public void logHours(int userId, String date, int hours, int guildId) throws SQLException
+    {
+        try (Connection con = super.getConnection())
+        {
+            String sqlCommand
+                    = "INSERT into [hour](userid, date, hours, guildid) values (?, ?, ?, ?)";
+            PreparedStatement pstat = con.prepareStatement(sqlCommand);
+            pstat.setInt(1, userId);
+            pstat.setString(2, date);
+            pstat.setInt(3, hours);
+            pstat.setInt(4, guildId);
+            pstat.executeUpdate();
+
+        }
+    }
+
     public List<Day> getWorkedDays(User user)
     {
         ArrayList<Day> workedDays = new ArrayList<>();
@@ -63,17 +87,17 @@ public class HourManager extends ConnectionManager
 
     public void deleteWorkedDay(User user, Day day)
     {
-        String query ="DELETE FROM [hour] WHERE [userid]=? AND [date]=? AND [guildid]=?";
-        
+        String query = "DELETE FROM [hour] WHERE [userid]=? AND [date]=? AND [guildid]=?";
+
         try (Connection con = super.getConnection())
         {
             PreparedStatement pstmt = con.prepareStatement(query);
             pstmt.setInt(1, user.getId());
             pstmt.setString(2, day.getDate());
             pstmt.setInt(3, day.getGuildId());
-            
+
             pstmt.execute();
-            
+
         }
 
         catch (SQLException ex)

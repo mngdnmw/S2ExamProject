@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -52,7 +54,6 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.converter.IntegerStringConverter;
-import javafx.util.converter.NumberStringConverter;
 
 public class UserInfoViewController implements Initializable
 
@@ -74,6 +75,8 @@ public class UserInfoViewController implements Initializable
     private JFXTextField txtFSearchDate;
     @FXML
     private JFXButton btnLogout;
+    @FXML
+    private JFXButton btnAddHours;
     @FXML
     private JFXButton btnChangePassword;
     @FXML
@@ -466,7 +469,6 @@ public class UserInfoViewController implements Initializable
         btnEditSave.setStyle("-fx-background-color: #61B329;");
         GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) - 1); //moving save button one up
 
-
         btnCancel.setText(MOD_FACADE.getLang("BTN_CANCEL")); //preparing cancel button
         btnCancel.setButtonType(JFXButton.ButtonType.RAISED);
         btnCancel.setStyle("-fx-background-color: #ff0000;");
@@ -568,6 +570,12 @@ public class UserInfoViewController implements Initializable
     }
 
     @FXML
+    private void handAddHours(ActionEvent event)
+    {
+
+    }
+
+    @FXML
     private void openPasswordChangerEvent(ActionEvent event)
     {
         stckPanePasswordChanger.setVisible(true);
@@ -612,8 +620,12 @@ public class UserInfoViewController implements Initializable
             @Override
             public void handle(Event event)
             {
-                Day selectedDay = tableViewMain.getSelectionModel().getSelectedItem();
-                MOD_FACADE.deleteWorkedDay(currentUser, selectedDay);
+                List selectedDay = new ArrayList(tableViewMain.getSelectionModel().getSelectedItems());
+                for (Object day : selectedDay)
+                {
+                    MOD_FACADE.deleteWorkedDay(currentUser, (Day) day);
+                }
+
                 setupTableView();
             }
 
