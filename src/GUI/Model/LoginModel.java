@@ -34,16 +34,12 @@ public class LoginModel
 
     }
 
-    public Boolean logHours(String username, int hours, int guildId)
+    public Boolean logHours(String username, String date, int hours, int guildId)
     {
 
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
-
-        String dateString = sdf.format(date);
         try
         {
-            BLL_FAC.logHours(username, dateString, hours, guildId);
+            BLL_FAC.logHours(username, date, hours, guildId);
         } catch (SQLException ex)
         {
             Logger.getLogger(LoginModel.class.getName()).log(Level.SEVERE, null, ex);
