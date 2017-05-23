@@ -235,13 +235,14 @@ public class ModelFacade
         BLL_FAC.updateGuild(guildId, name);
     }
     
-    public String parseExport(List<User> users) {
+    public String parseExportUsers(List<User> users) {
         return BLL_FAC.parseExport(users);
     }
     
     public void writeExport(File file, String input) {
         BLL_FAC.writeExport(file, input);
     }
+    
      public void deleteWorkedDay(User user, Day day){
         BLL_FAC.deleteWorkedDay(user, day);
     }

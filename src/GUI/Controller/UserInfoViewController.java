@@ -125,7 +125,7 @@ public class UserInfoViewController implements Initializable
     User currentUser;
     JFXPopup popup;
     JFXButton higherClearanceBtn = new JFXButton();
-    JFXButton btnNewCancel = new JFXButton();
+    //JFXButton btnNewCancel = new JFXButton();
 
     //Variables Used
     boolean editing = false;
@@ -501,7 +501,7 @@ public class UserInfoViewController implements Initializable
     private void removeCancelButton()
     {
         GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) + 1); //moving save button one down
-        gridEdit.getChildren().remove(btnNewCancel); //deleting cancel button from gridpane
+        gridEdit.getChildren().remove(btnCancel); //deleting cancel button from gridpane
         if (btnEditSave.isDisabled())
         {
             btnEditSave.setDisable(false);

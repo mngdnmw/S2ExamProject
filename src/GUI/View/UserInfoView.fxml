@@ -25,7 +25,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
 
 
 
@@ -234,7 +234,7 @@
             </VBox>
          </children>
       </StackPane>
-      <StackPane fx:id="stckPanePasswordChanger1" prefHeight="510.0" prefWidth="710.0" style="-fx-background-color: rgba(0,0,0,0.5);">
+      <StackPane fx:id="stckPanePasswordChanger1" disable="true" prefHeight="510.0" prefWidth="710.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false">
          <children>
             <VBox alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="200.0" prefWidth="463.0" spacing="10.0" styleClass="loginwindow" stylesheets="@MainLayout.css">
                <children>

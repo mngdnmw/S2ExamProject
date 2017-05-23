@@ -347,7 +347,7 @@ public class ManagerViewController implements Initializable
         contextMenu.getItems().add(thisEmailItem);
         MenuItem allEmailItem = new MenuItem("Copy all emails to clipboard");
         contextMenu.getItems().add(allEmailItem);
-        MenuItem exportData = new MenuItem("Export users in table");
+        MenuItem exportData = new MenuItem("Export users in table (except notes)");
         contextMenu.getItems().add(exportData);
 
         tblUsers.setContextMenu(contextMenu);
@@ -417,16 +417,16 @@ public class ManagerViewController implements Initializable
     
     private void exportUsers() {
         FileChooser chooser = new FileChooser();
-        chooser.getExtensionFilters().add(new ExtensionFilter("Only CSV file", new ArrayList<String>() {
+        chooser.getExtensionFilters().add(new ExtensionFilter("Comma separated files", new ArrayList<String>() {
             {
-                add(".csv");
+                add("*.csv");
             }
         }));
         chooser.setTitle("Choose where to export CSV file");
         chooser.setInitialDirectory(new File("."));
         File chose = chooser.showSaveDialog(root.getScene().getWindow());
         if(chose != null) {
-            modelFacade.writeExport(chose, modelFacade.parseExport(tblUsers.getItems()));
+            modelFacade.writeExport(chose, modelFacade.parseExportUsers(tblUsers.getItems()));
         }
         
     }

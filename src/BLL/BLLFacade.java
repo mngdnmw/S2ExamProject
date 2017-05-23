@@ -148,7 +148,7 @@ public class BLLFacade
     }
     
     public String parseExport(List<User> users) {
-        return exportParser.parse(users);
+        return exportParser.parseUsers(users);
     }
     
     public void writeExport(File file,String input) {
