@@ -16,6 +16,30 @@ import java.util.logging.Logger;
 public class HourManager extends ConnectionManager
 {
 
+    /**
+     * Logs hours into the database using userId, guildId, hours and date.
+     *
+     * @param userId
+     * @param date
+     * @param hours
+     * @param guildId
+     */
+    public void logHours(int userId, String date, int hours, int guildId) throws SQLException
+    {
+        try (Connection con = super.getConnection())
+        {
+            String sqlCommand
+                    = "INSERT into [hour](userid, date, hours, guildid) values (?, ?, ?, ?)";
+            PreparedStatement pstat = con.prepareStatement(sqlCommand);
+            pstat.setInt(1, userId);
+            pstat.setString(2, date);
+            pstat.setInt(3, hours);
+            pstat.setInt(4, guildId);
+            pstat.executeUpdate();
+
+        }
+    }
+
     public List<Day> getWorkedDays(User user)
     {
         ArrayList<Day> workedDays = new ArrayList<>();

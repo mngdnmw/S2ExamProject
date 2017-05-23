@@ -13,11 +13,11 @@
 
 <AnchorPane id="AnchorPane" fx:id="rootPane" prefHeight="404.0" prefWidth="678.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.GuildManagementViewController">
    <children>
-      <Label layoutX="14.0" layoutY="14.0" text="Guilds:" />
+      <Label fx:id="lblGuilds" layoutX="14.0" layoutY="14.0" text="Guilds:" />
       <JFXListView fx:id="listGuilds" layoutX="14.0" layoutY="57.0" onMousePressed="#onListViewPressed" prefHeight="329.0" prefWidth="396.0" />
       <JFXButton fx:id="btnAdd" layoutX="471.0" layoutY="57.0" onAction="#btnAddPressed" style="-fx-background-color: #00c4ad;" text="Add New" />
-      <JFXButton fx:id="btnModify" layoutX="478.0" layoutY="99.0" onAction="#btnModifyPressed" style="-fx-background-color: #00c4ad;" text="Modify" />
-      <JFXButton fx:id="btnRemove" layoutX="476.0" layoutY="138.0" onAction="#btnRemovePressed" style="-fx-background-color: #00c4ad;" text="Remove" />
+      <JFXButton fx:id="btnModify" layoutX="477.0" layoutY="98.0" onAction="#btnModifyPressed" style="-fx-background-color: #00c4ad;" text="Modify" />
+      <JFXButton fx:id="btnRemove" layoutX="475.0" layoutY="138.0" onAction="#btnRemovePressed" style="-fx-background-color: #00c4ad;" text="Remove" />
       <StackPane fx:id="stckPaneNew" layoutY="-2.0" prefHeight="404.0" prefWidth="678.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false">
          <children>
             <VBox alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="130.0" prefWidth="398.0" spacing="10.0" styleClass="loginwindow" stylesheets="@MainLayout.css">

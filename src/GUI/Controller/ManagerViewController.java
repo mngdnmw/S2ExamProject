@@ -80,8 +80,6 @@ public class ManagerViewController implements Initializable
     private TableColumn<User, Integer> colPhone;
     @FXML
     private TableColumn<User, String> colEmail;
-    ModelFacade modelFacade = ModelFacade.getModelFacade();
-    User selectedUser;
     @FXML
     private Tab tabVolunInfo;
     @FXML
@@ -96,17 +94,20 @@ public class ManagerViewController implements Initializable
     private AnchorPane anchorPaneGuild;
     @FXML
     private JFXTabPane tabPane;
-    @FXML
-    NumberAxis xAxis;
-    @FXML
-    NumberAxis yAxis;
-    @FXML
-    private LineChart<Number, Number> lineChartGuildHours;
 
     @FXML
     private AnchorPane GraphRoot;
-
+    @FXML
+    private LineChart<Number, Number> lineChartGuildHours;
+    
+    @FXML
+    private NumberAxis yAxis;
+    @FXML
+    private NumberAxis xAxis;
+    
     Boolean hasLoadedGuild = false;
+    ModelFacade modelFacade = ModelFacade.getModelFacade();
+    User selectedUser;
 
     /**
      * Initializes the controller class.
@@ -138,7 +139,6 @@ public class ManagerViewController implements Initializable
             tblUsers.setItems(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
         }
         if (modelFacade.getCurrentUser().getType() == 2)
-
         {
             tblUsers.setItems(FXCollections.observableArrayList(modelFacade.getAllUsers()));
         }
@@ -174,7 +174,7 @@ public class ManagerViewController implements Initializable
                 public void handle(WindowEvent we)
                 {
                     System.out.println("Stage on Hiding");
-
+                    modelFacade.setAllVolunteersIntoArray();
                     setTableItems();
                 }
             });
@@ -184,6 +184,7 @@ public class ManagerViewController implements Initializable
                 public void handle(WindowEvent we)
                 {
                     System.out.println("Stage is closing");
+                    modelFacade.setAllVolunteersIntoArray();
                     setTableItems();
                 }
             });
@@ -228,7 +229,7 @@ public class ManagerViewController implements Initializable
                 {
                     public void handle(WindowEvent we)
                     {
-
+                        modelFacade.setAllVolunteersIntoArray();
                         setTableItems();
                     }
                 });
@@ -237,7 +238,7 @@ public class ManagerViewController implements Initializable
                 {
                     public void handle(WindowEvent we)
                     {
-
+                        modelFacade.setAllVolunteersIntoArray();
                         setTableItems();
                     }
                 });
@@ -296,6 +297,7 @@ public class ManagerViewController implements Initializable
                     public void handle(WindowEvent we)
                     {
                         System.out.println("Stage on Hiding");
+                        modelFacade.setAllVolunteersIntoArray();
                         setTableItems();
                     }
                 });
@@ -305,6 +307,7 @@ public class ManagerViewController implements Initializable
                     public void handle(WindowEvent we)
                     {
                         System.out.println("Stage is closing");
+                        modelFacade.setAllVolunteersIntoArray();
                         setTableItems();
                     }
                 });
@@ -387,7 +390,6 @@ public class ManagerViewController implements Initializable
 
     private void setTextAll()
     {
-
         btnAddHours.setText(modelFacade.getLang("BTN_ADD_HOURS"));
         btnAddUser.setText(modelFacade.getLang("BTN_ADD_USER"));
         btnClose.setText(modelFacade.getLang("BTN_CLOSE"));
