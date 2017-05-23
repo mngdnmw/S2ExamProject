@@ -1,5 +1,6 @@
 package GUI.Controller;
 
+import BE.Day;
 import BE.Guild;
 import BE.User;
 import GUI.Model.ModelFacade;
@@ -11,7 +12,10 @@ import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -177,4 +181,38 @@ public class ManagerEditViewController implements Initializable
                 .setOnFinished(e -> stckPanePasswordChanger.setVisible(false));
 
     }
+    /*private void setupTableView()
+    {
+
+        tableViewMain.setPlaceholder(new Label("Nothing found :("));
+        colDate.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
+        colHours.setCellValueFactory(val -> val.getValue().hourProperty().asObject());
+        colGuild.setCellValueFactory(cellData -> cellData.getValue().guildProperty());
+
+        FilteredList<Day> filteredData = new FilteredList<>(FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(currentUser)), p -> true);
+
+        txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
+                ->
+        {
+            filteredData.setPredicate(day
+                    ->
+            {
+                String regex = "[^a-zA-Z0-9\\s]";
+                Boolean search
+                        = day.dateProperty().getValue().replaceAll(regex, "")
+                                .contains(newValue.replaceAll(regex, ""))
+                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                contains(newValue.toLowerCase().replaceAll(regex, ""));
+
+                return search;
+
+            });
+        });
+
+        SortedList<Day> sortedData = new SortedList<>(filteredData);
+
+        sortedData.comparatorProperty().bind(tableViewMain.comparatorProperty());
+        tableViewMain.setItems(sortedData);
+
+    }*/
 }
