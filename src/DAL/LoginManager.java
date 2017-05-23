@@ -19,30 +19,6 @@ public class LoginManager extends ConnectionManager
 {
 
     private HashMap<String,String> session;
-    /**
-     * Logs hours into the database using userId, guildId, hours and date.
-     *
-     * @param userId
-     * @param date
-     * @param hours
-     * @param guildId
-     */
-    public void logHours(int userId, String date, int hours, int guildId) throws SQLException
-    {
-        //int userid = 
-        try (Connection con = super.getConnection())
-        {
-            String sqlCommand
-                    = "INSERT into [hour](userid, date, hours, guildid) values (?, ?, ?, ?)";
-            PreparedStatement pstat = con.prepareStatement(sqlCommand);
-            pstat.setInt(1, userId);
-            pstat.setString(2, date);
-            pstat.setInt(3, hours);
-            pstat.setInt(4, guildId);
-            pstat.executeUpdate();
-
-        }
-    }
 
     public int changePassword(User user, String oldPassword, String newPassword)
     {
@@ -130,6 +106,7 @@ public class LoginManager extends ConnectionManager
                 session.put("lastguild", props.getProperty("LAST_GUILD"));
                 session.put("lasthours", props.getProperty("LAST_HOURS"));
             }
+            
         }
         return session;
     }

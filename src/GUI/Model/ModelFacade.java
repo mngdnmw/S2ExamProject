@@ -25,6 +25,7 @@ public class ModelFacade
     private final static LanguageModel LANG_MOD = new LanguageModel();
     private final static ViewChangerModel VIEW_CHANG_MOD = new ViewChangerModel();
     private final static VolunteerDataModel VOL_DATA_MOD = new VolunteerDataModel();
+    private final static GraphSorterModel GRAPH_MOD = new GraphSorterModel();
     private final static BLLFacade BLL_FAC = new BLLFacade();
 
     public static ModelFacade getModelFacade()
