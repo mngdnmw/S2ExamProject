@@ -24,6 +24,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -51,6 +53,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -74,7 +77,6 @@ public class ManagerViewController implements Initializable
     private JFXButton btnEditInfo;
     @FXML
     private AnchorPane root;
-    @FXML
     private JFXButton btnClose;
     @FXML
     private TableView<User> tblUsers;
@@ -104,22 +106,41 @@ public class ManagerViewController implements Initializable
     private AnchorPane anchorPaneGuild;
     @FXML
     private JFXTabPane tabPane;
-
     @FXML
-    private AnchorPane GraphRoot;
+    private AnchorPane rootGraph;
     @FXML
     private LineChart<Number, Number> lineChartGuildHours;
-    
+
     @FXML
     private NumberAxis yAxis;
     @FXML
     private NumberAxis xAxis;
-    
+
     Boolean hasLoadedGuild = false;
     ModelFacade modelFacade = ModelFacade.getModelFacade();
     User selectedUser;
-    
+    List<XYChart.Series<Number, Number>> Temp;
     List<User> filteredList = new ArrayList<>();
+    private final Service serviceGraphStats = new Service()
+    {
+        @Override
+        protected Task createTask()
+        {
+            return new Task()
+            {
+                @Override
+                protected Object call() throws Exception
+                {
+                    Temp = modelFacade.graphSort(cmbGuildChooser.getSelectionModel().getSelectedItem());
+
+                    return null;
+                }
+            };
+        }
+    };
+    @FXML
+    private StackPane stckPaneGraphError;
+
     /**
      * Initializes the controller class.
      */
@@ -134,10 +155,9 @@ public class ManagerViewController implements Initializable
         }
         setTableProperties();
         setTableItems();
-        
         setupTableView();
-        
-        if(modelFacade.getCurrentUser().getType() < 2)
+
+        if (modelFacade.getCurrentUser().getType() < 2)
         {
             chkAdmins.setVisible(false);
             chkManagers.setVisible(false);
@@ -161,31 +181,41 @@ public class ManagerViewController implements Initializable
         }
         if (modelFacade.getCurrentUser().getType() == 2)
         {
-        ObservableList<User> users = FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers());
-        chkManagers.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(chkManagers.isSelected()) {
-                    users.addAll(FXCollections.observableArrayList(modelFacade.getAllSavedManagers()));
-                } else {
-                    users.removeAll(FXCollections.observableArrayList(modelFacade.getAllSavedManagers()));
+            ObservableList<User> users = FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers());
+            chkManagers.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle(ActionEvent event)
+                {
+                    if (chkManagers.isSelected())
+                    {
+                        users.addAll(FXCollections.observableArrayList(modelFacade.getAllSavedManagers()));
+                    }
+                    else
+                    {
+                        users.removeAll(FXCollections.observableArrayList(modelFacade.getAllSavedManagers()));
+                    }
+                    tblUsers.setItems(FXCollections.observableArrayList(users));
                 }
-                tblUsers.setItems(FXCollections.observableArrayList(users));
-            }
-            
-        });
-        chkVolunteers.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(chkVolunteers.isSelected()) {
-                    users.addAll(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
-                } else {
-                    users.removeAll(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
+
+            });
+            chkVolunteers.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle(ActionEvent event)
+                {
+                    if (chkVolunteers.isSelected())
+                    {
+                        users.addAll(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
+                    }
+                    else
+                    {
+                        users.removeAll(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
+                    }
+                    tblUsers.setItems(FXCollections.observableArrayList(users));
                 }
-                tblUsers.setItems(FXCollections.observableArrayList(users));
-            }
-            
-        });
+
+            });
             tblUsers.setItems(FXCollections.observableArrayList(users));
         }
     }
@@ -417,17 +447,18 @@ public class ManagerViewController implements Initializable
         };
 
         allEmailItem.setOnAction(allEmailEvent);
-        
-        exportData.setOnAction(new EventHandler<ActionEvent>() {
+
+        exportData.setOnAction(new EventHandler<ActionEvent>()
+        {
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event)
+            {
                 exportUsers();
             }
-            
+
         });
     }
 
-    @FXML
     private void onBtnClosePressed(ActionEvent event)
     {
         Stage stage = (Stage) btnClose.getScene().getWindow();
@@ -443,10 +474,12 @@ public class ManagerViewController implements Initializable
         pause.play();
 
     }
-    
-    private void exportUsers() {
+
+    private void exportUsers()
+    {
         FileChooser chooser = new FileChooser();
-        chooser.getExtensionFilters().add(new ExtensionFilter("Comma separated files", new ArrayList<String>() {
+        chooser.getExtensionFilters().add(new ExtensionFilter("Comma separated files", new ArrayList<String>()
+        {
             {
                 add("*.csv");
             }
@@ -454,10 +487,11 @@ public class ManagerViewController implements Initializable
         chooser.setTitle("Choose where to export CSV file");
         chooser.setInitialDirectory(new File("."));
         File chose = chooser.showSaveDialog(root.getScene().getWindow());
-        if(chose != null) {
+        if (chose != null)
+        {
             modelFacade.writeExport(chose, modelFacade.parseExportUsers(tblUsers.getItems()));
         }
-        
+
     }
 
     private void setTextAll()
@@ -498,48 +532,62 @@ public class ManagerViewController implements Initializable
             xAxis.setTickUnit(1);
             if (cmbGuildChooser.getSelectionModel().getSelectedItem() != null)
             {
-                List<XYChart.Series<Number, Number>> Temp = modelFacade.graphSort(cmbGuildChooser.getSelectionModel().getSelectedItem());
+                stckPaneGraphError.setVisible(false);
+                StackPane stckPaneLoad = modelFacade.getLoadingScreen();
+                AnchorPane.setBottomAnchor(stckPaneLoad, 20.0);
+                AnchorPane.setTopAnchor(stckPaneLoad, 0.0);
+                AnchorPane.setLeftAnchor(stckPaneLoad, 0.0);
+                AnchorPane.setRightAnchor(stckPaneLoad, 0.0);
+                rootGraph.getChildren().add(stckPaneLoad);
+                serviceGraphStats.start();
+                serviceGraphStats.setOnSucceeded(e
+                        -> 
+                        {
+                            for (XYChart.Series<Number, Number> series : Temp)
+                            {
+                                lineChartGuildHours.getData().add(series);
+                            }
+                            Calendar cal = Calendar.getInstance();
+                            lineChartGuildHours.setTitle("Work contribution graph for " + cmbGuildChooser.getSelectionModel().getSelectedItem().getName() + " " + cal.get(Calendar.YEAR));
+                            rootGraph.getChildren().remove(stckPaneLoad);
+                });
 
-                System.out.println("stop here");
-                for (XYChart.Series<Number, Number> series : Temp)
-                {
-                    lineChartGuildHours.getData().add(series);
-                }
-                Calendar cal = Calendar.getInstance();
-                lineChartGuildHours.setTitle("Work contribution graph for " + cmbGuildChooser.getSelectionModel().getSelectedItem().getName() + " " + cal.get(Calendar.YEAR));
+            }
+            else
+            {
+                stckPaneGraphError.setVisible(true);
             }
         }
     }
-
 
     @FXML
     private void onCheckBoxAction(ActionEvent event)
     {
         filteredList.clear();
-        
-        if(chkAdmins.selectedProperty().get() == false && chkManagers.selectedProperty().get() == false && chkVolunteers.selectedProperty().get() == false)
+
+        if (chkAdmins.selectedProperty().get() == false && chkManagers.selectedProperty().get() == false && chkVolunteers.selectedProperty().get() == false)
         {
             filteredList.clear();
             tblUsers.setItems(FXCollections.observableArrayList(filteredList));
         }
-        
-        if(chkAdmins.selectedProperty().get() == true)
+
+        if (chkAdmins.selectedProperty().get() == true)
         {
             filteredList.addAll(modelFacade.getAllAdmins());
             tblUsers.setItems(FXCollections.observableArrayList(filteredList));
         }
-        if(chkManagers.selectedProperty().get() == true)
+        if (chkManagers.selectedProperty().get() == true)
         {
             filteredList.addAll(modelFacade.getAllManagers());
             tblUsers.setItems(FXCollections.observableArrayList(filteredList));
         }
-        if(chkVolunteers.selectedProperty().get() == true)
+        if (chkVolunteers.selectedProperty().get() == true)
         {
             filteredList.addAll(modelFacade.getAllVolunteers());
             tblUsers.setItems(FXCollections.observableArrayList(filteredList));
         }
     }
-    
+
     private void setupTableView()
     {
 
@@ -551,21 +599,21 @@ public class ManagerViewController implements Initializable
         FilteredList<User> filteredData = new FilteredList<>(FXCollections.observableArrayList(modelFacade.getAllUsers()), p -> true);
 
         txtSearch.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                ->
-        {
-            filteredData.setPredicate(user
-                    ->
-            {
-                String regex = "[^a-zA-Z0-9\\s]";
-                Boolean search
-                        = user.emailProperty().getValue().replaceAll(regex, "")
-                                .contains(newValue.replaceAll(regex, ""))
-                        || user.nameProperty().getValue().toLowerCase().replaceAll(regex, "").
-                                contains(newValue.toLowerCase().replaceAll(regex, ""));
+                -> 
+                {
+                    filteredData.setPredicate(user
+                            -> 
+                            {
+                                String regex = "[^a-zA-Z0-9\\s]";
+                                Boolean search
+                                        = user.emailProperty().getValue().replaceAll(regex, "")
+                                        .contains(newValue.replaceAll(regex, ""))
+                                        || user.nameProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                        contains(newValue.toLowerCase().replaceAll(regex, ""));
 
-                return search;
+                                return search;
 
-            });
+                    });
         });
 
         SortedList<User> sortedData = new SortedList<>(filteredData);

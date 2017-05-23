@@ -34,18 +34,23 @@ public class LoginModel
 
     }
 
-    public Boolean logHours(String username, String date, int hours, int guildId)
+    public int logHours(String username, String date, int hours, int guildId)
     {
-
+        int errorCode = 0;
         try
         {
             BLL_FAC.logHours(username, date, hours, guildId);
-        } catch (SQLException ex)
-        {
-            Logger.getLogger(LoginModel.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
         }
-        return true;
+        catch (SQLException ex)
+        {
+            errorCode = ex.getErrorCode();
+
+        }
+        finally
+        {
+            System.out.println(errorCode);
+            return errorCode;
+        }
 
     }
 

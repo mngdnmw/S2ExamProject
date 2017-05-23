@@ -125,8 +125,7 @@
     -jfx-button-type: RAISED;
 }
 .chart-series-line {    
-    -fx-stroke-width: 5px;
-    -fx-effect: dropshadow;
+    -fx-stroke-width: 4px;
 }
 
 .default-color0.chart-series-line { -fx-stroke: #FF6600; }
