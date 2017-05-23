@@ -13,6 +13,7 @@ public class VolunteerDataModel
     
     private ArrayList<User> allUsers = new ArrayList();
     private ArrayList<User> allManagers = new ArrayList<>();
+    private ArrayList<User> allAdmins = new ArrayList<>();
 
     public List<Day> getWorkedDays(User user)
     {
@@ -35,8 +36,19 @@ public class VolunteerDataModel
         allManagers.addAll(BLL_FAC.getAllManagers());
     }
     
+    public void setAllAdminsIntoArray()
+    {
+        allAdmins.clear();
+        allAdmins.addAll(BLL_FAC.getAllAdmins());
+    }
+    
     
     public List<User> getAllSavedManagers() {
         return allManagers;
+    }
+    
+    public List<User> getAllSavedAdmins()
+    {
+        return allAdmins;
     }
 }
