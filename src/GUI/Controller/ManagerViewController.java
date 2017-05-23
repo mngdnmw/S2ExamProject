@@ -1,5 +1,6 @@
 package GUI.Controller;
 
+import BE.Day;
 import BE.Guild;
 import BE.User;
 import GUI.Model.ModelFacade;
@@ -77,6 +78,7 @@ public class ManagerViewController implements Initializable
     private JFXButton btnEditInfo;
     @FXML
     private AnchorPane root;
+    @FXML
     private JFXButton btnClose;
     @FXML
     private TableView<User> tblUsers;
@@ -121,6 +123,9 @@ public class ManagerViewController implements Initializable
     User selectedUser;
     List<XYChart.Series<Number, Number>> Temp;
     List<User> filteredList = new ArrayList<>();
+    FilteredList<User> filteredData = new FilteredList<>(FXCollections.observableArrayList());
+    @FXML
+    private StackPane stckPaneGraphError;
     private final Service serviceGraphStats = new Service()
     {
         @Override
@@ -132,14 +137,28 @@ public class ManagerViewController implements Initializable
                 protected Object call() throws Exception
                 {
                     Temp = modelFacade.graphSort(cmbGuildChooser.getSelectionModel().getSelectedItem());
-
                     return null;
                 }
             };
         }
     };
-    @FXML
-    private StackPane stckPaneGraphError;
+    private final Service serviceInitializer = new Service()
+    {
+        @Override
+        protected Task createTask()
+        {
+            return new Task()
+            {
+                @Override
+                protected Object call() throws Exception
+                {
+                    filteredData = new FilteredList<>(FXCollections.observableArrayList(modelFacade.getAllUsers()), p -> true);
+                    return null;
+
+                }
+            };
+        }
+    };
 
     /**
      * Initializes the controller class.
@@ -155,7 +174,9 @@ public class ManagerViewController implements Initializable
         }
         setTableProperties();
         setTableItems();
-        setupTableView();
+        setupTableView("Loading Information");
+        serviceInitializer.start();
+        serviceInitializer.setOnSucceeded(e->setupTableView("No Data :("));
 
         if (modelFacade.getCurrentUser().getType() < 2)
         {
@@ -249,7 +270,6 @@ public class ManagerViewController implements Initializable
             {
                 public void handle(WindowEvent we)
                 {
-                    System.out.println("Stage on Hiding");
                     modelFacade.setAllVolunteersIntoArray();
                     setTableItems();
                 }
@@ -259,7 +279,6 @@ public class ManagerViewController implements Initializable
             {
                 public void handle(WindowEvent we)
                 {
-                    System.out.println("Stage is closing");
                     modelFacade.setAllVolunteersIntoArray();
                     setTableItems();
                 }
@@ -459,6 +478,7 @@ public class ManagerViewController implements Initializable
         });
     }
 
+    @FXML
     private void onBtnClosePressed(ActionEvent event)
     {
         Stage stage = (Stage) btnClose.getScene().getWindow();
@@ -588,15 +608,13 @@ public class ManagerViewController implements Initializable
         }
     }
 
-    private void setupTableView()
+    private void setupTableView(String str)
     {
 
-        tblUsers.setPlaceholder(new Label("Nothing found :("));
+        tblUsers.setPlaceholder(new Label(str));
         colName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
         colPhone.setCellValueFactory(val -> val.getValue().phoneProperty().asObject());
         colEmail.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
-
-        FilteredList<User> filteredData = new FilteredList<>(FXCollections.observableArrayList(modelFacade.getAllUsers()), p -> true);
 
         txtSearch.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
                 -> 

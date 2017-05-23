@@ -202,10 +202,15 @@ public class ModelFacade
     {
         return VOL_DATA_MOD.getAllSavedManagers();
     }
-    
+
     public List<User> getAllSavedAdmins()
     {
         return VOL_DATA_MOD.getAllSavedAdmins();
+    }
+
+    public List<Guild> getAllSavedGuilds()
+    {
+        return VOL_DATA_MOD.getAllSavedGuilds();
     }
 
     public void setAllVolunteersIntoArray()
@@ -213,9 +218,16 @@ public class ModelFacade
         VOL_DATA_MOD.setAllVolunteersIntoArray();
     }
 
-    public void setAllManagersIntoArray() {
+    public void setAllManagersIntoArray()
+    {
         VOL_DATA_MOD.setAllManagersIntoArray();
     }
+
+    public void setAllGuildsIntoArray()
+    {
+        VOL_DATA_MOD.setAllGuildsIntoArray();
+    }
+
     public void setAllAdminsIntoArray()
     {
         VOL_DATA_MOD.setAllAdminsIntoArray();
@@ -246,12 +258,14 @@ public class ModelFacade
     {
         BLL_FAC.updateGuild(guildId, name);
     }
-    
-    public String parseExportUsers(List<User> users) {
+
+    public String parseExportUsers(List<User> users)
+    {
         return BLL_FAC.parseExport(users);
     }
-    
-    public void writeExport(File file, String input) {
+
+    public void writeExport(File file, String input)
+    {
         BLL_FAC.writeExport(file, input);
     }
 

@@ -756,7 +756,7 @@ public class UserInfoViewController implements Initializable
     private void setupAddHoursPopup()
     {
         formatCalendar();
-        comboboxGuild.setItems(FXCollections.observableArrayList(MOD_FACADE.getAllGuilds()));
+        comboboxGuild.setItems(FXCollections.observableArrayList(MOD_FACADE.getAllSavedGuilds()));
 
         txtfldHours.textProperty().addListener(new ChangeListener<String>()
         {

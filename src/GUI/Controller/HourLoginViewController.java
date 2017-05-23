@@ -142,11 +142,12 @@ public class HourLoginViewController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        MOD_FACADE.setAllGuildsIntoArray();
         preloadImages();
         imgViewLngBut.setImage(iconENG);
         btnLanguage.setGraphic(imgViewLngBut);
         btnLanguage.setText(MOD_FACADE.getLang("BTN_LANGUAGE"));
-        cmbGuildChooser.setItems(FXCollections.observableArrayList(MOD_FACADE.getAllGuilds()));
+        cmbGuildChooser.setItems(FXCollections.observableArrayList(MOD_FACADE.getAllSavedGuilds()));
         ModelFacade.setModelFacade(MOD_FACADE);
         addListener();
         setTextAll();
