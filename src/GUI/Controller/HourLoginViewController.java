@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -565,7 +566,13 @@ public class HourLoginViewController implements Initializable
         {
             txtUser.setText(MOD_FACADE.loadSession().get("lastuser"));
             txtHours.setText(MOD_FACADE.loadSession().get("lasthours"));
-            cmbGuildChooser.getSelectionModel().select(cmbGuildChooser.getItems().get(Integer.parseInt(MOD_FACADE.loadSession().get("lastguild"))));
+            for (Guild guild : cmbGuildChooser.getItems()) {
+                if(guild.getId() == Integer.parseInt(MOD_FACADE.loadSession().get("lastguild"))) {
+                    cmbGuildChooser.getSelectionModel().select(guild);
+                    return;
+                }
+            }
+            //cmbGuildChooser.getSelectionModel().select(cmbGuildChooser.getItems().get(Integer.parseInt(MOD_FACADE.loadSession().get("lastguild"))));
         }
     }
 }
