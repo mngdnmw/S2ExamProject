@@ -8,6 +8,8 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
@@ -18,9 +20,12 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -218,7 +223,7 @@ public class ManagerAddUserController implements Initializable
         pause.play();
     }
 
-    /*@FXML
+    @FXML
     private void pressedChangeImage(ActionEvent event)
     {
         FileChooser c = new FileChooser();
@@ -252,12 +257,6 @@ public class ManagerAddUserController implements Initializable
         {
             imgVwProfilePic.setImage(new Image(modelFacade.getUserImage(modelFacade.getAllUsers().get(modelFacade.getAllUsers().size()-1))));
         }
-    }*/
-    @FXML
-
-    private void pressedChangeImage(ActionEvent e)
-    {
-
     }
 
     @FXML

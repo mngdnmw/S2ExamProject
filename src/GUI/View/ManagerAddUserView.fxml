@@ -131,7 +131,7 @@
                   <Insets />
                </GridPane.margin>
             </JFXButton>
-            <JFXButton fx:id="JFXBtnAddPhoto" buttonType="RAISED" disable="true" onAction="#pressedChangeImage" style="-fx-background-color: #00c4ad;" text="Update Photo" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+            <JFXButton fx:id="JFXBtnAddPhoto" buttonType="RAISED" onAction="#pressedChangeImage" style="-fx-background-color: #00c4ad;" text="Update Photo" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </padding>
