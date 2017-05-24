@@ -3,6 +3,7 @@ package DAL;
 import BE.Day;
 import BE.Guild;
 import BE.User;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,6 +36,23 @@ public class HourManager extends ConnectionManager
             pstat.setString(2, date);
             pstat.setInt(3, hours);
             pstat.setInt(4, guildId);
+            pstat.executeUpdate();
+
+        }
+    }
+
+    void editHours(int userId, String date, int hours, int guildId) throws SQLException
+    {
+        try (Connection con = super.getConnection())
+        {
+            String sqlCommand
+                    = "UPDATE [hour] SET [date] = ?, [hours] =?, [guildid]=? WHERE userid =?";
+
+            PreparedStatement pstat = con.prepareStatement(sqlCommand);
+            pstat.setString(1, date);
+            pstat.setInt(2, hours);
+            pstat.setInt(3, guildId);
+            pstat.setInt(4, userId);
             pstat.executeUpdate();
 
         }

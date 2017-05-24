@@ -77,12 +77,14 @@ public class DALFacade
     {
         return HR_MAN.getWorkedDays(user);
     }
- /**
-  * returns an arraylist that contains two lists
-  * 0 being all manager(and admin) hours and 1 being all volunteer hours
-  * @param guild
-  * @return 
-  */
+
+    /**
+     * returns an arraylist that contains two lists 0 being all manager(and
+     * admin) hours and 1 being all volunteer hours
+     *
+     * @param guild
+     * @return
+     */
     public List<List<Day>> getHoursForGuild(Guild guild)
     {
         return HR_MAN.getHoursForGuild(guild);
@@ -157,11 +159,24 @@ public class DALFacade
     {
         return LANG_MAN.getLangProperty();
     }
-    
-    public void writeExport(File file, String input) {
+
+    public void writeExport(File file, String input)
+    {
         exportMan.write(file, input);
     }
-    public void deleteWorkedDay(User user, Day day){
+
+    public void deleteWorkedDay(User user, Day day)
+    {
         HR_MAN.deleteWorkedDay(user, day);
+    }
+
+    public void editHours(String username, String date, int hours, int guildId) throws SQLException
+    {
+        int userid = -1;
+        userid = getUserId(username);
+        if (userid != -1)
+        {
+            HR_MAN.editHours(userid, date, hours, guildId);
+        }
     }
 }

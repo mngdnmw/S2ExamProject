@@ -300,16 +300,16 @@ public class HourLoginViewController implements Initializable
         }
 
         txtPassword.setOnKeyPressed((event)
-                -> 
+                ->
+        {
+            if (event.getCode() == KeyCode.ENTER)
+            {
+                if (!txtUsername.getText().isEmpty())
                 {
-                    if (event.getCode() == KeyCode.ENTER)
-                    {
-                        if (!txtUsername.getText().isEmpty())
-                        {
-                            serviceLog.restart();
-                            loadingScreen(true);
-                        }
-                    }
+                    serviceLog.restart();
+                    loadingScreen(true);
+                }
+            }
         });
         btnLogin.setOnAction(new EventHandler<ActionEvent>()
         {
@@ -381,6 +381,16 @@ public class HourLoginViewController implements Initializable
                         e -> root.getChildren().remove(anch));
 
                 buttonsLocking(false);
+
+                if (MOD_FACADE.loadSession() != null)
+                {
+
+                    //cmbGuildChooser.requestFocus();
+                    //cmbGuildChooser.setLabelFloat(true);
+                    cmbGuildChooser.setPromptText(null);
+                    txtUser.setPromptText(null);
+                    txtHours.setPromptText(null);
+                }
             }
         };
 
@@ -552,13 +562,20 @@ public class HourLoginViewController implements Initializable
     {
         if (MOD_FACADE.loadSession() != null)
         {
-            cmbGuildChooser.setPromptText("");
+
+            //cmbGuildChooser.requestFocus();
+            //cmbGuildChooser.setLabelFloat(true);
+            cmbGuildChooser.setPromptText(null);
+            txtUser.setPromptText(null);
+            txtHours.setPromptText(null);
+
             txtUser.setText(MOD_FACADE.loadSession().get("lastuser"));
             txtHours.setText(MOD_FACADE.loadSession().get("lasthours"));
             for (Guild guild : cmbGuildChooser.getItems())
             {
                 if (guild.getId() == Integer.parseInt(MOD_FACADE.loadSession().get("lastguild")))
                 {
+
                     cmbGuildChooser.getSelectionModel().select(guild);
                     return;
                 }

@@ -278,4 +278,9 @@ public class ModelFacade
     {
         return GRAPH_MOD.sortGraph(guild);
     }
+
+    public int editHours(String username, String date, int hours, int guildId)
+    {
+        return LOG_MOD.editHours(username, date, hours, guildId);
+    }
 }
