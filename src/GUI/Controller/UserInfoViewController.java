@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
@@ -34,7 +35,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.DateCell;
@@ -157,13 +160,18 @@ public class UserInfoViewController implements Initializable
     User currentUser;
     JFXPopup popup;
     JFXButton higherClearanceBtn = new JFXButton();
-    JFXButton btnCancelEditInfo;
+    JFXButton btnCancelEditInfo = new JFXButton();
+    FilteredList<Day> filteredData = new FilteredList<>(FXCollections.observableArrayList());
     //JFXButton btnNewCancel = new JFXButton();
 
     //Variables Used
     boolean editing = false;
     boolean isIncorrect = false;
     boolean finishedService;
+    boolean firstRun;
+    File newImg;
+    boolean editPopup = false;
+
     private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
 
     private final Service serviceAllVolunteers = new Service()
@@ -186,6 +194,61 @@ public class UserInfoViewController implements Initializable
             };
         }
     };
+    private final Service serviceSavePicture = new Service()
+    {
+        @Override
+        protected Task createTask()
+        {
+            return new Task()
+            {
+                @Override
+                protected Object call() throws Exception
+                {
+                    if (newImg != null)
+                    {
+                        try
+                        {
+                            MOD_FACADE.updateUserImage(currentUser, newImg);
+                        }
+                        catch (FileNotFoundException e)
+                        {
+                            System.out.println(e);
+                            Alert a = new Alert(Alert.AlertType.ERROR);
+                            a.setHeaderText("Selected image is not found");
+                            a.setContentText("File not found!");
+                        }
+                    }
+                    return null;
+
+                }
+            };
+        }
+    };
+
+    private final Service serviceInitializer = new Service()
+    {
+        @Override
+        protected Task createTask()
+        {
+            return new Task()
+            {
+                @Override
+                protected Object call() throws Exception
+                {
+                    if (firstRun)
+                    {
+                        setUserImage();
+                    }
+                    filteredData = new FilteredList<>(FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(currentUser)), p -> true);
+                    firstRun = false;
+                    return null;
+
+                }
+            };
+        }
+    };
+    @FXML
+    private HBox hBoxBtnsInPOP;
 
     /**
      * Initializes the controller class.
@@ -196,13 +259,15 @@ public class UserInfoViewController implements Initializable
 
         setCurrentUser(MOD_FACADE.getCurrentUser());
         setUserInfo();
-        setUserImage();
         checkTypeOfUser();
         createEditFields();
         setTextAll();
-        setupTableView();
         setupGuildList();
+        setupTableView("Looking For Data");
+        serviceInitializer.start();
 
+        serviceInitializer.setOnSucceeded(e
+                -> setupTableView("Found Nothing :("));
         if (currentUser.getType() >= 1)
         {
             serviceAllVolunteers.start();
@@ -215,15 +280,13 @@ public class UserInfoViewController implements Initializable
         this.currentUser = currentUser;
     }
 
-    private void setupTableView()
+    private void setupTableView(String str)
     {
 
-        tableViewMain.setPlaceholder(new Label("Nothing found :("));
+        tableViewMain.setPlaceholder(new Label(str));
         colDate.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
         colHours.setCellValueFactory(val -> val.getValue().hourProperty().asObject());
         colGuild.setCellValueFactory(cellData -> cellData.getValue().guildProperty());
-
-        FilteredList<Day> filteredData = new FilteredList<>(FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(currentUser)), p -> true);
 
         txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
                 ->
@@ -329,11 +392,10 @@ public class UserInfoViewController implements Initializable
                     });
 
                     root.getChildren().add(MOD_FACADE.getLoadingScreen());
-                    root.setTopAnchor(MOD_FACADE.getLoadingScreen(), 0.0);
-
-                    root.setBottomAnchor(MOD_FACADE.getLoadingScreen(), 0.0);
-                    root.setLeftAnchor(MOD_FACADE.getLoadingScreen(), 0.0);
-                    root.setRightAnchor(MOD_FACADE.getLoadingScreen(), 0.0);
+                    AnchorPane.setTopAnchor(MOD_FACADE.getLoadingScreen(), 0.0);
+                    AnchorPane.setBottomAnchor(MOD_FACADE.getLoadingScreen(), 0.0);
+                    AnchorPane.setLeftAnchor(MOD_FACADE.getLoadingScreen(), 0.0);
+                    AnchorPane.setRightAnchor(MOD_FACADE.getLoadingScreen(), 0.0);
 
                 }
             }
@@ -465,23 +527,14 @@ public class UserInfoViewController implements Initializable
                     "jpg", "jpeg", "png", "gif"
                 };
         c.setSelectedExtensionFilter(new ExtensionFilter("Image files only", extensions));
-        File newImg = c.showOpenDialog(btnUpdatePhoto.getScene().getWindow());
-
-        if (newImg != null)
+        newImg = c.showOpenDialog(btnUpdatePhoto.getScene().getWindow());
+        serviceSavePicture.start();
+        serviceSavePicture.setOnSucceeded(e
+                ->
         {
-            try
-            {
-                MOD_FACADE.updateUserImage(currentUser, newImg);
-            }
-            catch (FileNotFoundException e)
-            {
-                System.out.println(e);
-                Alert a = new Alert(Alert.AlertType.ERROR);
-                a.setHeaderText("Selected image is not found");
-                a.setContentText("File not found!");
-            }
-        }
-        setUserImage();
+            firstRun = true;
+            serviceInitializer.restart();
+        });
 
     }
 
@@ -499,19 +552,18 @@ public class UserInfoViewController implements Initializable
 
         int btnSavePosCol = GridPane.getColumnIndex(btnEditSave); //saving position
         int btnSavePosRow = GridPane.getRowIndex(btnEditSave);
-        btnEditSave.setStyle("-fx-background-color: #61B329;");
         GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) - 1); //moving save button one up
 
         btnCancelEditInfo.setText(MOD_FACADE.getLang("BTN_CANCEL")); //preparing cancel button
         btnCancelEditInfo.setButtonType(JFXButton.ButtonType.RAISED);
-        btnCancelEditInfo.setStyle("-fx-background-color: #ff0000;");
+        btnCancelEditInfo.setStyle("-fx-background-color: #B0B0B0;");
         btnCancelEditInfo.setTextFill(Color.WHITE);
         btnCancelEditInfo.setPadding(btnEditSave.getPadding());
-        btnCancelEditInfo.setScaleX(0.7);
-        btnCancelEditInfo.setScaleY(0.7);
-        gridEdit.add(btnCancelEditInfo, btnSavePosCol, btnSavePosRow); //adding to the old position of save btn
-        btnCancelEditInfo.setOnAction(new EventHandler<ActionEvent>()
 
+        gridEdit.add(btnCancelEditInfo, btnSavePosCol, btnSavePosRow); //adding to the old position of save btn
+        GridPane.setValignment(btnEditSave, VPos.CENTER);
+        GridPane.setValignment(btnCancelEditInfo, VPos.CENTER);
+        btnCancelEditInfo.setOnAction(new EventHandler<ActionEvent>()
         { //setting onAction, nothing changed, just show old labels again
             @Override
             public void handle(ActionEvent event)
@@ -525,7 +577,6 @@ public class UserInfoViewController implements Initializable
                 removeCancelButton(); //if cancel button clicked, it will disappear
                 editing = false;
                 btnEditSave.setText(MOD_FACADE.getLang("BTN_EDIT"));
-                btnEditSave.setStyle("-fx-background-color:#00c4ad;");
 
             }
         });
@@ -604,6 +655,7 @@ public class UserInfoViewController implements Initializable
     @FXML
     private void openAddHoursPopup(ActionEvent event)
     {
+        editPopup = true;
         //Clears everything from previous
         datePickerInPop.setValue(null);
         buttonsLocking(false);
@@ -612,6 +664,71 @@ public class UserInfoViewController implements Initializable
         setupAddHoursPopup();
         stckPaneAddHours.setVisible(true);
         MOD_FACADE.fadeInTransition(Duration.millis(750), stckPaneAddHours);
+
+    }
+
+    @FXML
+    private void onTablePressed(MouseEvent click
+    )
+    {
+
+        ContextMenu popupContext = new ContextMenu();
+        MenuItem editDay = new MenuItem("Edit");
+        popupContext.getItems().add(editDay);
+        MenuItem deleteDay = new MenuItem("Delete");
+        popupContext.getItems().add(deleteDay);
+
+        tableViewMain.setContextMenu(popupContext);
+        Day selectedDay = tableViewMain.getSelectionModel().getSelectedItem();
+
+        EventHandler editDayEvent = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                //May change to editible table later
+//                tableViewMain.setEditable(true);
+//                editingTable();
+
+                setupAddHoursPopup();
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate date = LocalDate.parse(selectedDay.getDate(), formatter);
+
+                datePickerInPop.setValue(date);
+                txtfldHours.setText(String.valueOf(selectedDay.getHour()));
+                Guild guild = MOD_FACADE.getGuild(selectedDay.getGuildId());
+                comboboxGuild.getSelectionModel().select(guild);
+
+                buttonsLocking(false);
+
+                stckPaneAddHours.setVisible(true);
+                MOD_FACADE.fadeInTransition(Duration.millis(750), stckPaneAddHours);
+
+            }
+        };
+        editDay.setOnAction(editDayEvent);
+
+        EventHandler deleteDayEvent = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                //Might be able to select multiple days in the future
+//                List selectedDay = new ArrayList(tableViewMain.getSelectionModel().getSelectedItems());
+//                for (Object day : selectedDay)
+//                {
+//                    MOD_FACADE.deleteWorkedDay(currentUser, (Day) day);
+//                }
+
+                MOD_FACADE.deleteWorkedDay(currentUser, selectedDay);
+
+                snackBarPopup("Contribution for " + selectedDay.getGuild() + " on the " + selectedDay.getDate() + " has been deleted.");
+                serviceInitializer.restart();
+            }
+
+        };
+        deleteDay.setOnAction(deleteDayEvent);
 
     }
 
@@ -709,7 +826,7 @@ public class UserInfoViewController implements Initializable
     private void setupAddHoursPopup()
     {
         formatCalendar();
-        comboboxGuild.setItems(FXCollections.observableArrayList(MOD_FACADE.getAllGuilds()));
+        comboboxGuild.setItems(FXCollections.observableArrayList(MOD_FACADE.getAllSavedGuilds()));
 
         txtfldHours.textProperty().addListener(new ChangeListener<String>()
         {
@@ -817,8 +934,10 @@ public class UserInfoViewController implements Initializable
     }
 
     @FXML
-    private void handleAddHours(ActionEvent event)
+    private void handleAddEditHours(ActionEvent event)
     {
+
+        root.getChildren().add(MOD_FACADE.getLoadingScreen());
 
         buttonsLocking(true);
 
@@ -831,41 +950,41 @@ public class UserInfoViewController implements Initializable
 
             int guildID = comboboxGuild.getSelectionModel().getSelectedItem().getId();
 
+            int errorCode = 1;
+
             if (currentUser.getEmail() != null)
             {
-                //DANIEL WILL FIX THIS 
-                if (MOD_FACADE.logHours(currentUser.getEmail(), date, hours, guildID) == false)
+
+                if (editPopup = true)
                 {
-                    snackBarPopup("Error: hours have already been added for this particular guild on this day.");
+
+                    errorCode = MOD_FACADE.logHours(currentUser.getEmail(), date, hours, guildID);
                 }
                 else
                 {
-                    MOD_FACADE.logHours(currentUser.getEmail(), date, hours, guildID);
-                    JFXSnackbar b = new JFXSnackbar(root);
-                    b.show("Hours successfully logged", 2000);
-                    closeAddHoursPopup();
-                    setupTableView();
+
+                    errorCode = MOD_FACADE.editHours(currentUser.getEmail(), date, hours, guildID);
                 }
+                root.getChildren().remove(MOD_FACADE.getLoadingScreen());
+                contributionSnackBarHandler(errorCode);
 
             }
             else if (currentUser.getPhone() != 0)
 
-            {    //DANIEL WILL FIX THIS
-                if (MOD_FACADE.logHours(currentUser.getPhone() + "", date, hours, guildID) == false)
+            {
+                if (editPopup = true)
                 {
-                    snackBarPopup("Error: hours have already been added for this particular guild on this day.");
+                    errorCode = MOD_FACADE.logHours(currentUser.getPhone() + "", date, hours, guildID);
                 }
                 else
                 {
-                    MOD_FACADE.logHours(currentUser.getPhone() + "", date, hours, guildID);
-                    JFXSnackbar b = new JFXSnackbar(root);
-                    b.show("Hours successfully logged", 2000);
-                    closeAddHoursPopup();
-                    setupTableView();
+
+                    errorCode = MOD_FACADE.editHours(currentUser.getPhone()+"", date, hours, guildID);
                 }
+                root.getChildren().remove(MOD_FACADE.getLoadingScreen());
+                contributionSnackBarHandler(errorCode);
 
             }
-
         }
 
         else
@@ -875,15 +994,38 @@ public class UserInfoViewController implements Initializable
 
     }
 
+    public void contributionSnackBarHandler(int errorCode)
+    {
+        switch (errorCode)
+        {
+            case 0:
+                snackBarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"));
+                closeAddHoursPopup();
+                serviceInitializer.restart();
+                break;
+            case 1:
+                System.out.println("Error code was not correctly initialised");
+                break;
+            case 2627:
+                snackBarPopup(MOD_FACADE.getLang("STR_ERROR_2627"));
+                break;
+            default:
+                snackBarPopup(MOD_FACADE.getLang("STR_FIRST_TIME_ERROR" + errorCode));
+                break;
+        }
+    }
+
     @FXML
     private void closeAddHoursPopup()
     {
         MOD_FACADE.fadeOutTransition(Duration.millis(750), stckPaneAddHours)
                 .setOnFinished(e -> stckPaneAddHours.setVisible(false));
+        editPopup = false;
     }
 
     @FXML
-    private void openPasswordChangerEvent(ActionEvent event)
+    private void openPasswordChangerEvent(ActionEvent event
+    )
     {
         stckPanePasswordChanger.setVisible(true);
         MOD_FACADE.fadeInTransition(Duration.millis(750), stckPanePasswordChanger);
@@ -896,50 +1038,6 @@ public class UserInfoViewController implements Initializable
     {
         MOD_FACADE.fadeOutTransition(Duration.millis(750), stckPanePasswordChanger)
                 .setOnFinished(e -> stckPanePasswordChanger.setVisible(false));
-
-    }
-
-    @FXML
-    private void onTablePressed(MouseEvent click)
-    {
-
-        ContextMenu popupContext = new ContextMenu();
-        MenuItem editDay = new MenuItem("Edit");
-        popupContext.getItems().add(editDay);
-        MenuItem deleteDay = new MenuItem("Delete");
-        popupContext.getItems().add(deleteDay);
-
-        tableViewMain.setContextMenu(popupContext);
-
-        EventHandler editDayEvent = new EventHandler()
-        {
-            @Override
-            public void handle(Event event)
-            {
-                tableViewMain.setEditable(true);
-                editingTable();
-            }
-        };
-        editDay.setOnAction(editDayEvent);
-
-        EventHandler deleteDayEvent = new EventHandler()
-        {
-            @Override
-            public void handle(Event event)
-            {
-//                List selectedDay = new ArrayList(tableViewMain.getSelectionModel().getSelectedItems());
-//                for (Object day : selectedDay)
-//                {
-//                    MOD_FACADE.deleteWorkedDay(currentUser, (Day) day);
-//                }
-
-                MOD_FACADE.deleteWorkedDay(currentUser, tableViewMain.getSelectionModel().getSelectedItem());
-
-                setupTableView();
-            }
-
-        };
-        deleteDay.setOnAction(deleteDayEvent);
 
     }
 

@@ -163,4 +163,9 @@ public class BLLFacade
     {
         return GRAPH_HAND.sorter(guild);
     }
+
+    public void editHours(String username, String date, int hours, int guildId) throws SQLException
+    {
+        DAL_FAC.editHours(username, date, hours, guildId);
+    }
 }
