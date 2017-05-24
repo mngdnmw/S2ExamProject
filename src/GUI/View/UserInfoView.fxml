@@ -25,7 +25,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
+<AnchorPane id="AnchorPane" fx:id="root" maxHeight="490.0" minHeight="490.0" prefHeight="490.0" prefWidth="710.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
 
 
 
@@ -35,11 +35,11 @@
             <DropShadow />
          </effect>
       </Rectangle>
-      <GridPane fx:id="gridEdit" layoutX="14.0" layoutY="14.0" prefHeight="211.0" prefWidth="483.0">
+      <GridPane fx:id="gridEdit" layoutX="36.0" layoutY="20.0" prefHeight="205.0" prefWidth="461.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="119.0" minWidth="0.0" prefWidth="35.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="408.0" minWidth="10.0" prefWidth="360.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="93.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="119.0" minWidth="0.0" prefWidth="29.141170501708984" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="408.0" minWidth="10.0" prefWidth="369.858829498291" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="64.80523681640625" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -54,7 +54,7 @@
                   <Insets bottom="2.0" left="10.0" right="10.0" top="2.0" />
                </padding>
                <GridPane.margin>
-                  <Insets left="15.0" />
+                  <Insets left="10.0" />
                </GridPane.margin>
             </JFXButton>
             <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER">
@@ -62,7 +62,7 @@
                   <Image url="@../Images/person.png" />
                </image>
                <GridPane.margin>
-                  <Insets />
+                  <Insets right="15.0" />
                </GridPane.margin>
             </ImageView>
             <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1">
@@ -70,7 +70,7 @@
                   <Image url="@../Images/phone.png" />
                </image>
                <GridPane.margin>
-                  <Insets />
+                  <Insets right="15.0" />
                </GridPane.margin>
             </ImageView>
             <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2">
@@ -78,7 +78,7 @@
                   <Image url="@../Images/email.png" />
                </image>
                <GridPane.margin>
-                  <Insets />
+                  <Insets right="15.0" />
                </GridPane.margin>
             </ImageView>
             <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="3">
@@ -86,7 +86,7 @@
                   <Image url="@../Images/location.png" />
                </image>
                <GridPane.margin>
-                  <Insets />
+                  <Insets right="15.0" />
                </GridPane.margin>
             </ImageView>
             <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="4">
@@ -94,7 +94,7 @@
                   <Image url="@../Images/location.png" />
                </image>
                <GridPane.margin>
-                  <Insets />
+                  <Insets right="15.0" />
                </GridPane.margin>
             </ImageView>
             <JFXTextField fx:id="txtName" editable="false" focusColor="#00c4ad" promptText="Name" GridPane.columnIndex="1" />
@@ -104,7 +104,7 @@
             <JFXTextField fx:id="txtAddress2" editable="false" focusColor="#00c4ad" promptText="Address 2" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
       </GridPane>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="500.0" layoutX="504.0" stroke="TRANSPARENT" strokeType="INSIDE" width="183.0">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="490.0" layoutX="514.0" stroke="TRANSPARENT" strokeType="INSIDE" width="183.0">
          <effect>
             <DropShadow />
          </effect>
@@ -125,7 +125,7 @@
          </padding>
       </JFXButton>
 
-      <HBox fx:id="hBoxInvisBtn" layoutX="506.0" layoutY="430.0" prefHeight="45.0" prefWidth="183.0" />
+      <HBox fx:id="hBoxInvisBtn" layoutX="516.0" layoutY="430.0" prefHeight="45.0" prefWidth="183.0" />
       <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="528.0" layoutY="221.0" maxHeight="26.0" minHeight="19.0" onAction="#openPasswordChangerEvent" prefHeight="26.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Change Password" textFill="WHITE" AnchorPane.rightAnchor="31.0">
 
 
@@ -181,10 +181,10 @@
             </HBox>
          </children>
       </Pane>
-      <JFXListView fx:id="listVwGuilds" layoutX="527.0" layoutY="277.0" maxWidth="141.0" prefHeight="162.0" prefWidth="141.0" style="-fx-border-width: 0px;" />
-      <Label fx:id="lblGuilds" layoutX="527.0" layoutY="260.0" style="-fx-background-color: #00c4ad;" text="Guilds:" textFill="WHITE" />
+      <JFXListView fx:id="listVwGuilds" layoutX="538.0" layoutY="277.0" maxWidth="141.0" prefHeight="162.0" prefWidth="141.0" style="-fx-border-width: 0px;" />
+      <Label fx:id="lblGuilds" layoutX="538.0" layoutY="260.0" style="-fx-background-color: #00c4ad;" text="Guilds:" textFill="WHITE" />
       
-      <StackPane fx:id="stckPanePasswordChanger" layoutX="-25.0" prefHeight="510.0" prefWidth="710.0" style="-fx-background-color: rgba(0,0,0,0.5);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane fx:id="stckPanePasswordChanger" layoutX="-25.0" prefHeight="510.0" prefWidth="710.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="200.0" prefWidth="463.0" spacing="10.0" styleClass="loginwindow" stylesheets="@MainLayout.css">
                <children>
@@ -296,9 +296,9 @@
                         </JFXComboBox>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
+                  <HBox fx:id="hBoxBtnsInPOP" alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
                      <children>
-                        <JFXButton fx:id="btnAddHoursPOP" buttonType="RAISED" maxHeight="30.0" onAction="#handleAddHours" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #029e99;" text="Add" textFill="WHITE" />
+                        <JFXButton fx:id="btnAddHoursPOP" buttonType="RAISED" maxHeight="30.0" onAction="#handleAddEditHours" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #029e99;" text="Okay" textFill="WHITE" />
                         <JFXButton fx:id="btnCancelPOP" buttonType="RAISED" maxHeight="30.0" onAction="#closeAddHoursPopup" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #B0B0B0;" text="Cancel" textFill="WHITE">
                            <HBox.margin>
                               <Insets />

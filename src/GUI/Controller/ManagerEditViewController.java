@@ -10,23 +10,30 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -66,10 +73,14 @@ public class ManagerEditViewController implements Initializable
     @FXML
     private AnchorPane root;
     ManagerViewController mevController;
-    boolean edit = false;
-
-    private static ModelFacade modelFacade = new ModelFacade();
+    File newImg;
+    private static ModelFacade MOD_FACADE = new ModelFacade();
+    FilteredList<Day> filteredData = new FilteredList<>(FXCollections.observableArrayList());
     private static User selectedUser;
+    
+    boolean firstRun;
+    
+    boolean finishedService;
     @FXML
     private HBox hBoxCalAll;
     @FXML
@@ -96,13 +107,107 @@ public class ManagerEditViewController implements Initializable
     private JFXButton btnCancel;
 
     private boolean isIncorrect;
+    
+    private final Service serviceSavePicture = new Service()
+    {
+        @Override
+        protected Task createTask()
+        {
+            return new Task()
+            {
+                @Override
+                protected Object call() throws Exception
+                {
+                    if (newImg != null)
+                    {
+                        try
+                        {
+                            MOD_FACADE.updateUserImage(selectedUser, newImg);
+                        }
+                        catch (FileNotFoundException e)
+                        {
+                            System.out.println(e);
+                            Alert a = new Alert(Alert.AlertType.ERROR);
+                            a.setHeaderText("Selected image is not found");
+                            a.setContentText("File not found!");
+                        }
+                    }
+                    return null;
+
+                }
+            };
+        }
+    };
+    
+    private final Service serviceInitializer = new Service()
+    {
+        @Override
+        protected Task createTask()
+        {
+            return new Task()
+            {
+                @Override
+                protected Object call() throws Exception
+                {
+                    if (firstRun)
+                    {
+                        setUserImage();
+                    }
+                    filteredData = new FilteredList<>(FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(selectedUser)), p -> true);
+                    firstRun = false;
+                    return null;
+
+                }
+            };
+        }
+    };
+    
+
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        edit = false;
         setText();
         listGuilds.setItems(FXCollections.observableArrayList(selectedUser.getGuildList()));
-        setupTableView();
+        setupTableView("Looking for data");
+        
+        serviceInitializer.start();
+
+        serviceInitializer.setOnSucceeded(e
+                -> setupTableView("Found Nothing :("));
+        if (selectedUser.getType() >= 1)
+        {
+            serviceAllVolunteers.start();
+        }
+    }
+    
+     private final Service serviceAllVolunteers = new Service()
+    {
+        @Override
+        protected Task createTask()
+        {
+            return new Task()
+            {
+                @Override
+                protected Object call() throws Exception
+                {
+                    finishedService = false;
+                    MOD_FACADE.setAllVolunteersIntoArray();
+                    MOD_FACADE.setAllManagersIntoArray();
+                    finishedService = true;
+                    return null;
+
+                }
+            };
+        }
+    };
+    
+       public void setUserImage()
+    {
+        if (MOD_FACADE.getUserImage(selectedUser) != null)
+        {
+            imgVwProfilePic.setImage(new Image(MOD_FACADE.getUserImage(selectedUser)));
+
+        }
     }
 
     public void setController(ManagerViewController c)
@@ -120,7 +225,8 @@ public class ManagerEditViewController implements Initializable
             txtPhone.setText(String.valueOf(selectedUser.getPhone()));
             txtEmail.setText(selectedUser.getEmail());
             txtNotes.setText(selectedUser.getNote());
-        } else
+        }
+        else
         {
             System.out.println("selected user is null");
         }
@@ -129,6 +235,23 @@ public class ManagerEditViewController implements Initializable
     @FXML
     private void onBtnUpdatePhotoPressed(ActionEvent event)
     {
+        FileChooser c = new FileChooser();
+        c.setTitle("Select a new image");
+        String[] extensions
+                =
+
+                {
+                    "jpg", "jpeg", "png", "gif"
+                };
+        c.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Image files only", extensions));
+        newImg = c.showOpenDialog(JFXBtnUpdatePhoto.getScene().getWindow());
+        serviceSavePicture.start();
+        serviceSavePicture.setOnSucceeded(e
+                ->
+        {
+            firstRun = true;
+            serviceInitializer.restart();
+        });
 
     }
 
@@ -139,7 +262,7 @@ public class ManagerEditViewController implements Initializable
 
     private void updateUserInfo()
     {
-        modelFacade.updateUserInfo(selectedUser.getId(), txtName.getText(), txtEmail.getText(), selectedUser.getType(), Integer.parseInt(txtPhone.getText()), txtNotes.getText(), txtAddress.getText(), txtAddress2.getText());
+        MOD_FACADE.updateUserInfo(selectedUser.getId(), txtName.getText(), txtEmail.getText(), selectedUser.getType(), Integer.parseInt(txtPhone.getText()), txtNotes.getText(), txtAddress.getText(), txtAddress2.getText());
     }
 
     @FXML
@@ -158,13 +281,14 @@ public class ManagerEditViewController implements Initializable
         Stage stage = (Stage) JFXBtnCancel.getScene().getWindow();
         stage.close();
     }
+
     @FXML
     private void changePasswordEvent(ActionEvent event)
     {
         int count;
         if (txtNPassword.getText().equals(txtNPasswordTwo.getText()))
         {
-            count = modelFacade.changePassword(selectedUser, txtOPassword.getText(), txtNPassword.getText());
+            count = MOD_FACADE.changePassword(selectedUser, txtOPassword.getText(), txtNPassword.getText());
         }
         else
         {
@@ -175,7 +299,7 @@ public class ManagerEditViewController implements Initializable
             JFXSnackbar b = new JFXSnackbar(root);
             b.show("Password has succesfully changed", 2000);
             hidePasswordChangerEvent();
-            
+
         }
         else if (count == -1)
         {
@@ -194,26 +318,26 @@ public class ManagerEditViewController implements Initializable
     private void openPasswordChangerEvent(ActionEvent event)
     {
         stckPanePasswordChanger.setVisible(true);
-        modelFacade.fadeInTransition(Duration.millis(750), stckPanePasswordChanger);
+        MOD_FACADE.fadeInTransition(Duration.millis(750), stckPanePasswordChanger);
 
     }
+
     @FXML
     private void hidePasswordChangerEvent()
 
     {
-        modelFacade.fadeOutTransition(Duration.millis(750), stckPanePasswordChanger)
+        MOD_FACADE.fadeOutTransition(Duration.millis(750), stckPanePasswordChanger)
                 .setOnFinished(e -> stckPanePasswordChanger.setVisible(false));
 
     }
-    private void setupTableView()
+
+ private void setupTableView(String str)
     {
 
-        tblMain.setPlaceholder(new Label("Nothing found :("));
+        tblMain.setPlaceholder(new Label(str));
         colDate.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
         colHours.setCellValueFactory(val -> val.getValue().hourProperty().asObject());
         colGuild.setCellValueFactory(cellData -> cellData.getValue().guildProperty());
-
-        FilteredList<Day> filteredData = new FilteredList<>(FXCollections.observableArrayList(modelFacade.getWorkedDays(selectedUser)), p -> true);
 
         txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
                 ->
@@ -239,7 +363,7 @@ public class ManagerEditViewController implements Initializable
         tblMain.setItems(sortedData);
 
     }
-    
+
     @FXML
     private void checkTextFields(KeyEvent event)
     {

@@ -170,6 +170,8 @@ public class UserInfoViewController implements Initializable
     boolean finishedService;
     boolean firstRun;
     File newImg;
+    boolean editPopup = false;
+
     private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
 
     private final Service serviceAllVolunteers = new Service()
@@ -245,6 +247,8 @@ public class UserInfoViewController implements Initializable
             };
         }
     };
+    @FXML
+    private HBox hBoxBtnsInPOP;
 
     /**
      * Initializes the controller class.
@@ -285,21 +289,21 @@ public class UserInfoViewController implements Initializable
         colGuild.setCellValueFactory(cellData -> cellData.getValue().guildProperty());
 
         txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                -> 
-                {
-                    filteredData.setPredicate(day
-                            -> 
-                            {
-                                String regex = "[^a-zA-Z0-9\\s]";
-                                Boolean search
-                                        = day.dateProperty().getValue().replaceAll(regex, "")
-                                        .contains(newValue.replaceAll(regex, ""))
-                                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
-                                        contains(newValue.toLowerCase().replaceAll(regex, ""));
+                ->
+        {
+            filteredData.setPredicate(day
+                    ->
+            {
+                String regex = "[^a-zA-Z0-9\\s]";
+                Boolean search
+                        = day.dateProperty().getValue().replaceAll(regex, "")
+                                .contains(newValue.replaceAll(regex, ""))
+                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                contains(newValue.toLowerCase().replaceAll(regex, ""));
 
-                                return search;
+                return search;
 
-                    });
+            });
         });
 
         SortedList<Day> sortedData = new SortedList<>(filteredData);
@@ -379,11 +383,11 @@ public class UserInfoViewController implements Initializable
                 else
                 {
                     serviceAllVolunteers.setOnSucceeded(e
-                            -> 
-                            {
+                            ->
+                    {
 
-                                MOD_FACADE.changeView(1);
-                                root.getChildren().remove(MOD_FACADE.getLoadingScreen());
+                        MOD_FACADE.changeView(1);
+                        root.getChildren().remove(MOD_FACADE.getLoadingScreen());
 
                     });
 
@@ -526,10 +530,10 @@ public class UserInfoViewController implements Initializable
         newImg = c.showOpenDialog(btnUpdatePhoto.getScene().getWindow());
         serviceSavePicture.start();
         serviceSavePicture.setOnSucceeded(e
-                -> 
-                {
-                    firstRun = true;
-                    serviceInitializer.restart();
+                ->
+        {
+            firstRun = true;
+            serviceInitializer.restart();
         });
 
     }
@@ -651,6 +655,7 @@ public class UserInfoViewController implements Initializable
     @FXML
     private void openAddHoursPopup(ActionEvent event)
     {
+        editPopup = true;
         //Clears everything from previous
         datePickerInPop.setValue(null);
         buttonsLocking(false);
@@ -659,6 +664,71 @@ public class UserInfoViewController implements Initializable
         setupAddHoursPopup();
         stckPaneAddHours.setVisible(true);
         MOD_FACADE.fadeInTransition(Duration.millis(750), stckPaneAddHours);
+
+    }
+
+    @FXML
+    private void onTablePressed(MouseEvent click
+    )
+    {
+
+        ContextMenu popupContext = new ContextMenu();
+        MenuItem editDay = new MenuItem("Edit");
+        popupContext.getItems().add(editDay);
+        MenuItem deleteDay = new MenuItem("Delete");
+        popupContext.getItems().add(deleteDay);
+
+        tableViewMain.setContextMenu(popupContext);
+        Day selectedDay = tableViewMain.getSelectionModel().getSelectedItem();
+
+        EventHandler editDayEvent = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                //May change to editible table later
+//                tableViewMain.setEditable(true);
+//                editingTable();
+
+                setupAddHoursPopup();
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate date = LocalDate.parse(selectedDay.getDate(), formatter);
+
+                datePickerInPop.setValue(date);
+                txtfldHours.setText(String.valueOf(selectedDay.getHour()));
+                Guild guild = MOD_FACADE.getGuild(selectedDay.getGuildId());
+                comboboxGuild.getSelectionModel().select(guild);
+
+                buttonsLocking(false);
+
+                stckPaneAddHours.setVisible(true);
+                MOD_FACADE.fadeInTransition(Duration.millis(750), stckPaneAddHours);
+
+            }
+        };
+        editDay.setOnAction(editDayEvent);
+
+        EventHandler deleteDayEvent = new EventHandler()
+        {
+            @Override
+            public void handle(Event event)
+            {
+                //Might be able to select multiple days in the future
+//                List selectedDay = new ArrayList(tableViewMain.getSelectionModel().getSelectedItems());
+//                for (Object day : selectedDay)
+//                {
+//                    MOD_FACADE.deleteWorkedDay(currentUser, (Day) day);
+//                }
+
+                MOD_FACADE.deleteWorkedDay(currentUser, selectedDay);
+
+                snackBarPopup("Contribution for " + selectedDay.getGuild() + " on the " + selectedDay.getDate() + " has been deleted.");
+                serviceInitializer.restart();
+            }
+
+        };
+        deleteDay.setOnAction(deleteDayEvent);
 
     }
 
@@ -864,10 +934,11 @@ public class UserInfoViewController implements Initializable
     }
 
     @FXML
-    private void handleAddHours(ActionEvent event)
+    private void handleAddEditHours(ActionEvent event)
     {
 
         root.getChildren().add(MOD_FACADE.getLoadingScreen());
+
         buttonsLocking(true);
 
         if (datePickerInPop.getValue() != null && !txtfldHours.getText().isEmpty() && !comboboxGuild.getSelectionModel().isEmpty())
@@ -879,19 +950,37 @@ public class UserInfoViewController implements Initializable
 
             int guildID = comboboxGuild.getSelectionModel().getSelectedItem().getId();
 
+            int errorCode = 1;
+
             if (currentUser.getEmail() != null)
             {
 
-                
-                int errorCode = MOD_FACADE.logHours(currentUser.getEmail(), date, hours, guildID);
+                if (editPopup = true)
+                {
+
+                    errorCode = MOD_FACADE.logHours(currentUser.getEmail(), date, hours, guildID);
+                }
+                else
+                {
+
+                    errorCode = MOD_FACADE.editHours(currentUser.getEmail(), date, hours, guildID);
+                }
                 root.getChildren().remove(MOD_FACADE.getLoadingScreen());
                 contributionSnackBarHandler(errorCode);
 
             }
             else if (currentUser.getPhone() != 0)
 
-            {   
-                int errorCode = MOD_FACADE.logHours(currentUser.getPhone() + "", date, hours, guildID);
+            {
+                if (editPopup = true)
+                {
+                    errorCode = MOD_FACADE.logHours(currentUser.getPhone() + "", date, hours, guildID);
+                }
+                else
+                {
+
+                    errorCode = MOD_FACADE.editHours(currentUser.getPhone()+"", date, hours, guildID);
+                }
                 root.getChildren().remove(MOD_FACADE.getLoadingScreen());
                 contributionSnackBarHandler(errorCode);
 
@@ -914,6 +1003,9 @@ public class UserInfoViewController implements Initializable
                 closeAddHoursPopup();
                 serviceInitializer.restart();
                 break;
+            case 1:
+                System.out.println("Error code was not correctly initialised");
+                break;
             case 2627:
                 snackBarPopup(MOD_FACADE.getLang("STR_ERROR_2627"));
                 break;
@@ -928,6 +1020,7 @@ public class UserInfoViewController implements Initializable
     {
         MOD_FACADE.fadeOutTransition(Duration.millis(750), stckPaneAddHours)
                 .setOnFinished(e -> stckPaneAddHours.setVisible(false));
+        editPopup = false;
     }
 
     @FXML
@@ -945,55 +1038,6 @@ public class UserInfoViewController implements Initializable
     {
         MOD_FACADE.fadeOutTransition(Duration.millis(750), stckPanePasswordChanger)
                 .setOnFinished(e -> stckPanePasswordChanger.setVisible(false));
-
-    }
-
-    @FXML
-    private void onTablePressed(MouseEvent click
-    )
-    {
-
-        ContextMenu popupContext = new ContextMenu();
-        MenuItem editDay = new MenuItem("Edit");
-        popupContext.getItems().add(editDay);
-        MenuItem deleteDay = new MenuItem("Delete");
-        popupContext.getItems().add(deleteDay);
-
-        tableViewMain.setContextMenu(popupContext);
-
-        EventHandler editDayEvent = new EventHandler()
-        {
-            @Override
-            public void handle(Event event)
-            {
-                tableViewMain.setEditable(true);
-                editingTable();
-            }
-        };
-        editDay.setOnAction(editDayEvent);
-
-        EventHandler deleteDayEvent = new EventHandler()
-        {
-            @Override
-            public void handle(Event event)
-            {
-                //Might be able to select multiple days in the future
-//                List selectedDay = new ArrayList(tableViewMain.getSelectionModel().getSelectedItems());
-//                for (Object day : selectedDay)
-//                {
-//                    MOD_FACADE.deleteWorkedDay(currentUser, (Day) day);
-//                }
-
-                Day selectedDay=tableViewMain.getSelectionModel().getSelectedItem();
-                MOD_FACADE.deleteWorkedDay(currentUser,selectedDay);
-                
-
-                snackBarPopup("Contribution for " +selectedDay.getGuild()+" on the "+ selectedDay.getDate()+" has been deleted.");
-                serviceInitializer.restart();
-            }
-
-        };
-        deleteDay.setOnAction(deleteDayEvent);
 
     }
 

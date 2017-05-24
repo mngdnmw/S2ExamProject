@@ -51,6 +51,27 @@ public class LoginModel
 
     }
 
+    int editHours(String username, String date, int hours, int guildId)
+    {
+
+        int errorCode = 0;
+        try
+        {
+            BLL_FAC.editHours(username, date, hours, guildId);
+        }
+        catch (SQLException ex)
+        {
+            errorCode = ex.getErrorCode();
+
+        }
+        finally
+        {
+            System.out.println(errorCode);
+            return errorCode;
+        }
+
+    }
+
     public HashMap<String, String> loadSession()
     {
         return BLL_FAC.loadSession();
