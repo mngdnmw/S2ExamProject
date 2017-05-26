@@ -187,6 +187,8 @@ public class UserInfoViewController implements Initializable
                     finishedService = false;
                     MOD_FACADE.setAllVolunteersIntoArray();
                     MOD_FACADE.setAllManagersIntoArray();
+                    MOD_FACADE.setAllAdminsIntoArray();
+                    MOD_FACADE.getAllSavedUsers();
                     finishedService = true;
                     return null;
 
@@ -289,21 +291,21 @@ public class UserInfoViewController implements Initializable
         colGuild.setCellValueFactory(cellData -> cellData.getValue().guildProperty());
 
         txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                ->
-        {
-            filteredData.setPredicate(day
-                    ->
-            {
-                String regex = "[^a-zA-Z0-9\\s]";
-                Boolean search
-                        = day.dateProperty().getValue().replaceAll(regex, "")
-                                .contains(newValue.replaceAll(regex, ""))
-                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
-                                contains(newValue.toLowerCase().replaceAll(regex, ""));
+                -> 
+                {
+                    filteredData.setPredicate(day
+                            -> 
+                            {
+                                String regex = "[^a-zA-Z0-9\\s]";
+                                Boolean search
+                                        = day.dateProperty().getValue().replaceAll(regex, "")
+                                        .contains(newValue.replaceAll(regex, ""))
+                                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                        contains(newValue.toLowerCase().replaceAll(regex, ""));
 
-                return search;
+                                return search;
 
-            });
+                    });
         });
 
         SortedList<Day> sortedData = new SortedList<>(filteredData);
@@ -350,7 +352,7 @@ public class UserInfoViewController implements Initializable
 
     {
 
-        higherClearanceBtn.setPrefWidth(140);
+        higherClearanceBtn.setPrefWidth(160);
         higherClearanceBtn.setId("higherClearanceBtn");
         higherClearanceBtn.toFront();
         higherClearanceBtn.setVisible(true);
@@ -382,20 +384,21 @@ public class UserInfoViewController implements Initializable
                 }
                 else
                 {
+                    StackPane stckPaneLoad = MOD_FACADE.getLoadingScreen();
                     serviceAllVolunteers.setOnSucceeded(e
-                            ->
-                    {
+                            -> 
+                            {
 
-                        MOD_FACADE.changeView(1);
-                        root.getChildren().remove(MOD_FACADE.getLoadingScreen());
+                                MOD_FACADE.changeView(1);
+                                stckPaneLoad.setVisible(false);
 
                     });
 
-                    root.getChildren().add(MOD_FACADE.getLoadingScreen());
-                    AnchorPane.setTopAnchor(MOD_FACADE.getLoadingScreen(), 0.0);
-                    AnchorPane.setBottomAnchor(MOD_FACADE.getLoadingScreen(), 0.0);
-                    AnchorPane.setLeftAnchor(MOD_FACADE.getLoadingScreen(), 0.0);
-                    AnchorPane.setRightAnchor(MOD_FACADE.getLoadingScreen(), 0.0);
+                    root.getChildren().add(stckPaneLoad);
+                    AnchorPane.setTopAnchor(stckPaneLoad, 0.0);
+                    AnchorPane.setBottomAnchor(stckPaneLoad, 0.0);
+                    AnchorPane.setLeftAnchor(stckPaneLoad, 0.0);
+                    AnchorPane.setRightAnchor(stckPaneLoad, 0.0);
 
                 }
             }
@@ -530,10 +533,10 @@ public class UserInfoViewController implements Initializable
         newImg = c.showOpenDialog(btnUpdatePhoto.getScene().getWindow());
         serviceSavePicture.start();
         serviceSavePicture.setOnSucceeded(e
-                ->
-        {
-            firstRun = true;
-            serviceInitializer.restart();
+                -> 
+                {
+                    firstRun = true;
+                    serviceInitializer.restart();
         });
 
     }
@@ -625,13 +628,17 @@ public class UserInfoViewController implements Initializable
     private void changePasswordEvent(ActionEvent event)
     {
         int count;
-        if (txtNPassword.getText().equals(txtNPasswordTwo.getText()))
+        if (txtOPassword.getText().equals(txtNPassword.getText()))
+        {
+            count= -1;
+        }
+        else if (txtNPassword.getText().equals(txtNPasswordTwo.getText()))
         {
             count = MOD_FACADE.changePassword(currentUser, txtOPassword.getText(), txtNPassword.getText());
         }
         else
         {
-            count = -1;
+            count = -2;
         }
         if (count > 0)
         {
@@ -639,11 +646,18 @@ public class UserInfoViewController implements Initializable
             b.show("Password has succesfully changed", 2000);
             hidePasswordChangerEvent();
         }
+        
         else if (count == -1)
+        {
+            JFXSnackbar b = new JFXSnackbar(root);
+            b.show("Old password is the same as new password", 2000);
+        }
+        else if (count == -2)
         {
             JFXSnackbar b = new JFXSnackbar(root);
             b.show("Password do not match", 2000);
         }
+
         else
         {
             JFXSnackbar b = new JFXSnackbar(root);
@@ -937,7 +951,8 @@ public class UserInfoViewController implements Initializable
     private void handleAddEditHours(ActionEvent event)
     {
 
-        root.getChildren().add(MOD_FACADE.getLoadingScreen());
+        StackPane stckLoadScreen = MOD_FACADE.getLoadingScreen();
+        root.getChildren().add(stckLoadScreen);
 
         buttonsLocking(true);
 
@@ -965,7 +980,8 @@ public class UserInfoViewController implements Initializable
 
                     errorCode = MOD_FACADE.editHours(currentUser.getEmail(), date, hours, guildID);
                 }
-                root.getChildren().remove(MOD_FACADE.getLoadingScreen());
+                stckLoadScreen.setVisible(false);
+
                 contributionSnackBarHandler(errorCode);
 
             }
@@ -979,9 +995,9 @@ public class UserInfoViewController implements Initializable
                 else
                 {
 
-                    errorCode = MOD_FACADE.editHours(currentUser.getPhone()+"", date, hours, guildID);
+                    errorCode = MOD_FACADE.editHours(currentUser.getPhone() + "", date, hours, guildID);
                 }
-                root.getChildren().remove(MOD_FACADE.getLoadingScreen());
+                stckLoadScreen.setVisible(false);
                 contributionSnackBarHandler(errorCode);
 
             }

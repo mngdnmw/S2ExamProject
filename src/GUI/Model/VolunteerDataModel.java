@@ -13,6 +13,7 @@ public class VolunteerDataModel
     private final static BLLFacade BLL_FAC = new BLLFacade();
 
     private ArrayList<User> allUsers = new ArrayList();
+    private ArrayList<User> allVolunters = new ArrayList();
     private ArrayList<User> allManagers = new ArrayList<>();
     private ArrayList<User> allAdmins = new ArrayList<>();
     private ArrayList<Guild> allGuilds = new ArrayList<>();
@@ -24,11 +25,22 @@ public class VolunteerDataModel
 
     public void setAllVolunteersIntoArray()
     {
-        allUsers.clear();
-        allUsers.addAll(BLL_FAC.getAllVolunteers());
+        allVolunters.clear();
+        allVolunters.addAll(BLL_FAC.getAllVolunteers());
     }
 
     public List<User> getAllSavedVolunteers()
+    {
+        return allVolunters;
+    }
+
+    public void setAllUsersIntoArray()
+    {
+        allUsers.clear();
+        allUsers.addAll(BLL_FAC.getAllUsers());
+    }
+
+    public List<User> getAllSavedUsers()
     {
         return allUsers;
     }
