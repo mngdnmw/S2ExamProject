@@ -17,9 +17,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
@@ -209,6 +213,7 @@ public class UserInfoViewController implements Initializable
                         try
                         {
                             MOD_FACADE.updateUserImage(currentUser, newImg);
+                            MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),MOD_FACADE.getCurrentUser().getName()+" changed his/her image."));
                         }
                         catch (FileNotFoundException e)
                         {
@@ -429,7 +434,6 @@ public class UserInfoViewController implements Initializable
         {
             if (isIncorrect && btnEditSave.isDisabled())
             {
-
                 JFXSnackbar b = new JFXSnackbar(root);
                 b.show("Please enter valid information in the fields!", 2000);
                 return;
@@ -440,6 +444,7 @@ public class UserInfoViewController implements Initializable
             checkTextFields();
             removeCancelButton();
             btnEditSave.setStyle("-fx-background-color:#00c4ad;");
+            
         }
     }
 
@@ -472,7 +477,7 @@ public class UserInfoViewController implements Initializable
     private void saveInfo(User user)
     {
         MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPhone.getText()), user.getNote(), txtAddress.getText(), txtAddress2.getText());
-
+        MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),MOD_FACADE.getCurrentUser().getName()+" edited personal information."));
         currentUser = MOD_FACADE.getUserInfo(user.getId());
 
         txtName.setEditable(false);
@@ -638,6 +643,7 @@ public class UserInfoViewController implements Initializable
             JFXSnackbar b = new JFXSnackbar(root);
             b.show("Password has succesfully changed", 2000);
             hidePasswordChangerEvent();
+            MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),currentUser.getName()+" changed his/her password."));
         }
         else if (count == -1)
         {
@@ -957,13 +963,14 @@ public class UserInfoViewController implements Initializable
 
                 if (editPopup = true)
                 {
-
                     errorCode = MOD_FACADE.logHours(currentUser.getEmail(), date, hours, guildID);
+                    MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),MOD_FACADE.getCurrentUser().getName()+" added "+hours+" working hours to guild "+MOD_FACADE.getGuild(guildID).getName()+" on "+date+"."));
                 }
                 else
                 {
 
                     errorCode = MOD_FACADE.editHours(currentUser.getEmail(), date, hours, guildID);
+                    MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),MOD_FACADE.getCurrentUser().getName()+" edited his/her working hours to "+hours+" in guild "+MOD_FACADE.getGuild(guildID).getName()+" on "+date+"."));
                 }
                 root.getChildren().remove(MOD_FACADE.getLoadingScreen());
                 contributionSnackBarHandler(errorCode);
@@ -975,11 +982,13 @@ public class UserInfoViewController implements Initializable
                 if (editPopup = true)
                 {
                     errorCode = MOD_FACADE.logHours(currentUser.getPhone() + "", date, hours, guildID);
+                    MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),MOD_FACADE.getCurrentUser().getName()+" added "+hours+" working hours to guild "+MOD_FACADE.getGuild(guildID).getName()+" on "+date+"."));
                 }
                 else
                 {
 
                     errorCode = MOD_FACADE.editHours(currentUser.getPhone()+"", date, hours, guildID);
+                    MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),MOD_FACADE.getCurrentUser().getName()+" edited his/her working hours to "+hours+" in guild "+MOD_FACADE.getGuild(guildID).getName()+" on "+date+"."));
                 }
                 root.getChildren().remove(MOD_FACADE.getLoadingScreen());
                 contributionSnackBarHandler(errorCode);

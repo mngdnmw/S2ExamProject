@@ -2,6 +2,7 @@ package GUI.Model;
 
 import BE.Day;
 import BE.EnumCache.Lang;
+import BE.Event;
 import BE.Guild;
 import BE.User;
 import BLL.BLLFacade;
@@ -286,5 +287,17 @@ public class ModelFacade
     public int editHours(String username, String date, int hours, int guildId)
     {
         return LOG_MOD.editHours(username, date, hours, guildId);
+    }
+    
+    public void logEvent(Event event) {
+        BLL_FAC.logEvent(event);
+    }
+    
+    public Event getEvent(int id) {
+        return BLL_FAC.getEvent(id);
+    }
+    
+    public List<Event> getAllEvents() {
+        return BLL_FAC.getAllEvents();
     }
 }
