@@ -16,28 +16,13 @@ public class AnimationModel
 
     private final Image loaderImage = new Image("/Resources/animal.gif");
 
-    private final StackPane stackPane;
-    private final ImageView imgViewLoader;
-    private final VBox vBoxcontainer;
-    private final Label lblConnecting;
+    private  StackPane stackPane;
+    private  ImageView imgViewLoader;
+    private  VBox vBoxcontainer;
+    private  Label lblConnecting;
 
     public AnimationModel()
     {
-        stackPane = new StackPane();
-        stackPane.getStyleClass().add("loadingScreen");
-        vBoxcontainer = new VBox();
-        vBoxcontainer.alignmentProperty().set(Pos.CENTER);
-
-        imgViewLoader = new ImageView(loaderImage);
-        imgViewLoader.maxWidth(150);
-        imgViewLoader.setPreserveRatio(true);
-
-        lblConnecting = new Label("Connecting to database...");
-        lblConnecting.getStyleClass().add("logintextAndFontLabels");
-        lblConnecting.setStyle("-fx-text-fill: #ffffff;");
-        vBoxcontainer.getChildren().addAll(imgViewLoader, lblConnecting);
-
-        stackPane.getChildren().add(vBoxcontainer);
 
     }
 
@@ -81,6 +66,21 @@ public class AnimationModel
 
     public StackPane getLoadingScreen()
     {
+        stackPane = new StackPane();
+        stackPane.getStyleClass().add("loadingScreen");
+        vBoxcontainer = new VBox();
+        vBoxcontainer.alignmentProperty().set(Pos.CENTER);
+
+        imgViewLoader = new ImageView(loaderImage);
+        imgViewLoader.maxWidth(150);
+        imgViewLoader.setPreserveRatio(true);
+
+        lblConnecting = new Label("Connecting to database...");
+        lblConnecting.getStyleClass().add("logintextAndFontLabels");
+        lblConnecting.setStyle("-fx-text-fill: #ffffff;");
+        vBoxcontainer.getChildren().addAll(imgViewLoader, lblConnecting);
+
+        stackPane.getChildren().add(vBoxcontainer);
         return stackPane;
     }
 

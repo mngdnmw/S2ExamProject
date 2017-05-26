@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerViewController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerViewController">
     <children>
         <Label fx:id="lblUserName" layoutX="19.0" layoutY="22.0" prefHeight="17.0" prefWidth="508.0" text="Logged in as:" />
         <JFXComboBox fx:id="cmbGuildChooser" focusColor="#00c4ad" labelFloat="true" layoutX="517.0" layoutY="17.0" prefHeight="31.0" prefWidth="169.0" promptText="Guild Chooser" />
@@ -39,8 +39,7 @@
                                         <Font name="System Bold" size="15.0" />
                                     </font>
                                 </JFXButton>
-                                <JFXButton fx:id="btnAddHours" buttonType="RAISED" disable="true" layoutX="149.0" layoutY="362.0" prefWidth="120.0" style="-fx-background-color: #00c4ad;" text="Add Hours" textFill="WHITE" />
-                                <JFXButton fx:id="btnEditInfo" buttonType="RAISED" layoutX="284.0" layoutY="362.0" onAction="#onEditInfoPressed" prefHeight="31.0" prefWidth="147.0" style="-fx-background-color: #00c4ad;" text="Edit Information" textFill="WHITE" />
+                                <JFXButton fx:id="btnEditInfo" buttonType="RAISED" layoutX="154.0" layoutY="362.0" onAction="#onEditInfoPressed" prefHeight="31.0" prefWidth="147.0" style="-fx-background-color: #00c4ad;" text="Edit Information" textFill="WHITE" />
                                 <JFXTextArea fx:id="txtNotes" editable="false" focusColor="#00e2c7" layoutX="459.0" layoutY="57.0" prefHeight="287.0" prefWidth="220.0" stylesheets="@MainLayout.css" />
                                 <TableView fx:id="tblUsers" layoutX="2.0" layoutY="57.0" onMousePressed="#onTablePressed" prefHeight="293.0" prefWidth="451.0">
                                     <columns>
