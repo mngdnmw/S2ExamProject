@@ -70,3 +70,7 @@ COL_PHONE = Telefon
 COL_EMAIL = Email
 TAB_VOLUN_INFO = Volunteer Information
 TAB_GRAPH_STATS = Graphs & statistics
+#ErrorCode
+STR_NO_ERROR_CONTRIBUTION = Dine timer er blevet registreret! Tak for hjælpen!
+STR_ERROR_2627 = Fejl: Timer er allerede blevet tilføjet til denne guild idag.
+STR_FIRST_TIME_ERROR = Fejl: Ukendt Fejl: 

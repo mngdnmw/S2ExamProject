@@ -15,6 +15,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -42,8 +45,7 @@ public class GuildManagementViewController implements Initializable
     private JFXButton btnRemove;
     @FXML
     private AnchorPane rootPane;
-    
-    
+
     @FXML
     private StackPane stckPaneNew;
     @FXML
@@ -56,29 +58,51 @@ public class GuildManagementViewController implements Initializable
     private JFXButton btnCancel;
     @FXML
     private JFXButton btnAddNew;
-    
+
     ModelFacade modelFacade = ModelFacade.getModelFacade();
-    
     Guild selectedGuild = null;
-    
+    private final Service servicegetGuilds = new Service()
+    {
+        @Override
+        protected Task createTask()
+        {
+            return new Task()
+            {
+                @Override
+                protected Object call() throws Exception
+                {
+
+                    modelFacade.setAllGuildsIntoArray();
+                    return null;
+
+                }
+            };
+        }
+    };
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        servicegetGuilds.setOnSucceeded(e
+                -> 
+                {
+                    setListItems();
+        });
         setListItems();
-        
-        if(modelFacade.getCurrentUser().getType() != 2)
+
+        if (modelFacade.getCurrentUser().getType() != 2)
         {
             btnAdd.setDisable(true);
             btnRemove.setDisable(true);
         }
-    }    
-    
+    }
+
     void setListItems()
     {
-        listGuilds.setItems(FXCollections.observableArrayList(modelFacade.getAllGuilds()));
+        listGuilds.setItems(FXCollections.observableArrayList(modelFacade.getAllSavedGuilds()));
     }
 
     @FXML
@@ -92,26 +116,26 @@ public class GuildManagementViewController implements Initializable
     @FXML
     private void btnModifyPressed(ActionEvent event)
     {
-        if(listGuilds.getSelectionModel().getSelectedItem() != null)
+        if (listGuilds.getSelectionModel().getSelectedItem() != null)
         {
             stckPaneNew.setVisible(true);
             modelFacade.fadeInTransition(Duration.millis(750), stckPaneNew);
             txtName.setText(listGuilds.getSelectionModel().getSelectedItem().getName());
             btnAddNew.setVisible(false);
         }
-        
+
         else
         {
             snackBarPopup("Guild to modify not selected");
         }
-        
+
     }
 
     @FXML
     private void btnRemovePressed(ActionEvent event)
     {
         modelFacade.deleteGuild(selectedGuild.getId());
-        setListItems();
+        servicegetGuilds.restart();
     }
 
     @FXML
@@ -120,7 +144,7 @@ public class GuildManagementViewController implements Initializable
         modelFacade.updateGuild(selectedGuild.getId(), txtName.getText());
         modelFacade.fadeOutTransition(Duration.millis(750), stckPaneNew);
         stckPaneNew.setVisible(false);
-        setListItems();
+        servicegetGuilds.restart();
     }
 
     @FXML
@@ -135,11 +159,12 @@ public class GuildManagementViewController implements Initializable
     private void btnAddNewPressed(ActionEvent event)
     {
         modelFacade.addGuild(txtName.getText());
-        setListItems();
+
+        servicegetGuilds.restart();
         modelFacade.fadeOutTransition(Duration.millis(750), stckPaneNew);
         stckPaneNew.setVisible(false);
     }
-    
+
     public void snackBarPopup(String str)
     {
         int time = 3000;

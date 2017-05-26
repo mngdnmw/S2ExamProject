@@ -108,7 +108,7 @@ public class ManagerAddUserController implements Initializable
 
     private void setListView()
     {
-        ObservableList<Guild> items = FXCollections.observableArrayList(modelFacade.getAllGuilds());
+        ObservableList<Guild> items = FXCollections.observableArrayList(modelFacade.getAllSavedGuilds());
         listViewGuilds.setItems(items);
     }
 

@@ -142,11 +142,12 @@ public class HourLoginViewController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        MOD_FACADE.setAllGuildsIntoArray();
         preloadImages();
         imgViewLngBut.setImage(iconENG);
         btnLanguage.setGraphic(imgViewLngBut);
         btnLanguage.setText(MOD_FACADE.getLang("BTN_LANGUAGE"));
-        cmbGuildChooser.setItems(FXCollections.observableArrayList(MOD_FACADE.getAllGuilds()));
+        cmbGuildChooser.setItems(FXCollections.observableArrayList(MOD_FACADE.getAllSavedGuilds()));
         ModelFacade.setModelFacade(MOD_FACADE);
         addListener();
         setTextAll();
@@ -380,6 +381,16 @@ public class HourLoginViewController implements Initializable
                         e -> root.getChildren().remove(anch));
 
                 buttonsLocking(false);
+
+                if (MOD_FACADE.loadSession() != null)
+                {
+
+                    //cmbGuildChooser.requestFocus();
+                    //cmbGuildChooser.setLabelFloat(true);
+                    cmbGuildChooser.setPromptText(null);
+                    txtUser.setPromptText(null);
+                    txtHours.setPromptText(null);
+                }
             }
         };
 
@@ -441,30 +452,6 @@ public class HourLoginViewController implements Initializable
         iconENG = new Image(getClass().getResourceAsStream("/GUI/Images/english.png"));
     }
 
-    private void setTextAll()
-    {
-        lblUsernameTag.setText(MOD_FACADE.getLang("USERNAME_TAG"));
-        txtUser.setPromptText(MOD_FACADE.getLang("TXT_USERNAME_PROMPT"));
-        lblHourTag.setText(MOD_FACADE.getLang("HOUR_TAG"));
-        txtHours.setPromptText(MOD_FACADE.getLang("TXT_HOURS_PROMPT"));
-        lblHourTagTwo.setText(MOD_FACADE.getLang("HOUR_TAG_TWO"));
-        lblGuildTag.setText(MOD_FACADE.getLang("GUILD_TAG"));
-        cmbGuildChooser.setPromptText(MOD_FACADE.getLang("CMB_GUILDCHOOSER_PROMPT"));
-        btnLogHours.setText(MOD_FACADE.getLang("BTN_LOG_HOURS"));
-        btnSeeInfo.setText(MOD_FACADE.getLang("BTN_SEE_INFO"));
-        btnLanguage.setText(MOD_FACADE.getLang("BTN_LANGUAGE"));
-
-        if (MOD_FACADE.getLangProperty().equals(Lang.ENG))
-        {
-            imgViewLngBut.setImage(iconENG);
-        }
-        else if (MOD_FACADE.getLangProperty().equals(Lang.DAN))
-        {
-            imgViewLngBut.setImage(iconDK);
-        }
-
-    }
-
     private void loginEvent()
     {
 
@@ -492,22 +479,33 @@ public class HourLoginViewController implements Initializable
 
     private void logHours()
     {
-        
+
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
 
         String dateString = sdf.format(date);
 
-        MOD_FACADE.logHours(username, dateString,hours, guildID);
-        
+        int errorCode = MOD_FACADE.logHours(username, dateString, hours, guildID);
+
         Platform.runLater(new Runnable()
         {
             @Override
             public void run()
             {
-                snackBarPopup(strContribution);
-                System.out.println(cmbGuildChooser.getSelectionModel().getSelectedItem().getId() + "");
+                switch (errorCode)
+                {
+                    case 0:
+                        snackBarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"));
+                        break;
+                    case 2627:
+                        snackBarPopup(MOD_FACADE.getLang("STR_ERROR_2627"));
+                        break;
+                    default:
+                        snackBarPopup(MOD_FACADE.getLang("STR_FIRST_TIME_ERROR" + errorCode));
+                        break;
+                }
                 loadingScreen(false);
+                buttonsLocking(false);
             }
         });
     }
@@ -564,14 +562,52 @@ public class HourLoginViewController implements Initializable
     {
         if (MOD_FACADE.loadSession() != null)
         {
+
+            //cmbGuildChooser.requestFocus();
+            //cmbGuildChooser.setLabelFloat(true);
+            cmbGuildChooser.setPromptText(null);
+            txtUser.setPromptText(null);
+            txtHours.setPromptText(null);
+
             txtUser.setText(MOD_FACADE.loadSession().get("lastuser"));
             txtHours.setText(MOD_FACADE.loadSession().get("lasthours"));
-            for (Guild guild : cmbGuildChooser.getItems()) {
-                if(guild.getId() == Integer.parseInt(MOD_FACADE.loadSession().get("lastguild"))) {
+            for (Guild guild : cmbGuildChooser.getItems())
+            {
+                if (guild.getId() == Integer.parseInt(MOD_FACADE.loadSession().get("lastguild")))
+                {
+
                     cmbGuildChooser.getSelectionModel().select(guild);
                     return;
                 }
             }
         }
+    }
+
+    private void setTextAll()
+    {
+        lblUsernameTag.setText(MOD_FACADE.getLang("USERNAME_TAG"));
+        txtUser.setPromptText(MOD_FACADE.getLang("TXT_USERNAME_PROMPT"));
+        lblHourTag.setText(MOD_FACADE.getLang("HOUR_TAG"));
+        txtHours.setPromptText(MOD_FACADE.getLang("TXT_HOURS_PROMPT"));
+        lblHourTagTwo.setText(MOD_FACADE.getLang("HOUR_TAG_TWO"));
+        lblGuildTag.setText(MOD_FACADE.getLang("GUILD_TAG"));
+        cmbGuildChooser.setPromptText(MOD_FACADE.getLang("CMB_GUILDCHOOSER_PROMPT"));
+        btnLogHours.setText(MOD_FACADE.getLang("BTN_LOG_HOURS"));
+        btnSeeInfo.setText(MOD_FACADE.getLang("BTN_SEE_INFO"));
+        btnLanguage.setText(MOD_FACADE.getLang("BTN_LANGUAGE"));
+
+        if (MOD_FACADE.getLangProperty().equals(Lang.ENG))
+        {
+            imgViewLngBut.setImage(iconENG);
+        }
+        else if (MOD_FACADE.getLangProperty().equals(Lang.DAN))
+        {
+            imgViewLngBut.setImage(iconDK);
+        }
+        strLogThanks = "Thanks!";
+        strContribution = MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION");
+        strLogin = "Log In";
+        strCancel = "Cancel";
+
     }
 }

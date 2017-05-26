@@ -3,10 +3,7 @@ package GUI.Model;
 import BE.User;
 import BLL.BLLFacade;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,18 +31,44 @@ public class LoginModel
 
     }
 
-    public Boolean logHours(String username, String date, int hours, int guildId)
+    public int logHours(String username, String date, int hours, int guildId)
     {
-
+        int errorCode = 0;
         try
         {
             BLL_FAC.logHours(username, date, hours, guildId);
-        } catch (SQLException ex)
-        {
-            Logger.getLogger(LoginModel.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
         }
-        return true;
+        catch (SQLException ex)
+        {
+            errorCode = ex.getErrorCode();
+
+        }
+        finally
+        {
+            System.out.println(errorCode);
+            return errorCode;
+        }
+
+    }
+
+    int editHours(String username, String date, int hours, int guildId)
+    {
+
+        int errorCode = 0;
+        try
+        {
+            BLL_FAC.editHours(username, date, hours, guildId);
+        }
+        catch (SQLException ex)
+        {
+            errorCode = ex.getErrorCode();
+
+        }
+        finally
+        {
+            System.out.println(errorCode);
+            return errorCode;
+        }
 
     }
 
