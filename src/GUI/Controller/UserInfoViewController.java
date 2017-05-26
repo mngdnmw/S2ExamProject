@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
@@ -35,7 +34,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Alert;
@@ -45,14 +43,17 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -64,7 +65,6 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
-import javafx.util.converter.IntegerStringConverter;
 
 public class UserInfoViewController implements Initializable
 
@@ -78,6 +78,7 @@ public class UserInfoViewController implements Initializable
     private GridPane gridEdit;
     @FXML
     private JFXButton btnEditSave;
+
     @FXML
     private AnchorPane root;
     @FXML
@@ -162,6 +163,8 @@ public class UserInfoViewController implements Initializable
     JFXButton higherClearanceBtn = new JFXButton();
     JFXButton btnCancelEditInfo = new JFXButton();
     FilteredList<Day> filteredData = new FilteredList<>(FXCollections.observableArrayList());
+    private static final DataFormat SERIALIZED_MIME_TYPE = new DataFormat("application/x-java-serialized-object");
+
     //JFXButton btnNewCancel = new JFXButton();
 
     //Variables Used
@@ -264,6 +267,7 @@ public class UserInfoViewController implements Initializable
         setTextAll();
         setupGuildList();
         setupTableView("Looking For Data");
+        searchListener();
         serviceInitializer.start();
 
         serviceInitializer.setOnSucceeded(e
@@ -288,6 +292,78 @@ public class UserInfoViewController implements Initializable
         colHours.setCellValueFactory(val -> val.getValue().hourProperty().asObject());
         colGuild.setCellValueFactory(cellData -> cellData.getValue().guildProperty());
 
+        SortedList<Day> sortedData = new SortedList<>(filteredData);
+
+        sortedData.comparatorProperty().bind(tableViewMain.comparatorProperty());
+        tableViewMain.setItems(sortedData);
+
+        tableViewMain.setRowFactory(new Callback<TableView<Day>, TableRow<Day>>()
+        {
+            @Override
+            public TableRow<Day> call(TableView<Day> tv)
+            {
+                TableRow<Day> row = new TableRow<>();
+
+                row.setOnDragDetected(event ->
+                {
+                    if (!row.isEmpty())
+                    {
+                        Integer index = row.getIndex();
+                        Dragboard db = row.startDragAndDrop(TransferMode.MOVE);
+                        db.setDragView(row.snapshot(null, null));
+                        ClipboardContent cc = new ClipboardContent();
+                        cc.put(SERIALIZED_MIME_TYPE, index);
+                        db.setContent(cc);
+                        event.consume();
+                    }
+                });
+
+                row.setOnDragOver(event ->
+                {
+                    Dragboard db = event.getDragboard();
+                    if (db.hasContent(SERIALIZED_MIME_TYPE))
+                    {
+                        if (row.getIndex() != ((Integer) db.getContent(SERIALIZED_MIME_TYPE)).intValue())
+                        {
+                            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                            event.consume();
+                        }
+                    }
+                });
+
+                row.setOnDragDropped(event ->
+                {
+                    Dragboard db = event.getDragboard();
+                    if (db.hasContent(SERIALIZED_MIME_TYPE))
+                    {
+                        int draggedIndex = (Integer) db.getContent(SERIALIZED_MIME_TYPE);
+                        Day draggedDay = tableViewMain.getItems().remove(draggedIndex);
+
+                        int dropIndex;
+
+                        if (row.isEmpty())
+                        {
+                            dropIndex = tableViewMain.getItems().size();
+                        }
+                        else
+                        {
+                            dropIndex = row.getIndex();
+                        }
+
+                        tableViewMain.getItems().add(dropIndex, draggedDay);
+
+                        event.setDropCompleted(true);
+                        tableViewMain.getSelectionModel().select(dropIndex);
+                        event.consume();
+                    }
+                });
+                return row;
+            }
+        });
+    }
+
+    private void searchListener()
+    {
         txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
                 ->
         {
@@ -305,12 +381,6 @@ public class UserInfoViewController implements Initializable
 
             });
         });
-
-        SortedList<Day> sortedData = new SortedList<>(filteredData);
-
-        sortedData.comparatorProperty().bind(tableViewMain.comparatorProperty());
-        tableViewMain.setItems(sortedData);
-
     }
 
     private void setupGuildList()
@@ -979,7 +1049,7 @@ public class UserInfoViewController implements Initializable
                 else
                 {
 
-                    errorCode = MOD_FACADE.editHours(currentUser.getPhone()+"", date, hours, guildID);
+                    errorCode = MOD_FACADE.editHours(currentUser.getPhone() + "", date, hours, guildID);
                 }
                 root.getChildren().remove(MOD_FACADE.getLoadingScreen());
                 contributionSnackBarHandler(errorCode);
@@ -1041,37 +1111,36 @@ public class UserInfoViewController implements Initializable
 
     }
 
-    private void editingTable()
-    {
-        colDate.setCellFactory(TextFieldTableCell.forTableColumn());
-        colDate.setOnEditCommit(new EventHandler<CellEditEvent<Day, String>>()
-        {
-            @Override
-            public void handle(CellEditEvent<Day, String> event)
-            {
-                ((Day) event.getTableView().getItems().get(event.getTablePosition().getRow())).setDate(event.getNewValue());
-            }
-        });
-
-        colHours.setCellFactory(TextFieldTableCell.<Day, Integer>forTableColumn(new IntegerStringConverter()));
-        colHours.setOnEditCommit(new EventHandler<CellEditEvent<Day, Integer>>()
-        {
-            @Override
-            public void handle(CellEditEvent<Day, Integer> event)
-            {
-                ((Day) event.getTableView().getItems().get(event.getTablePosition().getRow())).setHour(event.getNewValue());
-            }
-        });
-
-        colGuild.setCellFactory(TextFieldTableCell.forTableColumn());
-        colGuild.setOnEditCommit(new EventHandler<CellEditEvent<Day, String>>()
-        {
-            @Override
-            public void handle(CellEditEvent<Day, String> event)
-            {
-                ((Day) event.getTableView().getItems().get(event.getTablePosition().getRow())).setDate(event.getNewValue());
-            }
-        });
-    }
-
+//    private void editingTable()
+//    {
+//        colDate.setCellFactory(TextFieldTableCell.forTableColumn());
+//        colDate.setOnEditCommit(new EventHandler<CellEditEvent<Day, String>>()
+//        {
+//            @Override
+//            public void handle(CellEditEvent<Day, String> event)
+//            {
+//                ((Day) event.getTableView().getItems().get(event.getTablePosition().getRow())).setDate(event.getNewValue());
+//            }
+//        });
+//
+//        colHours.setCellFactory(TextFieldTableCell.<Day, Integer>forTableColumn(new IntegerStringConverter()));
+//        colHours.setOnEditCommit(new EventHandler<CellEditEvent<Day, Integer>>()
+//        {
+//            @Override
+//            public void handle(CellEditEvent<Day, Integer> event)
+//            {
+//                ((Day) event.getTableView().getItems().get(event.getTablePosition().getRow())).setHour(event.getNewValue());
+//            }
+//        });
+//
+//        colGuild.setCellFactory(TextFieldTableCell.forTableColumn());
+//        colGuild.setOnEditCommit(new EventHandler<CellEditEvent<Day, String>>()
+//        {
+//            @Override
+//            public void handle(CellEditEvent<Day, String> event)
+//            {
+//                ((Day) event.getTableView().getItems().get(event.getTablePosition().getRow())).setDate(event.getNewValue());
+//            }
+//        });
+//    }
 }
