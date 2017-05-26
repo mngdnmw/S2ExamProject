@@ -167,35 +167,13 @@ public class UserInfoViewController implements Initializable
     //Variables Used
     boolean editing = false;
     boolean isIncorrect = false;
-    boolean finishedService;
+    boolean finishedService = true;
     boolean firstRun;
     File newImg;
     boolean editPopup = false;
 
     private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
 
-    private final Service serviceAllVolunteers = new Service()
-    {
-        @Override
-        protected Task createTask()
-        {
-            return new Task()
-            {
-                @Override
-                protected Object call() throws Exception
-                {
-                    finishedService = false;
-                    MOD_FACADE.setAllVolunteersIntoArray();
-                    MOD_FACADE.setAllManagersIntoArray();
-                    MOD_FACADE.setAllAdminsIntoArray();
-                    MOD_FACADE.getAllSavedUsers();
-                    finishedService = true;
-                    return null;
-
-                }
-            };
-        }
-    };
     private final Service serviceSavePicture = new Service()
     {
         @Override
@@ -270,10 +248,6 @@ public class UserInfoViewController implements Initializable
 
         serviceInitializer.setOnSucceeded(e
                 -> setupTableView("Found Nothing :("));
-        if (currentUser.getType() >= 1)
-        {
-            serviceAllVolunteers.start();
-        }
 
     }
 
@@ -378,29 +352,8 @@ public class UserInfoViewController implements Initializable
             @Override
             public void handle(ActionEvent event)
             {
-                if (finishedService)
-                {
-                    MOD_FACADE.changeView(1);
-                }
-                else
-                {
-                    StackPane stckPaneLoad = MOD_FACADE.getLoadingScreen();
-                    serviceAllVolunteers.setOnSucceeded(e
-                            -> 
-                            {
+                MOD_FACADE.changeView(1);
 
-                                MOD_FACADE.changeView(1);
-                                stckPaneLoad.setVisible(false);
-
-                    });
-
-                    root.getChildren().add(stckPaneLoad);
-                    AnchorPane.setTopAnchor(stckPaneLoad, 0.0);
-                    AnchorPane.setBottomAnchor(stckPaneLoad, 0.0);
-                    AnchorPane.setLeftAnchor(stckPaneLoad, 0.0);
-                    AnchorPane.setRightAnchor(stckPaneLoad, 0.0);
-
-                }
             }
         });
 
@@ -630,7 +583,7 @@ public class UserInfoViewController implements Initializable
         int count;
         if (txtOPassword.getText().equals(txtNPassword.getText()))
         {
-            count= -1;
+            count = -1;
         }
         else if (txtNPassword.getText().equals(txtNPasswordTwo.getText()))
         {
@@ -646,7 +599,7 @@ public class UserInfoViewController implements Initializable
             b.show("Password has succesfully changed", 2000);
             hidePasswordChangerEvent();
         }
-        
+
         else if (count == -1)
         {
             JFXSnackbar b = new JFXSnackbar(root);

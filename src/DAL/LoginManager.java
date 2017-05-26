@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 public class LoginManager extends ConnectionManager
 {
 
-    private HashMap<String,String> session;
+    private HashMap<String, String> session;
 
     public int changePassword(User user, String oldPassword, String newPassword)
     {
@@ -62,21 +62,15 @@ public class LoginManager extends ConnectionManager
                 String residence = rs.getString("residence");
                 String residence2 = rs.getString("residence2");
                 List<Guild> guilds = new ArrayList<>();
+
+                GeneralInfoManager genInfoMan = new GeneralInfoManager();
                 switch (type)
                 {
                     case 0:
-                        GeneralInfoManager genInfoMan = new GeneralInfoManager();
                         guilds.addAll(genInfoMan.getGuildsForUser(id));
                         return new Volunteer(id, name, email, phone, note, residence, residence2, guilds);
                     case 1:
-                        String query2 = "SELECT * FROM [guild] WHERE [guild].[guildid] in "
-                                + "(SELECT [managerguild].[guildid] FROM [managerguild] WHERE [managerguild].[managerid] =" + id + ")";
-                        PreparedStatement pstmt2 = con.prepareStatement(query2);
-                        ResultSet rs2 = pstmt2.executeQuery();
-                        while (rs2.next())
-                        {
-                            guilds.add(new Guild(rs2.getInt("guildid"), rs2.getString("name")));
-                        }
+                        guilds.addAll(genInfoMan.getGuildsForManager(id));
                         return new Manager(id, name, email, phone, note, residence, residence2, guilds);
                     case 2:
                         return new Admin(id, name, email, phone, note, residence, residence2, guilds);
@@ -97,16 +91,19 @@ public class LoginManager extends ConnectionManager
         props.setProperty("LAST_HOURS", String.valueOf(hours));
         super.saveConfig(props);
     }
-    
-    public HashMap<String,String> loadSession() {
-        if(props.getProperty("LAST_USER") != null && props.getProperty("LAST_GUILD") != null && props.getProperty("LAST_HOURS") != null) {
-            if(!props.getProperty("LAST_USER").isEmpty() && !props.getProperty("LAST_GUILD").isEmpty() && !props.getProperty("LAST_HOURS").isEmpty()) {
+
+    public HashMap<String, String> loadSession()
+    {
+        if (props.getProperty("LAST_USER") != null && props.getProperty("LAST_GUILD") != null && props.getProperty("LAST_HOURS") != null)
+        {
+            if (!props.getProperty("LAST_USER").isEmpty() && !props.getProperty("LAST_GUILD").isEmpty() && !props.getProperty("LAST_HOURS").isEmpty())
+            {
                 session = new HashMap<>();
                 session.put("lastuser", props.getProperty("LAST_USER"));
                 session.put("lastguild", props.getProperty("LAST_GUILD"));
                 session.put("lasthours", props.getProperty("LAST_HOURS"));
             }
-            
+
         }
         return session;
     }

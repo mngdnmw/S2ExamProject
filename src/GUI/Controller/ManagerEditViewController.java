@@ -166,7 +166,6 @@ public class ManagerEditViewController implements Initializable
                     MOD_FACADE.setAllVolunteersIntoArray();
                     MOD_FACADE.setAllManagersIntoArray();
                     MOD_FACADE.setAllAdminsIntoArray();
-                    MOD_FACADE.setAllUsersIntoArray();
 
                     return null;
 
@@ -206,10 +205,10 @@ public class ManagerEditViewController implements Initializable
         setUserImage();
         serviceInitializer.setOnSucceeded(e
                 -> setupTableView("Found Nothing :("));
-        if (selectedUser.getType() >= 1)
-        {
-            serviceAllVolunteers.start();
-        }
+//        if (selectedUser.getType() >= 1)
+//        {
+//            serviceAllVolunteers.start();
+//        }
     }
 
     public void setUserImage()
