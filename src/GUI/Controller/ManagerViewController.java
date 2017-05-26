@@ -437,7 +437,11 @@ public class ManagerViewController implements Initializable
             {
                 final Clipboard clipboard = Clipboard.getSystemClipboard();
                 final ClipboardContent content = new ClipboardContent();
-                content.putString(selectedUser.getEmail());
+                if(selectedUser.getEmail().contains("@"))
+                {
+                    content.putString(selectedUser.getEmail());
+                }
+                
                 clipboard.setContent(content);
                 System.out.println("This email to clipboard");
             }
@@ -454,13 +458,18 @@ public class ManagerViewController implements Initializable
                 List<String> columnData = new ArrayList<>();
                 for (User item : tblUsers.getItems())
                 {
-                    columnData.add(colEmail.getCellObservableValue(item).getValue());
-                    System.out.println(columnData);
+                    String stringToAdd = colEmail.getCellObservableValue(item).getValue();
+                    if(stringToAdd.contains("@"))
+                    {
+                        columnData.add(colEmail.getCellObservableValue(item).getValue());
+                    }
                 }
                 final Clipboard clipboard = Clipboard.getSystemClipboard();
                 final ClipboardContent content = new ClipboardContent();
-                content.putString(columnData.toString());
+                String columnDataString = columnData.toString().replaceAll("[\\[\\](){}]","");
+                content.putString(columnDataString);
                 clipboard.setContent(content);
+                System.out.println(columnDataString);
                 System.out.println("All Emails to Clipboard");
             }
         };
