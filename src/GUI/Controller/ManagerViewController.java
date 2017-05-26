@@ -240,7 +240,6 @@ public class ManagerViewController implements Initializable
                             {
                                 search = true;
                             }
-
                             else
                             {
                                 for (Guild guild : user.getGuildList())
@@ -254,6 +253,9 @@ public class ManagerViewController implements Initializable
                             return search;
 
                 });
+                SortedList<User> sortedData = new SortedList<>(filteredData);
+                sortedData.comparatorProperty().bind(tblUsers.comparatorProperty());
+                tblUsers.setItems(sortedData);
             }
 
         });
