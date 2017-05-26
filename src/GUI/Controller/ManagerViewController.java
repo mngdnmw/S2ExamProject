@@ -69,8 +69,6 @@ public class ManagerViewController implements Initializable
     @FXML
     private JFXTextArea txtNotes;
     @FXML
-    private JFXButton btnAddHours;
-    @FXML
     private JFXButton btnEditInfo;
     @FXML
     private AnchorPane root;
@@ -118,8 +116,8 @@ public class ManagerViewController implements Initializable
     ModelFacade modelFacade = ModelFacade.getModelFacade();
     User selectedUser;
     List<XYChart.Series<Number, Number>> Temp;
-    List<User> filteredList = new ArrayList<>();
-    FilteredList<User> filteredData = new FilteredList<>(FXCollections.observableArrayList());
+    ObservableList<User> filteredList = FXCollections.observableArrayList();
+    FilteredList<User> filteredData = new FilteredList<>(filteredList);
     @FXML
     private StackPane stckPaneGraphError;
     private final Service serviceGraphStats = new Service()
@@ -148,7 +146,7 @@ public class ManagerViewController implements Initializable
                 @Override
                 protected Object call() throws Exception
                 {
-                    filteredData = new FilteredList<>(FXCollections.observableArrayList(modelFacade.getAllUsers()), p -> true);
+                    filteredList.addAll(modelFacade.getAllUsers());
                     return null;
 
                 }
@@ -198,41 +196,41 @@ public class ManagerViewController implements Initializable
         }
         if (modelFacade.getCurrentUser().getType() == 2)
         {
-            ObservableList<User> users = FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers());
-            chkManagers.setOnAction(new EventHandler<ActionEvent>()
-            {
-                @Override
-                public void handle(ActionEvent event)
-                {
-                    if (chkManagers.isSelected())
-                    {
-                        users.addAll(FXCollections.observableArrayList(modelFacade.getAllSavedManagers()));
-                    }
-                    else
-                    {
-                        users.removeAll(FXCollections.observableArrayList(modelFacade.getAllSavedManagers()));
-                    }
-                    tblUsers.setItems(FXCollections.observableArrayList(users));
-                }
-
-            });
-            chkVolunteers.setOnAction(new EventHandler<ActionEvent>()
-            {
-                @Override
-                public void handle(ActionEvent event)
-                {
-                    if (chkVolunteers.isSelected())
-                    {
-                        users.addAll(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
-                    }
-                    else
-                    {
-                        users.removeAll(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
-                    }
-                    tblUsers.setItems(FXCollections.observableArrayList(users));
-                }
-
-            });
+            ObservableList<User> users = FXCollections.observableArrayList(modelFacade.getAllSavedUsers());
+//            chkManagers.setOnAction(new EventHandler<ActionEvent>()
+//            {
+//                @Override
+//                public void handle(ActionEvent event)
+//                {
+//                    if (chkManagers.isSelected())
+//                    {
+//                        users.addAll(FXCollections.observableArrayList(modelFacade.getAllSavedManagers()));
+//                    }
+//                    else
+//                    {
+//                        users.removeAll(FXCollections.observableArrayList(modelFacade.getAllSavedManagers()));
+//                    }
+//                    tblUsers.setItems(FXCollections.observableArrayList(users));
+//                }
+//
+//            });
+//            chkVolunteers.setOnAction(new EventHandler<ActionEvent>()
+//            {
+//                @Override
+//                public void handle(ActionEvent event)
+//                {
+//                    if (chkVolunteers.isSelected())
+//                    {
+//                        users.addAll(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
+//                    }
+//                    else
+//                    {
+//                        users.removeAll(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
+//                    }
+//                    tblUsers.setItems(FXCollections.observableArrayList(users));
+//                }
+//
+//            });
             tblUsers.setItems(FXCollections.observableArrayList(users));
         }
     }
@@ -266,7 +264,7 @@ public class ManagerViewController implements Initializable
             {
                 public void handle(WindowEvent we)
                 {
-                    modelFacade.setAllVolunteersIntoArray();
+                    
                     setTableItems();
                 }
             });
@@ -275,7 +273,6 @@ public class ManagerViewController implements Initializable
             {
                 public void handle(WindowEvent we)
                 {
-                    modelFacade.setAllVolunteersIntoArray();
                     setTableItems();
                 }
             });
@@ -320,7 +317,7 @@ public class ManagerViewController implements Initializable
                 {
                     public void handle(WindowEvent we)
                     {
-                        modelFacade.setAllVolunteersIntoArray();
+                        
                         setTableItems();
                     }
                 });
@@ -329,7 +326,6 @@ public class ManagerViewController implements Initializable
                 {
                     public void handle(WindowEvent we)
                     {
-                        modelFacade.setAllVolunteersIntoArray();
                         setTableItems();
                     }
                 });
@@ -387,8 +383,6 @@ public class ManagerViewController implements Initializable
                 {
                     public void handle(WindowEvent we)
                     {
-                        System.out.println("Stage on Hiding");
-                        modelFacade.setAllVolunteersIntoArray();
                         setTableItems();
                     }
                 });
@@ -397,8 +391,6 @@ public class ManagerViewController implements Initializable
                 {
                     public void handle(WindowEvent we)
                     {
-                        System.out.println("Stage is closing");
-                        modelFacade.setAllVolunteersIntoArray();
                         setTableItems();
                     }
                 });
@@ -512,7 +504,6 @@ public class ManagerViewController implements Initializable
 
     private void setTextAll()
     {
-        btnAddHours.setText(modelFacade.getLang("BTN_ADD_HOURS"));
         btnAddUser.setText(modelFacade.getLang("BTN_ADD_USER"));
         btnClose.setText(modelFacade.getLang("BTN_CLOSE"));
         btnEditInfo.setText(modelFacade.getLang("BTN_EDIT_INFO"));
@@ -555,7 +546,7 @@ public class ManagerViewController implements Initializable
                 AnchorPane.setLeftAnchor(stckPaneLoad, 0.0);
                 AnchorPane.setRightAnchor(stckPaneLoad, 0.0);
                 rootGraph.getChildren().add(stckPaneLoad);
-                serviceGraphStats.start();
+                serviceGraphStats.restart();
                 serviceGraphStats.setOnSucceeded(e
                         -> 
                         {
@@ -565,7 +556,7 @@ public class ManagerViewController implements Initializable
                             }
                             Calendar cal = Calendar.getInstance();
                             lineChartGuildHours.setTitle("Work contribution graph for " + cmbGuildChooser.getSelectionModel().getSelectedItem().getName() + " " + cal.get(Calendar.YEAR));
-                            rootGraph.getChildren().remove(stckPaneLoad);
+                           stckPaneLoad.setVisible(false);
                 });
 
             }
@@ -583,24 +574,20 @@ public class ManagerViewController implements Initializable
 
         if (chkAdmins.selectedProperty().get() == false && chkManagers.selectedProperty().get() == false && chkVolunteers.selectedProperty().get() == false)
         {
-            filteredList.clear();
-            tblUsers.setItems(FXCollections.observableArrayList(filteredList));
+            
         }
 
         if (chkAdmins.selectedProperty().get() == true)
         {
-            filteredList.addAll(modelFacade.getAllAdmins());
-            tblUsers.setItems(FXCollections.observableArrayList(filteredList));
+            filteredList.addAll(modelFacade.getAllSavedAdmins());
         }
         if (chkManagers.selectedProperty().get() == true)
         {
-            filteredList.addAll(modelFacade.getAllManagers());
-            tblUsers.setItems(FXCollections.observableArrayList(filteredList));
+            filteredList.addAll(modelFacade.getAllSavedManagers());
         }
         if (chkVolunteers.selectedProperty().get() == true)
         {
-            filteredList.addAll(modelFacade.getAllVolunteers());
-            tblUsers.setItems(FXCollections.observableArrayList(filteredList));
+            filteredList.addAll(modelFacade.getAllSavedVolunteers());
         }
     }
 
