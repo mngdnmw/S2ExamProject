@@ -28,7 +28,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerEditViewController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerEditViewController">
     <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="216.0" layoutX="13.0" layoutY="11.0" stroke="TRANSPARENT" strokeType="INSIDE" width="491.0">
          <effect>
@@ -207,7 +207,7 @@
          <children>
             <VBox alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="200.0" prefWidth="463.0" spacing="10.0" styleClass="loginwindow" stylesheets="@MainLayout.css">
                <children>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" visible="false">
                      <children>
                         <Label fx:id="lblOldPassword" text="Old Password">
                            <font>

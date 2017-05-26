@@ -238,6 +238,10 @@ public class ModelFacade
     {
         return BLL_FAC.changePassword(user, oldPassword, newPassword);
     }
+    
+    public int changePasswordAdmin(User user, String newPassword) {
+        return BLL_FAC.changePasswordAdmin(user, newPassword);
+    }
 
     public List<Guild> getGuildsForUser(User user)
     {

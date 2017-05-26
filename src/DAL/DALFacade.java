@@ -67,6 +67,9 @@ public class DALFacade
     {
         return LOGIN_MAN.changePassword(user, oldPassword, newPassword);
     }
+    public int changePasswordAdmin(User user, String newPassword) {
+        return LOGIN_MAN.changePasswordAdmin(user, newPassword);
+    }
 
     public void addUser(String name, String email, String password, int type, int phone, String residence, String residence2, String note)
     {

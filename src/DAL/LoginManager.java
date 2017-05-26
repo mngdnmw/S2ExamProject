@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +39,18 @@ public class LoginManager extends ConnectionManager
         catch (SQLException ex)
         {
             Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+    
+    public int changePasswordAdmin(User user, String newPassword) {
+        try(Connection con = super.getConnection()) {
+            String query = "update [user] set [password] = '"+newPassword+"' where [userid] = "+user.getId();
+            Statement s = con.createStatement();
+            
+            return s.executeUpdate(query);
+        } catch (SQLException e) {
+            Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, e);
         }
         return 0;
     }

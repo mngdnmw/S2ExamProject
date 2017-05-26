@@ -59,6 +59,10 @@ public class BLLFacade
     {
         return DAL_FAC.changePassword(user, oldPassword, newPassword);
     }
+    
+    public int changePasswordAdmin(User user, String newPass) {
+        return DAL_FAC.changePasswordAdmin(user, newPass);
+    }
 
     public HashMap<String, String> loadSession()
     {
