@@ -171,33 +171,13 @@ public class UserInfoViewController implements Initializable
     //Variables Used
     boolean editing = false;
     boolean isIncorrect = false;
-    boolean finishedService;
+    boolean finishedService = true;
     boolean firstRun;
     File newImg;
     boolean editPopup = false;
 
     private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
 
-    private final Service serviceAllVolunteers = new Service()
-    {
-        @Override
-        protected Task createTask()
-        {
-            return new Task()
-            {
-                @Override
-                protected Object call() throws Exception
-                {
-                    finishedService = false;
-                    MOD_FACADE.setAllVolunteersIntoArray();
-                    MOD_FACADE.setAllManagersIntoArray();
-                    finishedService = true;
-                    return null;
-
-                }
-            };
-        }
-    };
     private final Service serviceSavePicture = new Service()
     {
         @Override
@@ -273,10 +253,6 @@ public class UserInfoViewController implements Initializable
 
         serviceInitializer.setOnSucceeded(e
                 -> setupTableView("Found Nothing :("));
-        if (currentUser.getType() >= 1)
-        {
-            serviceAllVolunteers.start();
-        }
 
     }
 
@@ -294,21 +270,21 @@ public class UserInfoViewController implements Initializable
         colGuild.setCellValueFactory(cellData -> cellData.getValue().guildProperty());
 
         txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                ->
-        {
-            filteredData.setPredicate(day
-                    ->
-            {
-                String regex = "[^a-zA-Z0-9\\s]";
-                Boolean search
-                        = day.dateProperty().getValue().replaceAll(regex, "")
-                                .contains(newValue.replaceAll(regex, ""))
-                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
-                                contains(newValue.toLowerCase().replaceAll(regex, ""));
+                -> 
+                {
+                    filteredData.setPredicate(day
+                            -> 
+                            {
+                                String regex = "[^a-zA-Z0-9\\s]";
+                                Boolean search
+                                        = day.dateProperty().getValue().replaceAll(regex, "")
+                                        .contains(newValue.replaceAll(regex, ""))
+                                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                        contains(newValue.toLowerCase().replaceAll(regex, ""));
 
-                return search;
+                                return search;
 
-            });
+                    });
         });
 
         SortedList<Day> sortedData = new SortedList<>(filteredData);
@@ -355,7 +331,7 @@ public class UserInfoViewController implements Initializable
 
     {
 
-        higherClearanceBtn.setPrefWidth(140);
+        higherClearanceBtn.setPrefWidth(160);
         higherClearanceBtn.setId("higherClearanceBtn");
         higherClearanceBtn.toFront();
         higherClearanceBtn.setVisible(true);
@@ -381,28 +357,8 @@ public class UserInfoViewController implements Initializable
             @Override
             public void handle(ActionEvent event)
             {
-                if (finishedService)
-                {
-                    MOD_FACADE.changeView(1);
-                }
-                else
-                {
-                    serviceAllVolunteers.setOnSucceeded(e
-                            ->
-                    {
+                MOD_FACADE.changeView(1);
 
-                        MOD_FACADE.changeView(1);
-                        root.getChildren().remove(MOD_FACADE.getLoadingScreen());
-
-                    });
-
-                    root.getChildren().add(MOD_FACADE.getLoadingScreen());
-                    AnchorPane.setTopAnchor(MOD_FACADE.getLoadingScreen(), 0.0);
-                    AnchorPane.setBottomAnchor(MOD_FACADE.getLoadingScreen(), 0.0);
-                    AnchorPane.setLeftAnchor(MOD_FACADE.getLoadingScreen(), 0.0);
-                    AnchorPane.setRightAnchor(MOD_FACADE.getLoadingScreen(), 0.0);
-
-                }
             }
         });
 
@@ -535,10 +491,10 @@ public class UserInfoViewController implements Initializable
         newImg = c.showOpenDialog(btnUpdatePhoto.getScene().getWindow());
         serviceSavePicture.start();
         serviceSavePicture.setOnSucceeded(e
-                ->
-        {
-            firstRun = true;
-            serviceInitializer.restart();
+                -> 
+                {
+                    firstRun = true;
+                    serviceInitializer.restart();
         });
 
     }
@@ -630,13 +586,17 @@ public class UserInfoViewController implements Initializable
     private void changePasswordEvent(ActionEvent event)
     {
         int count;
-        if (txtNPassword.getText().equals(txtNPasswordTwo.getText()))
+        if (txtOPassword.getText().equals(txtNPassword.getText()))
+        {
+            count = -1;
+        }
+        else if (txtNPassword.getText().equals(txtNPasswordTwo.getText()))
         {
             count = MOD_FACADE.changePassword(currentUser, txtOPassword.getText(), txtNPassword.getText());
         }
         else
         {
-            count = -1;
+            count = -2;
         }
         if (count > 0)
         {
@@ -645,11 +605,18 @@ public class UserInfoViewController implements Initializable
             hidePasswordChangerEvent();
             MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),currentUser.getName()+" changed his/her password."));
         }
+
         else if (count == -1)
+        {
+            JFXSnackbar b = new JFXSnackbar(root);
+            b.show("Old password is the same as new password", 2000);
+        }
+        else if (count == -2)
         {
             JFXSnackbar b = new JFXSnackbar(root);
             b.show("Password do not match", 2000);
         }
+
         else
         {
             JFXSnackbar b = new JFXSnackbar(root);
@@ -943,7 +910,8 @@ public class UserInfoViewController implements Initializable
     private void handleAddEditHours(ActionEvent event)
     {
 
-        root.getChildren().add(MOD_FACADE.getLoadingScreen());
+        StackPane stckLoadScreen = MOD_FACADE.getLoadingScreen();
+        root.getChildren().add(stckLoadScreen);
 
         buttonsLocking(true);
 
@@ -972,7 +940,8 @@ public class UserInfoViewController implements Initializable
                     errorCode = MOD_FACADE.editHours(currentUser.getEmail(), date, hours, guildID);
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),MOD_FACADE.getCurrentUser().getName()+" edited his/her working hours to "+hours+" in guild "+MOD_FACADE.getGuild(guildID).getName()+" on "+date+"."));
                 }
-                root.getChildren().remove(MOD_FACADE.getLoadingScreen());
+                stckLoadScreen.setVisible(false);
+
                 contributionSnackBarHandler(errorCode);
 
             }
@@ -990,7 +959,7 @@ public class UserInfoViewController implements Initializable
                     errorCode = MOD_FACADE.editHours(currentUser.getPhone()+"", date, hours, guildID);
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),MOD_FACADE.getCurrentUser().getName()+" edited his/her working hours to "+hours+" in guild "+MOD_FACADE.getGuild(guildID).getName()+" on "+date+"."));
                 }
-                root.getChildren().remove(MOD_FACADE.getLoadingScreen());
+                stckLoadScreen.setVisible(false);
                 contributionSnackBarHandler(errorCode);
 
             }

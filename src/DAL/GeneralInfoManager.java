@@ -87,7 +87,8 @@ public class GeneralInfoManager extends ConnectionManager
                 }
             }
 
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             System.out.println("Exception in DataManager: getUserInfo method.");
             System.out.println(e);
@@ -151,7 +152,8 @@ public class GeneralInfoManager extends ConnectionManager
                 }
             }
             return users;
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             System.err.println("Exception in: DataManager: getAllUsers method.");
             System.out.println(e);
@@ -187,7 +189,8 @@ public class GeneralInfoManager extends ConnectionManager
                 volunteers.add(new Volunteer(id, name, email, phone, note, residence, residence2, guilds));
 
             }
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             System.err.println("Exception in: DataManager: getAllVolunteers method.");
             System.out.println(e);
@@ -216,14 +219,15 @@ public class GeneralInfoManager extends ConnectionManager
                 String residence = rs.getString("residence");
                 String residence2 = rs.getString("residence2");
 
-                List<Guild> guilds = GeneralInfoManager.this.getGuildsForUser(id);
+                List<Guild> guilds = GeneralInfoManager.this.getGuildsForManager(id);
 
                 Manager manager = null;
                 //(id, name, email, password, type, phone, note);
                 managers.add(new Manager(id, name, email, phone, note, residence, residence2, guilds));
 
             }
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             System.err.println("Exception in: DataManager: getAllManagers method.");
             System.out.println(e);
@@ -258,7 +262,8 @@ public class GeneralInfoManager extends ConnectionManager
                 admins.add(new Admin(id, name, email, phone, note, residence, residence2, guilds));
 
             }
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             System.err.println("Exception in: DataManager: getAllManagers method.");
             System.out.println(e);
@@ -275,7 +280,8 @@ public class GeneralInfoManager extends ConnectionManager
         try
         {
             phoneNo = Integer.parseInt(username);
-        } catch (NumberFormatException e)
+        }
+        catch (NumberFormatException e)
         {
             parsable = false;
 
@@ -283,7 +289,8 @@ public class GeneralInfoManager extends ConnectionManager
         if (parsable)
         {
             return getUserIdFromPhoneNumber(phoneNo);
-        } else
+        }
+        else
         {
             return getUserIdFromEmail(username);
         }
@@ -302,7 +309,8 @@ public class GeneralInfoManager extends ConnectionManager
             {
                 return rs.getInt("userid");
             }
-        } catch (SQLException ex)
+        }
+        catch (SQLException ex)
         {
             Logger.getLogger(GeneralInfoManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -324,7 +332,8 @@ public class GeneralInfoManager extends ConnectionManager
                 return rs.getInt("userid");
 
             }
-        } catch (SQLException ex)
+        }
+        catch (SQLException ex)
         {
             Logger.getLogger(GeneralInfoManager.class
                     .getName()).log(Level.SEVERE, null, ex);
@@ -338,7 +347,7 @@ public class GeneralInfoManager extends ConnectionManager
         List<Guild> guilds = new ArrayList<>();
         try (Connection con = super.getConnection())
 
-          {
+        {
             String query = "SELECT * FROM [guild]";
             PreparedStatement pstmt = con.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
@@ -347,7 +356,8 @@ public class GeneralInfoManager extends ConnectionManager
                 guilds.add(new Guild(rs.getInt("guildid"), rs.getString("name")));
             }
 
-        } catch (SQLException ex)
+        }
+        catch (SQLException ex)
         {
             Logger.getLogger(GeneralInfoManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -371,14 +381,15 @@ public class GeneralInfoManager extends ConnectionManager
             pstat.setString(7, note);
             pstat.setInt(8, userId);
             pstat.executeUpdate();
-        } catch (SQLException sqle)
+        }
+        catch (SQLException sqle)
         {
             System.out.println("Exception in: DataManager: updateInfo method");
             System.err.println(sqle);
         }
     }
 
-    public void updateUserImage(User user, File img) throws FileNotFoundException 
+    public void updateUserImage(User user, File img) throws FileNotFoundException
     {
         List<Integer> hasImg = new ArrayList<>();
         String checkQuery = "select [userid] from [image]";
@@ -390,7 +401,8 @@ public class GeneralInfoManager extends ConnectionManager
             {
                 hasImg.add(rs.getInt("userid"));
             }
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             System.out.println(e);
         }
@@ -405,7 +417,8 @@ public class GeneralInfoManager extends ConnectionManager
                 query = "update [image] set [img] = ? where [userid] = '" + user.getId() + "'";
                 ps = con.prepareStatement(query);
                 ps.setBinaryStream(1, new FileInputStream(img), len);
-            } else
+            }
+            else
             {
                 query = "insert into [image]([userid],[img]) values (?,?)";
                 ps = con.prepareStatement(query);
@@ -414,7 +427,8 @@ public class GeneralInfoManager extends ConnectionManager
             }
             ps.execute();
 
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             System.out.println(e);
         }
@@ -432,7 +446,8 @@ public class GeneralInfoManager extends ConnectionManager
 
                 return rs.getBlob("img").getBinaryStream();
             }
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             System.out.println(e);
         }
@@ -456,7 +471,8 @@ public class GeneralInfoManager extends ConnectionManager
             pstat.setString(8, note);
             pstat.executeUpdate();
 
-        } catch (SQLException sqle)
+        }
+        catch (SQLException sqle)
         {
             System.out.println("Exception in: GeneralInfoManager: addUser method");
             System.err.println(sqle);
@@ -480,7 +496,8 @@ public class GeneralInfoManager extends ConnectionManager
             pstat.setString(8, note);
             pstat.setInt(9, userid);
             pstat.executeUpdate();
-        } catch (SQLException sqle)
+        }
+        catch (SQLException sqle)
         {
             System.out.println("Exception in: DataManager: updateInfo method");
             System.err.println(sqle);
@@ -503,7 +520,31 @@ public class GeneralInfoManager extends ConnectionManager
                 guilds.add(new Guild(rs.getInt("guildid"), rs.getString("name")));
             }
 
-        } catch (SQLException ex)
+        }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(GeneralInfoManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return guilds;
+    }
+
+    public List<Guild> getGuildsForManager(int userId)
+    {
+        List<Guild> guilds = new ArrayList<>();
+        try (Connection con = super.getConnection())
+        {
+            String query = "SELECT * FROM [guild] WHERE [guild].[guildid] in "
+                    + "(SELECT [managerguild].[guildid] FROM [managerguild] "
+                    + "WHERE [managerguild].[managerid] ="+ userId + ")";
+            PreparedStatement pstmt2 = con.prepareStatement(query);
+            ResultSet rs = pstmt2.executeQuery();
+            while (rs.next())
+            {
+                guilds.add(new Guild(rs.getInt("guildid"), rs.getString("name")));
+            }
+        }
+        catch (SQLException ex)
         {
             Logger.getLogger(GeneralInfoManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -524,62 +565,62 @@ public class GeneralInfoManager extends ConnectionManager
                 guild = new Guild(rs.getInt("guildid"), rs.getString("name"));
             }
             return guild;
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             Logger.getLogger(GeneralInfoManager.class.getName()).log(Level.SEVERE, null, e);
         }
         return null;
     }
 
-    
     public void addGuild(String name)
-      {
+    {
         try (Connection con = super.getConnection())
-          {
+        {
             String sqlCommand
                     = "insert into [guild] ([name]) values (?)";
             PreparedStatement pstat = con.prepareStatement(sqlCommand);
             pstat.setString(1, name);
             pstat.executeUpdate();
-          }
+        }
         catch (SQLException sqle)
-          {
+        {
             System.out.println("Exception in: GeneralInfoManager: addGuild method");
             System.err.println(sqle);
-          }
-      }
+        }
+    }
 
     public void deleteGuild(int guildId)
     {
         try (Connection con = super.getConnection())
-          {
+        {
             String sqlCommand
                     = "DELETE FROM [guild] WHERE guildid=" + guildId;
             PreparedStatement pstat = con.prepareStatement(sqlCommand);
             pstat.executeUpdate();
-          }
+        }
         catch (SQLException sqle)
-          {
+        {
             System.out.println("Exception in: GeneralInfoManager: deleteGuild method");
             System.err.println(sqle);
-          }
+        }
     }
-    
+
     public void updateGuild(int guildId, String name)
     {
         try (Connection con = super.getConnection())
-          {
+        {
             String sqlCommand
                     = "UPDATE [guild] SET name=? WHERE guildid=?";
             PreparedStatement pstat = con.prepareStatement(sqlCommand);
             pstat.setString(1, name);
             pstat.setInt(2, guildId);
             pstat.executeUpdate();
-          }
+        }
         catch (SQLException sqle)
-          {
+        {
             System.out.println("Exception in: GeneralInfoManager: updateGuild method");
             System.err.println(sqle);
-          }
+        }
     }
-  }
+}

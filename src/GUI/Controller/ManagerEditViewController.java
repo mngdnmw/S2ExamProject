@@ -124,59 +124,6 @@ public class ManagerEditViewController implements Initializable
 
     private boolean isIncorrect;
 
-    private final Service serviceSavePicture = new Service()
-    {
-        @Override
-        protected Task createTask()
-        {
-            return new Task()
-            {
-                @Override
-                protected Object call() throws Exception
-                {
-                    if (newImg != null)
-                    {
-                        try
-                        {
-                            MOD_FACADE.updateUserImage(selectedUser, newImg);
-                        }
-                        catch (FileNotFoundException e)
-                        {
-                            System.out.println(e);
-                            Alert a = new Alert(Alert.AlertType.ERROR);
-                            a.setHeaderText("Selected image is not found");
-                            a.setContentText("File not found!");
-                        }
-                    }
-                    return null;
-
-                }
-            };
-        }
-    };
-
-    private final Service serviceInitializer = new Service()
-    {
-        @Override
-        protected Task createTask()
-        {
-            return new Task()
-            {
-                @Override
-                protected Object call() throws Exception
-                {
-                    if (firstRun)
-                    {
-                        setUserImage();
-                    }
-                    filteredData = new FilteredList<>(FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(selectedUser)), p -> true);
-                    firstRun = false;
-                    return null;
-
-                }
-            };
-        }
-    };
     @FXML
     private StackPane stckPaneAddHours;
     @FXML
@@ -204,23 +151,6 @@ public class ManagerEditViewController implements Initializable
     @FXML
     private JFXButton btnAddHours;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb)
-    {
-        setText();
-        listGuilds.setItems(FXCollections.observableArrayList(selectedUser.getGuildList()));
-        setupTableView("Looking for data");
-
-        serviceInitializer.start();
-
-        serviceInitializer.setOnSucceeded(e
-                -> setupTableView("Found Nothing :("));
-        if (selectedUser.getType() >= 1)
-        {
-            serviceAllVolunteers.start();
-        }
-    }
-
     private final Service serviceAllVolunteers = new Service()
     {
         @Override
@@ -231,16 +161,55 @@ public class ManagerEditViewController implements Initializable
                 @Override
                 protected Object call() throws Exception
                 {
-                    finishedService = false;
+
+                    MOD_FACADE.updateUserInfo(selectedUser.getId(), txtName.getText(), txtEmail.getText(), selectedUser.getType(), Integer.parseInt(txtPhone.getText()), txtNotes.getText(), txtAddress.getText(), txtAddress2.getText());
                     MOD_FACADE.setAllVolunteersIntoArray();
                     MOD_FACADE.setAllManagersIntoArray();
-                    finishedService = true;
+                    MOD_FACADE.setAllAdminsIntoArray();
+
                     return null;
 
                 }
             };
         }
     };
+
+    private final Service serviceInitializer = new Service()
+    {
+        @Override
+        protected Task createTask()
+        {
+            return new Task()
+            {
+                @Override
+                protected Object call() throws Exception
+                {
+                  
+                    filteredData = new FilteredList<>(FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(selectedUser)), p -> true);
+                    firstRun = false;
+                    return null;
+
+                }
+            };
+        }
+    };
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb)
+    {
+        setText();
+        listGuilds.setItems(FXCollections.observableArrayList(selectedUser.getGuildList()));
+        setupTableView("Looking for data");
+
+        serviceInitializer.start();
+        setUserImage();
+        serviceInitializer.setOnSucceeded(e
+                -> setupTableView("Found Nothing :("));
+//        if (selectedUser.getType() >= 1)
+//        {
+//            serviceAllVolunteers.start();
+//        }
+    }
 
     public void setUserImage()
     {
@@ -285,14 +254,23 @@ public class ManagerEditViewController implements Initializable
                     "*.jpg", "*.jpeg", "*.png", "*.gif"
                 };
         c.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Image files only", extensions));
-        newImg = c.showOpenDialog(JFXBtnUpdatePhoto.getScene().getWindow());
-        serviceSavePicture.start();
-        serviceSavePicture.setOnSucceeded(e
-                ->
+        File newImg = c.showOpenDialog(JFXBtnUpdatePhoto.getScene().getWindow());
+
+        if (newImg != null)
         {
-            firstRun = true;
-            serviceInitializer.restart();
-        });
+            try
+            {
+                MOD_FACADE.updateUserImage(selectedUser, newImg);
+            }
+            catch (FileNotFoundException e)
+            {
+                System.out.println(e);
+                Alert a = new Alert(Alert.AlertType.ERROR);
+                a.setHeaderText("Selected image is not found");
+                a.setContentText("File not found!");
+            }
+        }
+        setUserImage();
 
     }
 
@@ -303,7 +281,20 @@ public class ManagerEditViewController implements Initializable
 
     private void updateUserInfo()
     {
-        MOD_FACADE.updateUserInfo(selectedUser.getId(), txtName.getText(), txtEmail.getText(), selectedUser.getType(), Integer.parseInt(txtPhone.getText()), txtNotes.getText(), txtAddress.getText(), txtAddress2.getText());
+        StackPane stckPaneLoad = MOD_FACADE.getLoadingScreen();
+        root.getChildren().add(stckPaneLoad);
+        AnchorPane.setTopAnchor(stckPaneLoad, 0.0);
+        AnchorPane.setBottomAnchor(stckPaneLoad, 0.0);
+        AnchorPane.setLeftAnchor(stckPaneLoad, 0.0);
+        AnchorPane.setRightAnchor(stckPaneLoad, 0.0);
+        serviceAllVolunteers.restart();
+        serviceAllVolunteers.setOnSucceeded(e
+                -> 
+                {
+                    System.out.println("Updated info saved. ");
+                    Stage stage = (Stage) JFXBtnAccept.getScene().getWindow();
+                    stage.close();
+        });
     }
 
     @FXML
@@ -311,9 +302,6 @@ public class ManagerEditViewController implements Initializable
     {
         updateUserInfo();
 
-        System.out.println("Updated info saved. ");
-        Stage stage = (Stage) JFXBtnAccept.getScene().getWindow();
-        stage.close();
     }
 
     @FXML
@@ -381,21 +369,21 @@ public class ManagerEditViewController implements Initializable
         colGuild.setCellValueFactory(cellData -> cellData.getValue().guildProperty());
 
         txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                ->
-        {
-            filteredData.setPredicate(day
-                    ->
-            {
-                String regex = "[^a-zA-Z0-9\\s]";
-                Boolean search
-                        = day.dateProperty().getValue().replaceAll(regex, "")
-                                .contains(newValue.replaceAll(regex, ""))
-                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
-                                contains(newValue.toLowerCase().replaceAll(regex, ""));
+                -> 
+                {
+                    filteredData.setPredicate(day
+                            -> 
+                            {
+                                String regex = "[^a-zA-Z0-9\\s]";
+                                Boolean search
+                                        = day.dateProperty().getValue().replaceAll(regex, "")
+                                        .contains(newValue.replaceAll(regex, ""))
+                                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                        contains(newValue.toLowerCase().replaceAll(regex, ""));
 
-                return search;
+                                return search;
 
-            });
+                    });
         });
 
         SortedList<Day> sortedData = new SortedList<>(filteredData);
@@ -682,7 +670,8 @@ public class ManagerEditViewController implements Initializable
     @FXML
     private void handleAddEditHours(ActionEvent event)
     {
-        root.getChildren().add(MOD_FACADE.getLoadingScreen());
+        StackPane stckPaneLoad = MOD_FACADE.getLoadingScreen();
+        root.getChildren().add(stckPaneLoad);
 
         buttonsLocking(true);
 
@@ -710,7 +699,7 @@ public class ManagerEditViewController implements Initializable
 
                     errorCode = MOD_FACADE.editHours(selectedUser.getEmail(), date, hours, guildID);
                 }
-                root.getChildren().remove(MOD_FACADE.getLoadingScreen());
+                stckPaneLoad.setVisible(false);
                 contributionSnackBarHandler(errorCode);
 
             }
@@ -726,7 +715,7 @@ public class ManagerEditViewController implements Initializable
 
                     errorCode = MOD_FACADE.editHours(selectedUser.getPhone() + "", date, hours, guildID);
                 }
-                root.getChildren().remove(MOD_FACADE.getLoadingScreen());
+                stckPaneLoad.setVisible(false);
                 contributionSnackBarHandler(errorCode);
 
             }

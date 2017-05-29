@@ -100,6 +100,7 @@ public class HourLoginViewController implements Initializable
     JFXButton btnDanish = new JFXButton();
     JFXButton btnEnglish = new JFXButton();
     boolean loggingIn = false;
+    StackPane loadingScreen;
     private final Service serviceLog = new Service()
     {
         @Override
@@ -267,7 +268,7 @@ public class HourLoginViewController implements Initializable
      */
     public void snackBarPopup(String str)
     {
-        int time = 3000;
+        int time = 4000;
         JFXSnackbar snackbar = new JFXSnackbar(root);
         snackbar.show(str, time);
         PauseTransition pause = new PauseTransition(Duration.millis(time - 2000));
@@ -296,16 +297,16 @@ public class HourLoginViewController implements Initializable
         }
 
         txtPassword.setOnKeyPressed((event)
-                ->
-        {
-            if (event.getCode() == KeyCode.ENTER)
-            {
-                if (!txtUsername.getText().isEmpty())
+                -> 
                 {
-                    serviceLog.restart();
-                    loadingScreen(true);
-                }
-            }
+                    if (event.getCode() == KeyCode.ENTER)
+                    {
+                        if (!txtUsername.getText().isEmpty())
+                        {
+                            serviceLog.restart();
+                            loadingScreen(true);
+                        }
+                    }
         });
         btnLogin.setOnAction(new EventHandler<ActionEvent>()
         {
@@ -508,13 +509,18 @@ public class HourLoginViewController implements Initializable
 
     private void loadingScreen(Boolean StartLoading)
     {
+        if (loadingScreen == null)
+        {
+            loadingScreen = MOD_FACADE.getLoadingScreen();
+        }
         if (StartLoading == true)
         {
-            root.getChildren().add(MOD_FACADE.getLoadingScreen());
+            root.getChildren().add(loadingScreen);
         }
         else
         {
-            root.getChildren().remove(MOD_FACADE.getLoadingScreen());
+            root.getChildren().remove(loadingScreen);
+            loadingScreen = null;
         }
     }
 

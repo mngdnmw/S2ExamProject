@@ -224,6 +224,13 @@ public class ModelFacade
         VOL_DATA_MOD.setAllManagersIntoArray();
     }
 
+  
+
+    public List<User> getAllSavedUsers()
+    {
+        return VOL_DATA_MOD.getAllSavedUsers();
+    }
+
     public void setAllGuildsIntoArray()
     {
         VOL_DATA_MOD.setAllGuildsIntoArray();
