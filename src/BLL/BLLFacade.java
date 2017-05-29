@@ -185,4 +185,8 @@ public class BLLFacade
     public List<Event> getAllEvents() {
         return DAL_FAC.getAllEvents();
     }
+    
+    public User getUserFromUsername(String username) {
+        return LOG_HAND.getUserFromUsername(username);
+    }
 }
