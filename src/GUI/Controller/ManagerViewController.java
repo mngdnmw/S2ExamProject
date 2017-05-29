@@ -109,12 +109,27 @@ public class ManagerViewController implements Initializable
     @FXML
     private AnchorPane rootGraph;
     @FXML
+    private JFXButton btnAddHours;
+    @FXML
+    private JFXButton btnRefresh;
+    @FXML
     private LineChart<Number, Number> lineChartGuildHours;
 
     @FXML
     private NumberAxis yAxis;
     @FXML
     private NumberAxis xAxis;
+    
+    @FXML
+    private Tab tabLog;
+    @FXML
+    private TableView<BE.Event> tblLog;
+    @FXML
+    private TableColumn<BE.Event, String> colLogEventId;
+    @FXML
+    private TableColumn<BE.Event, String> colLogEventDate;
+    @FXML
+    private TableColumn<BE.Event, String> colLogEventDesc;
 
     Boolean hasLoadedGuild = false;
     ModelFacade modelFacade = ModelFacade.getModelFacade();
@@ -161,6 +176,7 @@ public class ManagerViewController implements Initializable
             };
         }
     };
+    
 
     /**
      * Initializes the controller class.
@@ -192,7 +208,7 @@ public class ManagerViewController implements Initializable
             cmbGuildChooser.setItems(guildList);
             cmbGuildChooser.setEditable(true);
             new AutoCompleteComboBoxListener(cmbGuildChooser);
-
+            
         }
 
     }
@@ -202,6 +218,10 @@ public class ManagerViewController implements Initializable
         colName.setCellValueFactory(new PropertyValueFactory("name"));
         colPhone.setCellValueFactory(new PropertyValueFactory("phone"));
         colEmail.setCellValueFactory(new PropertyValueFactory("email"));
+        
+        colLogEventId.setCellValueFactory(new PropertyValueFactory("id"));
+        colLogEventDate.setCellValueFactory(new PropertyValueFactory("time"));
+        colLogEventDesc.setCellValueFactory(new PropertyValueFactory("description"));
     }
 
     public void setTableItems()
@@ -217,6 +237,8 @@ public class ManagerViewController implements Initializable
 
             filteredList.addAll(modelFacade.getAllSavedUsers());
         }
+        
+        tblLog.setItems(FXCollections.observableArrayList(modelFacade.getAllEvents()));
     }
 
     @FXML
@@ -680,5 +702,10 @@ public class ManagerViewController implements Initializable
         sortedData.comparatorProperty().bind(tblUsers.comparatorProperty());
         tblUsers.setItems(sortedData);
 
+    }
+    
+    @FXML
+    private void updateLogTable(ActionEvent event) {
+        tblLog.setItems(FXCollections.observableArrayList(modelFacade.getAllEvents()));
     }
 }

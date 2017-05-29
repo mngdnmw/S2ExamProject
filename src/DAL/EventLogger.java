@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  */
 public class EventLogger extends ConnectionManager {
     public void log(Event toLog) {
-        String query = "insert into [log](date,desc) values (?,?)";
+        String query = "insert into [log]([date],[desc]) values (?,?)";
         try(Connection con = super.getConnection()) {
             PreparedStatement ps = con.prepareStatement(query);
             ps.setTimestamp(1, toLog.getTimestamp());
