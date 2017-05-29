@@ -2,6 +2,7 @@ package GUI.Model;
 
 import BE.Day;
 import BE.EnumCache.Lang;
+import BE.Event;
 import BE.Guild;
 import BE.User;
 import BLL.BLLFacade;
@@ -224,14 +225,11 @@ public class ModelFacade
         VOL_DATA_MOD.setAllManagersIntoArray();
     }
 
-    public void setAllUsersIntoArray()
-    {
-        VOL_DATA_MOD.setAllUsersIntoArray();
-    }
+  
 
     public List<User> getAllSavedUsers()
     {
-        return getAllSavedAdmins();
+        return VOL_DATA_MOD.getAllSavedUsers();
     }
 
     public void setAllGuildsIntoArray()
@@ -248,6 +246,10 @@ public class ModelFacade
     public int changePassword(User user, String oldPassword, String newPassword)
     {
         return BLL_FAC.changePassword(user, oldPassword, newPassword);
+    }
+    
+    public int changePasswordAdmin(User user, String newPassword) {
+        return BLL_FAC.changePasswordAdmin(user, newPassword);
     }
 
     public List<Guild> getGuildsForUser(User user)
@@ -295,5 +297,17 @@ public class ModelFacade
     public int editHours(String username, String date, int hours, int guildId)
     {
         return LOG_MOD.editHours(username, date, hours, guildId);
+    }
+    
+    public void logEvent(Event event) {
+        BLL_FAC.logEvent(event);
+    }
+    
+    public Event getEvent(int id) {
+        return BLL_FAC.getEvent(id);
+    }
+    
+    public List<Event> getAllEvents() {
+        return BLL_FAC.getAllEvents();
     }
 }

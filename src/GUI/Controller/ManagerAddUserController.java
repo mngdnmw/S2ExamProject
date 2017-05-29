@@ -67,7 +67,7 @@ public class ManagerAddUserController implements Initializable
     private JFXCheckBox chkAdmin;
 
     ModelFacade modelFacade = ModelFacade.getModelFacade();
-    
+
     File newImg = null;
 
     private Service serviceAddNewUser = new Service()
@@ -89,7 +89,7 @@ public class ManagerAddUserController implements Initializable
             };
         }
     };
-    
+
     /**
      * Initializes the controller class.
      */
@@ -160,16 +160,18 @@ public class ManagerAddUserController implements Initializable
                             {
                                 System.out.println("New Volunteer added: " + txtName.getText());
                                 Stage stage = (Stage) btnAccept.getScene().getWindow();
-                                
-                                try
+                                if (newImg != null)
                                 {
-                                    modelFacade.updateUserImage(modelFacade.getAllUsers().get(modelFacade.getAllUsers().size() - 1), newImg);
+                                    try
+                                    {
+                                        modelFacade.updateUserImage(modelFacade.getAllUsers().get(modelFacade.getAllUsers().size() - 1), newImg);
+                                    }
+                                    catch (FileNotFoundException ex)
+                                    {
+                                        Logger.getLogger(ManagerAddUserController.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
                                 }
-                                catch (FileNotFoundException ex)
-                                {
-                                    Logger.getLogger(ManagerAddUserController.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                                
+
                                 stage.close();
                     });
                 }
@@ -198,11 +200,11 @@ public class ManagerAddUserController implements Initializable
                                 {
                                     Logger.getLogger(ManagerAddUserController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-                                
+
                                 stage.close();
                     });
                 }
-                
+
                 else if (chkAdmin.selectedProperty().get() == true)
                 {
                     modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 2, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
@@ -218,7 +220,7 @@ public class ManagerAddUserController implements Initializable
                             {
                                 System.out.println("New Admin added: " + txtName.getText());
                                 Stage stage = (Stage) btnAccept.getScene().getWindow();
-                                
+
                                 try
                                 {
                                     modelFacade.updateUserImage(modelFacade.getAllUsers().get(modelFacade.getAllUsers().size() - 1), newImg);
@@ -227,7 +229,7 @@ public class ManagerAddUserController implements Initializable
                                 {
                                     Logger.getLogger(ManagerAddUserController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-                                
+
                                 stage.close();
                     });
                 }
@@ -270,7 +272,7 @@ public class ManagerAddUserController implements Initializable
 
         if (newImg != null)
         {
-                imgVwProfilePic.setImage(new Image(newImg.toURI().toString()));
+            imgVwProfilePic.setImage(new Image(newImg.toURI().toString()));
         }
     }
 
@@ -294,8 +296,8 @@ public class ManagerAddUserController implements Initializable
                 chkManager.selectedProperty().set(true);
                 chkAdmin.selectedProperty().set(false);
             }
-            
-            if(((JFXCheckBox) source).getText().equals("Admin"))
+
+            if (((JFXCheckBox) source).getText().equals("Admin"))
             {
                 chkVolunteer.selectedProperty().set(false);
                 chkManager.selectedProperty().set(false);

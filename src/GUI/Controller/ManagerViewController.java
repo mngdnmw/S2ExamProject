@@ -2,6 +2,7 @@ package GUI.Controller;
 
 import BE.Guild;
 import BE.User;
+import GUI.Model.AutoCompleteComboBoxListener;
 import GUI.Model.ModelFacade;
 
 import com.jfoenix.controls.JFXButton;
@@ -11,6 +12,7 @@ import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -19,6 +21,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
@@ -56,6 +59,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
 
 public class ManagerViewController implements Initializable
 {
@@ -105,12 +109,27 @@ public class ManagerViewController implements Initializable
     @FXML
     private AnchorPane rootGraph;
     @FXML
+    private JFXButton btnAddHours;
+    @FXML
+    private JFXButton btnRefresh;
+    @FXML
     private LineChart<Number, Number> lineChartGuildHours;
 
     @FXML
     private NumberAxis yAxis;
     @FXML
     private NumberAxis xAxis;
+    
+    @FXML
+    private Tab tabLog;
+    @FXML
+    private TableView<BE.Event> tblLog;
+    @FXML
+    private TableColumn<BE.Event, String> colLogEventId;
+    @FXML
+    private TableColumn<BE.Event, String> colLogEventDate;
+    @FXML
+    private TableColumn<BE.Event, String> colLogEventDesc;
 
     Boolean hasLoadedGuild = false;
     ModelFacade modelFacade = ModelFacade.getModelFacade();
@@ -146,13 +165,18 @@ public class ManagerViewController implements Initializable
                 @Override
                 protected Object call() throws Exception
                 {
-                    filteredList.addAll(modelFacade.getAllUsers());
+
+                    modelFacade.setAllAdminsIntoArray();
+                    modelFacade.setAllManagersIntoArray();
+                    modelFacade.setAllVolunteersIntoArray();
+                    filteredList.addAll(modelFacade.getAllSavedUsers());
                     return null;
 
                 }
             };
         }
     };
+    
 
     /**
      * Initializes the controller class.
@@ -170,13 +194,21 @@ public class ManagerViewController implements Initializable
         setTableItems();
         setupTableView("Loading Information");
         serviceInitializer.start();
-        serviceInitializer.setOnSucceeded(e->setupTableView("No Data :("));
-
-        if (modelFacade.getCurrentUser().getType() < 2)
+        serviceInitializer.setOnSucceeded(e -> setupTableView("No Data :("));
+        cmbBoxListeners();
+        if (modelFacade.getCurrentUser().getType() >= 2)
         {
-            chkAdmins.setVisible(false);
-            chkManagers.setVisible(false);
-            chkVolunteers.setVisible(false);
+            chkAdmins.setVisible(true);
+            chkManagers.setVisible(true);
+            chkVolunteers.setVisible(true);
+            ObservableList guildList = FXCollections.observableArrayList();
+            guildList.add(new Guild(-1, "All Guilds"));
+            guildList.addAll(modelFacade.getAllSavedGuilds());
+
+            cmbGuildChooser.setItems(guildList);
+            cmbGuildChooser.setEditable(true);
+            new AutoCompleteComboBoxListener(cmbGuildChooser);
+            
         }
 
     }
@@ -186,59 +218,98 @@ public class ManagerViewController implements Initializable
         colName.setCellValueFactory(new PropertyValueFactory("name"));
         colPhone.setCellValueFactory(new PropertyValueFactory("phone"));
         colEmail.setCellValueFactory(new PropertyValueFactory("email"));
+        
+        colLogEventId.setCellValueFactory(new PropertyValueFactory("id"));
+        colLogEventDate.setCellValueFactory(new PropertyValueFactory("time"));
+        colLogEventDesc.setCellValueFactory(new PropertyValueFactory("description"));
     }
 
     public void setTableItems()
     {
+        filteredList.clear();
+
         if (modelFacade.getCurrentUser().getType() == 1)
         {
-            tblUsers.setItems(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
+            filteredList.addAll(modelFacade.getAllSavedVolunteers());
         }
         if (modelFacade.getCurrentUser().getType() == 2)
         {
-            ObservableList<User> users = FXCollections.observableArrayList(modelFacade.getAllSavedUsers());
-//            chkManagers.setOnAction(new EventHandler<ActionEvent>()
-//            {
-//                @Override
-//                public void handle(ActionEvent event)
-//                {
-//                    if (chkManagers.isSelected())
-//                    {
-//                        users.addAll(FXCollections.observableArrayList(modelFacade.getAllSavedManagers()));
-//                    }
-//                    else
-//                    {
-//                        users.removeAll(FXCollections.observableArrayList(modelFacade.getAllSavedManagers()));
-//                    }
-//                    tblUsers.setItems(FXCollections.observableArrayList(users));
-//                }
-//
-//            });
-//            chkVolunteers.setOnAction(new EventHandler<ActionEvent>()
-//            {
-//                @Override
-//                public void handle(ActionEvent event)
-//                {
-//                    if (chkVolunteers.isSelected())
-//                    {
-//                        users.addAll(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
-//                    }
-//                    else
-//                    {
-//                        users.removeAll(FXCollections.observableArrayList(modelFacade.getAllSavedVolunteers()));
-//                    }
-//                    tblUsers.setItems(FXCollections.observableArrayList(users));
-//                }
-//
-//            });
-            tblUsers.setItems(FXCollections.observableArrayList(users));
+
+            filteredList.addAll(modelFacade.getAllSavedUsers());
         }
+        
+        tblLog.setItems(FXCollections.observableArrayList(modelFacade.getAllEvents()));
     }
 
     @FXML
     private void onBtnAddUserClicked(ActionEvent event)
     {
         addUserPopup();
+    }
+
+    public void cmbBoxListeners()
+    {
+        cmbGuildChooser.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>()
+        {
+            public void changed(ObservableValue ov, Number value, Number new_value)
+            {
+                cmbGuildChooser.getSelectionModel().select(new_value.intValue());
+                filteredData.setPredicate(user
+                        -> 
+                        {
+                            Boolean search = false;
+                            if (cmbGuildChooser.getSelectionModel().getSelectedItem().getId() == -1)
+                            {
+                                search = true;
+                            }
+                            else
+                            {
+                                for (Guild guild : user.getGuildList())
+                                {
+                                    if (guild.getId() == cmbGuildChooser.getSelectionModel().getSelectedItem().getId())
+                                    {
+                                        search = true;
+                                    }
+                                }
+                            }
+                            return search;
+
+                });
+                SortedList<User> sortedData = new SortedList<>(filteredData);
+                sortedData.comparatorProperty().bind(tblUsers.comparatorProperty());
+                tblUsers.setItems(sortedData);
+            }
+
+        });
+        cmbGuildChooser.setConverter(new StringConverter<Guild>()
+        {
+
+            @Override
+            public String toString(Guild object)
+            {
+                if (object == null)
+                {
+                    return null;
+                }
+                return object.toString();
+            }
+
+            @Override
+            public Guild fromString(String string)
+            {
+                Guild findGuild = null;
+                for (Guild guild : cmbGuildChooser.getItems())
+                {
+                    if (guild.getName().equals(string))
+                    {
+                        return guild;
+                    }
+
+                }
+                return findGuild;
+            }
+        });
+
     }
 
     public void addUserPopup()
@@ -264,7 +335,7 @@ public class ManagerViewController implements Initializable
             {
                 public void handle(WindowEvent we)
                 {
-                    
+
                     setTableItems();
                 }
             });
@@ -317,7 +388,7 @@ public class ManagerViewController implements Initializable
                 {
                     public void handle(WindowEvent we)
                     {
-                        
+
                         setTableItems();
                     }
                 });
@@ -425,7 +496,11 @@ public class ManagerViewController implements Initializable
             {
                 final Clipboard clipboard = Clipboard.getSystemClipboard();
                 final ClipboardContent content = new ClipboardContent();
-                content.putString(selectedUser.getEmail());
+                if(selectedUser.getEmail().contains("@"))
+                {
+                    content.putString(selectedUser.getEmail());
+                }
+                
                 clipboard.setContent(content);
                 System.out.println("This email to clipboard");
             }
@@ -442,13 +517,18 @@ public class ManagerViewController implements Initializable
                 List<String> columnData = new ArrayList<>();
                 for (User item : tblUsers.getItems())
                 {
-                    columnData.add(colEmail.getCellObservableValue(item).getValue());
-                    System.out.println(columnData);
+                    String stringToAdd = colEmail.getCellObservableValue(item).getValue();
+                    if(stringToAdd.contains("@"))
+                    {
+                        columnData.add(colEmail.getCellObservableValue(item).getValue());
+                    }
                 }
                 final Clipboard clipboard = Clipboard.getSystemClipboard();
                 final ClipboardContent content = new ClipboardContent();
-                content.putString(columnData.toString());
+                String columnDataString = columnData.toString().replaceAll("[\\[\\](){}]","");
+                content.putString(columnDataString);
                 clipboard.setContent(content);
+                System.out.println(columnDataString);
                 System.out.println("All Emails to Clipboard");
             }
         };
@@ -556,7 +636,7 @@ public class ManagerViewController implements Initializable
                             }
                             Calendar cal = Calendar.getInstance();
                             lineChartGuildHours.setTitle("Work contribution graph for " + cmbGuildChooser.getSelectionModel().getSelectedItem().getName() + " " + cal.get(Calendar.YEAR));
-                           stckPaneLoad.setVisible(false);
+                            stckPaneLoad.setVisible(false);
                 });
 
             }
@@ -574,7 +654,7 @@ public class ManagerViewController implements Initializable
 
         if (chkAdmins.selectedProperty().get() == false && chkManagers.selectedProperty().get() == false && chkVolunteers.selectedProperty().get() == false)
         {
-            
+            filteredList.addAll(modelFacade.getAllSavedUsers());
         }
 
         if (chkAdmins.selectedProperty().get() == true)
@@ -622,5 +702,10 @@ public class ManagerViewController implements Initializable
         sortedData.comparatorProperty().bind(tblUsers.comparatorProperty());
         tblUsers.setItems(sortedData);
 
+    }
+    
+    @FXML
+    private void updateLogTable(ActionEvent event) {
+        tblLog.setItems(FXCollections.observableArrayList(modelFacade.getAllEvents()));
     }
 }

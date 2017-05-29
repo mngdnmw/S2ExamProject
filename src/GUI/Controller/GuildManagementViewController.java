@@ -84,8 +84,8 @@ public class GuildManagementViewController implements Initializable
 
         if (modelFacade.getCurrentUser().getType() != 2)
         {
-            btnAdd.setDisable(true);
-            btnRemove.setDisable(true);
+            btnAdd.setVisible(false);
+            btnRemove.setVisible(false);
         }
     }
 
@@ -100,11 +100,13 @@ public class GuildManagementViewController implements Initializable
         stckPaneNew.setVisible(true);
         modelFacade.fadeInTransition(Duration.millis(750), stckPaneNew);
         btnAddNew.setVisible(true);
+        btnChange.setVisible(false);
     }
 
     @FXML
     private void btnModifyPressed(ActionEvent event)
     {
+        btnChange.setVisible(true);
         if (listGuilds.getSelectionModel().getSelectedItem() != null)
         {
             stckPaneNew.setVisible(true);

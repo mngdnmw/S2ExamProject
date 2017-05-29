@@ -2,6 +2,7 @@ package DAL;
 
 import BE.Day;
 import BE.EnumCache.Lang;
+import BE.Event;
 import BE.Guild;
 import BE.User;
 import java.io.File;
@@ -20,7 +21,8 @@ public class DALFacade
     private final static HourManager HR_MAN = new HourManager();
     private final static LanguageManager LANG_MAN = new LanguageManager();
     private final static ExportManager exportMan = new ExportManager();
-
+    private final static EventLogger eventLogger = new EventLogger();
+    
     public void logHours(String username, String date, int hours, int guildId) throws SQLException
     {
         int userid = -1;
@@ -66,6 +68,9 @@ public class DALFacade
     public int changePassword(User user, String oldPassword, String newPassword)
     {
         return LOGIN_MAN.changePassword(user, oldPassword, newPassword);
+    }
+    public int changePasswordAdmin(User user, String newPassword) {
+        return LOGIN_MAN.changePasswordAdmin(user, newPassword);
     }
 
     public void addUser(String name, String email, String password, int type, int phone, String residence, String residence2, String note)
@@ -178,5 +183,17 @@ public class DALFacade
         {
             HR_MAN.editHours(userid, date, hours, guildId);
         }
+    }
+    
+    public void logEvent(Event event) {
+        eventLogger.log(event);
+    }
+    
+    public Event getEvent(int id) {
+        return eventLogger.get(id);
+    }
+    
+    public List<Event> getAllEvents() {
+        return eventLogger.getAll();
     }
 }

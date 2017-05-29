@@ -2,6 +2,7 @@ package BLL;
 
 import BE.Day;
 import BE.EnumCache.Lang;
+import BE.Event;
 import BE.Guild;
 import BE.User;
 import DAL.DALFacade;
@@ -58,6 +59,10 @@ public class BLLFacade
     public int changePassword(User user, String oldPassword, String newPassword)
     {
         return DAL_FAC.changePassword(user, oldPassword, newPassword);
+    }
+    
+    public int changePasswordAdmin(User user, String newPass) {
+        return DAL_FAC.changePasswordAdmin(user, newPass);
     }
 
     public HashMap<String, String> loadSession()
@@ -167,5 +172,17 @@ public class BLLFacade
     public void editHours(String username, String date, int hours, int guildId) throws SQLException
     {
         DAL_FAC.editHours(username, date, hours, guildId);
+    }
+    
+    public void logEvent(Event event) {
+        DAL_FAC.logEvent(event);
+    }
+    
+    public Event getEvent(int id) {
+        return DAL_FAC.getEvent(id);
+    }
+    
+    public List<Event> getAllEvents() {
+        return DAL_FAC.getAllEvents();
     }
 }

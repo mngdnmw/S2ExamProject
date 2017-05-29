@@ -17,8 +17,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
@@ -169,35 +171,13 @@ public class UserInfoViewController implements Initializable
     //Variables Used
     boolean editing = false;
     boolean isIncorrect = false;
-    boolean finishedService;
+    boolean finishedService = true;
     boolean firstRun;
     File newImg;
     boolean editPopup = false;
 
     private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
 
-    private final Service serviceAllVolunteers = new Service()
-    {
-        @Override
-        protected Task createTask()
-        {
-            return new Task()
-            {
-                @Override
-                protected Object call() throws Exception
-                {
-                    finishedService = false;
-                    MOD_FACADE.setAllVolunteersIntoArray();
-                    MOD_FACADE.setAllManagersIntoArray();
-                    MOD_FACADE.setAllAdminsIntoArray();
-                    MOD_FACADE.getAllSavedUsers();
-                    finishedService = true;
-                    return null;
-
-                }
-            };
-        }
-    };
     private final Service serviceSavePicture = new Service()
     {
         @Override
@@ -213,6 +193,7 @@ public class UserInfoViewController implements Initializable
                         try
                         {
                             MOD_FACADE.updateUserImage(currentUser, newImg);
+                            MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),MOD_FACADE.getCurrentUser().getName()+" changed his/her image."));
                         }
                         catch (FileNotFoundException e)
                         {
@@ -280,10 +261,6 @@ public class UserInfoViewController implements Initializable
 
         serviceInitializer.setOnSucceeded(e
                 -> setupTableView("Found Nothing :("));
-        if (currentUser.getType() >= 1)
-        {
-            serviceAllVolunteers.start();
-        }
 
         imgVwDel.setOnDragOver(event ->
         {
@@ -468,29 +445,9 @@ public class UserInfoViewController implements Initializable
             @Override
             public void handle(ActionEvent event)
             {
-                if (finishedService)
-                {
-                    MOD_FACADE.changeView(1);
-                }
-                else
-                {
-                    StackPane stckPaneLoad = MOD_FACADE.getLoadingScreen();
-                    serviceAllVolunteers.setOnSucceeded(e
-                            ->
-                    {
 
-                        MOD_FACADE.changeView(1);
-                        stckPaneLoad.setVisible(false);
+                MOD_FACADE.changeView(1);
 
-                    });
-
-                    root.getChildren().add(stckPaneLoad);
-                    AnchorPane.setTopAnchor(stckPaneLoad, 0.0);
-                    AnchorPane.setBottomAnchor(stckPaneLoad, 0.0);
-                    AnchorPane.setLeftAnchor(stckPaneLoad, 0.0);
-                    AnchorPane.setRightAnchor(stckPaneLoad, 0.0);
-
-                }
             }
         });
 
@@ -522,7 +479,6 @@ public class UserInfoViewController implements Initializable
         {
             if (isIncorrect && btnEditSave.isDisabled())
             {
-
                 JFXSnackbar b = new JFXSnackbar(root);
                 b.show("Please enter valid information in the fields!", 2000);
                 return;
@@ -533,6 +489,7 @@ public class UserInfoViewController implements Initializable
             checkTextFields();
             removeCancelButton();
             btnEditSave.setStyle("-fx-background-color:#00c4ad;");
+            
         }
     }
 
@@ -565,7 +522,7 @@ public class UserInfoViewController implements Initializable
     private void saveInfo(User user)
     {
         MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPhone.getText()), user.getNote(), txtAddress.getText(), txtAddress2.getText());
-
+        MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),MOD_FACADE.getCurrentUser().getName()+" edited personal information."));
         currentUser = MOD_FACADE.getUserInfo(user.getId());
 
         txtName.setEditable(false);
@@ -735,6 +692,7 @@ public class UserInfoViewController implements Initializable
             JFXSnackbar b = new JFXSnackbar(root);
             b.show("Password has succesfully changed", 2000);
             hidePasswordChangerEvent();
+            MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),currentUser.getName()+" changed his/her password."));
         }
 
         else if (count == -1)
@@ -1062,13 +1020,14 @@ public class UserInfoViewController implements Initializable
 
                 if (editPopup = true)
                 {
-
                     errorCode = MOD_FACADE.logHours(currentUser.getEmail(), date, hours, guildID);
+                    MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),MOD_FACADE.getCurrentUser().getName()+" added "+hours+" working hours to guild "+MOD_FACADE.getGuild(guildID).getName()+" on "+date+"."));
                 }
                 else
                 {
 
                     errorCode = MOD_FACADE.editHours(currentUser.getEmail(), date, hours, guildID);
+                    MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),MOD_FACADE.getCurrentUser().getName()+" edited his/her working hours to "+hours+" in guild "+MOD_FACADE.getGuild(guildID).getName()+" on "+date+"."));
                 }
                 stckLoadScreen.setVisible(false);
 
@@ -1081,11 +1040,13 @@ public class UserInfoViewController implements Initializable
                 if (editPopup = true)
                 {
                     errorCode = MOD_FACADE.logHours(currentUser.getPhone() + "", date, hours, guildID);
+                    MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),MOD_FACADE.getCurrentUser().getName()+" added "+hours+" working hours to guild "+MOD_FACADE.getGuild(guildID).getName()+" on "+date+"."));
                 }
                 else
                 {
 
-                    errorCode = MOD_FACADE.editHours(currentUser.getPhone() + "", date, hours, guildID);
+                    errorCode = MOD_FACADE.editHours(currentUser.getPhone()+"", date, hours, guildID);
+                    MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),MOD_FACADE.getCurrentUser().getName()+" edited his/her working hours to "+hours+" in guild "+MOD_FACADE.getGuild(guildID).getName()+" on "+date+"."));
                 }
                 stckLoadScreen.setVisible(false);
                 contributionSnackBarHandler(errorCode);
@@ -1146,37 +1107,4 @@ public class UserInfoViewController implements Initializable
                 .setOnFinished(e -> stckPanePasswordChanger.setVisible(false));
 
     }
-
-//    private void editingTable()
-//    {
-//        colDate.setCellFactory(TextFieldTableCell.forTableColumn());
-//        colDate.setOnEditCommit(new EventHandler<CellEditEvent<Day, String>>()
-//        {
-//            @Override
-//            public void handle(CellEditEvent<Day, String> event)
-//            {
-//                ((Day) event.getTableView().getItems().get(event.getTablePosition().getRow())).setDate(event.getNewValue());
-//            }
-//        });
-//
-//        colHours.setCellFactory(TextFieldTableCell.<Day, Integer>forTableColumn(new IntegerStringConverter()));
-//        colHours.setOnEditCommit(new EventHandler<CellEditEvent<Day, Integer>>()
-//        {
-//            @Override
-//            public void handle(CellEditEvent<Day, Integer> event)
-//            {
-//                ((Day) event.getTableView().getItems().get(event.getTablePosition().getRow())).setHour(event.getNewValue());
-//            }
-//        });
-//
-//        colGuild.setCellFactory(TextFieldTableCell.forTableColumn());
-//        colGuild.setOnEditCommit(new EventHandler<CellEditEvent<Day, String>>()
-//        {
-//            @Override
-//            public void handle(CellEditEvent<Day, String> event)
-//            {
-//                ((Day) event.getTableView().getItems().get(event.getTablePosition().getRow())).setDate(event.getNewValue());
-//            }
-//        });
-//    }
 }

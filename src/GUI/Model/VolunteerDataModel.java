@@ -49,14 +49,14 @@ public class VolunteerDataModel
         return allVolunters;
     }
 
-    public void setAllUsersIntoArray()
-    {
-        allUsers.clear();
-        allUsers.addAll(BLL_FAC.getAllUsers());
-    }
+   
 
     public ObservableList<User> getAllSavedUsers()
     {
+        allUsers.clear();
+        allUsers.addAll(allVolunters);
+        allUsers.addAll(allManagers);
+        allUsers.addAll(allAdmins);
         return allUsers;
     }
 
