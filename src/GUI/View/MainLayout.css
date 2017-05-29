@@ -135,5 +135,35 @@
 .default-color1.chart-line-symbol { -fx-background-color: #00e2c7, white; }
 .default-color2.chart-line-symbol { -fx-background-color: #dda0dd, white; }
 
+/*Tableview*/
+.table-view{
+    -fx-border-color: white;
+    -fx-border-width: 0px;
+}
+
+
+.table-view .column-header-background{
+    -fx-background-color: #029e99;
+}
+
+.table-view .column-header-background .label{
+    -fx-background-color: #029e99;
+    -fx-text-fill: white;
+}
+
+.table-view .column-header {
+    -fx-background-color: #029e99;
+}
+
+.table-view .table-cell{
+    -fx-alignment: center;
+}
+
+
+.table-row-cell:selected {
+    -fx-background-color: #00c4ad;
+    -fx-background-insets: 0;
+    -fx-background-radius: 1;
+}
 
 

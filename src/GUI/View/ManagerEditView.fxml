@@ -28,7 +28,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerEditViewController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerEditViewController">
     <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="248.0" layoutX="17.0" layoutY="240.0" stroke="TRANSPARENT" strokeType="INSIDE" width="491.0">
          <effect>
@@ -63,11 +63,11 @@
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </VBox>
-                              <TableView fx:id="tblMain" onMouseClicked="#onTablePressed" prefHeight="209.0" prefWidth="331.0">
+                              <TableView fx:id="tblMain" onMouseClicked="#onTablePressed" prefHeight="209.0" prefWidth="331.0" stylesheets="@MainLayout.css">
                                 <columns>
                                   <TableColumn fx:id="colDate" prefWidth="138.0" text="Date" />
                                   <TableColumn fx:id="colHours" prefWidth="62.0" text="Hours" />
-                                    <TableColumn fx:id="colGuild" prefWidth="126.0" text="Guild" />
+                                    <TableColumn fx:id="colGuild" prefWidth="130.0" text="Guild" />
                                 </columns>
                               </TableView>
                            </children>

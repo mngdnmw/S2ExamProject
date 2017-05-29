@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import javafx.animation.FadeTransition;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.chart.XYChart;
 import javafx.scene.image.Image;
@@ -188,7 +189,7 @@ public class ModelFacade
     }
 
     //Volunteer data model
-    public List<Day> getWorkedDays(User user)
+    public ObservableList<Day> getWorkedDays(User user)
     {
         return VOL_DATA_MOD.getWorkedDays(user);
     }
@@ -281,7 +282,9 @@ public class ModelFacade
 
     public void deleteWorkedDay(User user, Day day)
     {
+        
         BLL_FAC.deleteWorkedDay(user, day);
+        
     }
 
     public List<XYChart.Series<Number, Number>> graphSort(Guild guild)
