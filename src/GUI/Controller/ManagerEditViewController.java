@@ -325,15 +325,13 @@ public class ManagerEditViewController implements Initializable
         }
         if (count > 0)
         {
-            JFXSnackbar b = new JFXSnackbar(root);
-            b.show("Password has succesfully changed", 5000);
+            MOD_FACADE.timedSnackbarPopup("Password has succesfully changed", root, 5000);
             hidePasswordChangerEvent();
 
         }
         else if (count == -1)
         {
-            JFXSnackbar b = new JFXSnackbar(root);
-            b.show("Password do not match", 5000);
+        MOD_FACADE.timedSnackbarPopup("Password do not match", root, 5000);
         }
         /*else
         {
@@ -480,7 +478,7 @@ public class ManagerEditViewController implements Initializable
 
                 MOD_FACADE.deleteWorkedDay(selectedUser, selectedDay);
 
-                snackBarPopup("Contribution for " + selectedDay.getGuild() + " on the " + selectedDay.getDate() + " has been deleted.");
+                MOD_FACADE.snackbarPopup("Contribution for " + selectedDay.getGuild() + " on the " + selectedDay.getDate() + " has been deleted.",root);
                 serviceInitializer.restart();
             }
 
@@ -505,13 +503,13 @@ public class ManagerEditViewController implements Initializable
                     {
                         if (Integer.parseInt(newValue) >= 25)
                         {
-                            snackBarPopup("You cannot exceed 24 hours");
+                            MOD_FACADE.snackbarPopup("You cannot exceed 24 hours",root);
 
                             txtfldHours.setText(oldValue);
                         }
                         else if (Integer.parseInt(newValue) <= 0)
                         {
-                            snackBarPopup("You cannot log 0 hours");
+                            MOD_FACADE.snackbarPopup("You cannot log 0 hours",root);
                             txtfldHours.setText(oldValue);
                         }
                         else
@@ -655,7 +653,7 @@ public class ManagerEditViewController implements Initializable
 
             if (txtfldHours.getText().isEmpty())
             {
-                snackBarPopup("Invalid Action");
+                MOD_FACADE.snackbarPopup("Invalid Action",root);
             }
             else
             {
@@ -723,7 +721,7 @@ public class ManagerEditViewController implements Initializable
 
         else
         {
-            snackBarPopup("Please input information in all fields");
+            MOD_FACADE.snackbarPopup("Please input information in all fields",root);
         }
     }
 
@@ -732,7 +730,7 @@ public class ManagerEditViewController implements Initializable
         switch (errorCode)
         {
             case 0:
-                snackBarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"));
+                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"),root);
                 closeAddHoursPopup();
                 serviceInitializer.restart();
                 break;
@@ -740,10 +738,10 @@ public class ManagerEditViewController implements Initializable
                 System.out.println("Error code was not correctly initialised");
                 break;
             case 2627:
-                snackBarPopup(MOD_FACADE.getLang("STR_ERROR_2627"));
+                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_ERROR_2627"),root);
                 break;
             default:
-                snackBarPopup(MOD_FACADE.getLang("STR_FIRST_TIME_ERROR" + errorCode));
+                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_FIRST_TIME_ERROR" + errorCode),root);
                 break;
         }
     }
@@ -754,19 +752,6 @@ public class ManagerEditViewController implements Initializable
         MOD_FACADE.fadeOutTransition(Duration.millis(750), stckPaneAddHours)
                 .setOnFinished(e -> stckPaneAddHours.setVisible(false));
         editPopup = false;
-    }
-
-    public void snackBarPopup(String str)
-    {
-        int time = 5000;
-        JFXSnackbar snackbar = new JFXSnackbar(root);
-        snackbar.show(str, time);
-        PauseTransition pause = new PauseTransition(Duration.millis(time - 2000));
-        pause.setOnFinished(
-                e -> buttonsLocking(false)
-        );
-        pause.play();
-
     }
 
     public void buttonsLocking(Boolean dis)

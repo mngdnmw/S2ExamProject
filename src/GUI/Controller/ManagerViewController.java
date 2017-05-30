@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
@@ -239,6 +240,9 @@ public class ManagerViewController implements Initializable
         }
         
         tblLog.setItems(FXCollections.observableArrayList(modelFacade.getAllEvents()));
+        colLogEventId.setSortType(TableColumn.SortType.ASCENDING);
+        tblLog.getSortOrder().add(colLogEventId);
+        //tblLog.setSortPolicy(callback);getSortPolicy();
     }
 
     @FXML
@@ -414,7 +418,7 @@ public class ManagerViewController implements Initializable
         }
         else
         {
-            snackBarPopup("You need to select a user first.");
+            modelFacade.snackbarPopup("You need to select a user first.", root);
             System.out.println("Selected user missing");
         }
     }
@@ -552,17 +556,7 @@ public class ManagerViewController implements Initializable
         Stage stage = (Stage) btnClose.getScene().getWindow();
         stage.close();
     }
-
-    public void snackBarPopup(String str)
-    {
-        int time = 6000;
-        JFXSnackbar snackbar = new JFXSnackbar(root);
-        snackbar.show(str, time);
-        PauseTransition pause = new PauseTransition(Duration.millis(time));
-        pause.play();
-
-    }
-
+    
     private void exportUsers()
     {
         FileChooser chooser = new FileChooser();
@@ -707,5 +701,8 @@ public class ManagerViewController implements Initializable
     @FXML
     private void updateLogTable(ActionEvent event) {
         tblLog.setItems(FXCollections.observableArrayList(modelFacade.getAllEvents()));
+        colLogEventId.setSortType(TableColumn.SortType.ASCENDING);
+        tblLog.getSortOrder().clear();
+        tblLog.getSortOrder().add(colLogEventId);
     }
 }

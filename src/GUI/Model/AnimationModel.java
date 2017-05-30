@@ -1,11 +1,13 @@
 package GUI.Model;
 
+import com.jfoenix.controls.JFXSnackbar;
 import javafx.animation.FadeTransition;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -84,4 +86,19 @@ public class AnimationModel
         return stackPane;
     }
 
+    public void snackbarPopup(String str, Pane parent) {
+        int time = 6000;
+        JFXSnackbar snackbar = new JFXSnackbar(parent);    
+        if(ModelFacade.getModelFacade().getErrorString()==null){
+        snackbar.show(str, time);
+        }
+        else{
+        snackbar.show(ModelFacade.getModelFacade().getLang(ModelFacade.getModelFacade().getErrorString()), time);
+        }
+    }
+    
+    public void timedSnackbarPopup(String str, Pane parent, int time) {
+        JFXSnackbar snackbar = new JFXSnackbar(parent);
+        snackbar.show(str, time);
+    }
 }

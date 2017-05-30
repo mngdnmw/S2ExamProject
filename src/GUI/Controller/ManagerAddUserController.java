@@ -120,7 +120,7 @@ public class ManagerAddUserController implements Initializable
         {
             if (txtPhone.getText().isEmpty() && txtEmail.getText().isEmpty())
             {
-                snackBarPopup("Phone number OR Email required");
+                modelFacade.snackbarPopup("Phone number OR Email required",rootPane);
                 System.out.println("User not added: missing phone or email");
             }
             else
@@ -137,13 +137,13 @@ public class ManagerAddUserController implements Initializable
                 }
                 catch (NumberFormatException e)
                 {
-                    snackBarPopup("Phone number needs to contain only numbers");
+                    modelFacade.snackbarPopup("Phone number needs to contain only numbers",rootPane);
                     System.out.println("Phone number contains letters or special characters");
                 }
 
                 if (chkVolunteer.selectedProperty().get() == false && chkManager.selectedProperty().get() == false && chkAdmin.selectedProperty().get() == false)
                 {
-                    snackBarPopup("User type not selected");
+                    modelFacade.snackbarPopup("User type not selected",rootPane);
                 }
 
                 else if (chkVolunteer.selectedProperty().get() == true)
@@ -238,7 +238,7 @@ public class ManagerAddUserController implements Initializable
         }
         else
         {
-            snackBarPopup("Name required");
+            modelFacade.snackbarPopup("Name required", rootPane);
             System.out.println("User not added: missing name");
         }
     }
@@ -249,16 +249,7 @@ public class ManagerAddUserController implements Initializable
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
     }
-
-    public void snackBarPopup(String str)
-    {
-        int time = 5000;
-        JFXSnackbar snackbar = new JFXSnackbar(rootPane);
-        snackbar.show(str, time);
-        PauseTransition pause = new PauseTransition(Duration.millis(time));
-        pause.play();
-    }
-
+    
     @FXML
     private void pressedChangeImage(ActionEvent event)
     {

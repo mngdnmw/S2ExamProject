@@ -15,6 +15,7 @@ import javafx.animation.FadeTransition;
 import javafx.scene.Node;
 import javafx.scene.chart.XYChart;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
@@ -102,6 +103,14 @@ public class ModelFacade
     public StackPane getLoadingScreen()
     {
         return ANIM_MOD.getLoadingScreen();
+    }
+    
+    public void snackbarPopup(String str, Pane parent)  {
+        ANIM_MOD.snackbarPopup(str, parent);
+    }
+    
+    public void timedSnackbarPopup(String str, Pane parent, int time) {
+        ANIM_MOD.timedSnackbarPopup(str, parent, time);
     }
 
     //Language Model
