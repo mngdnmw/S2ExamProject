@@ -160,7 +160,7 @@
                   </VBox>
                   <VBox alignment="BOTTOM_RIGHT" prefHeight="225.0" prefWidth="364.0" spacing="9.0">
                      <children>
-                        <TableView fx:id="tableViewMain" onMouseClicked="#onTablePressed" prefHeight="225.0" prefWidth="371.0">
+                        <TableView fx:id="tableViewMain" prefHeight="225.0" prefWidth="371.0">
                           <columns>
                             <TableColumn fx:id="colDate" prefWidth="127.0" style="-fx-alignment: CENTER;" text="Date" />
                             <TableColumn fx:id="colHours" prefWidth="56.0" style="-fx-alignment: CENTER;" text="Hours" />

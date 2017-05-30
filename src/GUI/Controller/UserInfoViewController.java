@@ -256,36 +256,36 @@ public class UserInfoViewController implements Initializable
 
         serviceInitializer.setOnSucceeded(e
                 -> setupTableView("Found Nothing :("));
-
-        imgVwDel.setOnDragOver(event ->
-        {
-            Dragboard db = event.getDragboard();
-            if (db.hasContent(SERIALIZED_MIME_TYPE))
-            {
-
-                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-
-            }
-            event.consume();
-        });
-
-        imgVwDel.setOnDragDropped(new EventHandler<DragEvent>()
-        {
-            @Override
-            public void handle(DragEvent event)
-            {
-                Dragboard db = event.getDragboard();
-                if (db.hasContent(SERIALIZED_MIME_TYPE))
-                {
-                    int draggedIndex = (Integer) db.getContent(SERIALIZED_MIME_TYPE);
-                    Day dayToDelete = tableViewMain.getItems().get(draggedIndex);
-                    MOD_FACADE.deleteWorkedDay(currentUser, dayToDelete);
-                    event.setDropCompleted(true);
-                    stackPdeleteHours.setVisible(false);
-                    event.consume();
-                }
-            }
-        });
+//
+//        imgVwDel.setOnDragOver(event ->
+//        {
+//            Dragboard db = event.getDragboard();
+//            if (db.hasContent(SERIALIZED_MIME_TYPE))
+//            {
+//
+//                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+//
+//            }
+//            event.consume();
+//        });
+//
+//        imgVwDel.setOnDragDropped(new EventHandler<DragEvent>()
+//        {
+//            @Override
+//            public void handle(DragEvent event)
+//            {
+//                Dragboard db = event.getDragboard();
+//                if (db.hasContent(SERIALIZED_MIME_TYPE))
+//                {
+//                    int draggedIndex = (Integer) db.getContent(SERIALIZED_MIME_TYPE);
+//                    Day dayToDelete = tableViewMain.getItems().get(draggedIndex);
+//                    MOD_FACADE.deleteWorkedDay(currentUser, dayToDelete);
+//                    event.setDropCompleted(true);
+//                    stackPdeleteHours.setVisible(false);
+//                    event.consume();
+//                }
+//            }
+//        });
 
     }
 
