@@ -19,8 +19,8 @@ public class DALFacade
     private final static LoginManager LOGIN_MAN = new LoginManager();
     private final static HourManager HR_MAN = new HourManager();
     private final static LanguageManager LANG_MAN = new LanguageManager();
-    private final static ExportManager exportMan = new ExportManager();
-
+    private final static ExportManager EXPORT_MAN = new ExportManager();
+    private final static ErrorManager ERROR_MAN = new ErrorManager();
     public void logHours(String username, String date, int hours, int guildId) throws SQLException
     {
         int userid = -1;
