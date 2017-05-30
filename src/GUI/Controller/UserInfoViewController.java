@@ -228,7 +228,7 @@ public class UserInfoViewController implements Initializable
                         setUserImage();
                     }
 
-                    filteredData = new FilteredList<>(MOD_FACADE.getWorkedDays(currentUser), p -> true);
+                    filteredData.addAll(MOD_FACADE.getWorkedDays(currentUser));
                     firstRun = false;
                     return null;
 
