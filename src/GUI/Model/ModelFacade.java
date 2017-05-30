@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import javafx.animation.FadeTransition;
-import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.chart.XYChart;
 import javafx.scene.image.Image;
@@ -190,7 +189,7 @@ public class ModelFacade
     }
 
     //Volunteer data model
-    public ObservableList<Day> getWorkedDays(User user)
+    public List<Day> getWorkedDays(User user)
     {
         return VOL_DATA_MOD.getWorkedDays(user);
     }
@@ -309,6 +308,11 @@ public class ModelFacade
     public List<Event> getAllEvents()
     {
         return BLL_FAC.getAllEvents();
+    }
+
+    public User getUserFromUsername(String username)
+    {
+        return BLL_FAC.getUserFromUsername(username);
     }
 
     //ErrorManager functions

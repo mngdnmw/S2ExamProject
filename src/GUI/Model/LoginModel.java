@@ -2,13 +2,17 @@ package GUI.Model;
 
 import BE.User;
 import BLL.BLLFacade;
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LoginModel
 {
 
     private final static BLLFacade BLL_FAC = new BLLFacade();
 
+    //Stand in until we have the user passed through
     private User currentUser = null;
 
     public void getUserFromLogin(String username, String password)

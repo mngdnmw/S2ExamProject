@@ -3,6 +3,7 @@ package DAL;
 import BE.Day;
 import BE.Guild;
 import BE.User;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
