@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.HourLoginViewController">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.HourLoginViewController">
     <children>
         <BorderPane prefHeight="600.0" prefWidth="822.0" style="-fx-background-color: FFFFFF;">
             <bottom>
@@ -81,7 +81,7 @@
                                 </HBox>
                                 <HBox prefHeight="85.0" prefWidth="119.0" spacing="5.0">
                                     <children>
-                                        <Label fx:id="lblHourTag" text="Today I have contributed">
+                                        <Label fx:id="lblHourTag" prefHeight="31.0" prefWidth="310.0" text="Today I have contributed">
                                             <font>
                                                 <Font size="26.0" />
                                             </font>
@@ -93,7 +93,7 @@
                                  <graphic>
                                     <ImageView fitHeight="40.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../Resources/arrowcoloredleft.png" />
+                                          <Image url="@../Images/arrowcoloredleft.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -110,7 +110,7 @@
                                  <graphic>
                                     <ImageView fitHeight="40.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../Resources/arrowcolored.png" />
+                                          <Image url="@../Images/arrowcolored.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>

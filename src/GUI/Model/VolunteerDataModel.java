@@ -4,39 +4,98 @@ import BE.Day;
 import BE.Guild;
 import BE.User;
 import BLL.BLLFacade;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.SQLException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class VolunteerDataModel
 {
 
     private final static BLLFacade BLL_FAC = new BLLFacade();
 
-    private ArrayList<User> allUsers = new ArrayList();
-    private ArrayList<User> allVolunters = new ArrayList();
-    private ArrayList<User> allManagers = new ArrayList<>();
-    private ArrayList<User> allAdmins = new ArrayList<>();
-    private ArrayList<Guild> allGuilds = new ArrayList<>();
+    private final ObservableList allUsers = FXCollections.observableArrayList();
+    private final ObservableList allVolunters = FXCollections.observableArrayList();
+    private final ObservableList allManagers = FXCollections.observableArrayList();
+    private final ObservableList allAdmins = FXCollections.observableArrayList();
+    private final ObservableList allGuilds = FXCollections.observableArrayList();
+    private final ObservableList workDays = FXCollections.observableArrayList();
 
-    public List<Day> getWorkedDays(User user)
+    public ObservableList<Day> getWorkedDays(User user)
     {
-        return BLL_FAC.getWorkedDays(user);
+        workDays.clear();
+        workDays.addAll(BLL_FAC.getWorkedDays(user));
+        
+        return workDays;
     }
 
+    public ObservableList<Day> deleteWorkedDay(User user, Day deleteDay)
+    {
+       workDays.remove(deleteDay);
+       
+       BLL_FAC.deleteWorkedDay(user, deleteDay);
+       
+       return workDays;
+       
+    }
+    
+    
+        public int logWorkDay(String username, String date, int hours, int guildId)
+    {
+        int errorCode = 0;
+        try
+        {
+            BLL_FAC.logHours(username, date, hours, guildId);
+            workDays.clear();
+            workDays.addAll(BLL_FAC.getWorkedDays(BLL_FAC.getUserInfo(BLL_FAC.getUserId(username))));
+        }
+        catch (SQLException ex)
+        {
+            errorCode = ex.getErrorCode();
+        }
+        finally
+        {
+            System.out.println(errorCode);
+            return errorCode;
+        }
+
+    }
+
+    int editWorkDay(String username, String date, int hours, int guildId)
+    {
+        int errorCode = 0;
+        try
+        {
+            BLL_FAC.editHours(username, date, hours, guildId);
+            workDays.clear();
+            workDays.addAll(BLL_FAC.getWorkedDays(BLL_FAC.getUserInfo(BLL_FAC.getUserId(username))));
+        }
+        catch (SQLException ex)
+        {
+            errorCode = ex.getErrorCode();
+
+        }
+        finally
+        {
+            System.out.println(errorCode);
+            return errorCode;
+        }
+
+    }
+    
+    
     public void setAllVolunteersIntoArray()
     {
         allVolunters.clear();
         allVolunters.addAll(BLL_FAC.getAllVolunteers());
     }
 
-    public List<User> getAllSavedVolunteers()
+    public ObservableList<User> getAllSavedVolunteers()
     {
         return allVolunters;
     }
 
-   
 
-    public List<User> getAllSavedUsers()
+    public ObservableList<User> getAllSavedUsers()
     {
         allUsers.clear();
         allUsers.addAll(allVolunters);
@@ -57,7 +116,7 @@ public class VolunteerDataModel
         allGuilds.addAll(BLL_FAC.getAllGuilds());
     }
 
-    public List<Guild> getAllSavedGuilds()
+    public ObservableList<Guild> getAllSavedGuilds()
     {
         return allGuilds;
     }
@@ -68,12 +127,12 @@ public class VolunteerDataModel
         allAdmins.addAll(BLL_FAC.getAllAdmins());
     }
 
-    public List<User> getAllSavedManagers()
+    public ObservableList<User> getAllSavedManagers()
     {
         return allManagers;
     }
 
-    public List<User> getAllSavedAdmins()
+    public ObservableList<User> getAllSavedAdmins()
     {
         return allAdmins;
     }

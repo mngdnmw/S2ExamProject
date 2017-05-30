@@ -2,12 +2,7 @@ package DAL;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.Connection;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ConnectionManager extends ConfigManager
 {
