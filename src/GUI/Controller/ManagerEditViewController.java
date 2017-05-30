@@ -251,7 +251,7 @@ public class ManagerEditViewController implements Initializable
                 =
 
                 {
-                    "jpg", "jpeg", "png", "gif"
+                    "*.jpg", "*.jpeg", "*.png", "*.gif"
                 };
         c.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Image files only", extensions));
         File newImg = c.showOpenDialog(JFXBtnUpdatePhoto.getScene().getWindow());
@@ -317,7 +317,7 @@ public class ManagerEditViewController implements Initializable
         int count;
         if (txtNPassword.getText().equals(txtNPasswordTwo.getText()))
         {
-            count = MOD_FACADE.changePassword(selectedUser, txtOPassword.getText(), txtNPassword.getText());
+            count = MOD_FACADE.changePasswordAdmin(selectedUser, txtNPassword.getText());
         }
         else
         {
@@ -335,11 +335,11 @@ public class ManagerEditViewController implements Initializable
             JFXSnackbar b = new JFXSnackbar(root);
             b.show("Password do not match", 2000);
         }
-        else
+        /*else
         {
             JFXSnackbar b = new JFXSnackbar(root);
             b.show("Old password is wrong", 2000);
-        }
+        */
 
     }
 
