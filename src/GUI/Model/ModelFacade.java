@@ -41,9 +41,9 @@ public class ModelFacade
     }
 
     //Login Model
-    public int logHours(String username, String date, int hours, int guildId)
+    public void logWorkDay(String username, String date, int hours, int guildId)
     {
-        return LOG_MOD.logHours(username, date, hours, guildId);
+        VOL_DATA_MOD.logWorkDay(username, date, hours, guildId);
     }
 
     public HashMap<String, String> loadSession()
@@ -224,8 +224,6 @@ public class ModelFacade
         VOL_DATA_MOD.setAllManagersIntoArray();
     }
 
-  
-
     public List<User> getAllSavedUsers()
     {
         return VOL_DATA_MOD.getAllSavedUsers();
@@ -246,8 +244,9 @@ public class ModelFacade
     {
         return BLL_FAC.changePassword(user, oldPassword, newPassword);
     }
-    
-    public int changePasswordAdmin(User user, String newPassword) {
+
+    public int changePasswordAdmin(User user, String newPassword)
+    {
         return BLL_FAC.changePasswordAdmin(user, newPassword);
     }
 
@@ -283,7 +282,7 @@ public class ModelFacade
 
     public void deleteWorkedDay(User user, Day day)
     {
-        BLL_FAC.deleteWorkedDay(user, day);
+        VOL_DATA_MOD.deleteWorkedDay(user, day);
     }
 
     public List<XYChart.Series<Number, Number>> graphSort(Guild guild)
@@ -291,24 +290,39 @@ public class ModelFacade
         return GRAPH_MOD.sortGraph(guild);
     }
 
-    public int editHours(String username, String date, int hours, int guildId)
+    public void editHours(String username, String date, int hours, int guildId)
     {
-        return LOG_MOD.editHours(username, date, hours, guildId);
+        VOL_DATA_MOD.editWorkDay(username, date, hours, guildId);
     }
-    
-    public void logEvent(Event event) {
+
+    public void logEvent(Event event)
+    {
         BLL_FAC.logEvent(event);
     }
-    
-    public Event getEvent(int id) {
+
+    public Event getEvent(int id)
+    {
         return BLL_FAC.getEvent(id);
     }
-    
-    public List<Event> getAllEvents() {
+
+    public List<Event> getAllEvents()
+    {
         return BLL_FAC.getAllEvents();
     }
-    
-    public User getUserFromUsername(String username) {
+
+    public User getUserFromUsername(String username)
+    {
         return BLL_FAC.getUserFromUsername(username);
+    }
+
+    //ErrorManager functions
+    public void setErrorCode(int eCode)
+    {
+        BLL_FAC.setErrorCode(eCode);
+    }
+
+    public String getErrorString()
+    {
+        return BLL_FAC.getErrorString();
     }
 }

@@ -339,7 +339,7 @@ public class ManagerEditViewController implements Initializable
         {
             JFXSnackbar b = new JFXSnackbar(root);
             b.show("Old password is wrong", 2000);
-        */
+         */
 
     }
 
@@ -692,12 +692,12 @@ public class ManagerEditViewController implements Initializable
                 if (editPopup = true)
                 {
 
-                    errorCode = MOD_FACADE.logHours(selectedUser.getEmail(), date, hours, guildID);
+                    MOD_FACADE.logWorkDay(selectedUser.getEmail(), date, hours, guildID);
                 }
                 else
                 {
 
-                    errorCode = MOD_FACADE.editHours(selectedUser.getEmail(), date, hours, guildID);
+                    MOD_FACADE.editHours(selectedUser.getEmail(), date, hours, guildID);
                 }
                 stckPaneLoad.setVisible(false);
                 contributionSnackBarHandler(errorCode);
@@ -708,12 +708,12 @@ public class ManagerEditViewController implements Initializable
             {
                 if (editPopup = true)
                 {
-                    errorCode = MOD_FACADE.logHours(selectedUser.getPhone() + "", date, hours, guildID);
+                    MOD_FACADE.logWorkDay(selectedUser.getPhone() + "", date, hours, guildID);
                 }
                 else
                 {
 
-                    errorCode = MOD_FACADE.editHours(selectedUser.getPhone() + "", date, hours, guildID);
+                    MOD_FACADE.editHours(selectedUser.getPhone() + "", date, hours, guildID);
                 }
                 stckPaneLoad.setVisible(false);
                 contributionSnackBarHandler(errorCode);
