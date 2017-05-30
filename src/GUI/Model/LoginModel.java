@@ -33,7 +33,7 @@ public class LoginModel
 
     public int logHours(String username, String date, int hours, int guildId)
     {
-        int errorCode = 0;
+        int errorCode = -1;
         try
         {
             BLL_FAC.logHours(username, date, hours, guildId);

@@ -13,9 +13,10 @@ public class ErrorManager
 {
 
     private static int errorCode = 0;
-    private static String unknownError = "STR_NO_ERROR_CONTRIBUTION";
-    private static String duplicateError = "STR_ERROR_2627";
-
+    private static final String unknownError = "STR_FIRST_TIME_ERROR";
+    private static final String duplicateError = "STR_ERROR_2627";
+    
+    
     public void setErrorCode(int eCode)
     {
         errorCode = eCode;
@@ -28,11 +29,10 @@ public class ErrorManager
             case 0:
                 return null;
             case 2627:
-                errorCode = 0;
                 return duplicateError;
             default:
-                errorCode = 0;
-                return unknownError + errorCode;
+                int sendError = errorCode;
+                return unknownError + ";" + sendError;
         }
 
     }

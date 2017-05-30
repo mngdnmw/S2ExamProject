@@ -24,7 +24,7 @@ public class DALFacade
     
     private final static ExportManager EXPORT_MAN = new ExportManager();
     private final static ErrorManager ERROR_MAN = new ErrorManager();
-    public void logHours(String username, String date, int hours, int guildId) throws SQLException
+    public void logHours(String username, String date, int hours, int guildId) throws SQLException 
     {
         int userid = -1;
         userid = getUserId(username);
