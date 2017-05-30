@@ -42,9 +42,9 @@ public class ModelFacade
     }
 
     //Login Model
-    public int logHours(String username, String date, int hours, int guildId)
+    public int logWorkDay(String username, String date, int hours, int guildId)
     {
-        return LOG_MOD.logHours(username, date, hours, guildId);
+        return VOL_DATA_MOD.logWorkDay(username, date, hours, guildId);
     }
 
     public HashMap<String, String> loadSession()
@@ -225,7 +225,6 @@ public class ModelFacade
         VOL_DATA_MOD.setAllManagersIntoArray();
     }
 
-  
 
     public List<User> getAllSavedUsers()
     {
@@ -283,10 +282,8 @@ public class ModelFacade
     }
 
     public void deleteWorkedDay(User user, Day day)
-    {
-        
-        BLL_FAC.deleteWorkedDay(user, day);
-        
+    {      
+        VOL_DATA_MOD.deleteWorkedDay(user, day);      
     }
 
     public List<XYChart.Series<Number, Number>> graphSort(Guild guild)
@@ -296,7 +293,7 @@ public class ModelFacade
 
     public int editHours(String username, String date, int hours, int guildId)
     {
-        return LOG_MOD.editHours(username, date, hours, guildId);
+        return VOL_DATA_MOD.editWorkDay(username, date, hours, guildId);
     }
     
     public void logEvent(Event event) {

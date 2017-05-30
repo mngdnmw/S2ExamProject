@@ -30,15 +30,15 @@ public class BLLFacade
 
     /**
      *
-     * @param str
+     * @param username
      * @param date
      * @param hours
      * @param guildId
      * @throws SQLException
      */
-    public void logHours(String str, String date, int hours, int guildId) throws SQLException
+    public void logHours(String username, String date, int hours, int guildId) throws SQLException
     {
-        DAL_FAC.logHours(str, date, hours, guildId);
+        DAL_FAC.logHours(username, date, hours, guildId);
     }
 
     public List<Guild> getAllGuilds()
@@ -184,5 +184,10 @@ public class BLLFacade
     
     public List<Event> getAllEvents() {
         return DAL_FAC.getAllEvents();
+    }
+    
+    public int getUserId(String username)
+    {
+        return DAL_FAC.getUserId(username);
     }
 }

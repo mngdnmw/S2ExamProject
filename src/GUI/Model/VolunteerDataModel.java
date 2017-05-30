@@ -4,8 +4,7 @@ import BE.Day;
 import BE.Guild;
 import BE.User;
 import BLL.BLLFacade;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.SQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -38,6 +37,52 @@ public class VolunteerDataModel
        return workDays;
        
     }
+    
+    
+        public int logWorkDay(String username, String date, int hours, int guildId)
+    {
+        int errorCode = 0;
+        try
+        {
+            BLL_FAC.logHours(username, date, hours, guildId);
+            workDays.clear();
+            workDays.addAll(BLL_FAC.getWorkedDays(BLL_FAC.getUserInfo(BLL_FAC.getUserId(username))));
+        }
+        catch (SQLException ex)
+        {
+            errorCode = ex.getErrorCode();
+        }
+        finally
+        {
+            System.out.println(errorCode);
+            return errorCode;
+        }
+
+    }
+
+    int editWorkDay(String username, String date, int hours, int guildId)
+    {
+        int errorCode = 0;
+        try
+        {
+            BLL_FAC.editHours(username, date, hours, guildId);
+            workDays.clear();
+            workDays.addAll(BLL_FAC.getWorkedDays(BLL_FAC.getUserInfo(BLL_FAC.getUserId(username))));
+        }
+        catch (SQLException ex)
+        {
+            errorCode = ex.getErrorCode();
+
+        }
+        finally
+        {
+            System.out.println(errorCode);
+            return errorCode;
+        }
+
+    }
+    
+    
     public void setAllVolunteersIntoArray()
     {
         allVolunters.clear();
@@ -49,7 +94,6 @@ public class VolunteerDataModel
         return allVolunters;
     }
 
-   
 
     public ObservableList<User> getAllSavedUsers()
     {

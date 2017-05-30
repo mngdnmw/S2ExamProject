@@ -89,6 +89,7 @@ public class HourManager extends ConnectionManager
 
         return workedDays;
     }
+    
 
     public void editWorkedDay(Day day, User user, String date, int hour, String guild)
     {

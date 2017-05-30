@@ -81,7 +81,7 @@
                                 </HBox>
                                 <HBox prefHeight="85.0" prefWidth="119.0" spacing="5.0">
                                     <children>
-                                        <Label fx:id="lblHourTag" text="Today I have contributed">
+                                        <Label fx:id="lblHourTag" prefHeight="31.0" prefWidth="310.0" text="Today I have contributed">
                                             <font>
                                                 <Font size="26.0" />
                                             </font>

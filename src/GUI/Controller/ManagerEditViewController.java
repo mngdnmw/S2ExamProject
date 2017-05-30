@@ -691,7 +691,7 @@ public class ManagerEditViewController implements Initializable
                 if (editPopup = true)
                 {
 
-                    errorCode = MOD_FACADE.logHours(selectedUser.getEmail(), date, hours, guildID);
+                    errorCode = MOD_FACADE.logWorkDay(selectedUser.getEmail(), date, hours, guildID);
                 }
                 else
                 {
@@ -707,7 +707,7 @@ public class ManagerEditViewController implements Initializable
             {
                 if (editPopup = true)
                 {
-                    errorCode = MOD_FACADE.logHours(selectedUser.getPhone() + "", date, hours, guildID);
+                    errorCode = MOD_FACADE.logWorkDay(selectedUser.getPhone() + "", date, hours, guildID);
                 }
                 else
                 {
