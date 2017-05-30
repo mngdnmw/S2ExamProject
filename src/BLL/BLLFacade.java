@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -168,9 +169,9 @@ public class BLLFacade
         DAL_FAC.deleteWorkedDay(user, day);
     }
 
-    public ArrayList<HashMap<Integer, Integer>> graphSorter(Guild guild)
+    public ArrayList<HashMap<String, Integer>> graphSorter(Guild guild, LocalDate periodOne, LocalDate periodTwo)
     {
-        return GRAPH_HAND.sorter(guild);
+        return GRAPH_HAND.sorter(guild, periodOne, periodTwo);
     }
 
     public void editHours(String username, String date, int hours, int guildId)

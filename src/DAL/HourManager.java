@@ -3,13 +3,12 @@ package DAL;
 import BE.Day;
 import BE.Guild;
 import BE.User;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -151,16 +150,13 @@ public class HourManager extends ConnectionManager
      * @param guild
      * @return
      */
-    public List<List<Day>> getHoursForGuild(Guild guild)
+    public List<List<Day>> getHoursForGuild(Guild guild, LocalDate periodOne,LocalDate periodTwo)
     {
         ArrayList<List<Day>> allHours = new ArrayList<>();
         ArrayList<Day> managerHours = new ArrayList<>();
         ArrayList<Day> volunteerHours = new ArrayList<>();
         GeneralInfoManager genMan = new GeneralInfoManager();
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        String periodOne = (year) + "-01-01";
-        String periodTwo = year + "-12-31";
+       
         try (Connection con = super.getConnection())
         {
             String query = "SELECT * FROM hour\n"
