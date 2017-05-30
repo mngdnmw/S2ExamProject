@@ -493,7 +493,7 @@ public class HourLoginViewController implements Initializable
                 {
                     case 0:
                         snackBarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"));
-                        MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), /*MOD_FACADE.getUserFromUsername(username).getName() +*/ " logged " + hours + " hours to guild " + MOD_FACADE.getGuild(guildID).getName() + "."));
+                        MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getUserFromUsername(username).getName() + " logged " + hours + " hours to guild " + MOD_FACADE.getGuild(guildID).getName() + "."));
                         break;
                     case 2627:
                         snackBarPopup(MOD_FACADE.getLang("STR_ERROR_2627"));
