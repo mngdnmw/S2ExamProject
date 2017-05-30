@@ -146,11 +146,13 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
+
                         <TableView fx:id="tblLog" layoutX="1.0" layoutY="9.0" prefHeight="344.0" prefWidth="677.0" stylesheets="@MainLayout.css">
                           <columns>
                             <TableColumn fx:id="colLogEventId" prefWidth="76.0" text="Log ID" />
                             <TableColumn fx:id="colLogEventDate" prefWidth="104.0" text="Event Date" />
                               <TableColumn fx:id="colLogEventDesc" prefWidth="499.0" text="Event Description" />
+
                           </columns>
                         </TableView>
                         <JFXButton fx:id="btnRefreshLog" buttonType="RAISED" contentDisplay="TOP" layoutX="1.0" layoutY="367.0" onAction="#updateLogTable" prefHeight="29.0" prefWidth="116.0" style="-fx-background-color: #00c4ad;" stylesheets="@MainLayout.css" text="Refresh Log" textFill="WHITE">

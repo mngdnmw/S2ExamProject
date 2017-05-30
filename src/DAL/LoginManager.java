@@ -96,7 +96,7 @@ public class LoginManager extends ConnectionManager
         }
         return null;
     }
-
+    
     public void saveSession(String username, int guildid, int hours)
     {
         props.setProperty("LAST_USER", username);
