@@ -21,9 +21,10 @@ public class DALFacade
     private final static HourManager HR_MAN = new HourManager();
     private final static LanguageManager LANG_MAN = new LanguageManager();
     private final static EventLogger EVENT_LOGGER = new EventLogger();
-    
+
     private final static ExportManager EXPORT_MAN = new ExportManager();
     private final static ErrorManager ERROR_MAN = new ErrorManager();
+
     public void logHours(String username, String date, int hours, int guildId)
     {
         int userid = -1;
@@ -70,7 +71,9 @@ public class DALFacade
     {
         return LOGIN_MAN.changePassword(user, oldPassword, newPassword);
     }
-    public int changePasswordAdmin(User user, String newPassword) {
+
+    public int changePasswordAdmin(User user, String newPassword)
+    {
         return LOGIN_MAN.changePasswordAdmin(user, newPassword);
     }
 
@@ -185,16 +188,30 @@ public class DALFacade
             HR_MAN.editHours(userid, date, hours, guildId);
         }
     }
-    
-    public void logEvent(Event event) {
+
+    public void logEvent(Event event)
+    {
         EVENT_LOGGER.log(event);
     }
-    
-    public Event getEvent(int id) {
+
+    public Event getEvent(int id)
+    {
         return EVENT_LOGGER.get(id);
     }
-    
-    public List<Event> getAllEvents() {
+
+    public List<Event> getAllEvents()
+    {
         return EVENT_LOGGER.getAll();
+    }
+
+    //Error Manager Functions
+    public void setErrorCode(int eCode)
+    {
+        ERROR_MAN.setErrorCode(eCode);
+    }
+
+    public String getErrorString()
+    {
+        return getErrorString();
     }
 }

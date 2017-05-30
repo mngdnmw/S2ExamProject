@@ -32,7 +32,7 @@ public class ErrorManager
                 return duplicateError;
             default:
                 int sendError = errorCode;
-                return unknownError + ";" + sendError;
+                return unknownError;
         }
 
     }

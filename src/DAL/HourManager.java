@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 public class HourManager extends ConnectionManager
 {
-
+    ErrorManager erMan = new ErrorManager();
     /**
      * Logs hours into the database using userId, guildId, hours and date.
      *
@@ -40,6 +40,7 @@ public class HourManager extends ConnectionManager
         }
         catch (SQLException ex)
         {
+            erMan.setErrorCode(ex.getErrorCode());
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -61,6 +62,8 @@ public class HourManager extends ConnectionManager
         }
         catch (SQLException ex)
         {
+            
+            erMan.setErrorCode(ex.getErrorCode());
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -91,8 +94,9 @@ public class HourManager extends ConnectionManager
         }
         catch (SQLException ex)
         {
+            
+            erMan.setErrorCode(ex.getErrorCode());
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
-            System.err.print(ex + "Can't get list of days worked!!!");
         }
 
         return workedDays;
@@ -107,6 +111,8 @@ public class HourManager extends ConnectionManager
         }
         catch (SQLException ex)
         {
+            
+            erMan.setErrorCode(ex.getErrorCode());
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -129,6 +135,8 @@ public class HourManager extends ConnectionManager
 
         catch (SQLException ex)
         {
+            
+            erMan.setErrorCode(ex.getErrorCode());
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Could not delete worked day");
 
@@ -183,6 +191,8 @@ public class HourManager extends ConnectionManager
         }
         catch (SQLException ex)
         {
+            
+            erMan.setErrorCode(ex.getErrorCode());
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;

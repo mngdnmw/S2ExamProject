@@ -202,4 +202,15 @@ public class BLLFacade
     {
         return LOG_HAND.getUserFromUsername(username);
     }
+
+    //ErrorManager functions
+    public void setErrorCode(int eCode)
+    {
+        DAL_FAC.setErrorCode(eCode);
+    }
+
+    public String getErrorString()
+    {
+        return DAL_FAC.getErrorString();
+    }
 }
