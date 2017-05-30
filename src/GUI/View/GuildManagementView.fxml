@@ -11,13 +11,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="rootPane" prefHeight="404.0" prefWidth="678.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.GuildManagementViewController">
+<AnchorPane id="AnchorPane" fx:id="rootPane" prefHeight="404.0" prefWidth="678.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.GuildManagementViewController">
    <children>
-      <Label fx:id="lblGuilds" layoutX="14.0" layoutY="14.0" text="Guilds:" />
-      <JFXListView fx:id="listGuilds" layoutX="14.0" layoutY="57.0" onMousePressed="#onListViewPressed" prefHeight="329.0" prefWidth="396.0" />
-      <JFXButton fx:id="btnAdd" layoutX="471.0" layoutY="57.0" onAction="#btnAddPressed" style="-fx-background-color: #00c4ad;" text="Add New" />
-      <JFXButton fx:id="btnModify" layoutX="477.0" layoutY="98.0" onAction="#btnModifyPressed" style="-fx-background-color: #00c4ad;" text="Modify" />
-      <JFXButton fx:id="btnRemove" layoutX="475.0" layoutY="138.0" onAction="#btnRemovePressed" style="-fx-background-color: #00c4ad;" text="Remove" />
+      <Label fx:id="lblGuilds" layoutX="14.0" layoutY="46.0" style="-fx-background-color: #00c4ad;" text="Guilds:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></Label>
+      <JFXListView fx:id="listGuilds" layoutX="14.0" layoutY="65.0" onMousePressed="#onListViewPressed" prefHeight="290.0" prefWidth="396.0" />
       <StackPane fx:id="stckPaneNew" layoutY="-2.0" prefHeight="404.0" prefWidth="678.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false">
          <children>
             <VBox alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="130.0" prefWidth="398.0" spacing="10.0" styleClass="loginwindow" stylesheets="@MainLayout.css">
@@ -49,5 +49,24 @@
             </VBox>
          </children>
       </StackPane>
+      <VBox layoutX="437.0" layoutY="67.0" prefHeight="290.0" prefWidth="218.0" spacing="10.0">
+         <children>
+            <JFXButton fx:id="btnModify" buttonType="RAISED" maxWidth="1.7976931348623157E308" onAction="#btnModifyPressed" style="-fx-background-color: #00c4ad;" text="Modify" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="btnAdd" buttonType="RAISED" maxWidth="1.7976931348623157E308" onAction="#btnAddPressed" prefWidth="218.0" style="-fx-background-color: #00c4ad;" text="Add New" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="btnRemove" buttonType="RAISED" maxWidth="1.7976931348623157E308" onAction="#btnRemovePressed" style="-fx-background-color: #00c4ad;" text="Remove" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

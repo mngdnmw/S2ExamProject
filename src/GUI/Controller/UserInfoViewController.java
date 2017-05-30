@@ -228,7 +228,7 @@ public class UserInfoViewController implements Initializable
                         setUserImage();
                     }
 
-                    filteredData.addAll(MOD_FACADE.getWorkedDays(currentUser));
+                    filteredData = new FilteredList<>(FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(currentUser)), p -> true);
                     firstRun = false;
                     return null;
 
@@ -253,7 +253,9 @@ public class UserInfoViewController implements Initializable
         setupTableView("Looking For Data");
         searchListener();
         serviceInitializer.start();
-
+        serviceInitializer.setOnFailed(e 
+                -> System.out.println("Error"));
+        
         serviceInitializer.setOnSucceeded(e
                 -> setupTableView("Found Nothing :("));
 
