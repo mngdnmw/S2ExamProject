@@ -3,6 +3,7 @@ package DAL;
 import BE.Day;
 import BE.Guild;
 import BE.User;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +16,7 @@ import java.util.logging.Logger;
 
 public class HourManager extends ConnectionManager
 {
-
+    ErrorManager erMan = new ErrorManager();
     /**
      * Logs hours into the database using userId, guildId, hours and date.
      *
@@ -24,7 +25,7 @@ public class HourManager extends ConnectionManager
      * @param hours
      * @param guildId
      */
-    public void logHours(int userId, String date, int hours, int guildId) throws SQLException
+    public void logHours(int userId, String date, int hours, int guildId)
     {
         try (Connection con = super.getConnection())
         {
@@ -38,9 +39,14 @@ public class HourManager extends ConnectionManager
             pstat.executeUpdate();
 
         }
+        catch (SQLException ex)
+        {
+            erMan.setErrorCode(ex.getErrorCode());
+            System.out.println(""+ ex.getErrorCode());
+        }
     }
 
-    void editHours(int userId, String date, int hours, int guildId) throws SQLException
+    void editHours(int userId, String date, int hours, int guildId)
     {
         try (Connection con = super.getConnection())
         {
@@ -54,6 +60,12 @@ public class HourManager extends ConnectionManager
             pstat.setInt(4, userId);
             pstat.executeUpdate();
 
+        }
+        catch (SQLException ex)
+        {
+            
+            erMan.setErrorCode(ex.getErrorCode());
+            Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -71,7 +83,7 @@ public class HourManager extends ConnectionManager
             ResultSet rs = pstmt.executeQuery();
             while (rs.next())
             {
-                
+
                 String dateString = rs.getDate("date").toString();
                 int hours = rs.getInt("hours");
                 String guild = rs.getString("name");
@@ -83,13 +95,13 @@ public class HourManager extends ConnectionManager
         }
         catch (SQLException ex)
         {
+            
+            erMan.setErrorCode(ex.getErrorCode());
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
-            System.err.print(ex + "Can't get list of days worked!!!");
         }
 
         return workedDays;
     }
-    
 
     public void editWorkedDay(Day day, User user, String date, int hour, String guild)
     {
@@ -100,6 +112,8 @@ public class HourManager extends ConnectionManager
         }
         catch (SQLException ex)
         {
+            
+            erMan.setErrorCode(ex.getErrorCode());
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -122,6 +136,8 @@ public class HourManager extends ConnectionManager
 
         catch (SQLException ex)
         {
+            
+            erMan.setErrorCode(ex.getErrorCode());
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Could not delete worked day");
 
@@ -161,7 +177,7 @@ public class HourManager extends ConnectionManager
                 int hour = rs.getInt("hours");
                 if (genMan.getUserInfo(rs.getInt("userid")).getType() >= 1)
                 {
-                    managerHours.add(new Day( date, hour, guildName, guildid));
+                    managerHours.add(new Day(date, hour, guildName, guildid));
                 }
                 else
                 {
@@ -176,6 +192,8 @@ public class HourManager extends ConnectionManager
         }
         catch (SQLException ex)
         {
+            
+            erMan.setErrorCode(ex.getErrorCode());
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;

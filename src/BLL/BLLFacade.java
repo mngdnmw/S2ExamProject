@@ -36,7 +36,7 @@ public class BLLFacade
      * @param guildId
      * @throws SQLException
      */
-    public void logHours(String username, String date, int hours, int guildId) throws SQLException
+    public void logHours(String username, String date, int hours, int guildId)
     {
         DAL_FAC.logHours(username, date, hours, guildId);
     }
@@ -173,7 +173,7 @@ public class BLLFacade
         return GRAPH_HAND.sorter(guild);
     }
 
-    public void editHours(String username, String date, int hours, int guildId) throws SQLException
+    public void editHours(String username, String date, int hours, int guildId)
     {
         DAL_FAC.editHours(username, date, hours, guildId);
     }
@@ -201,5 +201,16 @@ public class BLLFacade
     public User getUserFromUsername(String username)
     {
         return LOG_HAND.getUserFromUsername(username);
+    }
+
+    //ErrorManager functions
+    public void setErrorCode(int eCode)
+    {
+        DAL_FAC.setErrorCode(eCode);
+    }
+
+    public String getErrorString()
+    {
+        return DAL_FAC.getErrorString();
     }
 }

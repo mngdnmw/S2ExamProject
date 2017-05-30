@@ -269,7 +269,7 @@ public class HourLoginViewController implements Initializable
      */
     public void snackBarPopup(String str)
     {
-        int time = 4000;
+        int time = 6000;
         JFXSnackbar snackbar = new JFXSnackbar(root);
         snackbar.show(str, time);
         PauseTransition pause = new PauseTransition(Duration.millis(time - 2000));
@@ -482,32 +482,28 @@ public class HourLoginViewController implements Initializable
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
 
         String dateString = sdf.format(date);
-
-        int errorCode = MOD_FACADE.logWorkDay(username, dateString, hours, guildID);
+        MOD_FACADE.setErrorCode(0);
+        MOD_FACADE.logWorkDay(username, dateString, hours, guildID);
         Platform.runLater(new Runnable()
         {
             @Override
             public void run()
             {
-                switch (errorCode)
+                if (MOD_FACADE.getErrorString() == null)
                 {
-                    case 0:
-                        snackBarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"));
-                        MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),MOD_FACADE.getUserFromUsername(username).getName()+" logged "+hours+" hours to guild "+MOD_FACADE.getGuild(guildID).getName()+"."));
-                        break;
-                    case 2627:
-                        snackBarPopup(MOD_FACADE.getLang("STR_ERROR_2627"));
-                        MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),MOD_FACADE.getUserFromUsername(username).getName()+" failed to log "+hours+" hours to guild "+MOD_FACADE.getGuild(guildID).getName()+". Hours already logged today on this guild."));
-                        break;
-                    default:
-                        snackBarPopup(MOD_FACADE.getLang("STR_FIRST_TIME_ERROR" + errorCode));
-                        MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),MOD_FACADE.getUserFromUsername(username).getName()+" failed to log "+hours+" hours to guild "+MOD_FACADE.getGuild(guildID).getName()+". Unknown error."));
-                        break;
+                    snackBarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"));
+                    MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getUserFromUsername(username).getName() + " logged " + hours + " hours to guild " + MOD_FACADE.getGuild(guildID).getName() + "."));
                 }
+                else
+                {
+                    snackBarPopup(MOD_FACADE.getLang(MOD_FACADE.getErrorString()));
+                }
+
                 loadingScreen(false);
                 buttonsLocking(false);
             }
-        });
+        }
+        );
     }
 
     private void loadingScreen(Boolean StartLoading)

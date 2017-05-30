@@ -39,47 +39,25 @@ public class VolunteerDataModel
     }
     
     
-        public int logWorkDay(String username, String date, int hours, int guildId)
+        public void logWorkDay(String username, String date, int hours, int guildId)
     {
-        int errorCode = 0;
-        try
-        {
+      
+      
             BLL_FAC.logHours(username, date, hours, guildId);
             workDays.clear();
             workDays.addAll(BLL_FAC.getWorkedDays(BLL_FAC.getUserInfo(BLL_FAC.getUserId(username))));
-        }
-        catch (SQLException ex)
-        {
-            errorCode = ex.getErrorCode();
-        }
-        finally
-        {
-            System.out.println(errorCode);
-            return errorCode;
-        }
+       
+       
 
     }
 
-    int editWorkDay(String username, String date, int hours, int guildId)
+   public void editWorkDay(String username, String date, int hours, int guildId)
     {
-        int errorCode = 0;
-        try
-        {
+        
             BLL_FAC.editHours(username, date, hours, guildId);
             workDays.clear();
             workDays.addAll(BLL_FAC.getWorkedDays(BLL_FAC.getUserInfo(BLL_FAC.getUserId(username))));
-        }
-        catch (SQLException ex)
-        {
-            errorCode = ex.getErrorCode();
-
-        }
-        finally
-        {
-            System.out.println(errorCode);
-            return errorCode;
-        }
-
+        
     }
     
     
