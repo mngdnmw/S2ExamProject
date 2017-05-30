@@ -42,7 +42,7 @@ public class HourManager extends ConnectionManager
         catch (SQLException ex)
         {
             erMan.setErrorCode(ex.getErrorCode());
-            Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(""+ ex.getErrorCode());
         }
     }
 

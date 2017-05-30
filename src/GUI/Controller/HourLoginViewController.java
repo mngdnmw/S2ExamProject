@@ -482,30 +482,28 @@ public class HourLoginViewController implements Initializable
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
 
         String dateString = sdf.format(date);
-        int errorCode  = 0;
+        MOD_FACADE.setErrorCode(0);
         MOD_FACADE.logWorkDay(username, dateString, hours, guildID);
         Platform.runLater(new Runnable()
         {
             @Override
             public void run()
             {
-                switch (errorCode)
+                if (MOD_FACADE.getErrorString() == null)
                 {
-                    case 0:
-                        snackBarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"));
-                        MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), /*MOD_FACADE.getUserFromUsername(username).getName() +*/ " logged " + hours + " hours to guild " + MOD_FACADE.getGuild(guildID).getName() + "."));
-                        break;
-                    case 2627:
-                        snackBarPopup(MOD_FACADE.getLang("STR_ERROR_2627"));
-                         break;
-                    default:
-                        snackBarPopup(MOD_FACADE.getLang("STR_FIRST_TIME_ERROR" + errorCode));
-                         break;
+                    snackBarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"));
+                    MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getUserFromUsername(username).getName() + " logged " + hours + " hours to guild " + MOD_FACADE.getGuild(guildID).getName() + "."));
                 }
+                else
+                {
+                    snackBarPopup(MOD_FACADE.getLang(MOD_FACADE.getErrorString()));
+                }
+
                 loadingScreen(false);
                 buttonsLocking(false);
             }
-        });
+        }
+        );
     }
 
     private void loadingScreen(Boolean StartLoading)

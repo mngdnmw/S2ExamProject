@@ -25,7 +25,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" maxHeight="490.0" minHeight="490.0" prefHeight="490.0" prefWidth="710.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
+<AnchorPane id="AnchorPane" fx:id="root" maxHeight="490.0" minHeight="490.0" prefHeight="490.0" prefWidth="710.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
 
 
 
@@ -257,13 +257,19 @@
                                 <JFXPasswordField fx:id="txtNPasswordTwo" focusColor="#00e2c7" styleClass="logintextFields" />
                             </children>
                         </HBox>
-                        <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
+                        <HBox alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="400.0" spacing="20.0">
                             <children>
-                                <JFXButton fx:id="btnChangePWConfirm" buttonType="RAISED" onAction="#changePasswordEvent" styleClass="loginbuttons" text="Change" />
-                                <JFXButton fx:id="btnCancelPW" buttonType="RAISED" onAction="#hidePasswordChangerEvent" styleClass="loginbuttons" text="Cancel" />
+                                <JFXButton fx:id="btnChangePWConfirm" buttonType="RAISED" maxHeight="32.0" minHeight="32.0" minWidth="99.0" onAction="#changePasswordEvent" prefWidth="99.0" style="-fx-background-color: #029e99;" text="Change" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font></JFXButton>
+                                <JFXButton fx:id="btnCancelPW" buttonType="RAISED" maxHeight="32.0" minHeight="20.0" minWidth="99.0" onAction="#hidePasswordChangerEvent" style="-fx-background-color: #B0B0B0;" text="Cancel" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font></JFXButton>
                             </children>
                             <padding>
-                                <Insets bottom="1.0" top="8.0" />
+                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                             </padding>
                         </HBox>
                     </children>
@@ -358,14 +364,14 @@
         </StackPane>
         <StackPane fx:id="stackPdeleteHours" layoutX="10.0" layoutY="10.0" prefHeight="490.0" prefWidth="720.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <VBox maxHeight="100.0" maxWidth="50.0" minWidth="50.0" prefHeight="209.0" prefWidth="50.0" spacing="20.0" StackPane.alignment="CENTER_LEFT">
+                <VBox maxHeight="246.0" maxWidth="143.0" minWidth="50.0" prefHeight="246.0" prefWidth="84.0" spacing="20.0" StackPane.alignment="CENTER_LEFT">
                     <children>
-                        <ImageView fx:id="imgVwEdit" fitHeight="50.0" fitWidth="113.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="imgVwEdit" fitHeight="113.0" fitWidth="113.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../Images/edit-icon.png" />
                             </image>
                         </ImageView>
-                        <ImageView fx:id="imgVwDel" fitHeight="50.0" fitWidth="113.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="imgVwDel" fitHeight="113.0" fitWidth="113.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../Images/trash.png" />
                             </image>
