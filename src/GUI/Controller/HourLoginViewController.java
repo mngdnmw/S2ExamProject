@@ -269,7 +269,7 @@ public class HourLoginViewController implements Initializable
      */
     public void snackBarPopup(String str)
     {
-        int time = 4000;
+        int time = 10000;
         JFXSnackbar snackbar = new JFXSnackbar(root);
         snackbar.show(str, time);
         PauseTransition pause = new PauseTransition(Duration.millis(time - 2000));

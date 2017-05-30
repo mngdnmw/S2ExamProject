@@ -252,7 +252,7 @@ public class ManagerAddUserController implements Initializable
 
     public void snackBarPopup(String str)
     {
-        int time = 3000;
+        int time = 5000;
         JFXSnackbar snackbar = new JFXSnackbar(rootPane);
         snackbar.show(str, time);
         PauseTransition pause = new PauseTransition(Duration.millis(time));

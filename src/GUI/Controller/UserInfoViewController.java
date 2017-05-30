@@ -391,7 +391,7 @@ public class UserInfoViewController implements Initializable
             if (isIncorrect && btnEditSave.isDisabled())
             {
                 JFXSnackbar b = new JFXSnackbar(root);
-                b.show("Please enter valid information in the fields!", 2000);
+                b.show("Please enter valid information in the fields!", 5000);
                 return;
             }
             saveInfo(currentUser);
@@ -601,7 +601,7 @@ public class UserInfoViewController implements Initializable
         if (count > 0)
         {
             JFXSnackbar b = new JFXSnackbar(root);
-            b.show("Password has succesfully changed", 2000);
+            b.show("Password has succesfully changed", 5000);
             hidePasswordChangerEvent();
             MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()),currentUser.getName()+" changed his/her password."));
         }
@@ -609,18 +609,18 @@ public class UserInfoViewController implements Initializable
         else if (count == -1)
         {
             JFXSnackbar b = new JFXSnackbar(root);
-            b.show("Old password is the same as new password", 2000);
+            b.show("Old password is the same as new password", 5000);
         }
         else if (count == -2)
         {
             JFXSnackbar b = new JFXSnackbar(root);
-            b.show("Password do not match", 2000);
+            b.show("Password do not match", 5000);
         }
 
         else
         {
             JFXSnackbar b = new JFXSnackbar(root);
-            b.show("Old password is incorrect", 2000);
+            b.show("Old password is incorrect", 5000);
         }
 
     }
@@ -707,7 +707,7 @@ public class UserInfoViewController implements Initializable
 
     public void snackBarPopup(String str)
     {
-        int time = 3000;
+        int time = 5000;
         JFXSnackbar snackbar = new JFXSnackbar(root);
         snackbar.show(str, time);
         PauseTransition pause = new PauseTransition(Duration.millis(time - 2000));
