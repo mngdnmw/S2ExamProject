@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 
 public class GeneralInfoManager extends ConnectionManager
 {
-
+    private ErrorManager erMan = new ErrorManager();
     /**
      * Gets user information from the database using userId. Returns volunteer,
      * manager or admin depending on type variable.
@@ -90,6 +90,7 @@ public class GeneralInfoManager extends ConnectionManager
         }
         catch (SQLException e)
         {
+            erMan.setErrorCode(e.getErrorCode());
             System.out.println("Exception in DataManager: getUserInfo method.");
             System.out.println(e);
         }
@@ -157,6 +158,7 @@ public class GeneralInfoManager extends ConnectionManager
         {
             System.err.println("Exception in: DataManager: getAllUsers method.");
             System.out.println(e);
+            erMan.setErrorCode(e.getErrorCode());
         }
 
         return null;
@@ -194,6 +196,7 @@ public class GeneralInfoManager extends ConnectionManager
         {
             System.err.println("Exception in: DataManager: getAllVolunteers method.");
             System.out.println(e);
+            erMan.setErrorCode(e.getErrorCode());
         }
 
         return volunteers;
@@ -231,6 +234,7 @@ public class GeneralInfoManager extends ConnectionManager
         {
             System.err.println("Exception in: DataManager: getAllManagers method.");
             System.out.println(e);
+            erMan.setErrorCode(e.getErrorCode());
         }
 
         return managers;
@@ -267,6 +271,7 @@ public class GeneralInfoManager extends ConnectionManager
         {
             System.err.println("Exception in: DataManager: getAllManagers method.");
             System.out.println(e);
+            erMan.setErrorCode(e.getErrorCode());
         }
 
         return admins;
@@ -313,6 +318,7 @@ public class GeneralInfoManager extends ConnectionManager
         catch (SQLException ex)
         {
             Logger.getLogger(GeneralInfoManager.class.getName()).log(Level.SEVERE, null, ex);
+            erMan.setErrorCode(ex.getErrorCode());
         }
 
         return -1;
@@ -337,6 +343,7 @@ public class GeneralInfoManager extends ConnectionManager
         {
             Logger.getLogger(GeneralInfoManager.class
                     .getName()).log(Level.SEVERE, null, ex);
+            erMan.setErrorCode(ex.getErrorCode());
         }
         return -1;
 
@@ -360,6 +367,7 @@ public class GeneralInfoManager extends ConnectionManager
         catch (SQLException ex)
         {
             Logger.getLogger(GeneralInfoManager.class.getName()).log(Level.SEVERE, null, ex);
+            erMan.setErrorCode(ex.getErrorCode());
         }
 
         return guilds;
@@ -386,6 +394,7 @@ public class GeneralInfoManager extends ConnectionManager
         {
             System.out.println("Exception in: DataManager: updateInfo method");
             System.err.println(sqle);
+            erMan.setErrorCode(sqle.getErrorCode());
         }
     }
 
@@ -405,6 +414,7 @@ public class GeneralInfoManager extends ConnectionManager
         catch (SQLException e)
         {
             System.out.println(e);
+            erMan.setErrorCode(e.getErrorCode());
         }
 
         String query;
@@ -431,6 +441,7 @@ public class GeneralInfoManager extends ConnectionManager
         catch (SQLException e)
         {
             System.out.println(e);
+            erMan.setErrorCode(e.getErrorCode());
         }
     }
 
@@ -450,6 +461,7 @@ public class GeneralInfoManager extends ConnectionManager
         catch (SQLException e)
         {
             System.out.println(e);
+            erMan.setErrorCode(e.getErrorCode());
         }
         return null;
     }
@@ -476,6 +488,7 @@ public class GeneralInfoManager extends ConnectionManager
         {
             System.out.println("Exception in: GeneralInfoManager: addUser method");
             System.err.println(sqle);
+            erMan.setErrorCode(sqle.getErrorCode());
         }
     }
 
@@ -501,6 +514,8 @@ public class GeneralInfoManager extends ConnectionManager
         {
             System.out.println("Exception in: DataManager: updateInfo method");
             System.err.println(sqle);
+            
+            erMan.setErrorCode(sqle.getErrorCode());
         }
     }
 
@@ -524,6 +539,8 @@ public class GeneralInfoManager extends ConnectionManager
         catch (SQLException ex)
         {
             Logger.getLogger(GeneralInfoManager.class.getName()).log(Level.SEVERE, null, ex);
+            
+            erMan.setErrorCode(ex.getErrorCode());
         }
 
         return guilds;
@@ -536,7 +553,7 @@ public class GeneralInfoManager extends ConnectionManager
         {
             String query = "SELECT * FROM [guild] WHERE [guild].[guildid] in "
                     + "(SELECT [managerguild].[guildid] FROM [managerguild] "
-                    + "WHERE [managerguild].[managerid] ="+ userId + ")";
+                    + "WHERE [managerguild].[managerid] =" + userId + ")";
             PreparedStatement pstmt2 = con.prepareStatement(query);
             ResultSet rs = pstmt2.executeQuery();
             while (rs.next())
@@ -547,6 +564,7 @@ public class GeneralInfoManager extends ConnectionManager
         catch (SQLException ex)
         {
             Logger.getLogger(GeneralInfoManager.class.getName()).log(Level.SEVERE, null, ex);
+            erMan.setErrorCode(ex.getErrorCode());
         }
 
         return guilds;
@@ -569,6 +587,8 @@ public class GeneralInfoManager extends ConnectionManager
         catch (SQLException e)
         {
             Logger.getLogger(GeneralInfoManager.class.getName()).log(Level.SEVERE, null, e);
+            
+            erMan.setErrorCode(e.getErrorCode());
         }
         return null;
     }
@@ -585,6 +605,8 @@ public class GeneralInfoManager extends ConnectionManager
         }
         catch (SQLException sqle)
         {
+            
+            erMan.setErrorCode(sqle.getErrorCode());
             System.out.println("Exception in: GeneralInfoManager: addGuild method");
             System.err.println(sqle);
         }
@@ -601,6 +623,8 @@ public class GeneralInfoManager extends ConnectionManager
         }
         catch (SQLException sqle)
         {
+            
+            erMan.setErrorCode(sqle.getErrorCode());
             System.out.println("Exception in: GeneralInfoManager: deleteGuild method");
             System.err.println(sqle);
         }
@@ -621,6 +645,8 @@ public class GeneralInfoManager extends ConnectionManager
         {
             System.out.println("Exception in: GeneralInfoManager: updateGuild method");
             System.err.println(sqle);
+            
+            erMan.setErrorCode(sqle.getErrorCode());
         }
     }
 }

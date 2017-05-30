@@ -228,7 +228,7 @@ public class UserInfoViewController implements Initializable
                         setUserImage();
                     }
 
-                    filteredData = new FilteredList<>(MOD_FACADE.getWorkedDays(currentUser), p -> true);
+                    filteredData.addAll(MOD_FACADE.getWorkedDays(currentUser));
                     firstRun = false;
                     return null;
 
@@ -947,13 +947,13 @@ public class UserInfoViewController implements Initializable
             {
                 if (editPopup = true)
                 {
-                    errorCode = MOD_FACADE.logWorkDay(currentUser.getEmail(), date, hours, guildID);
+                    MOD_FACADE.logWorkDay(currentUser.getEmail(), date, hours, guildID);
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " added " + hours + " working hours to guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
                 }
                 else
                 {
 
-                    errorCode = MOD_FACADE.editHours(currentUser.getEmail(), date, hours, guildID);
+                    MOD_FACADE.editHours(currentUser.getEmail(), date, hours, guildID);
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " edited his/her working hours to " + hours + " in guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
                 }
                 stckLoadScreen.setVisible(false);
@@ -966,13 +966,13 @@ public class UserInfoViewController implements Initializable
             {
                 if (editPopup = true)
                 {
-                    errorCode = MOD_FACADE.logWorkDay(currentUser.getPhone() + "", date, hours, guildID);
+                    MOD_FACADE.logWorkDay(currentUser.getPhone() + "", date, hours, guildID);
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " added " + hours + " working hours to guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
                 }
                 else
                 {
 
-                    errorCode = MOD_FACADE.editHours(currentUser.getPhone() + "", date, hours, guildID);
+                    MOD_FACADE.editHours(currentUser.getPhone() + "", date, hours, guildID);
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " edited his/her working hours to " + hours + " in guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
                 }
                 stckLoadScreen.setVisible(false);
