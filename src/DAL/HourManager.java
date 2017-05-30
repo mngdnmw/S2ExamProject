@@ -3,6 +3,7 @@ package DAL;
 import BE.Day;
 import BE.Guild;
 import BE.User;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -71,7 +72,7 @@ public class HourManager extends ConnectionManager
             ResultSet rs = pstmt.executeQuery();
             while (rs.next())
             {
-                
+
                 String dateString = rs.getDate("date").toString();
                 int hours = rs.getInt("hours");
                 String guild = rs.getString("name");
@@ -89,7 +90,6 @@ public class HourManager extends ConnectionManager
 
         return workedDays;
     }
-    
 
     public void editWorkedDay(Day day, User user, String date, int hour, String guild)
     {
@@ -161,7 +161,7 @@ public class HourManager extends ConnectionManager
                 int hour = rs.getInt("hours");
                 if (genMan.getUserInfo(rs.getInt("userid")).getType() >= 1)
                 {
-                    managerHours.add(new Day( date, hour, guildName, guildid));
+                    managerHours.add(new Day(date, hour, guildName, guildid));
                 }
                 else
                 {

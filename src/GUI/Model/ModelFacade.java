@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import javafx.animation.FadeTransition;
-import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.chart.XYChart;
 import javafx.scene.image.Image;
@@ -42,9 +41,9 @@ public class ModelFacade
     }
 
     //Login Model
-    public int logWorkDay(String username, String date, int hours, int guildId)
+    public int logHours(String username, String date, int hours, int guildId)
     {
-        return VOL_DATA_MOD.logWorkDay(username, date, hours, guildId);
+        return LOG_MOD.logHours(username, date, hours, guildId);
     }
 
     public HashMap<String, String> loadSession()
@@ -190,7 +189,7 @@ public class ModelFacade
     }
 
     //Volunteer data model
-    public ObservableList<Day> getWorkedDays(User user)
+    public List<Day> getWorkedDays(User user)
     {
         return VOL_DATA_MOD.getWorkedDays(user);
     }
@@ -225,6 +224,7 @@ public class ModelFacade
         VOL_DATA_MOD.setAllManagersIntoArray();
     }
 
+  
 
     public List<User> getAllSavedUsers()
     {
@@ -282,8 +282,8 @@ public class ModelFacade
     }
 
     public void deleteWorkedDay(User user, Day day)
-    {      
-        VOL_DATA_MOD.deleteWorkedDay(user, day);      
+    {
+        BLL_FAC.deleteWorkedDay(user, day);
     }
 
     public List<XYChart.Series<Number, Number>> graphSort(Guild guild)
@@ -293,7 +293,7 @@ public class ModelFacade
 
     public int editHours(String username, String date, int hours, int guildId)
     {
-        return VOL_DATA_MOD.editWorkDay(username, date, hours, guildId);
+        return LOG_MOD.editHours(username, date, hours, guildId);
     }
     
     public void logEvent(Event event) {
@@ -306,5 +306,9 @@ public class ModelFacade
     
     public List<Event> getAllEvents() {
         return BLL_FAC.getAllEvents();
+    }
+    
+    public User getUserFromUsername(String username) {
+        return BLL_FAC.getUserFromUsername(username);
     }
 }

@@ -483,7 +483,7 @@ public class HourLoginViewController implements Initializable
 
         String dateString = sdf.format(date);
 
-        int errorCode = MOD_FACADE.logWorkDay(username, dateString, hours, guildID);
+        int errorCode = MOD_FACADE.logHours(username, dateString, hours, guildID);
         Platform.runLater(new Runnable()
         {
             @Override
