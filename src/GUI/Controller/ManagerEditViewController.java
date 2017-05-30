@@ -88,15 +88,14 @@ public class ManagerEditViewController implements Initializable
     @FXML
     private AnchorPane root;
     boolean editPopup = false;
-    ManagerViewController mevController;
-    File newImg;
     private static ModelFacade MOD_FACADE = new ModelFacade();
-    FilteredList<Day> filteredData = new FilteredList<>(FXCollections.observableArrayList());
+    private FilteredList<Day> filteredData = new FilteredList<>(FXCollections.observableArrayList());
     private static User selectedUser;
-
     boolean firstRun;
-
     boolean finishedService;
+
+    private ManagerViewController mevController;
+    private File newImg;
     @FXML
     private HBox hBoxCalAll;
     @FXML
@@ -184,7 +183,7 @@ public class ManagerEditViewController implements Initializable
                 @Override
                 protected Object call() throws Exception
                 {
-                  
+
                     filteredData = new FilteredList<>(FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(selectedUser)), p -> true);
                     firstRun = false;
                     return null;
@@ -289,11 +288,11 @@ public class ManagerEditViewController implements Initializable
         AnchorPane.setRightAnchor(stckPaneLoad, 0.0);
         serviceAllVolunteers.restart();
         serviceAllVolunteers.setOnSucceeded(e
-                -> 
-                {
-                    System.out.println("Updated info saved. ");
-                    Stage stage = (Stage) JFXBtnAccept.getScene().getWindow();
-                    stage.close();
+                ->
+        {
+            System.out.println("Updated info saved. ");
+            Stage stage = (Stage) JFXBtnAccept.getScene().getWindow();
+            stage.close();
         });
     }
 
@@ -369,21 +368,21 @@ public class ManagerEditViewController implements Initializable
         colGuild.setCellValueFactory(cellData -> cellData.getValue().guildProperty());
 
         txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                -> 
-                {
-                    filteredData.setPredicate(day
-                            -> 
-                            {
-                                String regex = "[^a-zA-Z0-9\\s]";
-                                Boolean search
-                                        = day.dateProperty().getValue().replaceAll(regex, "")
-                                        .contains(newValue.replaceAll(regex, ""))
-                                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
-                                        contains(newValue.toLowerCase().replaceAll(regex, ""));
+                ->
+        {
+            filteredData.setPredicate(day
+                    ->
+            {
+                String regex = "[^a-zA-Z0-9\\s]";
+                Boolean search
+                        = day.dateProperty().getValue().replaceAll(regex, "")
+                                .contains(newValue.replaceAll(regex, ""))
+                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                contains(newValue.toLowerCase().replaceAll(regex, ""));
 
-                                return search;
+                return search;
 
-                    });
+            });
         });
 
         SortedList<Day> sortedData = new SortedList<>(filteredData);
@@ -692,7 +691,7 @@ public class ManagerEditViewController implements Initializable
                 if (editPopup = true)
                 {
 
-                    errorCode = MOD_FACADE.logHours(selectedUser.getEmail(), date, hours, guildID);
+                    errorCode = MOD_FACADE.logWorkDay(selectedUser.getEmail(), date, hours, guildID);
                 }
                 else
                 {
@@ -708,7 +707,7 @@ public class ManagerEditViewController implements Initializable
             {
                 if (editPopup = true)
                 {
-                    errorCode = MOD_FACADE.logHours(selectedUser.getPhone() + "", date, hours, guildID);
+                    errorCode = MOD_FACADE.logWorkDay(selectedUser.getPhone() + "", date, hours, guildID);
                 }
                 else
                 {

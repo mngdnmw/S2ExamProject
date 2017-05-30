@@ -30,15 +30,15 @@ public class BLLFacade
 
     /**
      *
-     * @param str
+     * @param username
      * @param date
      * @param hours
      * @param guildId
      * @throws SQLException
      */
-    public void logHours(String str, String date, int hours, int guildId) throws SQLException
+    public void logHours(String username, String date, int hours, int guildId)
     {
-        DAL_FAC.logHours(str, date, hours, guildId);
+        DAL_FAC.logHours(username, date, hours, guildId);
     }
 
     public List<Guild> getAllGuilds()
@@ -60,8 +60,9 @@ public class BLLFacade
     {
         return DAL_FAC.changePassword(user, oldPassword, newPassword);
     }
-    
-    public int changePasswordAdmin(User user, String newPass) {
+
+    public int changePasswordAdmin(User user, String newPass)
+    {
         return DAL_FAC.changePasswordAdmin(user, newPass);
     }
 
@@ -151,14 +152,17 @@ public class BLLFacade
     {
         LANG_HAND.setLang(lang);
     }
-    
-    public String parseExport(List<User> users) {
+
+    public String parseExport(List<User> users)
+    {
         return exportParser.parseUsers(users);
     }
-    
-    public void writeExport(File file,String input) {
+
+    public void writeExport(File file, String input)
+    {
         DAL_FAC.writeExport(file, input);
     }
+
     public void deleteWorkedDay(User user, Day day)
     {
         DAL_FAC.deleteWorkedDay(user, day);
@@ -169,24 +173,33 @@ public class BLLFacade
         return GRAPH_HAND.sorter(guild);
     }
 
-    public void editHours(String username, String date, int hours, int guildId) throws SQLException
+    public void editHours(String username, String date, int hours, int guildId)
     {
         DAL_FAC.editHours(username, date, hours, guildId);
     }
-    
-    public void logEvent(Event event) {
+
+    public void logEvent(Event event)
+    {
         DAL_FAC.logEvent(event);
     }
-    
-    public Event getEvent(int id) {
+
+    public Event getEvent(int id)
+    {
         return DAL_FAC.getEvent(id);
     }
-    
-    public List<Event> getAllEvents() {
+
+    public List<Event> getAllEvents()
+    {
         return DAL_FAC.getAllEvents();
     }
-    
-    public User getUserFromUsername(String username) {
+
+    public int getUserId(String username)
+    {
+        return DAL_FAC.getUserId(username);
+    }
+
+    public User getUserFromUsername(String username)
+    {
         return LOG_HAND.getUserFromUsername(username);
     }
 }

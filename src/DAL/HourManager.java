@@ -3,7 +3,6 @@ package DAL;
 import BE.Day;
 import BE.Guild;
 import BE.User;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,7 +24,7 @@ public class HourManager extends ConnectionManager
      * @param hours
      * @param guildId
      */
-    public void logHours(int userId, String date, int hours, int guildId) throws SQLException
+    public void logHours(int userId, String date, int hours, int guildId)
     {
         try (Connection con = super.getConnection())
         {
@@ -39,9 +38,13 @@ public class HourManager extends ConnectionManager
             pstat.executeUpdate();
 
         }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    void editHours(int userId, String date, int hours, int guildId) throws SQLException
+    void editHours(int userId, String date, int hours, int guildId)
     {
         try (Connection con = super.getConnection())
         {
@@ -55,6 +58,10 @@ public class HourManager extends ConnectionManager
             pstat.setInt(4, userId);
             pstat.executeUpdate();
 
+        }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

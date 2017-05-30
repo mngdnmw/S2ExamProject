@@ -6,6 +6,7 @@ public class Guild
     int id;
     String name;
 
+    
     public Guild(int id, String name)
     {
         this.id = id;
