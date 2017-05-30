@@ -88,14 +88,15 @@ public class ManagerEditViewController implements Initializable
     @FXML
     private AnchorPane root;
     boolean editPopup = false;
+    ManagerViewController mevController;
+    File newImg;
     private static ModelFacade MOD_FACADE = new ModelFacade();
-    private FilteredList<Day> filteredData = new FilteredList<>(FXCollections.observableArrayList());
+    FilteredList<Day> filteredData = new FilteredList<>(FXCollections.observableArrayList());
     private static User selectedUser;
-    boolean firstRun;
-    boolean finishedService;
 
-    private ManagerViewController mevController;
-    private File newImg;
+    boolean firstRun;
+
+    boolean finishedService;
     @FXML
     private HBox hBoxCalAll;
     @FXML
@@ -183,7 +184,7 @@ public class ManagerEditViewController implements Initializable
                 @Override
                 protected Object call() throws Exception
                 {
-
+                  
                     filteredData = new FilteredList<>(FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(selectedUser)), p -> true);
                     firstRun = false;
                     return null;
