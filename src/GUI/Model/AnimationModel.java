@@ -14,7 +14,7 @@ import javafx.util.Duration;
 public class AnimationModel
 {
 
-    private final Image loaderImage = new Image("/Resources/animal.gif");
+    private final Image loaderImage = new Image("/GUI/Images/animal.gif");
 
     private  StackPane stackPane;
     private  ImageView imgViewLoader;

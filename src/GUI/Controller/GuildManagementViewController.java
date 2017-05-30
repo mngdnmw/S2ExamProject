@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI.Controller;
 
 import BE.Guild;
@@ -15,7 +10,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
-import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -27,11 +21,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
-/**
- * FXML Controller class
- *
- * @author Desmoswal
- */
 public class GuildManagementViewController implements Initializable
 {
 

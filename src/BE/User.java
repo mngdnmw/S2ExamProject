@@ -1,14 +1,12 @@
 package BE;
 
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public abstract class User extends RecursiveTreeObject<User>
+public abstract class User 
 {
 
     int id;
