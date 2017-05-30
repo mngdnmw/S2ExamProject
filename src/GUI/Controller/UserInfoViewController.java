@@ -228,7 +228,7 @@ public class UserInfoViewController implements Initializable
                         setUserImage();
                     }
 
-                    filteredData.addAll(MOD_FACADE.getWorkedDays(currentUser));
+                    filteredData = new FilteredList<>(FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(currentUser)), p -> true);
                     firstRun = false;
                     return null;
 
@@ -253,39 +253,41 @@ public class UserInfoViewController implements Initializable
         setupTableView("Looking For Data");
         searchListener();
         serviceInitializer.start();
-
+        serviceInitializer.setOnFailed(e 
+                -> System.out.println("Error"));
+        
         serviceInitializer.setOnSucceeded(e
                 -> setupTableView("Found Nothing :("));
-//
-//        imgVwDel.setOnDragOver(event ->
-//        {
-//            Dragboard db = event.getDragboard();
-//            if (db.hasContent(SERIALIZED_MIME_TYPE))
-//            {
-//
-//                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-//
-//            }
-//            event.consume();
-//        });
-//
-//        imgVwDel.setOnDragDropped(new EventHandler<DragEvent>()
-//        {
-//            @Override
-//            public void handle(DragEvent event)
-//            {
-//                Dragboard db = event.getDragboard();
-//                if (db.hasContent(SERIALIZED_MIME_TYPE))
-//                {
-//                    int draggedIndex = (Integer) db.getContent(SERIALIZED_MIME_TYPE);
-//                    Day dayToDelete = tableViewMain.getItems().get(draggedIndex);
-//                    MOD_FACADE.deleteWorkedDay(currentUser, dayToDelete);
-//                    event.setDropCompleted(true);
-//                    stackPdeleteHours.setVisible(false);
-//                    event.consume();
-//                }
-//            }
-//        });
+
+        imgVwDel.setOnDragOver(event ->
+        {
+            Dragboard db = event.getDragboard();
+            if (db.hasContent(SERIALIZED_MIME_TYPE))
+            {
+
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+
+            }
+            event.consume();
+        });
+
+        imgVwDel.setOnDragDropped(new EventHandler<DragEvent>()
+        {
+            @Override
+            public void handle(DragEvent event)
+            {
+                Dragboard db = event.getDragboard();
+                if (db.hasContent(SERIALIZED_MIME_TYPE))
+                {
+                    int draggedIndex = (Integer) db.getContent(SERIALIZED_MIME_TYPE);
+                    Day dayToDelete = tableViewMain.getItems().get(draggedIndex);
+                    MOD_FACADE.deleteWorkedDay(currentUser, dayToDelete);
+                    event.setDropCompleted(true);
+                    stackPdeleteHours.setVisible(false);
+                    event.consume();
+                }
+            }
+        });
 
     }
 
