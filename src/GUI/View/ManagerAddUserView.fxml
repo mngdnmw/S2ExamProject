@@ -7,7 +7,6 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -143,14 +142,10 @@
             </ImageView>
          </children>
       </GridPane>
-      <ImageView fitHeight="138.0" fitWidth="127.0" layoutX="532.0" layoutY="21.0" pickOnBounds="true" style="-fx-effect: 30;" />
       <ImageView fx:id="imgVwProfilePic" fitHeight="153.0" fitWidth="172.0" layoutX="457.0" layoutY="30.0" pickOnBounds="true">
          <image>
             <Image url="@../Images/labeouf.jpg" />
          </image>
-         <effect>
-            <Reflection fraction="0.11" topOffset="-4.0" topOpacity="0.35" />
-         </effect>
       </ImageView>
     </children>
 </AnchorPane>

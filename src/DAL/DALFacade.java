@@ -212,6 +212,6 @@ public class DALFacade
 
     public String getErrorString()
     {
-        return getErrorString();
+        return ERROR_MAN.getErrorString();
     }
 }

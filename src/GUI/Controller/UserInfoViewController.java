@@ -253,22 +253,23 @@ public class UserInfoViewController implements Initializable
         setupTableView("Looking For Data");
         searchListener();
         serviceInitializer.start();
-        serviceInitializer.setOnFailed(e 
+        serviceInitializer.setOnFailed(e
                 -> System.out.println("Error"));
-        
+
         serviceInitializer.setOnSucceeded(e
                 -> setupTableView("Found Nothing :("));
 
-        imgVwDel.setOnDragOver(event ->
-        {
-            Dragboard db = event.getDragboard();
-            if (db.hasContent(SERIALIZED_MIME_TYPE))
-            {
+        imgVwDel.setOnDragOver(event
+                -> 
+                {
+                    Dragboard db = event.getDragboard();
+                    if (db.hasContent(SERIALIZED_MIME_TYPE))
+                    {
 
-                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
 
-            }
-            event.consume();
+                    }
+                    event.consume();
         });
 
         imgVwDel.setOnDragDropped(new EventHandler<DragEvent>()
@@ -283,7 +284,8 @@ public class UserInfoViewController implements Initializable
                     Day dayToDelete = tableViewMain.getItems().get(draggedIndex);
                     MOD_FACADE.deleteWorkedDay(currentUser, dayToDelete);
                     event.setDropCompleted(true);
-                    stackPdeleteHours.setVisible(false);
+                    MOD_FACADE.fadeOutTransition(Duration.millis(250), stackPdeleteHours).setOnFinished(ez -> stackPdeleteHours.setVisible(false));
+
                     event.consume();
                 }
             }
@@ -317,41 +319,45 @@ public class UserInfoViewController implements Initializable
 //            return null;
 //
 //        });
-        tableViewMain.setRowFactory(tv ->
-        {
-            TableRow<Day> row = new TableRow<>();
-
-            row.setOnDragDetected(event ->
-            {
-                if (!row.isEmpty())
+        tableViewMain.setRowFactory(tv
+                -> 
                 {
-                    stackPdeleteHours.setVisible(true);
+                    TableRow<Day> row = new TableRow<>();
 
-                    int selectedDayIndex = tableViewMain.getSelectionModel().getSelectedIndex();
+                    row.setOnDragDetected(event
+                            -> 
+                            {
+                                if (!row.isEmpty())
+                                {
+                                    stackPdeleteHours.setVisible(true);
+                                    MOD_FACADE.fadeInTransition(Duration.millis(250), stackPdeleteHours);
 
-                    Dragboard db = row.startDragAndDrop(TransferMode.MOVE);
-                    db.setDragView(row.snapshot(null, null));
-                    ClipboardContent cc = new ClipboardContent();
+                                    int selectedDayIndex = tableViewMain.getSelectionModel().getSelectedIndex();
 
-                    // Store row ID in order to know what is dragged.
-                    cc.put(SERIALIZED_MIME_TYPE, selectedDayIndex);
-                    db.setContent(cc);
+                                    Dragboard db = row.startDragAndDrop(TransferMode.MOVE);
+                                    db.setDragView(row.snapshot(null, null));
+                                    ClipboardContent cc = new ClipboardContent();
 
-                    event.consume();
-                }
-            });
-            row.setOnDragDone(new EventHandler<DragEvent>()
-            {
-                @Override
-                public void handle(DragEvent e)
-                {
-                    System.out.println("removes stackpane");
-                    stackPdeleteHours.setVisible(false);
-                    e.consume();
-                }
-            });
+                                    // Store row ID in order to know what is dragged.
+                                    cc.put(SERIALIZED_MIME_TYPE, selectedDayIndex);
+                                    db.setContent(cc);
 
-            return row;
+                                    event.consume();
+                                }
+                    });
+                    row.setOnDragDone(new EventHandler<DragEvent>()
+                    {
+                        @Override
+                        public void handle(DragEvent e)
+                        {
+                            System.out.println("removes stackpane");
+                            MOD_FACADE.fadeOutTransition(Duration.millis(250), stackPdeleteHours).setOnFinished(ez -> stackPdeleteHours.setVisible(false));
+
+                            e.consume();
+                        }
+                    });
+
+                    return row;
         });
 
     }
@@ -359,21 +365,21 @@ public class UserInfoViewController implements Initializable
     private void searchListener()
     {
         txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                ->
-        {
-            filteredData.setPredicate(day
-                    ->
-            {
-                String regex = "[^a-zA-Z0-9\\s]";
-                Boolean search
-                        = day.dateProperty().getValue().replaceAll(regex, "")
-                                .contains(newValue.replaceAll(regex, ""))
-                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
-                                contains(newValue.toLowerCase().replaceAll(regex, ""));
+                -> 
+                {
+                    filteredData.setPredicate(day
+                            -> 
+                            {
+                                String regex = "[^a-zA-Z0-9\\s]";
+                                Boolean search
+                                        = day.dateProperty().getValue().replaceAll(regex, "")
+                                        .contains(newValue.replaceAll(regex, ""))
+                                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                        contains(newValue.toLowerCase().replaceAll(regex, ""));
 
-                return search;
+                                return search;
 
-            });
+                    });
         });
     }
 
@@ -576,10 +582,10 @@ public class UserInfoViewController implements Initializable
         newImg = c.showOpenDialog(btnUpdatePhoto.getScene().getWindow());
         serviceSavePicture.start();
         serviceSavePicture.setOnSucceeded(e
-                ->
-        {
-            firstRun = true;
-            serviceInitializer.restart();
+                -> 
+                {
+                    firstRun = true;
+                    serviceInitializer.restart();
         });
 
     }
