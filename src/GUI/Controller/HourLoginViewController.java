@@ -145,7 +145,7 @@ public class HourLoginViewController implements Initializable
         imgViewLngBut.setImage(iconENG);
         btnLanguage.setGraphic(imgViewLngBut);
         btnLanguage.setText(MOD_FACADE.getLang("BTN_LANGUAGE"));
-        cmbGuildChooser.setItems(FXCollections.observableArrayList(MOD_FACADE.getAllSavedGuilds()));
+        cmbGuildChooser.setItems(MOD_FACADE.getAllSavedGuilds());
         ModelFacade.setModelFacade(MOD_FACADE);
         addListener();
         setTextAll();
