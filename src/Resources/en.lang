@@ -115,3 +115,10 @@ CSV_CH_TITLE = Choose where to export CSV file
 CSV_CH_EXT_FILTER = Comma separated textfiles
 STR_ERROR_FILE_NOT_FOUND = File not found!
 STR_ERROR_FILE_NOT_FOUND_HEAD = Selected image is not found!
+
+BTN_ADD_GUILD = Add new
+BTN_REMOVE_GUILD = Remove
+LBL_GUILD_NAME = Guild Name:
+
+TXT_ADRESS = Adress
+BTN_ADD = Add

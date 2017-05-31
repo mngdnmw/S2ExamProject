@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
@@ -84,7 +85,7 @@
                 <JFXTextField fx:id="txtEmail" focusColor="#00e2c7" promptText="Email" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <JFXTextField fx:id="txtAddress" focusColor="#00e2c7" promptText="Address" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                 <JFXTextField fx:id="txtAddress2" focusColor="#00e2c7" promptText="Address" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                <JFXTextField fx:id="txtPassword" focusColor="#00e2c7" prefWidth="298.0" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <JFXPasswordField fx:id="txtPassword" focusColor="#00e2c7" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                 <JFXTextArea fx:id="txtNotes" focusColor="#00e2c7" prefHeight="189.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                     <GridPane.margin>
                         <Insets bottom="15.0" top="10.0" />
@@ -109,7 +110,7 @@
                         <JFXCheckBox fx:id="chkAdmin" checkedColor="#1cbf6e" contentDisplay="CENTER" onAction="#onChkBoxPressed" text="Admin" unCheckedColor="#949292" />
                     </children>
                 </HBox>
-                <Label id="lblTealBkgrnd" prefHeight="17.0" prefWidth="44.0" text="Notes" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="TOP">
+                <Label id="lblTealBkgrnd" fx:id="lblNotes" prefHeight="17.0" prefWidth="44.0" text="Notes" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="TOP">
                     <GridPane.margin>
                         <Insets top="10.0" />
                     </GridPane.margin>
@@ -117,7 +118,7 @@
                         <Font name="System Bold" size="15.0" />
                     </font>
                 </Label>
-                <Label id="lblTealBkgrnd" prefHeight="19.0" prefWidth="46.0" text="Guilds" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="TOP">
+                <Label id="lblTealBkgrnd" fx:id="lblGuild" prefHeight="19.0" prefWidth="46.0" text="Guilds" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="TOP">
                     <GridPane.margin>
                         <Insets top="10.0" />
                     </GridPane.margin>

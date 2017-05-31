@@ -79,6 +79,8 @@ public class GuildManagementViewController implements Initializable
             };
         }
     };
+    @FXML
+    private Label lblGuilds;
 
     /**
      * Initializes the controller class.
@@ -176,7 +178,12 @@ public class GuildManagementViewController implements Initializable
 
     private void setTextAll()
     {
-        btnModify.setText(MOD_FAC.getLang(""));
-        
+        btnModify.setText(MOD_FAC.getLang("BTN_EDIT"));
+        btnAdd.setText(MOD_FAC.getLang("BTN_ADD_GUILD"));
+        btnRemove.setText(MOD_FAC.getLang("BTN_REMOVE_GUILD"));
+        lblGuilds.setText(MOD_FAC.getLang("GUILD_TAG_TWO"));
+        lblGuildName.setText(MOD_FAC.getLang(""));
+        btnChange.setText(MOD_FAC.getLang("BTN_EDIT"));
+        btnCancel.setText(MOD_FAC.getLang("BTN_CANCEL"));
     }
 }
