@@ -92,8 +92,6 @@ public class ManagerEditViewController implements Initializable
     FilteredList<Day> filteredData = new FilteredList<>(FXCollections.observableArrayList());
     private static User selectedUser;
 
-    boolean firstRun;
-
     boolean finishedService;
     @FXML
     private HBox hBoxCalAll;
@@ -109,8 +107,7 @@ public class ManagerEditViewController implements Initializable
     private TableColumn<Day, String> colGuild;
     @FXML
     private JFXButton btnChangePassword;
-    @FXML
-    private Label lblOldPassword;
+
     @FXML
     private Label lblNewPassword;
     @FXML
@@ -183,14 +180,15 @@ public class ManagerEditViewController implements Initializable
                 protected Object call() throws Exception
                 {
 
-                    filteredData = new FilteredList<>(FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(selectedUser)), p -> true);
-                    firstRun = false;
+                    filteredData = new FilteredList<>(MOD_FACADE.getWorkedDays(selectedUser), p -> true);
                     return null;
 
                 }
             };
         }
     };
+    @FXML
+    private Label lblOldPassword;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -211,11 +209,19 @@ public class ManagerEditViewController implements Initializable
 
     public void setUserImage()
     {
-        if (MOD_FACADE.getUserImage(selectedUser) != null)
-        {
-            imgVwProfilePic.setImage(new Image(MOD_FACADE.getUserImage(selectedUser)));
+        Runnable r = ()
+                -> 
+                {
+                    Image img = new Image(MOD_FACADE.getUserImage(selectedUser));
+                    if (img != null)
+                    {
+                        imgVwProfilePic.setImage(img);
+                    }
 
-        }
+        };
+        Thread t = new Thread(r);
+        t.setDaemon(true);
+        t.start();
     }
 
     public void setController(ManagerViewController c)
@@ -746,6 +752,24 @@ public class ManagerEditViewController implements Initializable
         setupAddHoursPopup();
         stckPaneAddHours.setVisible(true);
         MOD_FACADE.fadeInTransition(Duration.millis(750), stckPaneAddHours);
+
+    }
+
+    private void setTextAll()
+    {
+        btnChangePassword.setText(MOD_FACADE.getLang("BTN_CHANGEPASS"));
+
+        colDate.setText(MOD_FACADE.getLang("COL_DATE"));
+        colHours.setText(MOD_FACADE.getLang("COL_HOURS"));
+        colGuild.setText(MOD_FACADE.getLang("COL_GUILD"));
+        txtFSearchDate.setPromptText(MOD_FACADE.getLang("PROMPT_SEARCH"));
+
+        lblNewPassword.setText(MOD_FACADE.getLang("LBL_NEW_PW"));
+        lblNewPassword2.setText(MOD_FACADE.getLang("LBL_NEW_PW2"));
+        lblOldPassword.setText(MOD_FACADE.getLang("LBL_OLD_PW"));
+        lblDateInPop.setText(MOD_FACADE.getLang("COL_DATE"));
+        lblGuildInPop.setText(MOD_FACADE.getLang("COL_GUILD"));
+        lblHoursInPop.setText(MOD_FACADE.getLang("COL_HOURS"));
 
     }
 }

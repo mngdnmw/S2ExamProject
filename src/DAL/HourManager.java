@@ -52,13 +52,13 @@ public class HourManager extends ConnectionManager
         try (Connection con = super.getConnection())
         {
             String sqlCommand
-                    = "UPDATE [hour] SET [date] = ?, [hours] =?, [guildid]=? WHERE userid =?";
+                    = "UPDATE [hour] SET [hours] =?  WHERE userid =? AND [date] = ? AND [guildid]=?";
 
             PreparedStatement pstat = con.prepareStatement(sqlCommand);
-            pstat.setString(1, date);
-            pstat.setInt(2, hours);
-            pstat.setInt(3, guildId);
-            pstat.setInt(4, userId);
+            pstat.setInt(1, hours);
+            pstat.setInt(2, userId);
+            pstat.setString(3, date);
+            pstat.setInt(4, guildId);
             pstat.executeUpdate();
 
         }
@@ -103,7 +103,6 @@ public class HourManager extends ConnectionManager
 
         return workedDays;
     }
-
 
     public void deleteWorkedDay(User user, Day day)
     {
