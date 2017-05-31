@@ -414,7 +414,7 @@ public class UserInfoViewController implements Initializable
     {
 
         btnHighClearance.setPrefWidth(160);
-        btnHighClearance.setId("higherClearanceBtn");
+        btnHighClearance.setId("btnConfirmTeal");
         btnHighClearance.toFront();
         btnHighClearance.setVisible(true);
         btnCancelEditInfo.setPrefHeight(25);

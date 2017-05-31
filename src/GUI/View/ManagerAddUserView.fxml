@@ -99,7 +99,7 @@
                         <JFXCheckBox fx:id="chkAdmin" checkedColor="#1cbf6e" contentDisplay="CENTER" onAction="#onChkBoxPressed" text="Admin" unCheckedColor="#949292" />
                     </children>
                 </HBox>
-                <Label prefHeight="17.0" prefWidth="44.0" style="-fx-background-color: #00c4ad;" text="Notes" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="TOP">
+                <Label id="lblTealBkgrnd" prefHeight="17.0" prefWidth="44.0" text="Notes" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="TOP">
                     <GridPane.margin>
                         <Insets top="10.0" />
                     </GridPane.margin>
@@ -107,7 +107,7 @@
                         <Font name="System Bold" size="15.0" />
                     </font>
                 </Label>
-                <Label prefHeight="19.0" prefWidth="46.0" style="-fx-background-color: #00c4ad;" text="Guilds" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="TOP">
+                <Label id="lblTealBkgrnd" prefHeight="19.0" prefWidth="46.0" text="Guilds" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="TOP">
                     <GridPane.margin>
                         <Insets top="10.0" />
                     </GridPane.margin>
@@ -115,7 +115,7 @@
                         <Font name="System Bold" size="15.0" />
                     </font>
                 </Label>
-                <JFXButton fx:id="btnAccept" buttonType="RAISED" maxHeight="25.0" maxWidth="91.0" onAction="#onBtnAcceptPressed" prefHeight="25.0" style="-fx-background-color: #029e99;" text="Add" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                <JFXButton id="btnConfirmTeal" fx:id="btnAccept" buttonType="RAISED" maxHeight="25.0" maxWidth="150.0" onAction="#onBtnAcceptPressed" prefHeight="25.0" text="Add" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                     <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                     </padding>
@@ -126,7 +126,7 @@
                         <Insets />
                     </GridPane.margin>
                 </JFXButton>
-                <JFXButton fx:id="btnCancel" buttonType="RAISED" maxHeight="25.0" maxWidth="91.0" onAction="#onBtnCancelPressed" prefHeight="25.0" style="-fx-background-color: B0B0B0;" text="Cancel" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                <JFXButton id="btnCancelGrey" fx:id="btnCancel" buttonType="RAISED" maxHeight="25.0" maxWidth="150.0" onAction="#onBtnCancelPressed" prefHeight="25.0" text="Cancel" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
                     <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                     </padding>
@@ -137,7 +137,7 @@
                         <Insets />
                     </GridPane.margin>
                 </JFXButton>
-                <JFXButton fx:id="JFXBtnAddPhoto" buttonType="RAISED" maxHeight="25.0" maxWidth="115.0" onAction="#pressedChangeImage" prefHeight="25.0" prefWidth="115.0" style="-fx-background-color: #00c4ad;" text="Change Photo" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                <JFXButton id="btnConfirmDarkTeal" fx:id="JFXBtnAddPhoto" buttonType="RAISED" maxHeight="25.0" maxWidth="115.0" onAction="#pressedChangeImage" prefHeight="25.0" prefWidth="115.0" text="Change Photo" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                     <padding>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                     </padding>
