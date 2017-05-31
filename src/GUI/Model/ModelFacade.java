@@ -16,6 +16,7 @@ import javafx.animation.FadeTransition;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.DatePicker;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -31,6 +32,7 @@ public class ModelFacade
     private final static ViewChangerModel VIEW_CHANG_MOD = new ViewChangerModel();
     private final static VolunteerDataModel VOL_DATA_MOD = new VolunteerDataModel();
     private final static GraphSorterModel GRAPH_MOD = new GraphSorterModel();
+    private final static CalendarModel CAL_MOD = new CalendarModel();
     private final static BLLFacade BLL_FAC = new BLLFacade();
 
     public static ModelFacade getModelFacade()
@@ -303,10 +305,10 @@ public class ModelFacade
         return GRAPH_MOD.sortGraph(guild, periodOne, periodTwo);
     }
 
-    public void editHours(String username, String date, int hours, int guildId)
-    {
-        VOL_DATA_MOD.editWorkDay(username, date, hours, guildId);
-    }
+//    public void editHours(String username, String date, int hours, int guildId)
+//    {
+//        VOL_DATA_MOD.editWorkDay(username, date, hours, guildId);
+//    }
 
     public void logEvent(Event event)
     {
@@ -327,6 +329,10 @@ public class ModelFacade
     {
         return BLL_FAC.getUserFromUsername(username);
     }
+    
+    public ObservableList<Day> editWorkedDay(String username, String date, int hrs, int guildId){
+        return VOL_DATA_MOD.editWorkedDay(username, date, hrs, guildId); 
+    }
 
     //ErrorManager functions
     public void setErrorCode(int eCode)
@@ -339,6 +345,11 @@ public class ModelFacade
         return BLL_FAC.getErrorString();
     }
     
+    public void formatCalendar(DatePicker datePicker){
+        CAL_MOD.formatCalendar(datePicker);
+    }
+    
+
     public String parseExportHours(List<User> users) {
         return BLL_FAC.parseExportHours(users);
     }

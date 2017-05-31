@@ -104,21 +104,6 @@ public class HourManager extends ConnectionManager
         return workedDays;
     }
 
-    public void editWorkedDay(Day day, User user, String date, int hour, String guild)
-    {
-
-        try (Connection con = super.getConnection())
-        {
-
-        }
-        catch (SQLException ex)
-        {
-
-            erMan.setErrorCode(ex.getErrorCode());
-            Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
 
     public void deleteWorkedDay(User user, Day day)
     {
