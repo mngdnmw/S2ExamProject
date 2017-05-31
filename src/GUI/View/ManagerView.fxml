@@ -9,6 +9,7 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TableColumn?>
@@ -77,7 +78,7 @@
                             <children>
                                 <LineChart fx:id="lineChartGuildHours" layoutX="9.0" layoutY="14.0" prefHeight="335.0" prefWidth="661.0">
                                     <xAxis>
-                                        <NumberAxis side="BOTTOM" fx:id="xAxis" />
+                                        <CategoryAxis side="BOTTOM" fx:id="xAxis" />
                                     </xAxis>
                                     <yAxis>
                                         <NumberAxis fx:id="yAxis" side="LEFT" />
