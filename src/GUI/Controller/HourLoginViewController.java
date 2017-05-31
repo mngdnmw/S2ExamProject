@@ -6,15 +6,14 @@ import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -174,7 +173,7 @@ public class HourLoginViewController implements Initializable
 
         else
         {
-            snackBarPopup("Please input information in all fields");
+            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_MORE_INFO"), root);
         }
     }
 
@@ -206,12 +205,12 @@ public class HourLoginViewController implements Initializable
                     {
                         if (Integer.parseInt(newValue) >= 25)
                         {
-                            snackBarPopup("You Cannot Exceed 24 hours");
+                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_MAX_HOUR"), root);
                             txtHours.setText(oldValue);
                         }
                         else if (Integer.parseInt(newValue) <= 0)
                         {
-                            snackBarPopup("You Cannot log 0 hours");
+                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_MIN_HOUR"), root);
                             txtHours.setText(oldValue);
                         }
                         else
@@ -261,22 +260,6 @@ public class HourLoginViewController implements Initializable
                 return findGuild;
             }
         });
-    }
-
-    /**
-     * pops up a bordered VBox that disappear after a short moment.
-     */
-    public void snackBarPopup(String str)
-    {
-        int time = 6000;
-        JFXSnackbar snackbar = new JFXSnackbar(root);
-        snackbar.show(str, time);
-        PauseTransition pause = new PauseTransition(Duration.millis(time - 2000));
-        pause.setOnFinished(
-                e -> buttonsLocking(false)
-        );
-        pause.play();
-
     }
 
     /**
@@ -468,7 +451,7 @@ public class HourLoginViewController implements Initializable
                 }
                 else
                 {
-                    lblWrongPass.visibleProperty().set(true);
+                    MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_WRONG_PW"), root);
                 }
                 loadingScreen(false);
             }
@@ -484,21 +467,15 @@ public class HourLoginViewController implements Initializable
         String dateString = sdf.format(date);
         MOD_FACADE.setErrorCode(0);
         MOD_FACADE.logWorkDay(username, dateString, hours, guildID);
+        MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getUserFromUsername(username).getName() + " logged " + hours + " hours to guild " + MOD_FACADE.getGuild(guildID).getName() + "."));
+
         Platform.runLater(new Runnable()
         {
             @Override
             public void run()
             {
-                if (MOD_FACADE.getErrorString() == null)
-                {
-                    snackBarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"));
-                    MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getUserFromUsername(username).getName() + " logged " + hours + " hours to guild " + MOD_FACADE.getGuild(guildID).getName() + "."));
-                }
-                else
-                {
-                    snackBarPopup(MOD_FACADE.getLang(MOD_FACADE.getErrorString()));
-                }
-
+                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"), root);
+                
                 loadingScreen(false);
                 buttonsLocking(false);
             }
@@ -547,7 +524,7 @@ public class HourLoginViewController implements Initializable
 
             if (txtHours.getText().isEmpty())
             {
-                snackBarPopup("Invalid Action");
+                 MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_INVALID_ACTION"),root);
             }
             else
             {

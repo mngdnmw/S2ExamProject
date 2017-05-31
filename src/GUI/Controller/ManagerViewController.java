@@ -232,10 +232,10 @@ public class ManagerViewController implements Initializable
             cmbGuildChooser.setItems(FXCollections.observableArrayList(MOD_FAC.getCurrentUser().getGuildList()));
         }
         setTableProperties();
-        setTableItems();
         setupTableView("Loading Information");
         serviceInitializer.start();
-        serviceInitializer.setOnSucceeded(e -> setupTableView("No Data :("));
+        serviceInitializer.setOnSucceeded(e -> setupTableView(MOD_FAC.getLang("STR_SEARCH_EMPTY")));
+        serviceInitializer.setOnFailed(e -> setupTableView("Error: Try Again"));
         cmbBoxListeners();
         if (MOD_FAC.getCurrentUser().getType() >= 2)
         {
@@ -243,7 +243,7 @@ public class ManagerViewController implements Initializable
             chkManagers.setVisible(true);
             chkVolunteers.setVisible(true);
             ObservableList guildList = FXCollections.observableArrayList();
-            guildList.add(new Guild(-1, "All Guilds"));
+            guildList.add(new Guild(-1, MOD_FAC.getLang("STR_ALL_GUILDS")));
             guildList.addAll(MOD_FAC.getAllSavedGuilds());
 
             cmbGuildChooser.setItems(guildList);
@@ -253,6 +253,8 @@ public class ManagerViewController implements Initializable
             formatCalendar(datePickerPeriodOne);
             formatCalendar(datePickerPeriodTwo);
         }
+        colLogEventId.setSortType(TableColumn.SortType.ASCENDING);
+        tblLog.getSortOrder().add(colLogEventId);
         cmbGuildChooser.getSelectionModel().selectFirst();
 
     }
@@ -531,7 +533,7 @@ public class ManagerViewController implements Initializable
         }
         else
         {
-            snackBarPopup("You need to select a user first.");
+            MOD_FAC.snackbarPopup(MOD_FAC.getLang("STR_SELECT_USER"), root);
             System.out.println("Selected user missing");
         }
     }
@@ -597,11 +599,11 @@ public class ManagerViewController implements Initializable
         selectedUser = tblUsers.getSelectionModel().getSelectedItem();
 
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem thisEmailItem = new MenuItem("Copy this email to clipboard");
+        MenuItem thisEmailItem = new MenuItem(MOD_FAC.getLang("MENU_ITEM_ONE_EMAIL"));
         contextMenu.getItems().add(thisEmailItem);
-        MenuItem allEmailItem = new MenuItem("Copy all emails to clipboard");
+        MenuItem allEmailItem = new MenuItem(MOD_FAC.getLang("MENU_ITEM_ALL_EMAIL"));
         contextMenu.getItems().add(allEmailItem);
-        MenuItem exportData = new MenuItem("Export users in table (except notes)");
+        MenuItem exportData = new MenuItem(MOD_FAC.getLang("MENU_ITEM_EXPORT"));
         contextMenu.getItems().add(exportData);
 
         tblUsers.setContextMenu(contextMenu);
@@ -619,7 +621,6 @@ public class ManagerViewController implements Initializable
                 }
 
                 clipboard.setContent(content);
-                System.out.println("This email to clipboard");
             }
         };
         thisEmailItem.setOnAction(thisEmailEvent);
@@ -668,16 +669,6 @@ public class ManagerViewController implements Initializable
     {
         Stage stage = (Stage) btnClose.getScene().getWindow();
         stage.close();
-    }
-
-    public void snackBarPopup(String str)
-    {
-        int time = 6000;
-        JFXSnackbar snackbar = new JFXSnackbar(root);
-        snackbar.show(str, time);
-        PauseTransition pause = new PauseTransition(Duration.millis(time));
-        pause.play();
-
     }
 
     private void exportUsers()
@@ -807,6 +798,9 @@ public class ManagerViewController implements Initializable
     )
     {
         tblLog.setItems(FXCollections.observableArrayList(MOD_FAC.getAllEvents()));
+        colLogEventId.setSortType(TableColumn.SortType.ASCENDING);
+        tblLog.getSortOrder().clear();
+        tblLog.getSortOrder().add(colLogEventId);
     }
 
     @FXML

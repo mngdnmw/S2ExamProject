@@ -128,7 +128,8 @@ public class GuildManagementViewController implements Initializable
 
         else
         {
-            snackBarPopup("Guild to modify not selected");
+            
+            modelFacade.snackbarPopup(modelFacade.getLang("STR_GUILD_NOT_SELECTED"), rootPane);
         }
 
     }
@@ -167,15 +168,7 @@ public class GuildManagementViewController implements Initializable
         stckPaneNew.setVisible(false);
     }
 
-    public void snackBarPopup(String str)
-    {
-        int time = 3000;
-        JFXSnackbar snackbar = new JFXSnackbar(rootPane);
-        snackbar.show(str, time);
-        PauseTransition pause = new PauseTransition(Duration.millis(time));
-        pause.play();
-    }
-
+    
     @FXML
     private void onListViewPressed(MouseEvent event)
     {
