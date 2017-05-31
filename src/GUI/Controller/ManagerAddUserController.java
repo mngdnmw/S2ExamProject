@@ -251,12 +251,12 @@ public class ManagerAddUserController implements Initializable
     private void pressedChangeImage(ActionEvent event)
     {
         FileChooser c = new FileChooser();
-        c.setTitle("Select a new image");
+        c.setTitle(MOD_FAC.getLang("IMG_CH_TITLE"));
         String[] extensions =
         {
-            "jpg", "jpeg", "png", "gif"
+            "*.jpg", "*.jpeg", "*.png"
         };
-        c.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Image files only", extensions));
+        c.setSelectedExtensionFilter(new FileChooser.ExtensionFilter(MOD_FAC.getLang("IMG_CH_EXT_FILTER"), extensions));
         newImg = c.showOpenDialog(JFXBtnAddPhoto.getScene().getWindow());
 
         if (newImg != null)

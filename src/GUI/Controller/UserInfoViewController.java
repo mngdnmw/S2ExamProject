@@ -1,4 +1,4 @@
-package GUI.Controller;
+    package GUI.Controller;
 
 import BE.Day;
 import BE.Guild;
@@ -200,8 +200,8 @@ public class UserInfoViewController implements Initializable
                         catch (FileNotFoundException e)
                         {
                             Alert a = new Alert(Alert.AlertType.ERROR);
-                            a.setHeaderText("Selected image is not found");
-                            a.setContentText("File not found!");
+                            a.setHeaderText(MOD_FACADE.getLang("STR_ERROR_FILE_NOT_FOUND_HEAD"));
+                            a.setContentText(MOD_FACADE.getLang("STR_ERROR_FILE_NOT_FOUND"));
                         }
                     }
                     return null;
@@ -247,7 +247,7 @@ public class UserInfoViewController implements Initializable
         createEditFields();
         setTextAll();
         setupGuildList();
-        setupTableView("Looking For Data");
+        setupTableView(MOD_FACADE.getLang("TBL_LOADING"));
         searchListener();
         setupDragDrop();
         serviceInitializer.start();
@@ -608,14 +608,14 @@ public class UserInfoViewController implements Initializable
 
     {
         FileChooser c = new FileChooser();
-        c.setTitle("Select a new image");
+        c.setTitle(MOD_FACADE.getLang("IMG_CH_TITLE"));
         String[] extensions
                 =
 
                 {
-                    "jpg", "jpeg", "png", "gif"
+                    "*.jpg", "*.jpeg", "*.png"
                 };
-        c.setSelectedExtensionFilter(new ExtensionFilter("Image files only", extensions));
+        c.setSelectedExtensionFilter(new ExtensionFilter(MOD_FACADE.getLang("IMG_CH_EXT_FILTER"), extensions));
         newImg = c.showOpenDialog(btnUpdatePhoto.getScene().getWindow());
         serviceSavePicture.restart();
         serviceSavePicture.setOnSucceeded(e
@@ -981,12 +981,14 @@ public class UserInfoViewController implements Initializable
                 {
                     MOD_FACADE.logWorkDay(currentUser.getEmail(), date, hours, guildID);
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " added " + hours + " working hours to guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
+                    errorCode = 0;
                 }
                 else
                 {
 
                     MOD_FACADE.editHours(currentUser.getEmail(), date, hours, guildID);
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " edited his/her working hours to " + hours + " in guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
+                    errorCode = 0;
                 }
                 stckLoadScreen.setVisible(false);
 
@@ -1000,12 +1002,14 @@ public class UserInfoViewController implements Initializable
                 {
                     MOD_FACADE.logWorkDay(currentUser.getPhone() + "", date, hours, guildID);
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " added " + hours + " working hours to guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
+                    errorCode = 0;
                 }
                 else
                 {
 
                     MOD_FACADE.editHours(currentUser.getPhone() + "", date, hours, guildID);
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " edited his/her working hours to " + hours + " in guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
+                    errorCode = 0;
                 }
                 stckLoadScreen.setVisible(false);
                 MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"), root);

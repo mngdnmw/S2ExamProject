@@ -285,7 +285,7 @@ public class ModelFacade
 
     public String parseExportUsers(List<User> users)
     {
-        return BLL_FAC.parseExport(users);
+        return BLL_FAC.parseExportUserdata(users);
     }
 
     public void writeExport(File file, String input)
@@ -337,5 +337,9 @@ public class ModelFacade
     public String getErrorString()
     {
         return BLL_FAC.getErrorString();
+    }
+    
+    public String parseExportHours(List<User> users) {
+        return BLL_FAC.parseExportHours(users);
     }
 }
