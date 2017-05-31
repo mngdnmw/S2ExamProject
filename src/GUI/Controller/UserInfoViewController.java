@@ -167,11 +167,10 @@ public class UserInfoViewController implements Initializable
     //Objects Used
     User currentUser;
     JFXPopup popup;
-    JFXButton higherClearanceBtn = new JFXButton();
+    JFXButton btnHighClearance = new JFXButton();
     JFXButton btnCancelEditInfo = new JFXButton();
     File newImg;
     FilteredList<Day> filteredData = new FilteredList(FXCollections.observableArrayList());
-
     //Variables Used
     boolean editing = false;
     boolean isIncorrect = false;
@@ -228,7 +227,7 @@ public class UserInfoViewController implements Initializable
                         setUserImage();
                     }
 
-                    filteredData = new FilteredList<>(FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(currentUser)), p -> true);
+                    filteredData = new FilteredList<>(MOD_FACADE.getWorkedDays(currentUser), p -> true);
                     firstRun = false;
                     return null;
 
@@ -313,12 +312,6 @@ public class UserInfoViewController implements Initializable
         sortedData.comparatorProperty().bind(tableViewMain.comparatorProperty());
         tableViewMain.setItems(sortedData);
 
-//        tableViewMain.setRowFactory(tv ->
-//        {
-//            TableRow<Day> row = new TableRow<>();
-//            return null;
-//
-//        });
         tableViewMain.setRowFactory(tv
                 -> 
                 {
@@ -420,29 +413,32 @@ public class UserInfoViewController implements Initializable
 
     {
 
-        higherClearanceBtn.setPrefWidth(160);
-        higherClearanceBtn.setId("higherClearanceBtn");
-        higherClearanceBtn.toFront();
-        higherClearanceBtn.setVisible(true);
+        btnHighClearance.setPrefWidth(160);
+        btnHighClearance.setId("higherClearanceBtn");
+        btnHighClearance.toFront();
+        btnHighClearance.setVisible(true);
         btnCancelEditInfo.setPrefHeight(25);
 
         hBoxInvisBtn.setAlignment(Pos.CENTER);
-        hBoxInvisBtn.getChildren().add(higherClearanceBtn);
+        hBoxInvisBtn.getChildren().add(btnHighClearance);
 
-        higherClearanceBtn.getStylesheets().add("GUI/View/MainLayout.css");
+        btnHighClearance.getStylesheets().add("GUI/View/MainLayout.css");
+        btnHighClearance.prefHeightProperty().set(btnChangePassword.getPrefHeight());
+
+        btnHighClearance.prefWidthProperty().set(btnChangePassword.getPrefWidth());
 
         if (type == 1)
         {
-            higherClearanceBtn.setText(MOD_FACADE.getLang("BTN_HIGHER_CLEARANCE_1"));
+            btnHighClearance.setText(MOD_FACADE.getLang("BTN_HIGHER_CLEARANCE_1"));
 
         }
         else
         {
-            higherClearanceBtn.setText(MOD_FACADE.getLang("BTN_HIGHER_CLEARANCE_2"));
+            btnHighClearance.setText(MOD_FACADE.getLang("BTN_HIGHER_CLEARANCE_2"));
 
         }
 
-        higherClearanceBtn.setOnAction(new EventHandler<ActionEvent>()
+        btnHighClearance.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
             public void handle(ActionEvent event)

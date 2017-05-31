@@ -25,7 +25,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" maxHeight="490.0" minHeight="490.0" prefHeight="490.0" prefWidth="710.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
+<AnchorPane id="AnchorPane" fx:id="root" maxHeight="490.0" minHeight="490.0" prefHeight="490.0" prefWidth="710.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
 
 
 
@@ -127,7 +127,7 @@
             <DropShadow />
          </effect>
       </Rectangle>
-      <ImageView fx:id="imgVwProfilePic" fitHeight="143.0" fitWidth="141.0" layoutX="527.0" layoutY="26.0" pickOnBounds="true" AnchorPane.rightAnchor="32.0">
+      <ImageView fx:id="imgVwProfilePic" fitHeight="143.0" fitWidth="141.0" layoutX="536.0" layoutY="26.0" pickOnBounds="true" AnchorPane.rightAnchor="33.0">
 
          <image>
             <Image url="@../Images/labeouf.jpg" />
@@ -136,7 +136,7 @@
             <Reflection fraction="0.11" topOffset="-4.0" topOpacity="0.35" />
          </effect>
       </ImageView>
-      <JFXButton fx:id="btnUpdatePhoto" buttonType="RAISED" layoutX="528.0" layoutY="183.0" maxHeight="25.0" minHeight="25.0" onAction="#pressedChangeImage" prefHeight="25.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Update Photo" textFill="WHITE" AnchorPane.rightAnchor="31.0">
+      <JFXButton fx:id="btnUpdatePhoto" buttonType="RAISED" layoutX="537.0" layoutY="183.0" maxHeight="25.0" minHeight="25.0" onAction="#pressedChangeImage" prefHeight="25.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Update Photo" textFill="WHITE" AnchorPane.rightAnchor="32.0">
 
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -146,8 +146,8 @@
          </font>
       </JFXButton>
 
-      <HBox fx:id="hBoxInvisBtn" layoutX="516.0" layoutY="431.0" prefHeight="45.0" prefWidth="190.0" />
-      <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="528.0" layoutY="221.0" maxHeight="25.0" minHeight="25.0" onAction="#openPasswordChangerEvent" prefHeight="25.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Change Password" textFill="WHITE" AnchorPane.rightAnchor="31.0">
+      <HBox fx:id="hBoxInvisBtn" layoutX="516.0" layoutY="432.0" prefHeight="45.0" prefWidth="183.0" />
+      <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="537.0" layoutY="221.0" maxHeight="25.0" minHeight="25.0" onAction="#openPasswordChangerEvent" prefHeight="25.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Change Password" textFill="WHITE" AnchorPane.rightAnchor="32.0">
 
 
          <padding>
@@ -211,13 +211,13 @@
             </HBox>
          </children>
       </Pane>
-      <JFXListView fx:id="listVwGuilds" layoutX="538.0" layoutY="277.0" maxWidth="141.0" prefHeight="162.0" prefWidth="141.0" style="-fx-border-width: 0px;" />
-      <Label fx:id="lblGuilds" layoutX="538.0" layoutY="258.0" style="-fx-background-color: #00c4ad;" text="Guilds:">
+      <JFXListView fx:id="listVwGuilds" layoutX="537.0" layoutY="277.0" maxWidth="141.0" prefHeight="162.0" prefWidth="141.0" style="-fx-border-width: 0px;" />
+      <Label fx:id="lblGuilds" layoutX="537.0" layoutY="258.0" style="-fx-background-color: #00c4ad;" text="Guilds:">
          <font>
             <Font name="System Bold" size="15.0" />
          </font></Label>
       
-      <StackPane fx:id="stckPanePasswordChanger" layoutX="-25.0" prefHeight="510.0" prefWidth="710.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane fx:id="stckPanePasswordChanger" layoutX="-25.0" prefHeight="510.0" prefWidth="710.0" style="-fx-background-color: rgba(0,0,0,0.5);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="200.0" prefWidth="463.0" spacing="10.0" styleClass="loginwindow" stylesheets="@MainLayout.css">
                <children>
@@ -253,8 +253,8 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
                      <children>
-                        <JFXButton fx:id="btnChangePWConfirm" buttonType="RAISED" onAction="#changePasswordEvent" styleClass="loginbuttons" text="Change" />
-                        <JFXButton fx:id="btnCancelPW" buttonType="RAISED" onAction="#hidePasswordChangerEvent" styleClass="loginbuttons" text="Cancel" />
+                        <JFXButton fx:id="btnChangePWConfirm" buttonType="RAISED" onAction="#changePasswordEvent" text="Change" />
+                        <JFXButton fx:id="btnCancelPW" buttonType="RAISED" onAction="#hidePasswordChangerEvent" text="Cancel" />
                      </children>
                      <padding>
                         <Insets bottom="1.0" top="8.0" />
@@ -348,23 +348,23 @@
             </VBox>
          </children>
       </StackPane>
-      <StackPane fx:id="stackPdeleteHours" layoutX="10.0" layoutY="10.0" prefHeight="490.0" prefWidth="720.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane fx:id="stackPdeleteHours" alignment="BOTTOM_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="490.0" prefWidth="720.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox maxHeight="100.0" maxWidth="50.0" minWidth="50.0" prefHeight="209.0" prefWidth="50.0" spacing="20.0" StackPane.alignment="CENTER_LEFT">
+            <VBox maxHeight="246.0" maxWidth="118.0" minWidth="50.0" prefHeight="246.0" prefWidth="118.0" spacing="20.0" StackPane.alignment="BOTTOM_CENTER">
                <children>
-                  <ImageView fx:id="imgVwEdit" fitHeight="50.0" fitWidth="113.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imgVwEdit" fitHeight="113.0" fitWidth="113.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../Images/edit-icon.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="imgVwDel" fitHeight="50.0" fitWidth="113.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="imgVwDel" fitHeight="113.0" fitWidth="113.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../Images/trash.png" />
                      </image>
                   </ImageView>
                </children>
                <StackPane.margin>
-                  <Insets bottom="41.0" left="290.0" top="260.0" />
+                  <Insets bottom="50.0" />
                </StackPane.margin>
             </VBox>
          </children>
