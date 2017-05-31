@@ -154,9 +154,13 @@ public class BLLFacade
         LANG_HAND.setLang(lang);
     }
 
-    public String parseExport(List<User> users)
+    public String parseExportUserdata(List<User> users)
     {
-        return exportParser.parseUsers(users);
+        return exportParser.parseExportUserdata(users);
+    }
+    
+    public String parseExportHours(List<User> users) {
+        return exportParser.parseExportHours(users);
     }
 
     public void writeExport(File file, String input)

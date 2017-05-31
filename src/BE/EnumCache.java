@@ -7,4 +7,8 @@ public abstract class EnumCache
     {
         ENG, DAN
     };
+    
+    public static enum ExportType {
+        DATA,HOURS
+    };
 }

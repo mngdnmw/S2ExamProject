@@ -1,5 +1,6 @@
 package GUI.Controller;
 
+import BE.EnumCache.ExportType;
 import BE.Guild;
 import BE.User;
 import GUI.Model.AutoCompleteComboBoxListener;
@@ -607,6 +608,8 @@ public class ManagerViewController implements Initializable
         contextMenu.getItems().add(allEmailItem);
         MenuItem exportData = new MenuItem(MOD_FAC.getLang("MENU_EXPORT"));
         contextMenu.getItems().add(exportData);
+        MenuItem exportHours = new MenuItem("Export user hours from table");
+        contextMenu.getItems().add(exportHours);
 
         tblUsers.setContextMenu(contextMenu);
 
@@ -661,9 +664,17 @@ public class ManagerViewController implements Initializable
             @Override
             public void handle(ActionEvent event)
             {
-                exportUsers();
+                export(ExportType.DATA);
             }
 
+        });
+        
+        exportHours.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                export(ExportType.HOURS);
+            }
+            
         });
     }
 
@@ -674,7 +685,7 @@ public class ManagerViewController implements Initializable
         stage.close();
     }
     
-    private void exportUsers()
+    private void export(ExportType type)
     {
         FileChooser chooser = new FileChooser();
         chooser.getExtensionFilters().add(new ExtensionFilter(MOD_FAC.getLang("CSV_CH_EXT_FILTER"), new ArrayList<String>()
@@ -688,9 +699,12 @@ public class ManagerViewController implements Initializable
         File chose = chooser.showSaveDialog(root.getScene().getWindow());
         if (chose != null)
         {
-            MOD_FAC.writeExport(chose, MOD_FAC.parseExportUsers(tblUsers.getItems()));
+            if(type.equals(ExportType.DATA)) {
+                MOD_FAC.writeExport(chose, MOD_FAC.parseExportUsers(tblUsers.getItems()));
+            } else if(type.equals(ExportType.HOURS)) {
+                MOD_FAC.writeExport(chose, MOD_FAC.parseExportHours(tblUsers.getItems()));
+            }
         }
-
     }
 
     private void setTextAll()
@@ -803,6 +817,7 @@ public class ManagerViewController implements Initializable
         tblLog.getSortOrder().clear();
         tblLog.getSortOrder().add(colLogEventId);
     }
+    @FXML
     private void refreshGraph(ActionEvent event)
     {
         Temp.clear();
