@@ -18,7 +18,6 @@ import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -77,7 +76,7 @@ public class HourLoginViewController implements Initializable
     @FXML
     private JFXButton btnLogin;
     @FXML
-    private JFXButton btnCancel;
+    private JFXButton btnCancelLogin;
     @FXML
     private Label lblPassword;
     @FXML
@@ -145,7 +144,7 @@ public class HourLoginViewController implements Initializable
         imgViewLngBut.setImage(iconENG);
         btnLanguage.setGraphic(imgViewLngBut);
         btnLanguage.setText(MOD_FACADE.getLang("BTN_LANGUAGE"));
-        cmbGuildChooser.setItems(FXCollections.observableArrayList(MOD_FACADE.getAllSavedGuilds()));
+        cmbGuildChooser.setItems(MOD_FACADE.getAllSavedGuilds());
         ModelFacade.setModelFacade(MOD_FACADE);
         addListener();
         setTextAll();
@@ -188,7 +187,7 @@ public class HourLoginViewController implements Initializable
     }
 
     @FXML
-    private void LogInAction(ActionEvent event)
+    private void logInAction(ActionEvent event)
     {
         buttonsLocking(true);
         loginPopup();
@@ -271,6 +270,7 @@ public class HourLoginViewController implements Initializable
     public void loginPopup()
     {
         //popup for the login
+        btnLogin.setPrefWidth(btnCancelLogin.getWidth());
         loginWindow.visibleProperty().set(true);
         ancDarken.visibleProperty().set(true);
         MOD_FACADE.fadeInTransition(Duration.millis(500), ancDarken);
@@ -308,7 +308,7 @@ public class HourLoginViewController implements Initializable
         }
         );
 
-        btnCancel.setOnAction(
+        btnCancelLogin.setOnAction(
                 new EventHandler<ActionEvent>()
         {
             @Override
@@ -466,30 +466,28 @@ public class HourLoginViewController implements Initializable
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
 
         String dateString = sdf.format(date);
-        int errorCode  = 0;
+        MOD_FACADE.setErrorCode(0);
         MOD_FACADE.logWorkDay(username, dateString, hours, guildID);
         Platform.runLater(new Runnable()
         {
             @Override
             public void run()
             {
-                switch (errorCode)
+                if (MOD_FACADE.getErrorString() == null)
                 {
-                    case 0:
-                        MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"),root);
-                        MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getUserFromUsername(username).getName() + " logged " + hours + " hours to guild " + MOD_FACADE.getGuild(guildID).getName() + "."));
-                        break;
-                    case 2627:
-                        MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_ERROR_2627"),root);
-                         break;
-                    default:
-                        MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_FIRST_TIME_ERROR" + errorCode),root);
-                         break;
+                    MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"),root);
+                    MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getUserFromUsername(username).getName() + " logged " + hours + " hours to guild " + MOD_FACADE.getGuild(guildID).getName() + "."));
                 }
+                else
+                {
+                    MOD_FACADE.snackbarPopup(MOD_FACADE.getLang(MOD_FACADE.getErrorString()),root);
+                }
+
                 loadingScreen(false);
                 buttonsLocking(false);
             }
-        });
+        }
+        );
     }
 
     private void loadingScreen(Boolean StartLoading)

@@ -28,7 +28,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerEditViewController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerEditViewController">
     <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="248.0" layoutX="17.0" layoutY="240.0" stroke="TRANSPARENT" strokeType="INSIDE" width="491.0">
          <effect>
@@ -41,7 +41,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="164.0" prefWidth="278.0">
                      <children>
-                        <HBox fx:id="hBoxCalAll" prefHeight="209.0" prefWidth="491.0">
+                        <HBox fx:id="hBoxCalAll" prefHeight="209.0" prefWidth="485.0">
                            <children>
                               <VBox alignment="CENTER" prefHeight="225.0" prefWidth="147.0" spacing="100.0">
                                  <children>
@@ -53,21 +53,24 @@
                                           <Insets left="5.0" />
                                        </VBox.margin>
                                     </JFXTextField>
-                                    <JFXButton fx:id="btnAddHours" buttonType="RAISED" onAction="#openAddHoursPopup" style="-fx-background-color: #029e99;" text="Add Hours" textFill="WHITE">
+                                    <JFXButton id="btnConfirmDarkTeal" fx:id="btnAddHours" buttonType="RAISED" maxHeight="25.0" minHeight="25.0" onAction="#openAddHoursPopup" prefHeight="25.0" text="Add Hours" textFill="WHITE">
                                        <padding>
                                           <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                        </padding>
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
                                     </JFXButton>
                                  </children>
                                  <HBox.margin>
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </VBox>
-                              <TableView fx:id="tblMain" onMouseClicked="#onTablePressed" prefHeight="209.0" prefWidth="331.0">
+                              <TableView fx:id="tblMain" onMouseClicked="#onTablePressed" prefHeight="209.0" prefWidth="331.0" stylesheets="@MainLayout.css">
                                 <columns>
                                   <TableColumn fx:id="colDate" prefWidth="138.0" text="Date" />
                                   <TableColumn fx:id="colHours" prefWidth="62.0" text="Hours" />
-                                    <TableColumn fx:id="colGuild" prefWidth="126.0" text="Guild" />
+                                    <TableColumn fx:id="colGuild" prefWidth="130.0" text="Guild" />
                                 </columns>
                               </TableView>
                            </children>
@@ -168,27 +171,42 @@
             <Reflection fraction="0.11" topOffset="-4.0" topOpacity="0.35" />
          </effect>
       </ImageView>
-      <JFXButton fx:id="JFXBtnUpdatePhoto" buttonType="RAISED" layoutX="530.0" layoutY="180.0" maxHeight="30.0" minHeight="-Infinity" onAction="#onBtnUpdatePhotoPressed" prefHeight="25.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Update Photo" textFill="WHITE">
+      <JFXButton id="btnConfirmDarkTeal" fx:id="JFXBtnUpdatePhoto" buttonType="RAISED" layoutX="530.0" layoutY="180.0" maxHeight="30.0" minHeight="-Infinity" onAction="#onBtnUpdatePhotoPressed" prefHeight="25.0" prefWidth="141.0" text="Update Photo" textFill="WHITE">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
+         <font>
+            <Font size="15.0" />
+         </font>
       </JFXButton>
-      <Label layoutX="524.0" layoutY="271.0" style="-fx-background-color: #00c4ad;" text="Guilds:" textFill="WHITE" />
-      <JFXButton fx:id="JFXBtnAccept" buttonType="RAISED" layoutX="511.0" layoutY="452.0" maxHeight="30.0" minHeight="-Infinity" onAction="#onBtnAcceptPressed" prefHeight="25.0" prefWidth="78.0" style="-fx-background-color: #029e99;" text="Accept" textFill="WHITE">
+      <Label id="lblTealBkgrnd" layoutX="524.0" layoutY="271.0" text="Guilds:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></Label>
+      <JFXButton id="btnConfirmTeal" fx:id="JFXBtnAccept" buttonType="RAISED" layoutX="526.0" layoutY="448.0" maxHeight="25.0" minHeight="25.0" onAction="#onBtnAcceptPressed" prefHeight="25.0" text="Accept" textFill="WHITE">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
+         <font>
+            <Font size="15.0" />
+         </font>
       </JFXButton>
-      <JFXButton fx:id="JFXBtnCancel" buttonType="RAISED" layoutX="603.0" layoutY="452.0" maxHeight="30.0" minHeight="-Infinity" onAction="#onBtnCancelPressed" prefHeight="25.0" prefWidth="78.0" style="-fx-background-color: B0B0B0;" text="Cancel" textFill="WHITE">
+      <JFXButton id="btnCancelGrey" fx:id="JFXBtnCancel" buttonType="RAISED" layoutX="611.0" layoutY="448.0" maxHeight="25.0" minHeight="25.0" onAction="#onBtnCancelPressed" prefHeight="25.0" text="Cancel" textFill="WHITE">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
+         <font>
+            <Font size="15.0" />
+         </font>
       </JFXButton>
       <JFXListView fx:id="listGuilds" layoutX="524.0" layoutY="288.0" prefHeight="145.0" prefWidth="141.0" style="-fx-border-image-width: 0px;" />
-      <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="530.0" layoutY="215.0" maxHeight="30.0" minHeight="-Infinity" onAction="#openPasswordChangerEvent" prefHeight="25.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Change Password" textFill="WHITE">
+      <JFXButton id="btnConfirmDarkTeal" fx:id="btnChangePassword" buttonType="RAISED" layoutX="530.0" layoutY="215.0" maxHeight="30.0" minHeight="-Infinity" onAction="#openPasswordChangerEvent" prefHeight="25.0" prefWidth="141.0" text="Change Password" textFill="WHITE">
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </padding>
+         <font>
+            <Font size="15.0" />
+         </font>
       </JFXButton>
       <StackPane fx:id="stckPanePasswordChanger" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false">
          <children>

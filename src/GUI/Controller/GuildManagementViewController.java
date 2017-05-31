@@ -102,7 +102,7 @@ public class GuildManagementViewController implements Initializable
 
     void setListItems()
     {
-        listGuilds.setItems(FXCollections.observableArrayList(modelFacade.getAllSavedGuilds()));
+        listGuilds.setItems(modelFacade.getAllSavedGuilds());
     }
 
     @FXML

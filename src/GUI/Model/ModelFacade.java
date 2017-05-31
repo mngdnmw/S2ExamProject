@@ -9,9 +9,11 @@ import BLL.BLLFacade;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import javafx.animation.FadeTransition;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.chart.XYChart;
 import javafx.scene.image.Image;
@@ -198,29 +200,34 @@ public class ModelFacade
     }
 
     //Volunteer data model
-    public List<Day> getWorkedDays(User user)
+    public ObservableList<Day> getWorkedDays(User user)
     {
         return VOL_DATA_MOD.getWorkedDays(user);
     }
 
-    public List<User> getAllSavedVolunteers()
+    public ObservableList<User> getAllSavedVolunteers()
     {
         return VOL_DATA_MOD.getAllSavedVolunteers();
     }
 
-    public List<User> getAllSavedManagers()
+    public ObservableList<User> getAllSavedManagers()
     {
         return VOL_DATA_MOD.getAllSavedManagers();
     }
 
-    public List<User> getAllSavedAdmins()
+    public ObservableList<User> getAllSavedAdmins()
     {
         return VOL_DATA_MOD.getAllSavedAdmins();
     }
 
-    public List<Guild> getAllSavedGuilds()
+    public ObservableList<Guild> getAllSavedGuilds()
     {
         return VOL_DATA_MOD.getAllSavedGuilds();
+    }
+
+    public ObservableList<User> getAllSavedUsers()
+    {
+        return VOL_DATA_MOD.getAllSavedUsers();
     }
 
     public void setAllVolunteersIntoArray()
@@ -231,11 +238,6 @@ public class ModelFacade
     public void setAllManagersIntoArray()
     {
         VOL_DATA_MOD.setAllManagersIntoArray();
-    }
-
-    public List<User> getAllSavedUsers()
-    {
-        return VOL_DATA_MOD.getAllSavedUsers();
     }
 
     public void setAllGuildsIntoArray()
@@ -294,9 +296,9 @@ public class ModelFacade
         VOL_DATA_MOD.deleteWorkedDay(user, day);
     }
 
-    public List<XYChart.Series<Number, Number>> graphSort(Guild guild)
+    public List<XYChart.Series<String, Number>> graphSort(Guild guild, LocalDate periodOne, LocalDate periodTwo)
     {
-        return GRAPH_MOD.sortGraph(guild);
+        return GRAPH_MOD.sortGraph(guild, periodOne, periodTwo);
     }
 
     public void editHours(String username, String date, int hours, int guildId)
@@ -318,6 +320,7 @@ public class ModelFacade
     {
         return BLL_FAC.getAllEvents();
     }
+
 
     public User getUserFromUsername(String username)
     {
