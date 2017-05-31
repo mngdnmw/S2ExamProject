@@ -130,7 +130,7 @@
       <ImageView fx:id="imgVwProfilePic" fitHeight="143.0" fitWidth="141.0" layoutX="536.0" layoutY="26.0" pickOnBounds="true" AnchorPane.rightAnchor="33.0">
 
          <image>
-            <Image url="@../Images/labeouf.jpg" />
+            <Image url="@../Images/StandardProfile.png" />
          </image>
          <effect>
             <Reflection fraction="0.11" topOffset="-4.0" topOpacity="0.35" />
@@ -217,7 +217,7 @@
             <Font name="System Bold" size="15.0" />
          </font></Label>
       
-      <StackPane fx:id="stckPanePasswordChanger" layoutX="-25.0" prefHeight="510.0" prefWidth="710.0" style="-fx-background-color: rgba(0,0,0,0.5);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane fx:id="stckPanePasswordChanger" layoutX="-25.0" prefHeight="510.0" prefWidth="710.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="200.0" prefWidth="463.0" spacing="10.0" styleClass="loginwindow" stylesheets="@MainLayout.css">
                <children>

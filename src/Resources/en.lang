@@ -71,8 +71,10 @@ LBL_NOTES = Notes:
 COL_NAME = Name
 COL_PHONE = Phone
 COL_EMAIL = Email
-TAB_VOLUN_INFO = Volunteer Information
-TAB_GRAPH_STATS = Graphs & statistics
+TAB_VOLUN_INFO = User Information
+TAB_GRAPH_STATS = Graphs and Statistics
+TAB_LOG_EVENTS = Log Events
+TAB_GUILD = Guild Management
 
 #ErrorCode
 STR_NO_ERROR_CONTRIBUTION = Your hours have been logged. Thank you!

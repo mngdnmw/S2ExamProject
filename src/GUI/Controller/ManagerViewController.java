@@ -205,11 +205,11 @@ public class ManagerViewController implements Initializable
                 @Override
                 protected Object call() throws Exception
                 {
-
+                    setTableItems();
                     MOD_FAC.setAllAdminsIntoArray();
                     MOD_FAC.setAllManagersIntoArray();
                     MOD_FAC.setAllVolunteersIntoArray();
-                    setTableItems();
+
                     return null;
 
                 }
@@ -232,10 +232,10 @@ public class ManagerViewController implements Initializable
             cmbGuildChooser.setItems(FXCollections.observableArrayList(MOD_FAC.getCurrentUser().getGuildList()));
         }
         setTableProperties();
-        setTableItems();
         setupTableView("Loading Information");
         serviceInitializer.start();
         serviceInitializer.setOnSucceeded(e -> setupTableView("No Data :("));
+        serviceInitializer.setOnFailed(e-> setupTableView("Error: Try Again"));
         cmbBoxListeners();
         if (MOD_FAC.getCurrentUser().getType() >= 2)
         {

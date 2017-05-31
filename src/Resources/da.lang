@@ -68,8 +68,11 @@ LBL_NOTES = Noter:
 COL_NAME = Navn
 COL_PHONE = Telefon
 COL_EMAIL = Email
-TAB_VOLUN_INFO = Volunteer Information
-TAB_GRAPH_STATS = Graphs & statistics
+TAB_VOLUN_INFO = Bruger Information
+TAB_GRAPH_STATS = Graf og Statistikker
+TAB_LOG_EVENTS = Logbog
+TAB_GUILD = Laug Management
+
 #ErrorCode
 STR_NO_ERROR_CONTRIBUTION = Dine timer er blevet registreret! Tak for hjælpen!
 STR_ERROR_2627 = Fejl: Timer er allerede blevet tilføjet til denne guild idag.

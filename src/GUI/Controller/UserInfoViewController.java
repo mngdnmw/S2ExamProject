@@ -178,7 +178,7 @@ public class UserInfoViewController implements Initializable
     boolean firstRun;
     boolean editPopup = false;
     private static final DataFormat SERIALIZED_MIME_TYPE = new DataFormat("application/x-java-serialized-object");
-
+    private Image profileImage;
     private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
 
     private final Service serviceSavePicture = new Service()
@@ -222,11 +222,10 @@ public class UserInfoViewController implements Initializable
                 @Override
                 protected Object call() throws Exception
                 {
-                    if (firstRun)
+                    if (profileImage == null)
                     {
                         setUserImage();
                     }
-
                     filteredData = new FilteredList<>(MOD_FACADE.getWorkedDays(currentUser), p -> true);
                     firstRun = false;
                     return null;
@@ -256,7 +255,14 @@ public class UserInfoViewController implements Initializable
                 -> System.out.println("Error"));
 
         serviceInitializer.setOnSucceeded(e
-                -> setupTableView("Found Nothing :("));
+                -> 
+                {
+                    setupTableView("Found Nothing :(");
+                    if (profileImage != null)
+                    {
+                        imgVwProfilePic.setImage(profileImage);
+                    }
+        });
 
         imgVwDel.setOnDragOver(event
                 -> 
@@ -576,11 +582,11 @@ public class UserInfoViewController implements Initializable
                 };
         c.setSelectedExtensionFilter(new ExtensionFilter("Image files only", extensions));
         newImg = c.showOpenDialog(btnUpdatePhoto.getScene().getWindow());
-        serviceSavePicture.start();
+        serviceSavePicture.restart();
         serviceSavePicture.setOnSucceeded(e
                 -> 
                 {
-                    firstRun = true;
+                    profileImage = null;
                     serviceInitializer.restart();
         });
 
@@ -588,11 +594,9 @@ public class UserInfoViewController implements Initializable
 
     public void setUserImage()
     {
-        if (MOD_FACADE.getUserImage(currentUser) != null)
-        {
-            imgVwProfilePic.setImage(new Image(MOD_FACADE.getUserImage(currentUser)));
 
-        }
+        profileImage = new Image(MOD_FACADE.getUserImage(currentUser));
+
     }
 
     private void addCancelButton()
