@@ -36,7 +36,7 @@
                                 <String fx:value="JFXButtonLogHours" />
                             </styleClass>
                         </JFXButton>
-                        <JFXButton fx:id="btnSeeInfo" buttonType="RAISED" defaultButton="true" onAction="#LogInAction" prefHeight="150.0" prefWidth="150.0" ripplerFill="WHITE" stylesheets="@MainLayout.css" text="See Info" textFill="WHITE">
+                        <JFXButton fx:id="btnSeeInfo" buttonType="RAISED" defaultButton="true" onAction="#logInAction" prefHeight="150.0" prefWidth="150.0" ripplerFill="WHITE" stylesheets="@MainLayout.css" text="See Info" textFill="WHITE">
                             <font>
                                 <Font name="System Bold Italic" size="23.0" />
                             </font>
@@ -138,9 +138,9 @@
                                                 <Insets top="20.0" />
                                             </HBox.margin>
                                         </Label>
-                                        <JFXComboBox fx:id="cmbGuildChooser" editable="true" focusColor="#00c4ad" labelFloat="true" prefHeight="63.0" prefWidth="559.0" promptText="Choose a guild" style="-fx-font-size: 26px; -fx-text-alignment: CENTER;" unFocusColor="#797777">
+                                        <JFXComboBox fx:id="cmbGuildChooser" editable="true" focusColor="#00c4ad" labelFloat="true" prefHeight="63.0" prefWidth="548.0" promptText="Choose a guild" style="-fx-font-size: 26px; -fx-text-alignment: CENTER;" unFocusColor="#797777">
                                             <HBox.margin>
-                                                <Insets top="8.0" />
+                                                <Insets left="5.0" top="8.0" />
                                             </HBox.margin>
                                         </JFXComboBox>
                                     </children>
@@ -161,41 +161,62 @@
             </left>
         </BorderPane>
         <AnchorPane fx:id="ancDarken" prefHeight="200.0" prefWidth="200.0" styleClass="darkenedBackground" visible="false" />
-        <VBox fx:id="loginWindow" alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="200.0" prefWidth="463.0" styleClass="loginwindow" visible="false">
+        <VBox fx:id="loginWindow" alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="200.0" prefWidth="463.0" spacing="15.0" styleClass="loginwindow" visible="false" StackPane.alignment="CENTER">
             <children>
-                <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                     <children>
-                        <Label fx:id="lblUsername" styleClass="logintextAndFontLabels" text="Username" />
-                        <JFXTextField fx:id="txtUsername" focusColor="#00e2c7" styleClass="logintextFields" />
+                        <Label fx:id="lblUsername" alignment="BOTTOM_CENTER" text="Username">
+                     <font>
+                        <Font size="16.0" />
+                     </font></Label>
+                        <JFXTextField fx:id="txtUsername" focusColor="#00e2c7" prefHeight="31.0" prefWidth="290.0" styleClass="logintextFields">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin></JFXTextField>
                     </children>
                 </HBox>
-                <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                     <children>
-                        <Label fx:id="lblPassword" styleClass="logintextAndFontLabels" text="Password" />
-                        <JFXPasswordField fx:id="txtPassword" focusColor="#00e2c7" styleClass="logintextFields" />
+                        <Label fx:id="lblPassword" alignment="BOTTOM_CENTER" text="Password">
+                     <font>
+                        <Font size="16.0" />
+                     </font></Label>
+                        <JFXPasswordField fx:id="txtPassword" focusColor="#00e2c7" prefHeight="31.0" prefWidth="290.0" styleClass="logintextFields">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin></JFXPasswordField>
                     </children>
                 </HBox>
-                <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
+                <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="10.0">
                     <children>
-                        <JFXButton fx:id="btnLogin" buttonType="RAISED" styleClass="loginbuttons" text="Login" />
-                        <JFXButton fx:id="btnCancel" buttonType="RAISED" styleClass="loginbuttons" text="Cancel" />
+                      <Label fx:id="lblWrongPass" prefHeight="25.0" prefWidth="226.0" text="Incorrect Login Information" textFill="#f50505">
+                          <font>
+                              <Font name="System Bold" size="16.0" />
+                          </font>
+                          <padding>
+                              <Insets top="5.0" />
+                          </padding>
+                      </Label>
+                        <JFXButton id="btnConfirmTeal" fx:id="btnLogin" buttonType="RAISED" stylesheets="@MainLayout.css" text="Login">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin></JFXButton>
+                        <JFXButton id="btnCancelGrey" fx:id="btnCancelLogin" buttonType="RAISED" stylesheets="@MainLayout.css" text="Cancel">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin></JFXButton>
                     </children>
-                    <padding>
-                        <Insets bottom="1.0" top="8.0" />
-                    </padding>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
                 </HBox>
-                <Label fx:id="lblWrongPass" alignment="CENTER_RIGHT" prefHeight="19.0" prefWidth="420.0" text="Wrong username or password" visible="false">
-                    <font>
-                        <Font name="System Bold" size="16.0" />
-                    </font>
-                    <padding>
-                        <Insets top="5.0" />
-                    </padding>
-                </Label>
             </children>
-            <padding>
-                <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
-            </padding>
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+         <padding>
+            <Insets bottom="20.0" />
+         </padding>
         </VBox>
     </children>
 </StackPane>
