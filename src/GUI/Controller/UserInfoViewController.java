@@ -1,4 +1,4 @@
-package GUI.Controller;
+    package GUI.Controller;
 
 import BE.Day;
 import BE.Guild;
@@ -201,8 +201,8 @@ public class UserInfoViewController implements Initializable
                         catch (FileNotFoundException e)
                         {
                             Alert a = new Alert(Alert.AlertType.ERROR);
-                            a.setHeaderText("Selected image is not found");
-                            a.setContentText("File not found!");
+                            a.setHeaderText(MOD_FACADE.getLang("STR_ERROR_FILE_NOT_FOUND_HEAD"));
+                            a.setContentText(MOD_FACADE.getLang("STR_ERROR_FILE_NOT_FOUND"));
                         }
                     }
                     return null;
@@ -249,14 +249,14 @@ public class UserInfoViewController implements Initializable
         createEditFields();
         setTextAll();
         setupGuildList();
-        setupTableView("Looking For Data");
+        setupTableView(MOD_FACADE.getLang("TBL_LOADING"));
         searchListener();
         serviceInitializer.start();
         serviceInitializer.setOnFailed(e
                 -> System.out.println("Error"));
 
         serviceInitializer.setOnSucceeded(e
-                -> setupTableView("Found Nothing :("));
+                -> setupTableView(MOD_FACADE.getLang("TBL_NO_DATA")));
 
         imgVwDel.setOnDragOver(event
                 -> 
@@ -477,7 +477,7 @@ public class UserInfoViewController implements Initializable
         {
             if (isIncorrect && btnEditSave.isDisabled())
             {
-                MOD_FACADE.timedSnackbarPopup("Please enter valid information in the fields!",root, 5000);
+                MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("SNACK_INVALID_INFO"),root, 5000);
                 return;
             }
             saveInfo(currentUser);
@@ -566,14 +566,14 @@ public class UserInfoViewController implements Initializable
 
     {
         FileChooser c = new FileChooser();
-        c.setTitle("Select a new image");
+        c.setTitle(MOD_FACADE.getLang("IMG_CH_TITLE"));
         String[] extensions
                 =
 
                 {
-                    "jpg", "jpeg", "png", "gif"
+                    "*.jpg", "*.jpeg", "*.png"
                 };
-        c.setSelectedExtensionFilter(new ExtensionFilter("Image files only", extensions));
+        c.setSelectedExtensionFilter(new ExtensionFilter(MOD_FACADE.getLang("IMG_CH_EXT_FILTER"), extensions));
         newImg = c.showOpenDialog(btnUpdatePhoto.getScene().getWindow());
         serviceSavePicture.start();
         serviceSavePicture.setOnSucceeded(e
@@ -688,23 +688,23 @@ public class UserInfoViewController implements Initializable
         }
         if (count > 0)
         {
-            MOD_FACADE.timedSnackbarPopup("Password has succesfully changed", root, 5000);
+            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("SNACK_PW_CHANGE_SUCCESS"), root, 5000);
             hidePasswordChangerEvent();
             MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), currentUser.getName() + " changed his/her password."));
         }
 
         else if (count == -1)
         {
-            MOD_FACADE.timedSnackbarPopup("Old password is the same as new password", root, 5000);
+            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("SNACK_PW_OLD_NEW_SAME"), root, 5000);
         }
         else if (count == -2)
         {
-            MOD_FACADE.timedSnackbarPopup("Password do not match", root, 5000);
+            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("SNACK_PW_NO_MATCH"), root, 5000);
         }
 
         else
         {
-            MOD_FACADE.timedSnackbarPopup("Old password is incorrect", root, 5000);
+            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("SNACK_PW_INCORRECT_OLD"), root, 5000);
         }
 
     }
@@ -818,12 +818,12 @@ public class UserInfoViewController implements Initializable
                     {
                         if (Integer.parseInt(newValue) >= 25)
                         {
-                            MOD_FACADE.snackbarPopup("You cannot exceed 24 hours", root);
+                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("SNACK_PLUS24_HOURS"), root);
                             txtfldHoursInPop.setText(oldValue);
                         }
                         else if (Integer.parseInt(newValue) <= 0)
                         {
-                            MOD_FACADE.snackbarPopup("You cannot log 0 hours",root);
+                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("SNACK_NO_ZERO_HOURS"),root);
                             txtfldHoursInPop.setText(oldValue);
                         }
                         else
@@ -899,7 +899,7 @@ public class UserInfoViewController implements Initializable
 
             if (txtfldHoursInPop.getText().isEmpty())
             {
-                MOD_FACADE.snackbarPopup("Invalid Action",root);
+                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("SNACK_INVALID_ACTION"),root);
             }
             else
             {
@@ -934,12 +934,14 @@ public class UserInfoViewController implements Initializable
                 {
                     MOD_FACADE.logWorkDay(currentUser.getEmail(), date, hours, guildID);
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " added " + hours + " working hours to guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
+                    errorCode = 0;
                 }
                 else
                 {
 
                     MOD_FACADE.editHours(currentUser.getEmail(), date, hours, guildID);
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " edited his/her working hours to " + hours + " in guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
+                    errorCode = 0;
                 }
                 stckLoadScreen.setVisible(false);
 
@@ -953,12 +955,14 @@ public class UserInfoViewController implements Initializable
                 {
                     MOD_FACADE.logWorkDay(currentUser.getPhone() + "", date, hours, guildID);
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " added " + hours + " working hours to guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
+                    errorCode = 0;
                 }
                 else
                 {
 
                     MOD_FACADE.editHours(currentUser.getPhone() + "", date, hours, guildID);
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " edited his/her working hours to " + hours + " in guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
+                    errorCode = 0;
                 }
                 stckLoadScreen.setVisible(false);
                 contributionSnackBarHandler(errorCode);
@@ -968,7 +972,7 @@ public class UserInfoViewController implements Initializable
 
         else
         {
-            MOD_FACADE.snackbarPopup("Please input information in all fields",root);
+            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("SNACK_EMPTY_FIELD"),root);
         }
 
     }

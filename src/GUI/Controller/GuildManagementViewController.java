@@ -128,7 +128,7 @@ public class GuildManagementViewController implements Initializable
 
         else
         {
-            modelFacade.snackbarPopup("Guild to modify not selected",rootPane);
+            modelFacade.snackbarPopup(modelFacade.getLang("SNACK_NO_GUILD_SELECTED"),rootPane);
         }
 
     }

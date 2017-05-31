@@ -199,12 +199,12 @@ public class ManagerEditViewController implements Initializable
     {
         setText();
         listGuilds.setItems(FXCollections.observableArrayList(selectedUser.getGuildList()));
-        setupTableView("Looking for data");
+        setupTableView(MOD_FACADE.getLang("TBL_LOADING"));
 
         serviceInitializer.start();
         setUserImage();
         serviceInitializer.setOnSucceeded(e
-                -> setupTableView("Found Nothing :("));
+                -> setupTableView(MOD_FACADE.getLang("TBL_NO_DATA")));
 //        if (selectedUser.getType() >= 1)
 //        {
 //            serviceAllVolunteers.start();
@@ -246,14 +246,14 @@ public class ManagerEditViewController implements Initializable
     private void onBtnUpdatePhotoPressed(ActionEvent event)
     {
         FileChooser c = new FileChooser();
-        c.setTitle("Select a new image");
+        c.setTitle(MOD_FACADE.getLang("IMG_CH_TITLE"));
         String[] extensions
                 =
 
                 {
-                    "*.jpg", "*.jpeg", "*.png", "*.gif"
+                    "*.jpg", "*.jpeg", "*.png"
                 };
-        c.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Image files only", extensions));
+        c.setSelectedExtensionFilter(new FileChooser.ExtensionFilter(MOD_FACADE.getLang("IMG_CH_EXT_FILTER"), extensions));
         File newImg = c.showOpenDialog(JFXBtnUpdatePhoto.getScene().getWindow());
 
         if (newImg != null)
@@ -266,8 +266,8 @@ public class ManagerEditViewController implements Initializable
             {
                 System.out.println(e);
                 Alert a = new Alert(Alert.AlertType.ERROR);
-                a.setHeaderText("Selected image is not found");
-                a.setContentText("File not found!");
+                a.setHeaderText(MOD_FACADE.getLang("STR_ERROR_FILE_NOT_FOUND_HEAD"));
+                a.setContentText(MOD_FACADE.getLang("STR_ERROR_FILE_NOT_FOUND"));
             }
         }
         setUserImage();
@@ -325,13 +325,13 @@ public class ManagerEditViewController implements Initializable
         }
         if (count > 0)
         {
-            MOD_FACADE.timedSnackbarPopup("Password has succesfully changed", root, 5000);
+            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("SNACK_PW_CHANGE_SUCCESS"), root, 5000);
             hidePasswordChangerEvent();
 
         }
         else if (count == -1)
         {
-        MOD_FACADE.timedSnackbarPopup("Password do not match", root, 5000);
+        MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("SNACK_PW_NO_MATCH"), root, 5000);
         }
         /*else
         {
@@ -428,9 +428,9 @@ public class ManagerEditViewController implements Initializable
     {
 
         ContextMenu popupContext = new ContextMenu();
-        MenuItem editDay = new MenuItem("Edit");
+        MenuItem editDay = new MenuItem(MOD_FACADE.getLang("BTN_EDIT"));
         popupContext.getItems().add(editDay);
-        MenuItem deleteDay = new MenuItem("Delete");
+        MenuItem deleteDay = new MenuItem(MOD_FACADE.getLang("BTN_DELETE"));
         popupContext.getItems().add(deleteDay);
 
         tblMain.setContextMenu(popupContext);
@@ -478,7 +478,7 @@ public class ManagerEditViewController implements Initializable
 
                 MOD_FACADE.deleteWorkedDay(selectedUser, selectedDay);
 
-                MOD_FACADE.snackbarPopup("Contribution for " + selectedDay.getGuild() + " on the " + selectedDay.getDate() + " has been deleted.",root);
+                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("SNACK_HOUR_DELETE_1") + selectedDay.getGuild() + MOD_FACADE.getLang("SNACK_HOUR_DELETE_2") + selectedDay.getDate() + MOD_FACADE.getLang("SNACK_HOUR_DELETE_3"),root);
                 serviceInitializer.restart();
             }
 
@@ -503,13 +503,13 @@ public class ManagerEditViewController implements Initializable
                     {
                         if (Integer.parseInt(newValue) >= 25)
                         {
-                            MOD_FACADE.snackbarPopup("You cannot exceed 24 hours",root);
+                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("SNACK_PLUS24_HOURS"),root);
 
                             txtfldHours.setText(oldValue);
                         }
                         else if (Integer.parseInt(newValue) <= 0)
                         {
-                            MOD_FACADE.snackbarPopup("You cannot log 0 hours",root);
+                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("SNACK_NO_ZERO_HOURS"),root);
                             txtfldHours.setText(oldValue);
                         }
                         else
@@ -653,7 +653,7 @@ public class ManagerEditViewController implements Initializable
 
             if (txtfldHours.getText().isEmpty())
             {
-                MOD_FACADE.snackbarPopup("Invalid Action",root);
+                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("SNACK_INVALID_ACTION"),root);
             }
             else
             {
@@ -721,7 +721,7 @@ public class ManagerEditViewController implements Initializable
 
         else
         {
-            MOD_FACADE.snackbarPopup("Please input information in all fields",root);
+            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("SNACK_EMPTY_FIELD"),root);
         }
     }
 

@@ -224,8 +224,8 @@ public class ManagerViewController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        xAxis.setLabel("Month");
-        yAxis.setLabel("Hours Contributed");
+        xAxis.setLabel(MOD_FAC.getLang("TAB_MONTH"));
+        yAxis.setLabel(MOD_FAC.getLang("STR_AXIS_HOURS"));
         setTextAll(); //this has to run before setting currently logged in username
         if (MOD_FAC.getCurrentUser() != null)
         {
@@ -234,9 +234,9 @@ public class ManagerViewController implements Initializable
         }
         setTableProperties();
         setTableItems();
-        setupTableView("Loading Information");
+        setupTableView(MOD_FAC.getLang("TBL_LOADING"));
         serviceInitializer.start();
-        serviceInitializer.setOnSucceeded(e -> setupTableView("No Data :("));
+        serviceInitializer.setOnSucceeded(e -> setupTableView(MOD_FAC.getLang("TBL_NO_DATA")));
         cmbBoxListeners();
         if (MOD_FAC.getCurrentUser().getType() >= 2)
         {
@@ -244,7 +244,7 @@ public class ManagerViewController implements Initializable
             chkManagers.setVisible(true);
             chkVolunteers.setVisible(true);
             ObservableList guildList = FXCollections.observableArrayList();
-            guildList.add(new Guild(-1, "All Guilds"));
+            guildList.add(new Guild(-1, MOD_FAC.getLang("GUILD_ALL")));
             guildList.addAll(MOD_FAC.getAllSavedGuilds());
 
             cmbGuildChooser.setItems(guildList);
@@ -535,7 +535,7 @@ public class ManagerViewController implements Initializable
         }
         else
         {
-            MOD_FAC.snackbarPopup("You need to select a user first.", root);
+            MOD_FAC.snackbarPopup(MOD_FAC.getLang("SNACK_SELECT_USER_FIRST"), root);
             System.out.println("Selected user missing");
         }
     }
@@ -601,11 +601,11 @@ public class ManagerViewController implements Initializable
         selectedUser = tblUsers.getSelectionModel().getSelectedItem();
 
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem thisEmailItem = new MenuItem("Copy this email to clipboard");
+        MenuItem thisEmailItem = new MenuItem(MOD_FAC.getLang("MENU_COPY_SINGLE"));
         contextMenu.getItems().add(thisEmailItem);
-        MenuItem allEmailItem = new MenuItem("Copy all emails to clipboard");
+        MenuItem allEmailItem = new MenuItem(MOD_FAC.getLang("MENU_COPY_ALL"));
         contextMenu.getItems().add(allEmailItem);
-        MenuItem exportData = new MenuItem("Export users in table (except notes)");
+        MenuItem exportData = new MenuItem(MOD_FAC.getLang("MENU_EXPORT"));
         contextMenu.getItems().add(exportData);
 
         tblUsers.setContextMenu(contextMenu);
@@ -677,13 +677,13 @@ public class ManagerViewController implements Initializable
     private void exportUsers()
     {
         FileChooser chooser = new FileChooser();
-        chooser.getExtensionFilters().add(new ExtensionFilter("Comma separated files", new ArrayList<String>()
+        chooser.getExtensionFilters().add(new ExtensionFilter(MOD_FAC.getLang("CSV_CH_EXT_FILTER"), new ArrayList<String>()
         {
             {
                 add("*.csv");
             }
         }));
-        chooser.setTitle("Choose where to export CSV file");
+        chooser.setTitle(MOD_FAC.getLang("CSV_CH_TITLE"));
         chooser.setInitialDirectory(new File("."));
         File chose = chooser.showSaveDialog(root.getScene().getWindow());
         if (chose != null)
@@ -826,7 +826,7 @@ public class ManagerViewController implements Initializable
                             lineChartGuildHours.getData().add(series);
                         }
                         Calendar cal = Calendar.getInstance();
-                        lineChartGuildHours.setTitle("Work contribution graph for " + cmbGuildChooser.getSelectionModel().getSelectedItem().getName() + " " + cal.get(Calendar.YEAR));
+                        lineChartGuildHours.setTitle(MOD_FAC.getLang("CHART_TITLE") + cmbGuildChooser.getSelectionModel().getSelectedItem().getName() + " " + cal.get(Calendar.YEAR));
                         stckPaneLoad.setVisible(false);
             });
             serviceGraphStats.setOnFailed(e -> stckPaneLoad.setVisible(false));

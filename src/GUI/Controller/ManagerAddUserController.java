@@ -120,7 +120,7 @@ public class ManagerAddUserController implements Initializable
         {
             if (txtPhone.getText().isEmpty() && txtEmail.getText().isEmpty())
             {
-                modelFacade.snackbarPopup("Phone number OR Email required",rootPane);
+                modelFacade.snackbarPopup(modelFacade.getLang("SNACK_PHONE_OR_EMAIL"),rootPane);
                 System.out.println("User not added: missing phone or email");
             }
             else
@@ -137,13 +137,13 @@ public class ManagerAddUserController implements Initializable
                 }
                 catch (NumberFormatException e)
                 {
-                    modelFacade.snackbarPopup("Phone number needs to contain only numbers",rootPane);
+                    modelFacade.snackbarPopup(modelFacade.getLang("SNACK_PHONE_ONLY_NUMERIC"),rootPane);
                     System.out.println("Phone number contains letters or special characters");
                 }
 
                 if (chkVolunteer.selectedProperty().get() == false && chkManager.selectedProperty().get() == false && chkAdmin.selectedProperty().get() == false)
                 {
-                    modelFacade.snackbarPopup("User type not selected",rootPane);
+                    modelFacade.snackbarPopup(modelFacade.getLang("SNACK_NO_USERTYPE"),rootPane);
                 }
 
                 else if (chkVolunteer.selectedProperty().get() == true)
@@ -238,7 +238,7 @@ public class ManagerAddUserController implements Initializable
         }
         else
         {
-            modelFacade.snackbarPopup("Name required", rootPane);
+            modelFacade.snackbarPopup(modelFacade.getLang("SNACK_NAME_REQ"), rootPane);
             System.out.println("User not added: missing name");
         }
     }
@@ -254,12 +254,12 @@ public class ManagerAddUserController implements Initializable
     private void pressedChangeImage(ActionEvent event)
     {
         FileChooser c = new FileChooser();
-        c.setTitle("Select a new image");
+        c.setTitle(modelFacade.getLang("IMG_CH_TITLE"));
         String[] extensions =
         {
-            "jpg", "jpeg", "png", "gif"
+            "*.jpg", "*.jpeg", "*.png"
         };
-        c.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Image files only", extensions));
+        c.setSelectedExtensionFilter(new FileChooser.ExtensionFilter(modelFacade.getLang("IMG_CH_EXT_FILTER"), extensions));
         newImg = c.showOpenDialog(JFXBtnAddPhoto.getScene().getWindow());
 
         if (newImg != null)

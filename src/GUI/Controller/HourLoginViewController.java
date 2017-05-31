@@ -85,10 +85,6 @@ public class HourLoginViewController implements Initializable
     private JFXButton btnIntUp;
     @FXML
     private AnchorPane ancDarken;
-    private String strLogThanks = "Thanks!";
-    private String strContribution = "Your hours have been logged. Thank you!";
-    private String strLogin = "Log In";
-    private String strCancel = "Cancel";
     private Image iconDK, iconENG;
     private final ImageView imgViewLngBut = new ImageView();
     //Models used by this Controller
@@ -174,7 +170,7 @@ public class HourLoginViewController implements Initializable
 
         else
         {
-            MOD_FACADE.snackbarPopup("Please input information in all fields", root);
+            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("SNACK_EMPTY_FIELD"), root);
         }
     }
 
@@ -206,12 +202,12 @@ public class HourLoginViewController implements Initializable
                     {
                         if (Integer.parseInt(newValue) >= 25)
                         {
-                            MOD_FACADE.snackbarPopup("You Cannot Exceed 24 hours", root);
+                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("SNACK_PLUS24_HOURS"), root);
                             txtHours.setText(oldValue);
                         }
                         else if (Integer.parseInt(newValue) <= 0)
                         {
-                            MOD_FACADE.snackbarPopup("You Cannot log 0 hours", root);
+                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("SNACK_NO_ZERO_HOURS"), root);
                             txtHours.setText(oldValue);
                         }
                         else
@@ -531,7 +527,7 @@ public class HourLoginViewController implements Initializable
 
             if (txtHours.getText().isEmpty())
             {
-                MOD_FACADE.snackbarPopup("Invalid Action",root);
+                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("SNACK_INVALID_ACTION"),root);
             }
             else
             {
@@ -589,10 +585,5 @@ public class HourLoginViewController implements Initializable
         {
             imgViewLngBut.setImage(iconDK);
         }
-        strLogThanks = "Thanks!";
-        strContribution = MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION");
-        strLogin = "Log In";
-        strCancel = "Cancel";
-
     }
 }
