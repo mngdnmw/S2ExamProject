@@ -11,7 +11,6 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXPopup;
 
-import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -178,7 +177,7 @@ public class UserInfoViewController implements Initializable
     boolean firstRun;
     boolean editPopup = false;
     private static final DataFormat SERIALIZED_MIME_TYPE = new DataFormat("application/x-java-serialized-object");
-
+    private Image profileImage;
     private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
 
     private final Service serviceSavePicture = new Service()
@@ -222,11 +221,10 @@ public class UserInfoViewController implements Initializable
                 @Override
                 protected Object call() throws Exception
                 {
-                    if (firstRun)
+                    if (profileImage == null)
                     {
                         setUserImage();
                     }
-
                     filteredData = new FilteredList<>(MOD_FACADE.getWorkedDays(currentUser), p -> true);
                     firstRun = false;
                     return null;
@@ -257,7 +255,14 @@ public class UserInfoViewController implements Initializable
                 -> System.out.println("Error"));
 
         serviceInitializer.setOnSucceeded(e
-                -> setupTableView("Found Nothing :("));
+                -> 
+                {
+                    setupTableView(MOD_FACADE.getLang("STR_SEARCH_EMPTY"));
+                    if (profileImage != null)
+                    {
+                        imgVwProfilePic.setImage(profileImage);
+                    }
+        });
 
     }
 
@@ -516,9 +521,7 @@ public class UserInfoViewController implements Initializable
         {
             if (isIncorrect && btnEditSave.isDisabled())
             {
-                JFXSnackbar b = new JFXSnackbar(root);
-                b.show("Please enter valid information in the fields!", 2000);
-                return;
+                MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_INVALID_INPUT"), root, 5000);
             }
             saveInfo(currentUser);
             editing = false;
@@ -615,23 +618,21 @@ public class UserInfoViewController implements Initializable
                 };
         c.setSelectedExtensionFilter(new ExtensionFilter("Image files only", extensions));
         newImg = c.showOpenDialog(btnUpdatePhoto.getScene().getWindow());
-        serviceSavePicture.start();
+        serviceSavePicture.restart();
         serviceSavePicture.setOnSucceeded(e
-                ->
-        {
-            firstRun = true;
-            serviceInitializer.restart();
+                -> 
+                {
+                    profileImage = null;
+                    serviceInitializer.restart();
         });
 
     }
 
     public void setUserImage()
     {
-        if (MOD_FACADE.getUserImage(currentUser) != null)
-        {
-            imgVwProfilePic.setImage(new Image(MOD_FACADE.getUserImage(currentUser)));
 
-        }
+        profileImage = new Image(MOD_FACADE.getUserImage(currentUser));
+
     }
 
     private void addCancelButton()
@@ -728,27 +729,23 @@ public class UserInfoViewController implements Initializable
         }
         if (count > 0)
         {
-            JFXSnackbar b = new JFXSnackbar(root);
-            b.show("Password has succesfully changed", 2000);
-            hidePasswordChangerEvent();
+            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_PASSWORD_CHANGE"), root, 5000);
             MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), currentUser.getName() + " changed his/her password."));
+            hidePasswordChangerEvent();
         }
 
         else if (count == -1)
         {
-            JFXSnackbar b = new JFXSnackbar(root);
-            b.show("Old password is the same as new password", 2000);
+            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_OLD_PW_MATCH_NEW"), root, 5000);
         }
         else if (count == -2)
         {
-            JFXSnackbar b = new JFXSnackbar(root);
-            b.show("Password do not match", 2000);
+            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_PW_DOESNT_MATCH"), root, 5000);
         }
 
         else
         {
-            JFXSnackbar b = new JFXSnackbar(root);
-            b.show("Old password is incorrect", 2000);
+            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_OLD_PW_WRONG"), root, 5000);
         }
 
     }
@@ -770,19 +767,6 @@ public class UserInfoViewController implements Initializable
         setupAddHoursPopup();
         stckPaneAddHours.setVisible(true);
         MOD_FACADE.fadeInTransition(Duration.millis(750), stckPaneAddHours);
-    }
-
-    public void snackBarPopup(String str)
-    {
-        int time = 3000;
-        JFXSnackbar snackbar = new JFXSnackbar(root);
-        snackbar.show(str, time);
-        PauseTransition pause = new PauseTransition(Duration.millis(time - 2000));
-        pause.setOnFinished(
-                e -> buttonsLocking(false)
-        );
-        pause.play();
-
     }
 
     public void buttonsLocking(Boolean dis)
@@ -880,13 +864,13 @@ public class UserInfoViewController implements Initializable
                     {
                         if (Integer.parseInt(newValue) >= 25)
                         {
-                            snackBarPopup("You cannot exceed 24 hours");
+                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_MAX_HOUR"), root);
 
                             txtfldHoursInPop.setText(oldValue);
                         }
                         else if (Integer.parseInt(newValue) <= 0)
                         {
-                            snackBarPopup("You cannot log 0 hours");
+                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_MIN_HOUR"), root);
                             txtfldHoursInPop.setText(oldValue);
                         }
                         else
@@ -962,7 +946,8 @@ public class UserInfoViewController implements Initializable
 
             if (txtfldHoursInPop.getText().isEmpty())
             {
-                snackBarPopup("Invalid Action");
+
+                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_INVALID_ACTION"), root);
             }
             else
             {
@@ -1006,7 +991,7 @@ public class UserInfoViewController implements Initializable
                 }
                 stckLoadScreen.setVisible(false);
 
-                contributionSnackBarHandler(errorCode);
+                 MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"),root);
 
             }
             else if (currentUser.getPhone() != 0)
@@ -1024,37 +1009,16 @@ public class UserInfoViewController implements Initializable
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " edited his/her working hours to " + hours + " in guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
                 }
                 stckLoadScreen.setVisible(false);
-                contributionSnackBarHandler(errorCode);
+                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"), root);
 
             }
         }
 
         else
         {
-            snackBarPopup("Please input information in all fields");
+            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_INVALID_INPUT"), root, 5000);
         }
 
-    }
-
-    public void contributionSnackBarHandler(int errorCode)
-    {
-        switch (errorCode)
-        {
-            case 0:
-                snackBarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"));
-                closeAddHoursPopup();
-                serviceInitializer.restart();
-                break;
-            case 1:
-                System.out.println("Error code was not correctly initialised");
-                break;
-            case 2627:
-                snackBarPopup(MOD_FACADE.getLang("STR_ERROR_2627"));
-                break;
-            default:
-                snackBarPopup(MOD_FACADE.getLang("STR_FIRST_TIME_ERROR" + errorCode));
-                break;
-        }
     }
 
     @FXML

@@ -17,6 +17,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.chart.XYChart;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
@@ -68,6 +69,7 @@ public class ModelFacade
         LOG_MOD.setCurrentUser(currentUser);
     }
 
+    //Animation Model
     /**
      * Enters ModelFacade: A fade out transition that needs a Duration and it
      * fades out a given Node.
@@ -76,10 +78,19 @@ public class ModelFacade
      * @param node
      * @return
      */
-    //Animation Model
     public FadeTransition fadeInTransition(Duration dur, Node node)
     {
         return ANIM_MOD.fadeInTransition(dur, node);
+    }
+
+    public void timedSnackbarPopup(String str, Pane parent, int time)
+    {
+        ANIM_MOD.timedSnackbarPopup(str, parent, time);
+    }
+
+    public void snackbarPopup(String str, Pane parent)
+    {
+        ANIM_MOD.snackbarPopup(str, parent);
     }
 
     /**
@@ -311,7 +322,6 @@ public class ModelFacade
     {
         return BLL_FAC.getAllEvents();
     }
-
 
     public User getUserFromUsername(String username)
     {

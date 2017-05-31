@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.HourLoginViewController">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.HourLoginViewController">
     <children>
         <BorderPane prefHeight="600.0" prefWidth="822.0" style="-fx-background-color: FFFFFF;">
             <bottom>
@@ -189,14 +189,6 @@
                 </HBox>
                 <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="10.0">
                     <children>
-                      <Label fx:id="lblWrongPass" prefHeight="25.0" prefWidth="226.0" text="Incorrect Login Information" textFill="#f50505" visible="false">
-                          <font>
-                              <Font name="System Bold" size="16.0" />
-                          </font>
-                          <padding>
-                              <Insets top="5.0" />
-                          </padding>
-                      </Label>
                         <JFXButton id="btnConfirmTeal" fx:id="btnLogin" buttonType="RAISED" stylesheets="@MainLayout.css" text="Login">
                      <HBox.margin>
                         <Insets right="20.0" />
