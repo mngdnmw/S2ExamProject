@@ -25,7 +25,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" maxHeight="490.0" minHeight="490.0" prefHeight="490.0" prefWidth="710.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
+<AnchorPane id="AnchorPane" fx:id="root" maxHeight="490.0" minHeight="490.0" prefHeight="490.0" prefWidth="710.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
 
 
 
@@ -130,7 +130,7 @@
       <ImageView fx:id="imgVwProfilePic" fitHeight="143.0" fitWidth="141.0" layoutX="536.0" layoutY="26.0" pickOnBounds="true" AnchorPane.rightAnchor="33.0">
 
          <image>
-            <Image url="@../Images/labeouf.jpg" />
+            <Image url="@../Images/StandardProfile.png" />
          </image>
          <effect>
             <Reflection fraction="0.11" topOffset="-4.0" topOpacity="0.35" />

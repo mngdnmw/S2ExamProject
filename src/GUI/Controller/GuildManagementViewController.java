@@ -128,7 +128,8 @@ public class GuildManagementViewController implements Initializable
 
         else
         {
-            modelFacade.snackbarPopup(modelFacade.getLang("SNACK_NO_GUILD_SELECTED"),rootPane);
+            
+            modelFacade.snackbarPopup(modelFacade.getLang("STR_GUILD_NOT_SELECTED"), rootPane);
         }
 
     }
@@ -167,6 +168,7 @@ public class GuildManagementViewController implements Initializable
         stckPaneNew.setVisible(false);
     }
 
+    
     @FXML
     private void onListViewPressed(MouseEvent event)
     {

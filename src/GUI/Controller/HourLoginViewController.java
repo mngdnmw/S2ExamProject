@@ -6,15 +6,14 @@ import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -170,7 +169,7 @@ public class HourLoginViewController implements Initializable
 
         else
         {
-            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("SNACK_EMPTY_FIELD"), root);
+            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_MORE_INFO"), root);
         }
     }
 
@@ -202,12 +201,12 @@ public class HourLoginViewController implements Initializable
                     {
                         if (Integer.parseInt(newValue) >= 25)
                         {
-                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("SNACK_PLUS24_HOURS"), root);
+                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_MAX_HOUR"), root);
                             txtHours.setText(oldValue);
                         }
                         else if (Integer.parseInt(newValue) <= 0)
                         {
-                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("SNACK_NO_ZERO_HOURS"), root);
+                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_MIN_HOUR"), root);
                             txtHours.setText(oldValue);
                         }
                         else
@@ -448,7 +447,7 @@ public class HourLoginViewController implements Initializable
                 }
                 else
                 {
-                    lblWrongPass.visibleProperty().set(true);
+                    MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_WRONG_PW"), root);
                 }
                 loadingScreen(false);
             }
@@ -464,21 +463,15 @@ public class HourLoginViewController implements Initializable
         String dateString = sdf.format(date);
         MOD_FACADE.setErrorCode(0);
         MOD_FACADE.logWorkDay(username, dateString, hours, guildID);
+        MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getUserFromUsername(username).getName() + " logged " + hours + " hours to guild " + MOD_FACADE.getGuild(guildID).getName() + "."));
+
         Platform.runLater(new Runnable()
         {
             @Override
             public void run()
             {
-                if (MOD_FACADE.getErrorString() == null)
-                {
-                    MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"),root);
-                    MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getUserFromUsername(username).getName() + " logged " + hours + " hours to guild " + MOD_FACADE.getGuild(guildID).getName() + "."));
-                }
-                else
-                {
-                    MOD_FACADE.snackbarPopup(MOD_FACADE.getLang(MOD_FACADE.getErrorString()),root);
-                }
-
+                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"), root);
+                
                 loadingScreen(false);
                 buttonsLocking(false);
             }
@@ -527,7 +520,7 @@ public class HourLoginViewController implements Initializable
 
             if (txtHours.getText().isEmpty())
             {
-                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("SNACK_INVALID_ACTION"),root);
+                 MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_INVALID_ACTION"),root);
             }
             else
             {

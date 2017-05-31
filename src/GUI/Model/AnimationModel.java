@@ -18,10 +18,10 @@ public class AnimationModel
 
     private final Image loaderImage = new Image("/Resources/animal.gif");
 
-    private  StackPane stackPane;
-    private  ImageView imgViewLoader;
-    private  VBox vBoxcontainer;
-    private  Label lblConnecting;
+    private StackPane stackPane;
+    private ImageView imgViewLoader;
+    private VBox vBoxcontainer;
+    private Label lblConnecting;
 
     public AnimationModel()
     {
@@ -86,19 +86,33 @@ public class AnimationModel
         return stackPane;
     }
 
-    public void snackbarPopup(String str, Pane parent) {
+    public void snackbarPopup(String str, Pane parent)
+    {
         int time = 6000;
-        JFXSnackbar snackbar = new JFXSnackbar(parent);    
-        if(ModelFacade.getModelFacade().getErrorString()==null){
-        snackbar.show(str, time);
-        }
-        else{
-        snackbar.show(ModelFacade.getModelFacade().getLang(ModelFacade.getModelFacade().getErrorString()), time);
-        }
-    }
-    
-    public void timedSnackbarPopup(String str, Pane parent, int time) {
         JFXSnackbar snackbar = new JFXSnackbar(parent);
-        snackbar.show(str, time);
+        String errorString = ModelFacade.getModelFacade().getErrorString();
+        if (errorString == null)
+        {
+            snackbar.show(str, time);
+        }
+        else
+        {
+            snackbar.show(ModelFacade.getModelFacade().getLang(errorString), time);
+        }
     }
+
+    public void timedSnackbarPopup(String str, Pane parent, int time)
+    {
+        JFXSnackbar snackbar = new JFXSnackbar(parent);
+        String errorString = ModelFacade.getModelFacade().getErrorString();
+        if (errorString == null)
+        {
+            snackbar.show(str, time);
+        }
+        else
+        {
+            snackbar.show(ModelFacade.getModelFacade().getLang(errorString), time);
+        }
+    }
+
 }

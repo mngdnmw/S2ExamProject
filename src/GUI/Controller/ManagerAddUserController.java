@@ -67,7 +67,7 @@ public class ManagerAddUserController implements Initializable
     @FXML
     private JFXCheckBox chkAdmin;
 
-    ModelFacade modelFacade = ModelFacade.getModelFacade();
+    ModelFacade MOD_FAC = ModelFacade.getModelFacade();
 
     File newImg = null;
 
@@ -83,7 +83,7 @@ public class ManagerAddUserController implements Initializable
                 protected Object call() throws Exception
 
                 {
-                    modelFacade.getAllVolunteers();
+                    MOD_FAC.getAllVolunteers();
                     return null;
 
                 }
@@ -99,7 +99,7 @@ public class ManagerAddUserController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
     {
         setListView();
-        if (modelFacade.getCurrentUser().getType() == 1)
+        if (MOD_FAC.getCurrentUser().getType() == 1)
         {
             chkManager.disableProperty().set(true);
             chkAdmin.disableProperty().set(true);
@@ -108,7 +108,7 @@ public class ManagerAddUserController implements Initializable
 
     private void setListView()
     {
-        ObservableList<Guild> items = FXCollections.observableArrayList(modelFacade.getAllSavedGuilds());
+        ObservableList<Guild> items = FXCollections.observableArrayList(MOD_FAC.getAllSavedGuilds());
         listViewGuilds.setItems(items);
     }
 
@@ -120,8 +120,7 @@ public class ManagerAddUserController implements Initializable
         {
             if (txtPhone.getText().isEmpty() && txtEmail.getText().isEmpty())
             {
-                modelFacade.snackbarPopup(modelFacade.getLang("SNACK_PHONE_OR_EMAIL"),rootPane);
-                System.out.println("User not added: missing phone or email");
+                MOD_FAC.snackbarPopup(MOD_FAC.getLang("STR_PHONE_OR_EMAIL_REQUIRED"), rootPane);
             }
             else
             {
@@ -137,19 +136,18 @@ public class ManagerAddUserController implements Initializable
                 }
                 catch (NumberFormatException e)
                 {
-                    modelFacade.snackbarPopup(modelFacade.getLang("SNACK_PHONE_ONLY_NUMERIC"),rootPane);
-                    System.out.println("Phone number contains letters or special characters");
+                    MOD_FAC.snackbarPopup(MOD_FAC.getLang("STR_PHONE_ONLY"), rootPane);
                 }
 
                 if (chkVolunteer.selectedProperty().get() == false && chkManager.selectedProperty().get() == false && chkAdmin.selectedProperty().get() == false)
                 {
-                    modelFacade.snackbarPopup(modelFacade.getLang("SNACK_NO_USERTYPE"),rootPane);
+                    MOD_FAC.snackbarPopup(MOD_FAC.getLang("STR_USER_TYPE_ERROR"), rootPane);
                 }
 
                 else if (chkVolunteer.selectedProperty().get() == true)
                 {
-                    modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
-                    StackPane loading = modelFacade.getLoadingScreen();
+                    MOD_FAC.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 0, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
+                    StackPane loading = MOD_FAC.getLoadingScreen();
                     rootPane.getChildren().add(loading);
                     AnchorPane.setTopAnchor(loading, 0.0);
                     AnchorPane.setBottomAnchor(loading, 0.0);
@@ -159,13 +157,13 @@ public class ManagerAddUserController implements Initializable
                     serviceAddNewUser.setOnSucceeded(e
                             -> 
                             {
-                                System.out.println("New Volunteer added: " + txtName.getText());
+                                MOD_FAC.snackbarPopup(MOD_FAC.getLang("STR_NEW_USER_ADD"), rootPane);
                                 Stage stage = (Stage) btnAccept.getScene().getWindow();
                                 if (newImg != null)
                                 {
                                     try
                                     {
-                                        modelFacade.updateUserImage(modelFacade.getAllUsers().get(modelFacade.getAllUsers().size() - 1), newImg);
+                                        MOD_FAC.updateUserImage(MOD_FAC.getAllUsers().get(MOD_FAC.getAllUsers().size() - 1), newImg);
                                     }
                                     catch (FileNotFoundException ex)
                                     {
@@ -179,8 +177,8 @@ public class ManagerAddUserController implements Initializable
 
                 else if (chkManager.selectedProperty().get() == true)
                 {
-                    modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 1, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
-                    StackPane loading = modelFacade.getLoadingScreen();
+                    MOD_FAC.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 1, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
+                    StackPane loading = MOD_FAC.getLoadingScreen();
                     rootPane.getChildren().add(loading);
                     rootPane.setTopAnchor(loading, 0.0);
                     rootPane.setBottomAnchor(loading, 0.0);
@@ -190,12 +188,12 @@ public class ManagerAddUserController implements Initializable
                     serviceAddNewUser.setOnSucceeded(e
                             -> 
                             {
-                                System.out.println("New Manager added: " + txtName.getText());
+                                MOD_FAC.snackbarPopup(MOD_FAC.getLang("STR_NEW_USER_ADD"), rootPane);
                                 Stage stage = (Stage) btnAccept.getScene().getWindow();
 
                                 try
                                 {
-                                    modelFacade.updateUserImage(modelFacade.getAllUsers().get(modelFacade.getAllUsers().size() - 1), newImg);
+                                    MOD_FAC.updateUserImage(MOD_FAC.getAllUsers().get(MOD_FAC.getAllUsers().size() - 1), newImg);
                                 }
                                 catch (FileNotFoundException ex)
                                 {
@@ -208,8 +206,8 @@ public class ManagerAddUserController implements Initializable
 
                 else if (chkAdmin.selectedProperty().get() == true)
                 {
-                    modelFacade.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 2, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
-                    StackPane loading = modelFacade.getLoadingScreen();
+                    MOD_FAC.addUser(txtName.getText(), txtEmail.getText(), txtPassword.getText(), 2, Integer.parseInt(txtPhone.getText()), txtAddress.getText(), txtAddress2.getText(), txtNotes.getText());
+                    StackPane loading = MOD_FAC.getLoadingScreen();
                     rootPane.getChildren().add(loading);
                     rootPane.setTopAnchor(loading, 0.0);
                     rootPane.setBottomAnchor(loading, 0.0);
@@ -219,12 +217,12 @@ public class ManagerAddUserController implements Initializable
                     serviceAddNewUser.setOnSucceeded(e
                             -> 
                             {
-                                System.out.println("New Admin added: " + txtName.getText());
+                                MOD_FAC.snackbarPopup(MOD_FAC.getLang("STR_NEW_USER_ADD"), rootPane);
                                 Stage stage = (Stage) btnAccept.getScene().getWindow();
 
                                 try
                                 {
-                                    modelFacade.updateUserImage(modelFacade.getAllUsers().get(modelFacade.getAllUsers().size() - 1), newImg);
+                                    MOD_FAC.updateUserImage(MOD_FAC.getAllUsers().get(MOD_FAC.getAllUsers().size() - 1), newImg);
                                 }
                                 catch (FileNotFoundException ex)
                                 {
@@ -238,8 +236,7 @@ public class ManagerAddUserController implements Initializable
         }
         else
         {
-            modelFacade.snackbarPopup(modelFacade.getLang("SNACK_NAME_REQ"), rootPane);
-            System.out.println("User not added: missing name");
+            MOD_FAC.snackbarPopup(MOD_FAC.getLang("STR_USER_NAME_ERROR"), rootPane);
         }
     }
 
@@ -249,17 +246,17 @@ public class ManagerAddUserController implements Initializable
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
     }
-    
+
     @FXML
     private void pressedChangeImage(ActionEvent event)
     {
         FileChooser c = new FileChooser();
-        c.setTitle(modelFacade.getLang("IMG_CH_TITLE"));
+        c.setTitle(MOD_FAC.getLang("IMG_CH_TITLE"));
         String[] extensions =
         {
             "*.jpg", "*.jpeg", "*.png"
         };
-        c.setSelectedExtensionFilter(new FileChooser.ExtensionFilter(modelFacade.getLang("IMG_CH_EXT_FILTER"), extensions));
+        c.setSelectedExtensionFilter(new FileChooser.ExtensionFilter(MOD_FAC.getLang("IMG_CH_EXT_FILTER"), extensions));
         newImg = c.showOpenDialog(JFXBtnAddPhoto.getScene().getWindow());
 
         if (newImg != null)

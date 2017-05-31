@@ -234,10 +234,10 @@ public class ManagerViewController implements Initializable
             cmbGuildChooser.setItems(FXCollections.observableArrayList(MOD_FAC.getCurrentUser().getGuildList()));
         }
         setTableProperties();
-        setTableItems();
-        setupTableView(MOD_FAC.getLang("TBL_LOADING"));
+        setupTableView("Loading Information");
         serviceInitializer.start();
-        serviceInitializer.setOnSucceeded(e -> setupTableView(MOD_FAC.getLang("TBL_NO_DATA")));
+        serviceInitializer.setOnSucceeded(e -> setupTableView(MOD_FAC.getLang("STR_SEARCH_EMPTY")));
+        serviceInitializer.setOnFailed(e -> setupTableView("Error: Try Again"));
         cmbBoxListeners();
         if (MOD_FAC.getCurrentUser().getType() >= 2)
         {
@@ -245,7 +245,7 @@ public class ManagerViewController implements Initializable
             chkManagers.setVisible(true);
             chkVolunteers.setVisible(true);
             ObservableList guildList = FXCollections.observableArrayList();
-            guildList.add(new Guild(-1, MOD_FAC.getLang("GUILD_ALL")));
+            guildList.add(new Guild(-1, MOD_FAC.getLang("STR_ALL_GUILDS")));
             guildList.addAll(MOD_FAC.getAllSavedGuilds());
 
             cmbGuildChooser.setItems(guildList);
@@ -255,6 +255,8 @@ public class ManagerViewController implements Initializable
             formatCalendar(datePickerPeriodOne);
             formatCalendar(datePickerPeriodTwo);
         }
+        colLogEventId.setSortType(TableColumn.SortType.ASCENDING);
+        tblLog.getSortOrder().add(colLogEventId);
         cmbGuildChooser.getSelectionModel().selectFirst();
 
     }
@@ -536,7 +538,7 @@ public class ManagerViewController implements Initializable
         }
         else
         {
-            MOD_FAC.snackbarPopup(MOD_FAC.getLang("SNACK_SELECT_USER_FIRST"), root);
+            MOD_FAC.snackbarPopup(MOD_FAC.getLang("STR_SELECT_USER"), root);
             System.out.println("Selected user missing");
         }
     }
@@ -602,11 +604,11 @@ public class ManagerViewController implements Initializable
         selectedUser = tblUsers.getSelectionModel().getSelectedItem();
 
         ContextMenu contextMenu = new ContextMenu();
-        MenuItem thisEmailItem = new MenuItem(MOD_FAC.getLang("MENU_COPY_SINGLE"));
+        MenuItem thisEmailItem = new MenuItem(MOD_FAC.getLang("MENU_ITEM_ONE_EMAIL"));
         contextMenu.getItems().add(thisEmailItem);
-        MenuItem allEmailItem = new MenuItem(MOD_FAC.getLang("MENU_COPY_ALL"));
+        MenuItem allEmailItem = new MenuItem(MOD_FAC.getLang("MENU_ITEM_ALL_EMAIL"));
         contextMenu.getItems().add(allEmailItem);
-        MenuItem exportData = new MenuItem(MOD_FAC.getLang("MENU_EXPORT"));
+        MenuItem exportData = new MenuItem(MOD_FAC.getLang("MENU_ITEM_EXPORT"));
         contextMenu.getItems().add(exportData);
         MenuItem exportHours = new MenuItem("Export user hours from table");
         contextMenu.getItems().add(exportHours);
@@ -626,7 +628,6 @@ public class ManagerViewController implements Initializable
                 }
 
                 clipboard.setContent(content);
-                System.out.println("This email to clipboard");
             }
         };
         thisEmailItem.setOnAction(thisEmailEvent);

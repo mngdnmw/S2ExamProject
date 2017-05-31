@@ -52,12 +52,16 @@ LBL_GUILDS = Laug:
 
 #Manager view buttons
 BTN_ADD_HOURS = Tilføj Timer
-BTN_EDIT_INFO = Ændre Information
+BTN_EDIT_INFO = Ændre Info
 BTN_STATS = Bruger Statistikker
 BTN_CLOSE = Luk
 BTN_ADD_USER = Tilføj Bruger
 CHK_MANAGERS = Managers
 CHK_VOLUNTEERS = Volunteers
+
+MENU_ITEM_ONE_EMAIL  = Kopier email til clipboard
+MENU_ITEM_ALL_EMAIL = Kopier alle emails til clipboard
+MENU_ITEM_EXPORT = Eksporter all bruger i tabellen
 
 #Manager view labels
 #Remember to leave a space after LBL_USERNAME
@@ -68,53 +72,33 @@ LBL_NOTES = Noter:
 COL_NAME = Navn
 COL_PHONE = Telefon
 COL_EMAIL = Email
-TAB_VOLUN_INFO = Volunteer Information
-TAB_GRAPH_STATS = Graphs & statistics
+TAB_VOLUN_INFO = Bruger Information
+TAB_GRAPH_STATS = Graf og Statistikker
+TAB_LOG_EVENTS = Logbog
+TAB_GUILD = Laug Management
+
 #ErrorCode
 STR_NO_ERROR_CONTRIBUTION = Dine timer er blevet registreret! Tak for hjælpen!
-STR_ERROR_2627 = Fejl: Timer er allerede blevet tilføjet til denne guild idag.
-STR_FIRST_TIME_ERROR = Fejl: Ukendt Fejl: 
+STR_ERROR_2627 = Fejl: Timer er allerede blevet tilføjet til dette laug idag.
+STR_FIRST_TIME_ERROR = Fejl: Ukendt Fejl
 
-STR_ERROR_FILE_NOT_FOUND = File not found!
-STR_ERROR_FILE_NOT_FOUND_HEAD = Selected image is not found!
-
-TBL_LOADING = Loading...
-TBL_NO_DATA = Nothing found.
-
-IMG_CH_TITLE = Select a new image file
-IMG_CH_EXT_FILTER = Image files only
-CSV_CH_TITLE = Choose where to export CSV file
-CSV_CH_EXT_FILTER = Comma separated textfiles
-
-STR_AXIS_HOURS = Hours contributed
-
-GUILD_ALL = All guilds
-#Remember to leave space behind "for"
-CHART_TITLE = Work contribution graph for 
-
-MENU_COPY_SINGLE = Copy this email to clipboard
-MENU_COPY_ALL = Copy all emails in table to clipboard
-MENU_EXPORT = Export users from table (except notes)
-
-#snackbars
-SNACK_EMPTY_FIELD = Please input information in all fields.
-SNACK_PLUS24_HOURS = You cannot exceed 24 hours.
-SNACK_NO_ZERO_HOURS = You cannot log 0 hours.
-SNACK_INVALID_ACTION = Invalid action
-SNACK_INVALID_INFO = Please enter valid information in all fields.
-SNACK_PW_CHANGE_SUCCESS = Password successfully changed.
-SNACK_PW_OLD_NEW_SAME = Old password is same as the new password.
-SNACK_PW_NO_MATCH = Passwords do not match.
-SNACK_PW_INCORRENT_OLD = Old password is incorrect.
-SNACK_SELECT_USER_FIRST = You need to select a user first.
-#Remember to leave space behind
-SNACK_HOUR_DELETE_1 = Contribution for 
-#Remember to leave space in front AND behind
-SNACK_HOUR_DELETE_2 =  on the 
-#Remember to leave space in front
-SNACK_HOUR_DELETE_3 =  has been deleted.
-SNACK_PHONE_OR_EMAIL = Phone number OR email required!
-SNACK_PHONE_ONLY_NUMERIC = Phone number needs to contain only numbers
-SNACK_NO_USERTYPE = User type not selected!
-SNACK_NAME_REQ = Name required
-SNACK_NO_GUILD_SELECTED = Guild to modify not selected
+STR_WRONG_PW = Du har brugt det forkerte kodeord
+STR_MIN_HOUR = Du kan ikke logge 0 timer
+STR_MAX_HOUR = Du kan ikke logge mere end 24 timer
+STR_MORE_INFO = Indsæt venligst information i alle felter
+STR_INVALID_ACTION = Ugyldig handling
+STR_GUILD_NOT_SELECTED = Vælg et laug at ændre
+STR_PHONE_OR_EMAIL_REQUIRED = Udfyld telefon nummer ELLER email 
+STR_PHONE_ONLY = Telefon nummer må kun indeholde tal
+STR_USER_TYPE_ERROR = Bruger type er ikke valgt
+STR_NEW_USER_ADD = Ny bruger er blevet tilføjet
+STR_USER_NAME_ERROR = Navn er nødvendigt
+STR_SEARCH_EMPTY = Søgning fandt ingenting
+STR_PASSWORD_CHANGE = Kodeord er blevet ændret
+STR_PW_DOESNT_MATCH = Kodeord er ikke ens
+STR_OLD_PW_MATCH_NEW = Det gamle kodeord matcher det nye
+STR_OLD_PW_WRONG = Det gamle kodeord er forkert
+STR_CONTRIBUTE_DELETE = Den valgte bidrag er blevet slettet
+STR_ALL_GUILDS = Alle laug
+STR_SELECT_USER = Vælg venligst en bruger først
+STR_INVALID_INPUT = Indsæt venligst gyldig information i feltet
