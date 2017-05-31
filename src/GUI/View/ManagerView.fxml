@@ -35,7 +35,7 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="678.0">
                             <children>
-                                <Label fx:id="lblNotes" layoutX="461.0" layoutY="20.0" text="Notes:">
+                                <Label id="lblTealBkgrnd" fx:id="lblNotes" layoutX="461.0" layoutY="38.0" text="Notes:">
                   
                                     <font>
                                         <Font size="20.0" />

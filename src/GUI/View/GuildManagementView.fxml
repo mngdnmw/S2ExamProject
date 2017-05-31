@@ -18,37 +18,6 @@
             <Font name="System Bold" size="15.0" />
          </font></Label>
       <JFXListView fx:id="listGuilds" layoutX="14.0" layoutY="65.0" onMousePressed="#onListViewPressed" prefHeight="290.0" prefWidth="396.0" />
-      <StackPane fx:id="stckPaneNew" layoutY="-2.0" prefHeight="404.0" prefWidth="678.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false">
-         <children>
-            <VBox alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="130.0" prefWidth="398.0" spacing="10.0" styleClass="loginwindow" stylesheets="@MainLayout.css">
-               <children>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="400.0" spacing="20.0">
-                     <children>
-                        <Label fx:id="lblGuildName" text="Guild Name">
-                           <font>
-                              <Font name="System Bold Italic" size="16.0" />
-                           </font>
-                        </Label>
-                        <JFXTextField fx:id="txtName" prefHeight="25.0" prefWidth="282.0" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
-                     <children>
-                        <JFXButton fx:id="btnAddNew" buttonType="RAISED" onAction="#btnAddNewPressed" styleClass="loginbuttons" text="Add New" visible="false" />
-                        <JFXButton fx:id="btnChange" buttonType="RAISED" onAction="#btnChangePressed" styleClass="loginbuttons" text="Change" />
-                        <JFXButton fx:id="btnCancel" buttonType="RAISED" onAction="#btnCancelPressed" styleClass="loginbuttons" text="Cancel" />
-                     </children>
-                     <padding>
-                        <Insets bottom="1.0" top="8.0" />
-                     </padding>
-                  </HBox>
-               </children>
-               <padding>
-                  <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
-               </padding>
-            </VBox>
-         </children>
-      </StackPane>
       <VBox layoutX="437.0" layoutY="67.0" prefHeight="290.0" prefWidth="218.0" spacing="10.0">
          <children>
             <JFXButton id="btnConfirmTeal" fx:id="btnModify" buttonType="RAISED" maxWidth="1.7976931348623157E308" onAction="#btnModifyPressed" text="Modify" textFill="WHITE">
@@ -68,5 +37,36 @@
             </JFXButton>
          </children>
       </VBox>
+      <StackPane fx:id="stckPaneNew" layoutY="-2.0" prefHeight="404.0" prefWidth="678.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="130.0" prefWidth="398.0" spacing="10.0" styleClass="loginwindow" stylesheets="@MainLayout.css">
+               <children>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="400.0" spacing="20.0">
+                     <children>
+                        <Label fx:id="lblGuildName" text="Guild Name">
+                           <font>
+                              <Font name="System Bold Italic" size="16.0" />
+                           </font>
+                        </Label>
+                        <JFXTextField fx:id="txtName" prefHeight="25.0" prefWidth="282.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
+                     <children>
+                        <JFXButton fx:id="btnAddNew" buttonType="RAISED" onAction="#btnAddNewPressed" styleClass="loginbuttons" text="Add New" visible="false" />
+                        <JFXButton id="btnConfirmTeal" fx:id="btnChange" buttonType="RAISED" onAction="#btnChangePressed" text="Change" />
+                        <JFXButton id="btnCancelGrey" fx:id="btnCancel" buttonType="RAISED" onAction="#btnCancelPressed" text="Cancel" />
+                     </children>
+                     <padding>
+                        <Insets bottom="1.0" top="8.0" />
+                     </padding>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </VBox>
+         </children>
+      </StackPane>
    </children>
 </AnchorPane>
