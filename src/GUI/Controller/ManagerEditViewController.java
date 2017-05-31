@@ -249,14 +249,14 @@ public class ManagerEditViewController implements Initializable
     private void onBtnUpdatePhotoPressed(ActionEvent event)
     {
         FileChooser c = new FileChooser();
-        c.setTitle("Select a new image");
+        c.setTitle(MOD_FACADE.getLang("IMG_CH_TITLE"));
         String[] extensions
                 =
 
                 {
-                    "*.jpg", "*.jpeg", "*.png", "*.gif"
+                    "*.jpg", "*.jpeg", "*.png"
                 };
-        c.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Image files only", extensions));
+        c.setSelectedExtensionFilter(new FileChooser.ExtensionFilter(MOD_FACADE.getLang("IMG_CH_EXT_FILTER"), extensions));
         File newImg = c.showOpenDialog(JFXBtnUpdatePhoto.getScene().getWindow());
 
         if (newImg != null)
@@ -269,8 +269,8 @@ public class ManagerEditViewController implements Initializable
             {
                 System.out.println(e);
                 Alert a = new Alert(Alert.AlertType.ERROR);
-                a.setHeaderText("Selected image is not found");
-                a.setContentText("File not found!");
+                a.setHeaderText(MOD_FACADE.getLang("STR_ERROR_FILE_NOT_FOUND_HEAD"));
+                a.setContentText(MOD_FACADE.getLang("STR_ERROR_FILE_NOT_FOUND"));
             }
         }
         setUserImage();
@@ -429,9 +429,9 @@ public class ManagerEditViewController implements Initializable
     {
 
         ContextMenu popupContext = new ContextMenu();
-        MenuItem editDay = new MenuItem("Edit");
+        MenuItem editDay = new MenuItem(MOD_FACADE.getLang("BTN_EDIT"));
         popupContext.getItems().add(editDay);
-        MenuItem deleteDay = new MenuItem("Delete");
+        MenuItem deleteDay = new MenuItem(MOD_FACADE.getLang("BTN_DELETE"));
         popupContext.getItems().add(deleteDay);
 
         tblMain.setContextMenu(popupContext);
@@ -693,7 +693,7 @@ public class ManagerEditViewController implements Initializable
                 else
                 {
 
-                    MOD_FACADE.editHours(selectedUser.getEmail(), date, hours, guildID);
+                    //MOD_FACADE.editHours(selectedUser.getEmail(), date, hours, guildID);
                 }
                 stckPaneLoad.setVisible(false);
                 MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"), root);
@@ -709,7 +709,7 @@ public class ManagerEditViewController implements Initializable
                 else
                 {
 
-                    MOD_FACADE.editHours(selectedUser.getPhone() + "", date, hours, guildID);
+                    //MOD_FACADE.editHours(selectedUser.getPhone() + "", date, hours, guildID);
                 }
                 stckPaneLoad.setVisible(false);
                 MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"), root);

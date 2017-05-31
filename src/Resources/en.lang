@@ -108,3 +108,10 @@ STR_CONTRIBUTE_DELETE = Selected contribution has been deleted
 STR_ALL_GUILDS = All Guilds
 STR_SELECT_USER = A user need to be selected first
 STR_INVALID_INPUT = Please enter valid information in the fields!
+
+IMG_CH_TITLE = Select a new image file
+IMG_CH_EXT_FILTER = Image files only
+CSV_CH_TITLE = Choose where to export CSV file
+CSV_CH_EXT_FILTER = Comma separated textfiles
+STR_ERROR_FILE_NOT_FOUND = File not found!
+STR_ERROR_FILE_NOT_FOUND_HEAD = Selected image is not found!

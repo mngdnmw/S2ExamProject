@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 import javafx.scene.layout.StackPane;
@@ -72,7 +73,12 @@ public class AnimationModel
         stackPane.getStyleClass().add("loadingScreen");
         vBoxcontainer = new VBox();
         vBoxcontainer.alignmentProperty().set(Pos.CENTER);
-
+        
+        AnchorPane.setBottomAnchor(stackPane, 0.0);
+        AnchorPane.setLeftAnchor(stackPane, 0.0);
+        AnchorPane.setRightAnchor(stackPane, 0.0);
+        AnchorPane.setTopAnchor(stackPane, 0.0);
+        
         imgViewLoader = new ImageView(loaderImage);
         imgViewLoader.maxWidth(150);
         imgViewLoader.setPreserveRatio(true);

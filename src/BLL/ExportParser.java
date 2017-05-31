@@ -5,6 +5,8 @@
  */
 package BLL;
 
+import BE.Day;
+import BE.Guild;
 import BE.User;
 import DAL.ExportManager;
 import java.awt.event.KeyEvent;
@@ -19,7 +21,8 @@ import javafx.scene.input.KeyCode;
  * @author Kristof
  */
 public class ExportParser {
-    public String parseUsers(List<User> users) {
+    BLLFacade bll = new BLLFacade();
+    public String parseExportUserdata(List<User> users) {
         String output = "";
         output += "Name,Email,Phone,Address Secondary Address"+"\r";
         for (User user : users) {
@@ -38,9 +41,21 @@ public class ExportParser {
         return output;
     }
     
-    public String parseStats() {
-        return "";
+    public String parseExportHours(List<User> users) {
+        String output = "";
+        output += "Name,Email,Phone,Guild,Hours,Date"+String.format("%n");
+        for (User user : users) {
+            String name = (user.getName() != null) ? user.getName() : "";
+            String email = (user.getEmail() != null) ? user.getEmail() : "";
+            String phone = (user.getPhone() != 0) ? String.valueOf(user.getPhone()) : "";
+            output += name+","+email+","+phone+",,,"+String.format("%n");
+            for (Day day : bll.getWorkedDays(user)) {
+                String guildName = (day.getGuild() != null) ? day.getGuild() : "";
+                String date = (day.getDate() != null) ? day.getDate() : "";
+                output += ",,,";
+                output += guildName+","+day.getHour()+","+date+String.format("%n");
+            }
+        }
+        return output;
     }
-    
-    
 }

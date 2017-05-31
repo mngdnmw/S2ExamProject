@@ -21,7 +21,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.ResourceBundle;
-import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -37,8 +36,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Alert;
-import javafx.scene.control.DateCell;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -60,7 +57,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 
@@ -174,11 +170,19 @@ public class UserInfoViewController implements Initializable
     boolean editing = false;
     boolean isIncorrect = false;
     boolean finishedService = true;
-    boolean firstRun;
-    boolean editPopup = false;
+    Day dayToEdit = null;
+    private Image profileImage;
+
     private static final DataFormat SERIALIZED_MIME_TYPE = new DataFormat("application/x-java-serialized-object");
+
     private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
 
+    /*
+    * Creates a service that runs in the background which contacts the database 
+    * to update the user image to one that the user has chosen. The service also
+    * records the updating of the image into the event logs stored on the 
+    * database.
+     */
     private final Service serviceSavePicture = new Service()
     {
         @Override
@@ -199,8 +203,8 @@ public class UserInfoViewController implements Initializable
                         catch (FileNotFoundException e)
                         {
                             Alert a = new Alert(Alert.AlertType.ERROR);
-                            a.setHeaderText("Selected image is not found");
-                            a.setContentText("File not found!");
+                            a.setHeaderText(MOD_FACADE.getLang("STR_ERROR_FILE_NOT_FOUND_HEAD"));
+                            a.setContentText(MOD_FACADE.getLang("STR_ERROR_FILE_NOT_FOUND"));
                         }
                     }
                     return null;
@@ -241,7 +245,7 @@ public class UserInfoViewController implements Initializable
         createEditFields();
         setTextAll();
         setupGuildList();
-        setupTableView("Looking For Data");
+        setupTableView(MOD_FACADE.getLang("TBL_LOADING"));
         searchListener();
         setUserImage();
         setupDragDrop();
@@ -258,6 +262,12 @@ public class UserInfoViewController implements Initializable
 
     }
 
+    /**
+     * Sets up the drag and drop functionality of editing or deleting a certain
+     * day worked. If the day dropped on the delete image, then it will delete
+     * that day. If the day is dropped on the edit image then the edit day
+     * worked pop up will appear.
+     */
     private void setupDragDrop()
     {
         imgVwDel.setOnDragOver(event
@@ -281,7 +291,8 @@ public class UserInfoViewController implements Initializable
                 Dragboard db = event.getDragboard();
                 if (db.hasContent(SERIALIZED_MIME_TYPE))
                 {
-                    openAddHoursPopup();
+                    Day dayToDelete = tableViewMain.getSelectionModel().getSelectedItem();
+                    MOD_FACADE.deleteWorkedDay(currentUser, dayToDelete);
                     event.setDropCompleted(true);
                     MOD_FACADE.fadeOutTransition(Duration.millis(250), stackPdeleteHours).setOnFinished(ez -> stackPdeleteHours.setVisible(false));
 
@@ -312,16 +323,191 @@ public class UserInfoViewController implements Initializable
                 if (db.hasContent(SERIALIZED_MIME_TYPE))
                 {
                     int draggedIndex = (Integer) db.getContent(SERIALIZED_MIME_TYPE);
-                    Day dayToDelete = tableViewMain.getItems().get(draggedIndex);
-                    MOD_FACADE.deleteWorkedDay(currentUser, dayToDelete);
+                    dayToEdit = tableViewMain.getItems().get(draggedIndex);
+
                     event.setDropCompleted(true);
                     MOD_FACADE.fadeOutTransition(Duration.millis(250), stackPdeleteHours).setOnFinished(ez -> stackPdeleteHours.setVisible(false));
-
+                    handleOpenAddHoursPopup();
                     event.consume();
                 }
             }
         });
 
+    }
+
+    /**
+     * Handles the popup that appears for both editing and adding hours worked.
+     */
+    private void handleOpenAddHoursPopup()
+    {
+
+        stckPaneAddHours.setVisible(true);
+        MOD_FACADE.fadeInTransition(Duration.millis(750), stckPaneAddHours);
+
+        //Sets up the popup depending if it is editing or adding hours worked
+        setupAddHoursPopup();
+
+    }
+
+    /**
+     * Locks buttons in the popup if set to true.
+     *
+     * @param dis = boolean
+     */
+    public void buttonsLocking(Boolean dis)
+    {
+        datePickerInPop.setDisable(dis);
+        comboboxGuildInPop.setDisable(dis);
+
+    }
+
+    /**
+     * Sets up the calendar (so user cannot choose beyond today's date); the
+     * combobox (guilds are loaded into there); adds a listener to the hour
+     * butons; adds search functionality to combobox.
+     */
+    private void setupAddHoursPopup()
+    {
+
+        //Sets all the guilds in the combobox
+        comboboxGuildInPop.setItems(MOD_FACADE.getAllSavedGuilds());
+        //If editing rather than adding new day worked
+        if (dayToEdit != null)
+        {
+
+            //Sets calendar to date of editing day's
+            LocalDate date = LocalDate.parse(dayToEdit.getDate());
+            datePickerInPop.setValue(date);
+            //Sets hours worked to editing day's
+            txtfldHoursInPop.setText(String.valueOf(dayToEdit.getHour()));
+            //Sets guild worked to editing day's
+            for (Guild guild : comboboxGuildInPop.getItems())
+            {
+                if (guild.getId() == dayToEdit.getGuildId())
+                {
+
+                    comboboxGuildInPop.getSelectionModel().select(guild);
+                    break;
+                }
+            }
+            //Locks Field
+            buttonsLocking(true);
+
+        }
+        //Cannot pick dates beyond today's date
+        MOD_FACADE.formatCalendar(datePickerInPop);
+
+        //Adds a listener to the hour buttons
+        txtfldHoursInPop.textProperty().addListener(new ChangeListener<String>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
+            {
+                try
+                {
+                    if (newValue.matches("\\d*") && newValue.length() < 3)
+                    {
+                        if (Integer.parseInt(newValue) >= 25)
+                        {
+                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_MAX_HOUR"), root);
+
+                            txtfldHoursInPop.setText(oldValue);
+                        }
+                        else if (Integer.parseInt(newValue) <= 0)
+                        {
+                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_MIN_HOUR"), root);
+                            txtfldHoursInPop.setText(oldValue);
+                        }
+                    }
+                    else
+                    {
+                        txtfldHoursInPop.setText(oldValue);
+                    }
+                }
+                catch (NumberFormatException ex)
+                {
+                    System.err.println("NumberFormatException");
+                }
+            }
+
+        });
+
+        //Search function of the combobox
+        new GUI.Model.AutoCompleteComboBoxListener<>(comboboxGuildInPop);
+
+        comboboxGuildInPop.setConverter(
+                new StringConverter<Guild>()
+        {
+
+            @Override
+            public String toString(Guild object
+            )
+            {
+                if (object == null)
+                {
+                    return null;
+                }
+                return object.toString();
+            }
+
+            @Override
+            public Guild fromString(String string
+            )
+            {
+                Guild findGuild = null;
+                for (Guild guild : comboboxGuildInPop.getItems())
+                {
+                    if (guild.getName().equals(string))
+                    {
+                        return guild;
+                    }
+
+                }
+                return findGuild;
+            }
+
+        });
+    }
+
+    /**
+     * Changes the text field when the up or down button has been pressed.
+     *
+     * @param event = when up or down button has been pressed.
+     */
+    @FXML
+    private void setNumberOfHoursEvent(ActionEvent event)
+    {
+
+        if ((event.getSource().equals(btnIntUp)))
+        {
+            if (txtfldHoursInPop.getText().isEmpty())
+            {
+                txtfldHoursInPop.setText("1");
+            }
+            else
+            {
+
+                int currentHours = Integer.parseInt(txtfldHoursInPop.getText());
+                currentHours++;
+                txtfldHoursInPop.setText(currentHours + "");
+            }
+        }
+        if ((event.getSource().equals(btnIntDown)))
+        {
+
+            if (txtfldHoursInPop.getText().isEmpty())
+            {
+
+                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_INVALID_ACTION"), root);
+            }
+            else
+            {
+                int hours = Integer.parseInt(txtfldHoursInPop.getText());
+                hours--;
+                txtfldHoursInPop.setText(hours + "");
+
+            }
+        }
     }
 
     public void setCurrentUser(User currentUser)
@@ -600,14 +786,14 @@ public class UserInfoViewController implements Initializable
 
     {
         FileChooser c = new FileChooser();
-        c.setTitle("Select a new image");
+        c.setTitle(MOD_FACADE.getLang("IMG_CH_TITLE"));
         String[] extensions
                 =
 
                 {
-                    "jpg", "jpeg", "png", "gif"
+                    "*.jpg", "*.jpeg", "*.png"
                 };
-        c.setSelectedExtensionFilter(new ExtensionFilter("Image files only", extensions));
+        c.setSelectedExtensionFilter(new ExtensionFilter(MOD_FACADE.getLang("IMG_CH_EXT_FILTER"), extensions));
         newImg = c.showOpenDialog(btnUpdatePhoto.getScene().getWindow());
         serviceSavePicture.restart();
         serviceSavePicture.setOnSucceeded(e
@@ -644,10 +830,9 @@ public class UserInfoViewController implements Initializable
         GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) - 1); //moving save button one up
 
         btnCancelEditInfo.setText(MOD_FACADE.getLang("BTN_CANCEL")); //preparing cancel button
-        btnCancelEditInfo.setButtonType(JFXButton.ButtonType.RAISED);
-        btnCancelEditInfo.setStyle("-fx-background-color: #B0B0B0; -fx-font: 15px System;");
+        btnCancelEditInfo.setId("btnCancelGrey");
         btnCancelEditInfo.setPrefHeight(25);
-        btnCancelEditInfo.setPrefWidth(77);
+        btnCancelEditInfo.setPrefWidth(Double.MAX_VALUE);
         btnCancelEditInfo.setTextFill(Color.WHITE);
         btnCancelEditInfo.setPadding(btnEditSave.getPadding());
 
@@ -702,6 +887,10 @@ public class UserInfoViewController implements Initializable
         lblDateInPop.setText(MOD_FACADE.getLang("COL_DATE"));
         lblGuildInPop.setText(MOD_FACADE.getLang("COL_GUILD"));
         lblHoursInPop.setText(MOD_FACADE.getLang("COL_HOURS"));
+        btnCancelPW.setText(MOD_FACADE.getLang("BTN_CANCEL"));
+        btnChangePWConfirm.setText(MOD_FACADE.getLang("BTN_EDIT"));
+        btnAddHours.setText(MOD_FACADE.getLang("BTN_ADD_HOURS"));
+        btnCancelPOP.setText(MOD_FACADE.getLang("BTN_CANCEL"));
 
     }
 
@@ -761,210 +950,7 @@ public class UserInfoViewController implements Initializable
     @FXML
     private void openAddHoursPopup(ActionEvent event)
     {
-        openAddHoursPopup();
-    }
-
-    private void openAddHoursPopup()
-    {
-        editPopup = true;
-        //Clears everything from previous
-        datePickerInPop.setValue(null);
-        buttonsLocking(false);
-        txtfldHoursInPop.clear();
-
-        setupAddHoursPopup();
-        stckPaneAddHours.setVisible(true);
-        MOD_FACADE.fadeInTransition(Duration.millis(750), stckPaneAddHours);
-    }
-
-    public void buttonsLocking(Boolean dis)
-    {
-        datePickerInPop.setDisable(dis);
-        btnIntUp.setDisable(dis);
-        btnIntDown.setDisable(dis);
-        comboboxGuildInPop.setDisable(dis);
-
-    }
-
-    private void formatCalendar()
-    {
-        StringConverter converter = new StringConverter<LocalDate>()
-        {
-            DateTimeFormatter dateFormatter
-                    = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-            @Override
-            public String toString(LocalDate date)
-            {
-                if (date != null)
-                {
-                    return dateFormatter.format(date);
-                }
-                else
-                {
-                    return "";
-                }
-            }
-
-            @Override
-            public LocalDate fromString(String string)
-            {
-                if (string != null && !string.isEmpty())
-                {
-                    return LocalDate.parse(string, dateFormatter);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        };
-        datePickerInPop.setConverter(converter);
-
-        // Create a day cell factory
-        datePickerInPop.setDayCellFactory(new Callback<DatePicker, DateCell>()
-        {
-
-            @Override
-            public DateCell call(final DatePicker datepicker)
-            {
-                return new DateCell()
-                {
-                    @Override
-
-                    public void updateItem(LocalDate item, boolean empty)
-
-                    {
-
-                        // Must call super
-                        super.updateItem(item, empty);
-
-                        // Disable all future date cells
-                        if (item.isAfter(LocalDate.now()))
-
-                        {
-
-                            this.setDisable(true);
-
-                        }
-
-                    }
-                };
-            }
-
-        });
-    }
-
-    private void setupAddHoursPopup()
-    {
-        formatCalendar();
-
-        comboboxGuildInPop.setItems(MOD_FACADE.getAllSavedGuilds());
-
-        txtfldHoursInPop.textProperty().addListener(new ChangeListener<String>()
-        {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
-            {
-                try
-                {
-                    if (newValue.matches("\\d*") && newValue.length() < 3)
-                    {
-                        if (Integer.parseInt(newValue) >= 25)
-                        {
-                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_MAX_HOUR"), root);
-
-                            txtfldHoursInPop.setText(oldValue);
-                        }
-                        else if (Integer.parseInt(newValue) <= 0)
-                        {
-                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_MIN_HOUR"), root);
-                            txtfldHoursInPop.setText(oldValue);
-                        }
-                        else
-                        {
-                            int value = Integer.parseInt(newValue);
-                        }
-                    }
-                    else
-                    {
-                        txtfldHoursInPop.setText(oldValue);
-                    }
-                }
-                catch (NumberFormatException ex)
-                {
-                    //do nothing
-                }
-            }
-
-        });
-        new GUI.Model.AutoCompleteComboBoxListener<>(comboboxGuildInPop);
-
-        comboboxGuildInPop.setConverter(new StringConverter<Guild>()
-        {
-
-            @Override
-            public String toString(Guild object)
-            {
-                if (object == null)
-                {
-                    return null;
-                }
-                return object.toString();
-            }
-
-            @Override
-            public Guild fromString(String string)
-            {
-                Guild findGuild = null;
-                for (Guild guild : comboboxGuildInPop.getItems())
-                {
-                    if (guild.getName().equals(string))
-                    {
-                        return guild;
-                    }
-
-                }
-                return findGuild;
-            }
-        });
-    }
-
-    @FXML
-    private void setNumberOfHoursEvent(ActionEvent event)
-    {
-
-        if ((event.getSource().equals(btnIntUp)))
-        {
-            if (txtfldHoursInPop.getText().isEmpty())
-            {
-                txtfldHoursInPop.setText("1");
-            }
-            else
-            {
-                int hours = Integer.parseInt(txtfldHoursInPop.getText());
-
-                int currentHours = Integer.parseInt(txtfldHoursInPop.getText());
-                currentHours++;
-                txtfldHoursInPop.setText(currentHours + "");
-            }
-        }
-        if ((event.getSource().equals(btnIntDown)))
-        {
-
-            if (txtfldHoursInPop.getText().isEmpty())
-            {
-
-                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_INVALID_ACTION"), root);
-            }
-            else
-            {
-                int hours = Integer.parseInt(txtfldHoursInPop.getText());
-                hours--;
-                txtfldHoursInPop.setText(hours + "");
-
-            }
-        }
+        handleOpenAddHoursPopup();
     }
 
     @FXML
@@ -973,8 +959,6 @@ public class UserInfoViewController implements Initializable
 
         StackPane stckLoadScreen = MOD_FACADE.getLoadingScreen();
         root.getChildren().add(stckLoadScreen);
-
-        buttonsLocking(true);
 
         if (datePickerInPop.getValue() != null && !txtfldHoursInPop.getText().isEmpty() && !comboboxGuildInPop.getSelectionModel().isEmpty())
         {
@@ -985,16 +969,18 @@ public class UserInfoViewController implements Initializable
 
             if (currentUser.getEmail() != null)
             {
-                if (editPopup = true)
+                if (dayToEdit == null)
                 {
                     MOD_FACADE.logWorkDay(currentUser.getEmail(), date, hours, guildID);
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " added " + hours + " working hours to guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
+
                 }
                 else
                 {
 
-                    MOD_FACADE.editHours(currentUser.getEmail(), date, hours, guildID);
+                    MOD_FACADE.editWorkedDay(currentUser.getEmail(), date, hours, guildID);
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " edited his/her working hours to " + hours + " in guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
+
                 }
                 stckLoadScreen.setVisible(false);
 
@@ -1004,16 +990,18 @@ public class UserInfoViewController implements Initializable
             else if (currentUser.getPhone() != 0)
 
             {
-                if (editPopup = true)
+                if (dayToEdit == null)
                 {
                     MOD_FACADE.logWorkDay(currentUser.getPhone() + "", date, hours, guildID);
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " added " + hours + " working hours to guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
+
                 }
                 else
                 {
 
-                    MOD_FACADE.editHours(currentUser.getPhone() + "", date, hours, guildID);
+                    MOD_FACADE.editWorkedDay(currentUser.getPhone() + "", date, hours, guildID);
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " edited his/her working hours to " + hours + " in guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
+
                 }
                 stckLoadScreen.setVisible(false);
                 MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"), root);
@@ -1026,13 +1014,21 @@ public class UserInfoViewController implements Initializable
             MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_INVALID_INPUT"), root, 5000);
         }
 
+        closeAddHoursPopup();
+
     }
 
     @FXML
     private void closeAddHoursPopup()
     {
+        buttonsLocking(false);
+        dayToEdit = null;
+        //Clears everything from popup
+        datePickerInPop.setValue(null);
+        txtfldHoursInPop.clear();
+        comboboxGuildInPop.setValue(null);
         MOD_FACADE.fadeOutTransition(Duration.millis(750), stckPaneAddHours).setOnFinished(e -> stckPaneAddHours.setVisible(false));
-        editPopup = false;
+
     }
 
     @FXML
@@ -1048,7 +1044,14 @@ public class UserInfoViewController implements Initializable
 
     {
         MOD_FACADE.fadeOutTransition(Duration.millis(750), stckPanePasswordChanger)
-                .setOnFinished(e -> stckPanePasswordChanger.setVisible(false));
+                .setOnFinished(e
+                        -> 
+                        {
+                            stckPanePasswordChanger.setVisible(false);
+                            txtOPassword.clear();
+                            txtNPassword.clear();
+                            txtNPasswordTwo.clear();
+                });
 
     }
 }
