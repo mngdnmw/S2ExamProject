@@ -18,26 +18,26 @@ import static org.junit.Assert.*;
  */
 public class ErrorManagerTest
 {
-    
+
     public ErrorManagerTest()
     {
     }
-    
+
     @BeforeClass
     public static void setUpClass()
     {
     }
-    
+
     @AfterClass
     public static void tearDownClass()
     {
     }
-    
+
     @Before
     public void setUp()
     {
     }
-    
+
     @After
     public void tearDown()
     {
@@ -50,11 +50,12 @@ public class ErrorManagerTest
     public void testSetErrorCode()
     {
         System.out.println("setErrorCode");
-        int eCode = 0;
+        int eCode = 10;
         ErrorManager instance = new ErrorManager();
         instance.setErrorCode(eCode);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        int expResult = 10;
+        int result = instance.getErrorCode();
+        assertEquals(expResult, result);
     }
 
     /**
@@ -63,13 +64,19 @@ public class ErrorManagerTest
     @Test
     public void testGetErrorString()
     {
-        System.out.println("getErrorString");
-        ErrorManager instance = new ErrorManager();
-        String expResult = "";
-        String result = instance.getErrorString();
+
+        ErrorManager errMan = new ErrorManager();
+        errMan.setErrorCode(0);
+        String expResult = null;
+        String result = errMan.getErrorString();
+        System.out.println(errMan.getErrorCode());
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        errMan.setErrorCode(100);
+        expResult = "STR_FIRST_TIME_ERROR";
+        result = errMan.getErrorString();
+        assertEquals(expResult, result);
+
     }
-    
+
 }
