@@ -212,6 +212,7 @@ public class ManagerEditViewController implements Initializable
         Runnable r = ()
                 -> 
                 {
+                    
                     Image img = new Image(MOD_FACADE.getUserImage(selectedUser));
                     if (img != null)
                     {

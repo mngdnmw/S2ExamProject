@@ -5,6 +5,7 @@ import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
@@ -63,7 +64,7 @@ public class ManagerAddUserController implements Initializable
     @FXML
     private JFXCheckBox chkManager;
     @FXML
-    private JFXTextField txtPassword;
+    private JFXPasswordField txtPassword;
     @FXML
     private JFXCheckBox chkAdmin;
 
@@ -292,6 +293,19 @@ public class ManagerAddUserController implements Initializable
                 chkManager.selectedProperty().set(false);
                 chkAdmin.selectedProperty().set(true);
             }
+
         }
+    }
+
+    private void setTextAll()
+    {
+        txtAddress.setPromptText(MOD_FAC.getLang("TXT_ADRESS"));
+        txtAddress2.setPromptText(MOD_FAC.getLang("TXT_ADRESS") + " 2");
+        txtEmail.setPromptText(MOD_FAC.getLang("COL_EMAIL"));
+        txtName.setPromptText(MOD_FAC.getLang("COL_NAME"));
+        txtPassword.setPromptText(MOD_FAC.getLang("LB_PASSWORD"));
+        txtPhone.setPromptText(MOD_FAC.getLang("COL_PHONE"));
+        btnAccept.setText(MOD_FAC.getLang("BTN_ADD"));
+        btnCancel.setText(MOD_FAC.getLang("BTN_CANCEL"));
     }
 }
