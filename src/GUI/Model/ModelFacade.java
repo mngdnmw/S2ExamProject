@@ -292,10 +292,10 @@ public class ModelFacade
         return GRAPH_MOD.sortGraph(guild, periodOne, periodTwo);
     }
 
-    public void editHours(String username, String date, int hours, int guildId)
-    {
-        VOL_DATA_MOD.editWorkDay(username, date, hours, guildId);
-    }
+//    public void editHours(String username, String date, int hours, int guildId)
+//    {
+//        VOL_DATA_MOD.editWorkDay(username, date, hours, guildId);
+//    }
 
     public void logEvent(Event event)
     {
@@ -317,6 +317,10 @@ public class ModelFacade
     {
         return BLL_FAC.getUserFromUsername(username);
     }
+    
+    public ObservableList<Day> editWorkedDay(String username, String date, int hrs, int guildId){
+        return VOL_DATA_MOD.editWorkedDay(username, date, hrs, guildId); 
+    }
 
     //ErrorManager functions
     public void setErrorCode(int eCode)
@@ -328,4 +332,5 @@ public class ModelFacade
     {
         return BLL_FAC.getErrorString();
     }
+    
 }

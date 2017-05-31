@@ -697,7 +697,7 @@ public class ManagerEditViewController implements Initializable
                 else
                 {
 
-                    MOD_FACADE.editHours(selectedUser.getEmail(), date, hours, guildID);
+                    //MOD_FACADE.editHours(selectedUser.getEmail(), date, hours, guildID);
                 }
                 stckPaneLoad.setVisible(false);
                 contributionSnackBarHandler(errorCode);
@@ -713,7 +713,7 @@ public class ManagerEditViewController implements Initializable
                 else
                 {
 
-                    MOD_FACADE.editHours(selectedUser.getPhone() + "", date, hours, guildID);
+                    //MOD_FACADE.editHours(selectedUser.getPhone() + "", date, hours, guildID);
                 }
                 stckPaneLoad.setVisible(false);
                 contributionSnackBarHandler(errorCode);

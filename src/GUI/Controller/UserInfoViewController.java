@@ -284,7 +284,7 @@ public class UserInfoViewController implements Initializable
                 Dragboard db = event.getDragboard();
                 if (db.hasContent(SERIALIZED_MIME_TYPE))
                 {
-                    openAddHoursPopup();
+                    handleOpenAddHoursPopup();
                     event.setDropCompleted(true);
                     MOD_FACADE.fadeOutTransition(Duration.millis(250), stackPdeleteHours).setOnFinished(ez -> stackPdeleteHours.setVisible(false));
 
@@ -316,7 +316,8 @@ public class UserInfoViewController implements Initializable
                 {
                     int draggedIndex = (Integer) db.getContent(SERIALIZED_MIME_TYPE);
                     Day dayToDelete = tableViewMain.getItems().get(draggedIndex);
-                    MOD_FACADE.deleteWorkedDay(currentUser, dayToDelete);
+                    //MOD_FACADE.deleteWorkedDay(currentUser, dayToDelete);
+                    
                     event.setDropCompleted(true);
                     MOD_FACADE.fadeOutTransition(Duration.millis(250), stackPdeleteHours).setOnFinished(ez -> stackPdeleteHours.setVisible(false));
 
@@ -755,10 +756,10 @@ public class UserInfoViewController implements Initializable
     @FXML
     private void openAddHoursPopup(ActionEvent event)
     {
-        openAddHoursPopup();
+        handleOpenAddHoursPopup();
     }
 
-    private void openAddHoursPopup()
+    private void handleOpenAddHoursPopup()
     {
         editPopup = true;
         //Clears everything from previous
@@ -1000,7 +1001,7 @@ public class UserInfoViewController implements Initializable
                 else
                 {
 
-                    MOD_FACADE.editHours(currentUser.getEmail(), date, hours, guildID);
+                 //   MOD_FACADE.editHours(currentUser.getEmail(), date, hours, guildID);
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " edited his/her working hours to " + hours + " in guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
                 }
                 stckLoadScreen.setVisible(false);
@@ -1019,7 +1020,7 @@ public class UserInfoViewController implements Initializable
                 else
                 {
 
-                    MOD_FACADE.editHours(currentUser.getPhone() + "", date, hours, guildID);
+                //    MOD_FACADE.editHours(currentUser.getPhone() + "", date, hours, guildID);
                     MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " edited his/her working hours to " + hours + " in guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
                 }
                 stckLoadScreen.setVisible(false);
