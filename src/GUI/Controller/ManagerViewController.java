@@ -8,14 +8,16 @@ import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -39,8 +41,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
@@ -58,6 +63,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 
@@ -113,13 +119,13 @@ public class ManagerViewController implements Initializable
     @FXML
     private JFXButton btnRefresh;
     @FXML
-    private LineChart<Number, Number> lineChartGuildHours;
+    private LineChart<String, Number> lineChartGuildHours;
 
     @FXML
     private NumberAxis yAxis;
     @FXML
-    private NumberAxis xAxis;
-    
+    private CategoryAxis xAxis;
+
     @FXML
     private Tab tabLog;
     @FXML
@@ -131,14 +137,22 @@ public class ManagerViewController implements Initializable
     @FXML
     private TableColumn<BE.Event, String> colLogEventDesc;
 
-    Boolean hasLoadedGuild = false;
-    ModelFacade modelFacade = ModelFacade.getModelFacade();
-    User selectedUser;
-    List<XYChart.Series<Number, Number>> Temp;
-    ObservableList<User> filteredList = FXCollections.observableArrayList();
-    FilteredList<User> filteredData = new FilteredList<>(filteredList);
+    private Boolean hasLoadedGuild = false;
+    private static final ModelFacade MOD_FAC = ModelFacade.getModelFacade();
+    private User selectedUser;
+    private ArrayList<XYChart.Series<String, Number>> Temp = new ArrayList<>();
+    private ObservableList<User> observableUsers = FXCollections.observableArrayList();
+    private FilteredList<User> filteredData = new FilteredList<>(observableUsers);
+    private SortedList<User> sortedData = new SortedList<>(filteredData);
     @FXML
     private StackPane stckPaneGraphError;
+    @FXML
+    private JFXDatePicker datePickerPeriodOne;
+    @FXML
+    private JFXDatePicker datePickerPeriodTwo;
+    @FXML
+    private JFXButton btnRefreshLog;
+
     private final Service serviceGraphStats = new Service()
     {
         @Override
@@ -149,7 +163,33 @@ public class ManagerViewController implements Initializable
                 @Override
                 protected Object call() throws Exception
                 {
-                    Temp = modelFacade.graphSort(cmbGuildChooser.getSelectionModel().getSelectedItem());
+                    LocalDate periodOne = datePickerPeriodOne.getValue();
+                    LocalDate periodTwo = datePickerPeriodTwo.getValue();
+                    if (periodOne.getYear() <= periodTwo.getYear())
+                    {
+                        if (periodOne.getMonth().getValue() <= periodTwo.getMonth().getValue())
+                        {
+                        }
+                    }
+                    if (cmbGuildChooser.getSelectionModel().getSelectedItem().getId() == -1)
+                    {
+                        for (Guild item : cmbGuildChooser.getItems())
+                        {
+                            List<XYChart.Series<String, Number>> thisList = MOD_FAC.graphSort(item, periodOne, periodTwo);
+                            for (XYChart.Series<String, Number> series : thisList)
+                            {
+                                Temp.add(series);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        List<XYChart.Series<String, Number>> thisList = MOD_FAC.graphSort(cmbGuildChooser.getSelectionModel().getSelectedItem(), periodOne, periodTwo);
+                        for (XYChart.Series<String, Number> series : thisList)
+                        {
+                            Temp.add(series);
+                        }
+                    }
                     return null;
                 }
             };
@@ -166,17 +206,16 @@ public class ManagerViewController implements Initializable
                 protected Object call() throws Exception
                 {
 
-                    modelFacade.setAllAdminsIntoArray();
-                    modelFacade.setAllManagersIntoArray();
-                    modelFacade.setAllVolunteersIntoArray();
-                    filteredList.addAll(modelFacade.getAllSavedUsers());
+                    MOD_FAC.setAllAdminsIntoArray();
+                    MOD_FAC.setAllManagersIntoArray();
+                    MOD_FAC.setAllVolunteersIntoArray();
+                    setTableItems();
                     return null;
 
                 }
             };
         }
     };
-    
 
     /**
      * Initializes the controller class.
@@ -184,11 +223,13 @@ public class ManagerViewController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        xAxis.setLabel("Month");
+        yAxis.setLabel("Hours Contributed");
         setTextAll(); //this has to run before setting currently logged in username
-        if (modelFacade.getCurrentUser() != null)
+        if (MOD_FAC.getCurrentUser() != null)
         {
-            lblUserName.setText(modelFacade.getLang("LBL_USERNAME") + modelFacade.getCurrentUser().getName());
-            cmbGuildChooser.setItems(FXCollections.observableArrayList(modelFacade.getCurrentUser().getGuildList()));
+            lblUserName.setText(MOD_FAC.getLang("LBL_USERNAME") + MOD_FAC.getCurrentUser().getName());
+            cmbGuildChooser.setItems(FXCollections.observableArrayList(MOD_FAC.getCurrentUser().getGuildList()));
         }
         setTableProperties();
         setTableItems();
@@ -196,21 +237,84 @@ public class ManagerViewController implements Initializable
         serviceInitializer.start();
         serviceInitializer.setOnSucceeded(e -> setupTableView("No Data :("));
         cmbBoxListeners();
-        if (modelFacade.getCurrentUser().getType() >= 2)
+        if (MOD_FAC.getCurrentUser().getType() >= 2)
         {
             chkAdmins.setVisible(true);
             chkManagers.setVisible(true);
             chkVolunteers.setVisible(true);
             ObservableList guildList = FXCollections.observableArrayList();
             guildList.add(new Guild(-1, "All Guilds"));
-            guildList.addAll(modelFacade.getAllSavedGuilds());
+            guildList.addAll(MOD_FAC.getAllSavedGuilds());
 
             cmbGuildChooser.setItems(guildList);
+
             cmbGuildChooser.setEditable(true);
             new AutoCompleteComboBoxListener(cmbGuildChooser);
-            
+            formatCalendar(datePickerPeriodOne);
+            formatCalendar(datePickerPeriodTwo);
         }
+        cmbGuildChooser.getSelectionModel().selectFirst();
 
+    }
+
+    private void formatCalendar(DatePicker datePicker)
+    {
+        StringConverter converter = new StringConverter<LocalDate>()
+        {
+            DateTimeFormatter dateFormatter
+                    = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            @Override
+            public String toString(LocalDate date)
+            {
+                if (date != null)
+                {
+                    return dateFormatter.format(date);
+                }
+                else
+                {
+                    return "";
+                }
+            }
+
+            @Override
+            public LocalDate fromString(String string)
+            {
+                if (string != null && !string.isEmpty())
+                {
+                    return LocalDate.parse(string, dateFormatter);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        };
+        datePicker.setConverter(converter);
+
+        // Create a day cell factory
+        datePicker.setDayCellFactory(new Callback<DatePicker, DateCell>()
+        {
+            @Override
+            public DateCell call(final DatePicker datepicker)
+            {
+                return new DateCell()
+                {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty)
+
+                    {
+                        // Must call super
+                        super.updateItem(item, empty);
+                        // Disable all future date cells
+                        if (item.isAfter(LocalDate.now()))
+                        {
+                            this.setDisable(true);
+                        }
+                    }
+                };
+            }
+        });
     }
 
     private void setTableProperties()
@@ -218,7 +322,7 @@ public class ManagerViewController implements Initializable
         colName.setCellValueFactory(new PropertyValueFactory("name"));
         colPhone.setCellValueFactory(new PropertyValueFactory("phone"));
         colEmail.setCellValueFactory(new PropertyValueFactory("email"));
-        
+
         colLogEventId.setCellValueFactory(new PropertyValueFactory("id"));
         colLogEventDate.setCellValueFactory(new PropertyValueFactory("time"));
         colLogEventDesc.setCellValueFactory(new PropertyValueFactory("description"));
@@ -226,19 +330,19 @@ public class ManagerViewController implements Initializable
 
     public void setTableItems()
     {
-        filteredList.clear();
+        observableUsers.clear();
 
-        if (modelFacade.getCurrentUser().getType() == 1)
+        if (MOD_FAC.getCurrentUser().getType() == 1)
         {
-            filteredList.addAll(modelFacade.getAllSavedVolunteers());
+            observableUsers.addAll(MOD_FAC.getAllSavedVolunteers());
         }
-        if (modelFacade.getCurrentUser().getType() == 2)
+        if (MOD_FAC.getCurrentUser().getType() == 2)
         {
 
-            filteredList.addAll(modelFacade.getAllSavedUsers());
+            observableUsers.addAll(MOD_FAC.getAllSavedUsers());
         }
-        
-        tblLog.setItems(FXCollections.observableArrayList(modelFacade.getAllEvents()));
+
+        tblLog.setItems(FXCollections.observableArrayList(MOD_FAC.getAllEvents()));
     }
 
     @FXML
@@ -257,10 +361,20 @@ public class ManagerViewController implements Initializable
                 filteredData.setPredicate(user
                         -> 
                         {
+                            String currentValue = txtSearch.getText();
                             Boolean search = false;
+
+                            String regex = "[^a-zA-Z0-9\\s]";
+                            Boolean textFieldContains = user.emailProperty().getValue().replaceAll(regex, "")
+                                    .contains(currentValue.replaceAll(regex, ""))
+                                    || user.nameProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                    contains(currentValue.toLowerCase().replaceAll(regex, ""));
                             if (cmbGuildChooser.getSelectionModel().getSelectedItem().getId() == -1)
                             {
-                                search = true;
+                                if (textFieldContains)
+                                {
+                                    search = true;
+                                }
                             }
                             else
                             {
@@ -268,14 +382,17 @@ public class ManagerViewController implements Initializable
                                 {
                                     if (guild.getId() == cmbGuildChooser.getSelectionModel().getSelectedItem().getId())
                                     {
-                                        search = true;
+                                        if (textFieldContains)
+                                        {
+                                            search = true;
+                                        }
                                     }
                                 }
                             }
+
                             return search;
 
                 });
-                SortedList<User> sortedData = new SortedList<>(filteredData);
                 sortedData.comparatorProperty().bind(tblUsers.comparatorProperty());
                 tblUsers.setItems(sortedData);
             }
@@ -496,11 +613,11 @@ public class ManagerViewController implements Initializable
             {
                 final Clipboard clipboard = Clipboard.getSystemClipboard();
                 final ClipboardContent content = new ClipboardContent();
-                if(selectedUser.getEmail().contains("@"))
+                if (selectedUser.getEmail().contains("@"))
                 {
                     content.putString(selectedUser.getEmail());
                 }
-                
+
                 clipboard.setContent(content);
                 System.out.println("This email to clipboard");
             }
@@ -518,14 +635,14 @@ public class ManagerViewController implements Initializable
                 for (User item : tblUsers.getItems())
                 {
                     String stringToAdd = colEmail.getCellObservableValue(item).getValue();
-                    if(stringToAdd.contains("@"))
+                    if (stringToAdd.contains("@"))
                     {
                         columnData.add(colEmail.getCellObservableValue(item).getValue());
                     }
                 }
                 final Clipboard clipboard = Clipboard.getSystemClipboard();
                 final ClipboardContent content = new ClipboardContent();
-                String columnDataString = columnData.toString().replaceAll("[\\[\\](){}]","");
+                String columnDataString = columnData.toString().replaceAll("[\\[\\](){}]", "");
                 content.putString(columnDataString);
                 clipboard.setContent(content);
                 System.out.println(columnDataString);
@@ -577,28 +694,28 @@ public class ManagerViewController implements Initializable
         File chose = chooser.showSaveDialog(root.getScene().getWindow());
         if (chose != null)
         {
-            modelFacade.writeExport(chose, modelFacade.parseExportUsers(tblUsers.getItems()));
+            MOD_FAC.writeExport(chose, MOD_FAC.parseExportUsers(tblUsers.getItems()));
         }
 
     }
 
     private void setTextAll()
     {
-        btnAddUser.setText(modelFacade.getLang("BTN_ADD_USER"));
-        btnClose.setText(modelFacade.getLang("BTN_CLOSE"));
-        btnEditInfo.setText(modelFacade.getLang("BTN_EDIT_INFO"));
-        chkManagers.setText(modelFacade.getLang("CHK_MANAGERS"));
-        chkVolunteers.setText(modelFacade.getLang("CHK_VOLUNTEERS"));
+        btnAddUser.setText(MOD_FAC.getLang("BTN_ADD_USER"));
+        btnClose.setText(MOD_FAC.getLang("BTN_CLOSE"));
+        btnEditInfo.setText(MOD_FAC.getLang("BTN_EDIT_INFO"));
+        chkManagers.setText(MOD_FAC.getLang("CHK_MANAGERS"));
+        chkVolunteers.setText(MOD_FAC.getLang("CHK_VOLUNTEERS"));
 
-        lblUserName.setText(modelFacade.getLang("LBL_USERNAME"));
-        lblNotes.setText(modelFacade.getLang("LBL_NOTES"));
-        txtSearch.setPromptText(modelFacade.getLang("PROMPT_SEARCH_USER"));
-        cmbGuildChooser.setPromptText(modelFacade.getLang("PROMPT_CMB_GUILDCHOOSER"));
-        colEmail.setText(modelFacade.getLang("COL_EMAIL"));
-        colPhone.setText(modelFacade.getLang("COL_PHONE"));
-        colName.setText(modelFacade.getLang("COL_NAME"));
-        tabVolunInfo.setText(modelFacade.getLang("TAB_VOLUN_INFO"));
-        tabGraphStats.setText(modelFacade.getLang("TAB_GRAPH_STATS"));
+        lblUserName.setText(MOD_FAC.getLang("LBL_USERNAME"));
+        lblNotes.setText(MOD_FAC.getLang("LBL_NOTES"));
+        txtSearch.setPromptText(MOD_FAC.getLang("PROMPT_SEARCH_USER"));
+        cmbGuildChooser.setPromptText(MOD_FAC.getLang("PROMPT_CMB_GUILDCHOOSER"));
+        colEmail.setText(MOD_FAC.getLang("COL_EMAIL"));
+        colPhone.setText(MOD_FAC.getLang("COL_PHONE"));
+        colName.setText(MOD_FAC.getLang("COL_NAME"));
+        tabVolunInfo.setText(MOD_FAC.getLang("TAB_VOLUN_INFO"));
+        tabGraphStats.setText(MOD_FAC.getLang("TAB_GRAPH_STATS"));
     }
 
     @FXML
@@ -612,62 +729,31 @@ public class ManagerViewController implements Initializable
         }
         else if (tabPane.getSelectionModel().getSelectedItem() == tabGraphStats)
         {
-            xAxis.setLabel("Month number");
-            xAxis.setAutoRanging(false);
-            xAxis.setLowerBound(1);
-            xAxis.setUpperBound(12);
-            xAxis.setTickUnit(1);
-            if (cmbGuildChooser.getSelectionModel().getSelectedItem() != null)
-            {
-                stckPaneGraphError.setVisible(false);
-                StackPane stckPaneLoad = modelFacade.getLoadingScreen();
-                AnchorPane.setBottomAnchor(stckPaneLoad, 20.0);
-                AnchorPane.setTopAnchor(stckPaneLoad, 0.0);
-                AnchorPane.setLeftAnchor(stckPaneLoad, 0.0);
-                AnchorPane.setRightAnchor(stckPaneLoad, 0.0);
-                rootGraph.getChildren().add(stckPaneLoad);
-                serviceGraphStats.restart();
-                serviceGraphStats.setOnSucceeded(e
-                        -> 
-                        {
-                            for (XYChart.Series<Number, Number> series : Temp)
-                            {
-                                lineChartGuildHours.getData().add(series);
-                            }
-                            Calendar cal = Calendar.getInstance();
-                            lineChartGuildHours.setTitle("Work contribution graph for " + cmbGuildChooser.getSelectionModel().getSelectedItem().getName() + " " + cal.get(Calendar.YEAR));
-                            stckPaneLoad.setVisible(false);
-                });
 
-            }
-            else
-            {
-                stckPaneGraphError.setVisible(true);
-            }
         }
     }
 
     @FXML
     private void onCheckBoxAction(ActionEvent event)
     {
-        filteredList.clear();
+        observableUsers.clear();
 
         if (chkAdmins.selectedProperty().get() == false && chkManagers.selectedProperty().get() == false && chkVolunteers.selectedProperty().get() == false)
         {
-            filteredList.addAll(modelFacade.getAllSavedUsers());
+            observableUsers.addAll(MOD_FAC.getAllSavedUsers());
         }
 
         if (chkAdmins.selectedProperty().get() == true)
         {
-            filteredList.addAll(modelFacade.getAllSavedAdmins());
+            observableUsers.addAll(MOD_FAC.getAllSavedAdmins());
         }
         if (chkManagers.selectedProperty().get() == true)
         {
-            filteredList.addAll(modelFacade.getAllSavedManagers());
+            observableUsers.addAll(MOD_FAC.getAllSavedManagers());
         }
         if (chkVolunteers.selectedProperty().get() == true)
         {
-            filteredList.addAll(modelFacade.getAllSavedVolunteers());
+            observableUsers.addAll(MOD_FAC.getAllSavedVolunteers());
         }
     }
 
@@ -692,20 +778,71 @@ public class ManagerViewController implements Initializable
                                         || user.nameProperty().getValue().toLowerCase().replaceAll(regex, "").
                                         contains(newValue.toLowerCase().replaceAll(regex, ""));
 
-                                return search;
+                                if (cmbGuildChooser.getSelectionModel().getSelectedItem().getId() == -1)
+                                {
+                                    return search;
+                                }
+                                else
+                                {
+                                    for (Guild guild : user.getGuildList())
+                                    {
+                                        if (guild.getId() == cmbGuildChooser.getSelectionModel().getSelectedItem().getId())
+                                        {
+                                            return search;
+                                        }
+                                    }
+                                }
 
+                                return false;
                     });
         });
-
-        SortedList<User> sortedData = new SortedList<>(filteredData);
 
         sortedData.comparatorProperty().bind(tblUsers.comparatorProperty());
         tblUsers.setItems(sortedData);
 
     }
-    
+
     @FXML
-    private void updateLogTable(ActionEvent event) {
-        tblLog.setItems(FXCollections.observableArrayList(modelFacade.getAllEvents()));
+    private void updateLogTable(ActionEvent event
+    )
+    {
+        tblLog.setItems(FXCollections.observableArrayList(MOD_FAC.getAllEvents()));
+    }
+
+    @FXML
+    private void refreshGraph(ActionEvent event
+    )
+    {
+        Temp.clear();
+        lineChartGuildHours.getData().clear();
+
+        if (cmbGuildChooser.getSelectionModel().getSelectedItem() != null)
+        {
+            stckPaneGraphError.setVisible(false);
+            StackPane stckPaneLoad = MOD_FAC.getLoadingScreen();
+            AnchorPane.setBottomAnchor(stckPaneLoad, 20.0);
+            AnchorPane.setTopAnchor(stckPaneLoad, 0.0);
+            AnchorPane.setLeftAnchor(stckPaneLoad, 0.0);
+            AnchorPane.setRightAnchor(stckPaneLoad, 0.0);
+            rootGraph.getChildren().add(stckPaneLoad);
+            serviceGraphStats.restart();
+            serviceGraphStats.setOnSucceeded(e
+                    -> 
+                    {
+                        for (XYChart.Series<String, Number> series : Temp)
+                        {
+                            lineChartGuildHours.getData().add(series);
+                        }
+                        Calendar cal = Calendar.getInstance();
+                        lineChartGuildHours.setTitle("Work contribution graph for " + cmbGuildChooser.getSelectionModel().getSelectedItem().getName() + " " + cal.get(Calendar.YEAR));
+                        stckPaneLoad.setVisible(false);
+            });
+            serviceGraphStats.setOnFailed(e -> stckPaneLoad.setVisible(false));
+
+        }
+        else
+        {
+            stckPaneGraphError.setVisible(true);
+        }
     }
 }

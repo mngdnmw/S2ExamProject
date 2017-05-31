@@ -62,7 +62,7 @@ CHK_VOLUNTEERS = Volunteers
 #Manager view labels
 #Remember to leave a space after LBL_USERNAME
 LBL_USERNAME = Logget ind som:  
-PROMPT_SEARCH_USER = Søg i brugere...
+PROMPT_SEARCH_USER = Søg
 PROMPT_CMB_GUILDCHOOSER = Vælg et Laug
 LBL_NOTES = Noter:
 COL_NAME = Navn

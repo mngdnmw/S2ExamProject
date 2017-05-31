@@ -7,6 +7,7 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,136 +17,149 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="rootPane" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerAddUserController">
+<AnchorPane id="AnchorPane" fx:id="rootPane" prefHeight="500.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerAddUserController">
     <children>
-      <GridPane layoutX="14.0" layoutY="25.0" prefHeight="463.0" prefWidth="652.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="119.0" minWidth="2.4436492919921875" prefWidth="75.43048095703125" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="440.5563507080078" minWidth="10.0" prefWidth="266.4039611816406" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="440.5563507080078" minWidth="10.0" prefWidth="60.596038818359375" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="440.5563507080078" minWidth="10.0" prefWidth="251.10595703125" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints prefHeight="50.0" valignment="BOTTOM" vgrow="ALWAYS" />
-          <RowConstraints prefHeight="50.0" valignment="BOTTOM" vgrow="ALWAYS" />
-          <RowConstraints maxHeight="62.90730285644531" minHeight="33.23841857910156" prefHeight="50.0" valignment="BOTTOM" vgrow="ALWAYS" />
-            <RowConstraints maxHeight="65.76158142089844" minHeight="36.09269714355469" prefHeight="50.0" valignment="BOTTOM" vgrow="ALWAYS" />
-            <RowConstraints prefHeight="50.0" valignment="BOTTOM" vgrow="ALWAYS" />
-            <RowConstraints prefHeight="50.0" valignment="BOTTOM" vgrow="ALWAYS" />
-            <RowConstraints maxHeight="375.25174713134766" minHeight="10.0" prefHeight="184.993408203125" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="375.25174713134766" minHeight="10.0" prefHeight="43.006591796875" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER">
-               <image>
-                  <Image url="@../Images/person.png" />
-               </image>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </ImageView>
-            <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-               <image>
-                  <Image url="@../Images/phone.png" />
-               </image>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </ImageView>
-            <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-               <image>
-                  <Image url="@../Images/email.png" />
-               </image>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </ImageView>
-            <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="3">
-               <image>
-                  <Image url="@../Images/location.png" />
-               </image>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </ImageView>
-            <JFXTextField fx:id="txtName" focusColor="#00e2c7" promptText="Name" GridPane.columnIndex="1" />
-            <JFXTextField fx:id="txtPhone" focusColor="#00e2c7" promptText="Phone number" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <JFXTextField fx:id="txtEmail" focusColor="#00e2c7" promptText="Email" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <JFXTextField fx:id="txtAddress" focusColor="#00e2c7" promptText="Address" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <JFXTextField fx:id="txtAddress2" focusColor="#00e2c7" promptText="Address" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <JFXTextField fx:id="txtPassword" focusColor="#00e2c7" prefWidth="298.0" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <JFXTextArea fx:id="txtNotes" focusColor="#00e2c7" prefHeight="189.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
-               <GridPane.margin>
-                  <Insets bottom="15.0" top="10.0" />
-               </GridPane.margin>
-            </JFXTextArea>
-            <JFXListView fx:id="listViewGuilds" prefHeight="192.0" prefWidth="287.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
-               <GridPane.margin>
-                  <Insets bottom="10.0" right="10.0" top="10.0" />
-               </GridPane.margin>
-            </JFXListView>
-            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
-               <padding>
-                  <Insets top="10.0" />
-               </padding>
-               <children>
-                  <JFXCheckBox fx:id="chkVolunteer" checkedColor="#1cbf6e" contentDisplay="CENTER" onAction="#onChkBoxPressed" text="Volunteer" unCheckedColor="#949292">
-                     <HBox.margin>
+        <GridPane layoutX="14.0" layoutY="25.0" prefHeight="463.0" prefWidth="652.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="119.0" minWidth="2.4436492919921875" prefWidth="75.43048095703125" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="440.5563507080078" minWidth="10.0" prefWidth="266.4039611816406" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="440.5563507080078" minWidth="10.0" prefWidth="60.596038818359375" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="440.5563507080078" minWidth="10.0" prefWidth="251.10595703125" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints prefHeight="50.0" valignment="BOTTOM" vgrow="ALWAYS" />
+                <RowConstraints prefHeight="50.0" valignment="BOTTOM" vgrow="ALWAYS" />
+                <RowConstraints maxHeight="62.90730285644531" minHeight="33.23841857910156" prefHeight="50.0" valignment="BOTTOM" vgrow="ALWAYS" />
+                <RowConstraints maxHeight="65.76158142089844" minHeight="36.09269714355469" prefHeight="50.0" valignment="BOTTOM" vgrow="ALWAYS" />
+                <RowConstraints prefHeight="50.0" valignment="BOTTOM" vgrow="ALWAYS" />
+                <RowConstraints prefHeight="50.0" valignment="BOTTOM" vgrow="ALWAYS" />
+                <RowConstraints maxHeight="375.25174713134766" minHeight="10.0" prefHeight="184.993408203125" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="375.25174713134766" minHeight="10.0" prefHeight="43.006591796875" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER">
+                    <image>
+                        <Image url="@../Images/person.png" />
+                    </image>
+                    <GridPane.margin>
                         <Insets />
-                     </HBox.margin>
-                  </JFXCheckBox>
-                  <JFXCheckBox fx:id="chkManager" checkedColor="#1cbf6e" contentDisplay="CENTER" onAction="#onChkBoxPressed" text="Manager" unCheckedColor="#949292" />
-                  <JFXCheckBox fx:id="chkAdmin" checkedColor="#1cbf6e" contentDisplay="CENTER" onAction="#onChkBoxPressed" text="Admin" unCheckedColor="#949292" />
-               </children>
-            </HBox>
-            <Label prefHeight="17.0" prefWidth="44.0" style="-fx-background-color: #00c4ad;" text="Notes" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="TOP">
-               <GridPane.margin>
-                  <Insets top="10.0" />
-               </GridPane.margin>
-            </Label>
-            <Label prefHeight="17.0" prefWidth="44.0" style="-fx-background-color: #00c4ad;" text="Guilds" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="TOP">
-               <GridPane.margin>
-                  <Insets top="10.0" />
-               </GridPane.margin>
-            </Label>
-            <JFXButton fx:id="btnAccept" onAction="#onBtnAcceptPressed" prefHeight="25.0" prefWidth="150.0" style="-fx-background-color: #029e99;" text="Add" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding>
-               <font>
-                  <Font size="15.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </JFXButton>
-            <JFXButton fx:id="btnCancel" onAction="#onBtnCancelPressed" prefHeight="25.0" prefWidth="150.0" style="-fx-background-color: B0B0B0;" text="Cancel" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding>
-               <font>
-                  <Font size="15.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </JFXButton>
-            <JFXButton fx:id="JFXBtnAddPhoto" buttonType="RAISED" onAction="#pressedChangeImage" style="-fx-background-color: #00c4ad;" text="Change Photo" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
-               <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding>
-            </JFXButton>
-            <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="4">
-               <image>
-                  <Image url="@../Images/location.png" />
-               </image>
-            </ImageView>
-         </children>
-      </GridPane>
-      <ImageView fx:id="imgVwProfilePic" fitHeight="153.0" fitWidth="172.0" layoutX="457.0" layoutY="30.0" pickOnBounds="true">
-         <image>
-            <Image url="@../Images/labeouf.jpg" />
-         </image>
-      </ImageView>
+                    </GridPane.margin>
+                </ImageView>
+                <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                    <image>
+                        <Image url="@../Images/phone.png" />
+                    </image>
+                    <GridPane.margin>
+                        <Insets />
+                    </GridPane.margin>
+                </ImageView>
+                <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                    <image>
+                        <Image url="@../Images/email.png" />
+                    </image>
+                    <GridPane.margin>
+                        <Insets />
+                    </GridPane.margin>
+                </ImageView>
+                <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                    <image>
+                        <Image url="@../Images/location.png" />
+                    </image>
+                    <GridPane.margin>
+                        <Insets />
+                    </GridPane.margin>
+                </ImageView>
+                <JFXTextField fx:id="txtName" focusColor="#00e2c7" promptText="Name" GridPane.columnIndex="1" />
+                <JFXTextField fx:id="txtPhone" focusColor="#00e2c7" promptText="Phone number" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <JFXTextField fx:id="txtEmail" focusColor="#00e2c7" promptText="Email" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <JFXTextField fx:id="txtAddress" focusColor="#00e2c7" promptText="Address" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <JFXTextField fx:id="txtAddress2" focusColor="#00e2c7" promptText="Address" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <JFXTextField fx:id="txtPassword" focusColor="#00e2c7" prefWidth="298.0" promptText="Password" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <JFXTextArea fx:id="txtNotes" focusColor="#00e2c7" prefHeight="189.0" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                    <GridPane.margin>
+                        <Insets bottom="15.0" top="10.0" />
+                    </GridPane.margin>
+                </JFXTextArea>
+                <JFXListView fx:id="listViewGuilds" prefHeight="192.0" prefWidth="287.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
+                    <GridPane.margin>
+                        <Insets bottom="10.0" right="10.0" top="10.0" />
+                    </GridPane.margin>
+                </JFXListView>
+                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                    <padding>
+                        <Insets top="10.0" />
+                    </padding>
+                    <children>
+                        <JFXCheckBox fx:id="chkVolunteer" checkedColor="#1cbf6e" contentDisplay="CENTER" onAction="#onChkBoxPressed" text="Volunteer" unCheckedColor="#949292">
+                            <HBox.margin>
+                                <Insets />
+                            </HBox.margin>
+                        </JFXCheckBox>
+                        <JFXCheckBox fx:id="chkManager" checkedColor="#1cbf6e" contentDisplay="CENTER" onAction="#onChkBoxPressed" text="Manager" unCheckedColor="#949292" />
+                        <JFXCheckBox fx:id="chkAdmin" checkedColor="#1cbf6e" contentDisplay="CENTER" onAction="#onChkBoxPressed" text="Admin" unCheckedColor="#949292" />
+                    </children>
+                </HBox>
+                <Label prefHeight="17.0" prefWidth="44.0" style="-fx-background-color: #00c4ad;" text="Notes" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="TOP">
+                    <GridPane.margin>
+                        <Insets top="10.0" />
+                    </GridPane.margin>
+                    <font>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Label>
+                <Label prefHeight="19.0" prefWidth="46.0" style="-fx-background-color: #00c4ad;" text="Guilds" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="TOP">
+                    <GridPane.margin>
+                        <Insets top="10.0" />
+                    </GridPane.margin>
+                    <font>
+                        <Font name="System Bold" size="15.0" />
+                    </font>
+                </Label>
+                <JFXButton fx:id="btnAccept" buttonType="RAISED" maxHeight="25.0" maxWidth="91.0" onAction="#onBtnAcceptPressed" prefHeight="25.0" style="-fx-background-color: #029e99;" text="Add" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                    <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                    </padding>
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                    <GridPane.margin>
+                        <Insets />
+                    </GridPane.margin>
+                </JFXButton>
+                <JFXButton fx:id="btnCancel" buttonType="RAISED" maxHeight="25.0" maxWidth="91.0" onAction="#onBtnCancelPressed" prefHeight="25.0" style="-fx-background-color: B0B0B0;" text="Cancel" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                    <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                    </padding>
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                    <GridPane.margin>
+                        <Insets />
+                    </GridPane.margin>
+                </JFXButton>
+                <JFXButton fx:id="JFXBtnAddPhoto" buttonType="RAISED" maxHeight="25.0" maxWidth="115.0" onAction="#pressedChangeImage" prefHeight="25.0" prefWidth="115.0" style="-fx-background-color: #00c4ad;" text="Change Photo" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                    <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                    </padding>
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </JFXButton>
+                <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                    <image>
+                        <Image url="@../Images/location.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </GridPane>
+        <ImageView fitHeight="138.0" fitWidth="127.0" layoutX="532.0" layoutY="21.0" pickOnBounds="true" style="-fx-effect: 30;" />
+        <ImageView fx:id="imgVwProfilePic" fitHeight="153.0" fitWidth="172.0" layoutX="457.0" layoutY="30.0" pickOnBounds="true">
+            <image>
+                <Image url="@../Images/labeouf.jpg" />
+            </image>
+            <effect>
+                <Reflection fraction="0.11" topOffset="-4.0" topOpacity="0.35" />
+            </effect>
+        </ImageView>
     </children>
 </AnchorPane>
