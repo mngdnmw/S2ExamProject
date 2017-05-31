@@ -71,8 +71,6 @@ public class HourLoginViewController implements Initializable
     @FXML
     private JFXPasswordField txtPassword;
     @FXML
-    private Label lblWrongPass;
-    @FXML
     private JFXButton btnLogin;
     @FXML
     private JFXButton btnCancelLogin;
@@ -569,7 +567,11 @@ public class HourLoginViewController implements Initializable
         btnLogHours.setText(MOD_FACADE.getLang("BTN_LOG_HOURS"));
         btnSeeInfo.setText(MOD_FACADE.getLang("BTN_SEE_INFO"));
         btnLanguage.setText(MOD_FACADE.getLang("BTN_LANGUAGE"));
-
+        lblUsername.setText(MOD_FACADE.getLang("LB_USERNAME"));
+        lblPassword.setText(MOD_FACADE.getLang("LB_PASSWORD"));
+        btnCancelLogin.setText(MOD_FACADE.getLang("BTN_CANCEL"));
+        btnLogin.setText(MOD_FACADE.getLang("BTN_LOGIN"));
+                
         if (MOD_FACADE.getLangProperty().equals(Lang.ENG))
         {
             imgViewLngBut.setImage(iconENG);

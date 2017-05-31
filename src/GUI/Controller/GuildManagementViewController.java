@@ -59,7 +59,7 @@ public class GuildManagementViewController implements Initializable
     @FXML
     private JFXButton btnAddNew;
 
-    ModelFacade modelFacade = ModelFacade.getModelFacade();
+    ModelFacade MOD_FAC = ModelFacade.getModelFacade();
     Guild selectedGuild = null;
     private final Service servicegetGuilds = new Service()
     {
@@ -72,7 +72,7 @@ public class GuildManagementViewController implements Initializable
                 protected Object call() throws Exception
                 {
 
-                    modelFacade.setAllGuildsIntoArray();
+                    MOD_FAC.setAllGuildsIntoArray();
                     return null;
 
                 }
@@ -93,7 +93,7 @@ public class GuildManagementViewController implements Initializable
         });
         setListItems();
 
-        if (modelFacade.getCurrentUser().getType() != 2)
+        if (MOD_FAC.getCurrentUser().getType() != 2)
         {
             btnAdd.setVisible(false);
             btnRemove.setVisible(false);
@@ -102,14 +102,14 @@ public class GuildManagementViewController implements Initializable
 
     void setListItems()
     {
-        listGuilds.setItems(modelFacade.getAllSavedGuilds());
+        listGuilds.setItems(MOD_FAC.getAllSavedGuilds());
     }
 
     @FXML
     private void btnAddPressed(ActionEvent event)
     {
         stckPaneNew.setVisible(true);
-        modelFacade.fadeInTransition(Duration.millis(750), stckPaneNew);
+        MOD_FAC.fadeInTransition(Duration.millis(750), stckPaneNew);
         btnAddNew.setVisible(true);
         btnChange.setVisible(false);
     }
@@ -121,15 +121,15 @@ public class GuildManagementViewController implements Initializable
         if (listGuilds.getSelectionModel().getSelectedItem() != null)
         {
             stckPaneNew.setVisible(true);
-            modelFacade.fadeInTransition(Duration.millis(750), stckPaneNew);
+            MOD_FAC.fadeInTransition(Duration.millis(750), stckPaneNew);
             txtName.setText(listGuilds.getSelectionModel().getSelectedItem().getName());
             btnAddNew.setVisible(false);
         }
 
         else
         {
-            
-            modelFacade.snackbarPopup(modelFacade.getLang("STR_GUILD_NOT_SELECTED"), rootPane);
+
+            MOD_FAC.snackbarPopup(MOD_FAC.getLang("STR_GUILD_NOT_SELECTED"), rootPane);
         }
 
     }
@@ -137,15 +137,15 @@ public class GuildManagementViewController implements Initializable
     @FXML
     private void btnRemovePressed(ActionEvent event)
     {
-        modelFacade.deleteGuild(selectedGuild.getId());
+        MOD_FAC.deleteGuild(selectedGuild.getId());
         servicegetGuilds.restart();
     }
 
     @FXML
     private void btnChangePressed(ActionEvent event)
     {
-        modelFacade.updateGuild(selectedGuild.getId(), txtName.getText());
-        modelFacade.fadeOutTransition(Duration.millis(750), stckPaneNew);
+        MOD_FAC.updateGuild(selectedGuild.getId(), txtName.getText());
+        MOD_FAC.fadeOutTransition(Duration.millis(750), stckPaneNew);
         stckPaneNew.setVisible(false);
         servicegetGuilds.restart();
     }
@@ -153,7 +153,7 @@ public class GuildManagementViewController implements Initializable
     @FXML
     private void btnCancelPressed(ActionEvent event)
     {
-        modelFacade.fadeOutTransition(Duration.millis(750), stckPaneNew);
+        MOD_FAC.fadeOutTransition(Duration.millis(750), stckPaneNew);
         stckPaneNew.setVisible(false);
         txtName.clear();
     }
@@ -161,17 +161,22 @@ public class GuildManagementViewController implements Initializable
     @FXML
     private void btnAddNewPressed(ActionEvent event)
     {
-        modelFacade.addGuild(txtName.getText());
+        MOD_FAC.addGuild(txtName.getText());
 
         servicegetGuilds.restart();
-        modelFacade.fadeOutTransition(Duration.millis(750), stckPaneNew);
+        MOD_FAC.fadeOutTransition(Duration.millis(750), stckPaneNew);
         stckPaneNew.setVisible(false);
     }
 
-    
     @FXML
     private void onListViewPressed(MouseEvent event)
     {
         selectedGuild = listGuilds.getSelectionModel().getSelectedItem();
+    }
+
+    private void setTextAll()
+    {
+        btnModify.setText(MOD_FAC.getLang(""));
+        
     }
 }
