@@ -353,4 +353,5 @@ public class ModelFacade
     public String parseExportHours(List<User> users) {
         return BLL_FAC.parseExportHours(users);
     }
+    
 }

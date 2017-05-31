@@ -106,9 +106,16 @@ STR_ALL_GUILDS = Alle laug
 STR_SELECT_USER = Vælg venligst en bruger først
 STR_INVALID_INPUT = Indsæt venligst gyldig information i feltet
 
-IMG_CH_TITLE = Select a new image file
-IMG_CH_EXT_FILTER = Image files only
-CSV_CH_TITLE = Choose where to export CSV file
+IMG_CH_TITLE = Vælg et nyt billede
+IMG_CH_EXT_FILTER = Kun billede filer
+CSV_CH_TITLE = Vælg placering
 CSV_CH_EXT_FILTER = Comma separated textfiles
-STR_ERROR_FILE_NOT_FOUND = File not found!
-STR_ERROR_FILE_NOT_FOUND_HEAD = Selected image is not found!
+STR_ERROR_FILE_NOT_FOUND = Filen eksisterer ikke 
+STR_ERROR_FILE_NOT_FOUND_HEAD = Det valgte billede eksisterer ikke
+
+BTN_ADD_GUILD = Tilføj ny
+BTN_REMOVE_GUILD = Fjern
+LBL_GUILD_NAME = Laug Navn: 
+
+TXT_ADRESS = Adresse
+BTN_ADD= Tilføj
