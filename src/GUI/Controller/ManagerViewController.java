@@ -689,12 +689,8 @@ public class ManagerViewController implements Initializable
     private void export(ExportType type)
     {
         FileChooser chooser = new FileChooser();
-        chooser.getExtensionFilters().add(new ExtensionFilter(MOD_FAC.getLang("CSV_CH_EXT_FILTER"), new ArrayList<String>()
-        {
-            {
-                add("*.csv");
-            }
-        }));
+        String[] extensions = {"*.csv"};
+        chooser.getExtensionFilters().add(new ExtensionFilter(MOD_FAC.getLang("CSV_CH_EXT_FILTER"), extensions));
         chooser.setTitle(MOD_FAC.getLang("CSV_CH_TITLE"));
         chooser.setInitialDirectory(new File("."));
         File chose = chooser.showSaveDialog(root.getScene().getWindow());
