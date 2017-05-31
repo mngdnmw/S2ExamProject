@@ -84,10 +84,6 @@ public class HourLoginViewController implements Initializable
     private JFXButton btnIntUp;
     @FXML
     private AnchorPane ancDarken;
-    private String strLogThanks = "Thanks!";
-    private String strContribution = "Your hours have been logged. Thank you!";
-    private String strLogin = "Log In";
-    private String strCancel = "Cancel";
     private Image iconDK, iconENG;
     private final ImageView imgViewLngBut = new ImageView();
     //Models used by this Controller
@@ -582,10 +578,5 @@ public class HourLoginViewController implements Initializable
         {
             imgViewLngBut.setImage(iconDK);
         }
-        strLogThanks = "Thanks!";
-        strContribution = MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION");
-        strLogin = "Log In";
-        strCancel = "Cancel";
-
     }
 }

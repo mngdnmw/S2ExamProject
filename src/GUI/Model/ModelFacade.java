@@ -287,7 +287,7 @@ public class ModelFacade
 
     public String parseExportUsers(List<User> users)
     {
-        return BLL_FAC.parseExport(users);
+        return BLL_FAC.parseExportUserdata(users);
     }
 
     public void writeExport(File file, String input)
@@ -349,4 +349,8 @@ public class ModelFacade
         CAL_MOD.formatCalendar(datePicker);
     }
     
+
+    public String parseExportHours(List<User> users) {
+        return BLL_FAC.parseExportHours(users);
+    }
 }

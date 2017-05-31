@@ -102,3 +102,10 @@ STR_CONTRIBUTE_DELETE = Den valgte bidrag er blevet slettet
 STR_ALL_GUILDS = Alle laug
 STR_SELECT_USER = Vælg venligst en bruger først
 STR_INVALID_INPUT = Indsæt venligst gyldig information i feltet
+
+IMG_CH_TITLE = Select a new image file
+IMG_CH_EXT_FILTER = Image files only
+CSV_CH_TITLE = Choose where to export CSV file
+CSV_CH_EXT_FILTER = Comma separated textfiles
+STR_ERROR_FILE_NOT_FOUND = File not found!
+STR_ERROR_FILE_NOT_FOUND_HEAD = Selected image is not found!
