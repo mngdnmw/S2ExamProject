@@ -9,7 +9,6 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import java.io.File;
@@ -18,7 +17,6 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
-import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -184,7 +182,7 @@ public class ManagerEditViewController implements Initializable
                 @Override
                 protected Object call() throws Exception
                 {
-                  
+
                     filteredData = new FilteredList<>(FXCollections.observableArrayList(MOD_FACADE.getWorkedDays(selectedUser)), p -> true);
                     firstRun = false;
                     return null;
@@ -199,12 +197,12 @@ public class ManagerEditViewController implements Initializable
     {
         setText();
         listGuilds.setItems(FXCollections.observableArrayList(selectedUser.getGuildList()));
-        setupTableView("Looking for data");
+        setupTableView("Loading Information");
 
         serviceInitializer.start();
         setUserImage();
         serviceInitializer.setOnSucceeded(e
-                -> setupTableView("Found Nothing :("));
+                -> setupTableView(MOD_FACADE.getLang("STR_SEARCH_EMPTY")));
 //        if (selectedUser.getType() >= 1)
 //        {
 //            serviceAllVolunteers.start();
@@ -238,7 +236,6 @@ public class ManagerEditViewController implements Initializable
         }
         else
         {
-            System.out.println("selected user is null");
         }
     }
 
@@ -291,7 +288,7 @@ public class ManagerEditViewController implements Initializable
         serviceAllVolunteers.setOnSucceeded(e
                 -> 
                 {
-                    System.out.println("Updated info saved. ");
+
                     Stage stage = (Stage) JFXBtnAccept.getScene().getWindow();
                     stage.close();
         });
@@ -325,15 +322,13 @@ public class ManagerEditViewController implements Initializable
         }
         if (count > 0)
         {
-            JFXSnackbar b = new JFXSnackbar(root);
-            b.show("Password has succesfully changed", 2000);
+            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_PASSWORD_CHANGE"), root, 5000);
             hidePasswordChangerEvent();
 
         }
         else if (count == -1)
         {
-            JFXSnackbar b = new JFXSnackbar(root);
-            b.show("Password do not match", 2000);
+            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_PW_DOESNT_MATCH"), root, 5000);
         }
         /*else
         {
@@ -353,11 +348,9 @@ public class ManagerEditViewController implements Initializable
 
     @FXML
     private void hidePasswordChangerEvent()
-
     {
         MOD_FACADE.fadeOutTransition(Duration.millis(750), stckPanePasswordChanger)
                 .setOnFinished(e -> stckPanePasswordChanger.setVisible(false));
-
     }
 
     private void setupTableView(String str)
@@ -480,7 +473,7 @@ public class ManagerEditViewController implements Initializable
 
                 MOD_FACADE.deleteWorkedDay(selectedUser, selectedDay);
 
-                snackBarPopup("Contribution for " + selectedDay.getGuild() + " on the " + selectedDay.getDate() + " has been deleted.");
+                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_CONTRIBUTE_DELETE"), root);
                 serviceInitializer.restart();
             }
 
@@ -505,13 +498,12 @@ public class ManagerEditViewController implements Initializable
                     {
                         if (Integer.parseInt(newValue) >= 25)
                         {
-                            snackBarPopup("You cannot exceed 24 hours");
-
+                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_MAX_HOUR"), root);
                             txtfldHours.setText(oldValue);
                         }
                         else if (Integer.parseInt(newValue) <= 0)
                         {
-                            snackBarPopup("You cannot log 0 hours");
+                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_MIN_HOUR"), root);
                             txtfldHours.setText(oldValue);
                         }
                         else
@@ -655,7 +647,7 @@ public class ManagerEditViewController implements Initializable
 
             if (txtfldHours.getText().isEmpty())
             {
-                snackBarPopup("Invalid Action");
+                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_INVALID_ACTION"), root);
             }
             else
             {
@@ -684,8 +676,6 @@ public class ManagerEditViewController implements Initializable
 
             int guildID = comboboxGuild.getSelectionModel().getSelectedItem().getId();
 
-            int errorCode = 1;
-
             if (selectedUser.getEmail() != null)
             {
 
@@ -700,7 +690,7 @@ public class ManagerEditViewController implements Initializable
                     MOD_FACADE.editHours(selectedUser.getEmail(), date, hours, guildID);
                 }
                 stckPaneLoad.setVisible(false);
-                contributionSnackBarHandler(errorCode);
+                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"), root);
 
             }
             else if (selectedUser.getPhone() != 0)
@@ -716,35 +706,14 @@ public class ManagerEditViewController implements Initializable
                     MOD_FACADE.editHours(selectedUser.getPhone() + "", date, hours, guildID);
                 }
                 stckPaneLoad.setVisible(false);
-                contributionSnackBarHandler(errorCode);
+                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"), root);
 
             }
         }
 
         else
         {
-            snackBarPopup("Please input information in all fields");
-        }
-    }
-
-    public void contributionSnackBarHandler(int errorCode)
-    {
-        switch (errorCode)
-        {
-            case 0:
-                snackBarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"));
-                closeAddHoursPopup();
-                serviceInitializer.restart();
-                break;
-            case 1:
-                System.out.println("Error code was not correctly initialised");
-                break;
-            case 2627:
-                snackBarPopup(MOD_FACADE.getLang("STR_ERROR_2627"));
-                break;
-            default:
-                snackBarPopup(MOD_FACADE.getLang("STR_FIRST_TIME_ERROR" + errorCode));
-                break;
+            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_MORE_INFO"), root);
         }
     }
 
@@ -754,19 +723,6 @@ public class ManagerEditViewController implements Initializable
         MOD_FACADE.fadeOutTransition(Duration.millis(750), stckPaneAddHours)
                 .setOnFinished(e -> stckPaneAddHours.setVisible(false));
         editPopup = false;
-    }
-
-    public void snackBarPopup(String str)
-    {
-        int time = 3000;
-        JFXSnackbar snackbar = new JFXSnackbar(root);
-        snackbar.show(str, time);
-        PauseTransition pause = new PauseTransition(Duration.millis(time - 2000));
-        pause.setOnFinished(
-                e -> buttonsLocking(false)
-        );
-        pause.play();
-
     }
 
     public void buttonsLocking(Boolean dis)

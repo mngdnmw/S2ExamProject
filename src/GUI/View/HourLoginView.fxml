@@ -189,14 +189,6 @@
                 </HBox>
                 <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="10.0">
                     <children>
-                      <Label fx:id="lblWrongPass" prefHeight="25.0" prefWidth="226.0" text="Incorrect Login Information" textFill="#f50505">
-                          <font>
-                              <Font name="System Bold" size="16.0" />
-                          </font>
-                          <padding>
-                              <Insets top="5.0" />
-                          </padding>
-                      </Label>
                         <JFXButton id="btnConfirmTeal" fx:id="btnLogin" buttonType="RAISED" stylesheets="@MainLayout.css" text="Login">
                      <HBox.margin>
                         <Insets right="20.0" />

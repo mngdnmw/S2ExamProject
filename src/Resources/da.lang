@@ -59,6 +59,10 @@ BTN_ADD_USER = Tilføj Bruger
 CHK_MANAGERS = Managers
 CHK_VOLUNTEERS = Volunteers
 
+MENU_ITEM_ONE_EMAIL  = Kopier email til clipboard
+MENU_ITEM_ALL_EMAIL = Kopier alle emails til clipboard
+MENU_ITEM_EXPORT = Eksporter all bruger i tabellen
+
 #Manager view labels
 #Remember to leave a space after LBL_USERNAME
 LBL_USERNAME = Logget ind som:  
@@ -76,4 +80,25 @@ TAB_GUILD = Laug Management
 #ErrorCode
 STR_NO_ERROR_CONTRIBUTION = Dine timer er blevet registreret! Tak for hjælpen!
 STR_ERROR_2627 = Fejl: Timer er allerede blevet tilføjet til denne guild idag.
-STR_FIRST_TIME_ERROR = Fejl: Ukendt Fejl: 
+STR_FIRST_TIME_ERROR = Fejl: Ukendt Fejl
+
+STR_WRONG_PW = Du har brugt det forkerte kodeord
+STR_MIN_HOUR = Du kan ikke logge 0 timer
+STR_MAX_HOUR = Du kan ikke logge mere end 24 timer
+STR_MORE_INFO = Indsæt venligst information i alle felter
+STR_INVALID_ACTION = Ugyldig handling
+STR_GUILD_NOT_SELECTED = Vælg et laug at ændre
+STR_PHONE_OR_EMAIL_REQUIRED = Udfyld telefon nummer ELLER email 
+STR_PHONE_ONLY = Telefon nummer må kun indeholde tal
+STR_USER_TYPE_ERROR = Bruger type er ikke valgt
+STR_NEW_USER_ADD = Ny bruger er blevet tilføjet
+STR_USER_NAME_ERROR = Navn er nødvendigt
+STR_SEARCH_EMPTY = Søgning fandt ingenting
+STR_PASSWORD_CHANGE = Kodeord er blevet ændret
+STR_PW_DOESNT_MATCH = Kodeord er ikke ens
+STR_OLD_PW_MATCH_NEW = Det gamle kodeord matcher det nye
+STR_OLD_PW_WRONG = Det gamle kodeord er forkert
+STR_CONTRIBUTE_DELETE = Den valgte bidrag er blevet slettet
+STR_ALL_GUILDS = Alle laug
+STR_SELECT_USER = Vælg venligst en bruger først
+STR_INVALID_INPUT = Indsæt venligst gyldig information i feltet

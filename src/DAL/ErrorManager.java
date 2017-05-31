@@ -28,14 +28,17 @@ public class ErrorManager
 
     public String getErrorString()
     {
+        System.out.println(errorCode + "");
         switch (errorCode)
         {
             case 0:
                 return null;
             case 2627:
+                errorCode = 0;
                 return duplicateError;
+                
             default:
-                int sendError = errorCode;
+                errorCode = 0;
                 return unknownError;
         }
 
