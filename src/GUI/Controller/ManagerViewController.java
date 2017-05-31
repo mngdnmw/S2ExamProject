@@ -41,7 +41,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.ValueAxis;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.DateCell;
@@ -124,7 +124,7 @@ public class ManagerViewController implements Initializable
     @FXML
     private NumberAxis yAxis;
     @FXML
-    private ValueAxis xAxis;
+    private CategoryAxis xAxis;
 
     @FXML
     private Tab tabLog;
@@ -143,6 +143,7 @@ public class ManagerViewController implements Initializable
     ArrayList<XYChart.Series<String, Number>> Temp = new ArrayList<>();
     ObservableList<User> filteredList = FXCollections.observableArrayList();
     FilteredList<User> filteredData = new FilteredList<>(filteredList);
+    SortedList<User> sortedData = new SortedList<>(filteredData);
     @FXML
     private StackPane stckPaneGraphError;
     @FXML
@@ -151,7 +152,7 @@ public class ManagerViewController implements Initializable
     private JFXDatePicker datePickerPeriodTwo;
     @FXML
     private JFXButton btnRefreshLog;
-
+    
     private final Service serviceGraphStats = new Service()
     {
         @Override
@@ -376,7 +377,6 @@ public class ManagerViewController implements Initializable
                             return search;
 
                 });
-                SortedList<User> sortedData = new SortedList<>(filteredData);
                 sortedData.comparatorProperty().bind(tblUsers.comparatorProperty());
                 tblUsers.setItems(sortedData);
             }
@@ -767,7 +767,6 @@ public class ManagerViewController implements Initializable
                     });
         });
 
-        SortedList<User> sortedData = new SortedList<>(filteredData);
 
         sortedData.comparatorProperty().bind(tblUsers.comparatorProperty());
         tblUsers.setItems(sortedData);

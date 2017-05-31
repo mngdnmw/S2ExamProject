@@ -59,7 +59,7 @@ public class GraphSorterModel
                     {
                         Map.Entry pair = (Map.Entry) it.next();
                         seriesVolunteer.getData().add(new XYChart.Data<>((String) pair.getKey(), (Integer) pair.getValue()));
-                        System.out.println(""+ pair.getKey());
+                        
                         it.remove(); // avoids a ConcurrentModificationException
                     }
                 }

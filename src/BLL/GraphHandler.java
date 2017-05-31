@@ -30,53 +30,10 @@ public class GraphHandler
     public ArrayList<HashMap<String, Integer>> sorter(Guild guild, LocalDate periodOne, LocalDate periodTwo)
     {
         ArrayList<HashMap<String, Integer>> sortedData = new ArrayList<>();
-
-        HashMap<String, Integer> sortedDataVolun = new HashMap<>();
-        HashMap<String, Integer> sortedDataMan = new HashMap<>();
-
         //creates the hashmap with all values between periodOne and periodTwo
-        if (periodOne.getYear() < periodTwo.getYear())
-        {
-            for (int i = periodOne.getMonthValue(); i <= 12; i++)
-            {
+        HashMap<String, Integer> sortedDataVolun = periodHashMap(periodOne, periodTwo);
+        HashMap<String, Integer> sortedDataMan = periodHashMap(periodOne, periodTwo);
 
-                for (int j = 1; j <= 12; j++)
-                {
-                    String month = monthString(j, periodOne.getYear());
-                    sortedDataVolun.put(month, 0);
-                    sortedDataMan.put(month, 0);
-                }
-            }
-            int repeats = 0;
-            
-            for (int i = periodOne.getYear() + 1; i < periodTwo.getYear(); i++)
-            {
-                repeats++;
-                for (int j = 1; j <= 12; j++)
-                {
-                    String month = monthString(j, periodOne.getYear() + repeats);
-                    sortedDataVolun.put(month, 0);
-                    sortedDataMan.put(month, 0);
-                }
-                System.out.println(repeats +"");
-            }
-            for (int i = 1; i <= periodTwo.getMonthValue(); i++)
-            {
-                String month = monthString(i, periodTwo.getYear() + repeats);
-                sortedDataVolun.put(month, 0);
-                sortedDataMan.put(month, 0);
-            }
-
-        }
-        else if (periodOne.getYear() == periodTwo.getYear())
-        {
-            for (int i = periodOne.getMonthValue(); i <= periodTwo.getMonthValue(); i++)
-            {
-                String month = monthString(i, periodOne.getYear());
-                sortedDataVolun.put(month, 0);
-                sortedDataMan.put(month, 0);
-            }
-        }
         ArrayList<List<Day>> allHours = new ArrayList<>();
         allHours.addAll(DAL_FAC.getHoursForGuild(guild, periodOne, periodTwo));
 
@@ -84,10 +41,10 @@ public class GraphHandler
         {
             for (Day day : allHours.get(i))
             {
-                DateTimeFormatter format = DateTimeFormatter.ofPattern("MMM-yyyy");
-                LocalDate date = LocalDate.parse(day.getDate(), format);
-                String datePeriod = date.format(format);
-
+                String[] daySplit = day.getDate().split("-");
+                String datePeriod = monthString(Integer.parseInt(daySplit[1]), Integer.parseInt(daySplit[0]));
+               
+                System.out.println(datePeriod);
                 if (i == 0)
                 {
 
@@ -138,6 +95,55 @@ public class GraphHandler
             default:
                 return "";
         }
+    }
+
+    /**
+     * Creates a HashMap that using two LocalDate, creates a point for each month in the periods between
+     * @param periodOne
+     * @param periodTwo
+     * @return 
+     */
+    public HashMap<String, Integer> periodHashMap(LocalDate periodOne, LocalDate periodTwo)
+    {
+        HashMap<String, Integer> periodHashMap = new HashMap<>();
+        if (periodOne.getYear() < periodTwo.getYear())
+        {
+            for (int i = periodOne.getMonthValue(); i <= 12; i++)
+            {
+
+                String month = monthString(i, periodOne.getYear());
+                periodHashMap.put(month, 0);
+            }
+            int repeats = 0;
+
+            for (int i = periodOne.getYear() + 1; i < periodTwo.getYear(); i++)
+            {
+                repeats++;
+                for (int j = 1; j <= 12; j++)
+                {
+                    String month = monthString(j, periodOne.getYear() + repeats);
+                    periodHashMap.put(month, 0);
+
+                }
+            }
+            for (int i = 1; i <= periodTwo.getMonthValue(); i++)
+            {
+                String month = monthString(i, periodTwo.getYear());
+                periodHashMap.put(month, 0);
+
+            }
+
+        }
+        else if (periodOne.getYear() == periodTwo.getYear())
+        {
+            for (int i = periodOne.getMonthValue(); i <= periodTwo.getMonthValue(); i++)
+            {
+                String month = monthString(i, periodOne.getYear());
+                periodHashMap.put(month, 0);
+
+            }
+        }
+        return periodHashMap;
     }
 
 }

@@ -15,7 +15,9 @@ import java.util.logging.Logger;
 
 public class HourManager extends ConnectionManager
 {
+
     ErrorManager erMan = new ErrorManager();
+
     /**
      * Logs hours into the database using userId, guildId, hours and date.
      *
@@ -41,7 +43,7 @@ public class HourManager extends ConnectionManager
         catch (SQLException ex)
         {
             erMan.setErrorCode(ex.getErrorCode());
-            System.out.println(""+ ex.getErrorCode());
+            System.out.println("" + ex.getErrorCode());
         }
     }
 
@@ -62,7 +64,7 @@ public class HourManager extends ConnectionManager
         }
         catch (SQLException ex)
         {
-            
+
             erMan.setErrorCode(ex.getErrorCode());
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -94,7 +96,7 @@ public class HourManager extends ConnectionManager
         }
         catch (SQLException ex)
         {
-            
+
             erMan.setErrorCode(ex.getErrorCode());
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -111,7 +113,7 @@ public class HourManager extends ConnectionManager
         }
         catch (SQLException ex)
         {
-            
+
             erMan.setErrorCode(ex.getErrorCode());
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -135,7 +137,7 @@ public class HourManager extends ConnectionManager
 
         catch (SQLException ex)
         {
-            
+
             erMan.setErrorCode(ex.getErrorCode());
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Could not delete worked day");
@@ -150,13 +152,13 @@ public class HourManager extends ConnectionManager
      * @param guild
      * @return
      */
-    public List<List<Day>> getHoursForGuild(Guild guild, LocalDate periodOne,LocalDate periodTwo)
+    public List<List<Day>> getHoursForGuild(Guild guild, LocalDate periodOne, LocalDate periodTwo)
     {
         ArrayList<List<Day>> allHours = new ArrayList<>();
         ArrayList<Day> managerHours = new ArrayList<>();
         ArrayList<Day> volunteerHours = new ArrayList<>();
         GeneralInfoManager genMan = new GeneralInfoManager();
-       
+
         try (Connection con = super.getConnection())
         {
             String query = "SELECT * FROM hour\n"
@@ -171,9 +173,10 @@ public class HourManager extends ConnectionManager
                 String guildName = guild.getName();
                 int guildid = guild.getId();
                 int hour = rs.getInt("hours");
-                if (genMan.getUserInfo(rs.getInt("userid")).getType() >= 1)
+                if (genMan.getUserInfo(rs.getInt("userid")).getType() == 1)
                 {
                     managerHours.add(new Day(date, hour, guildName, guildid));
+
                 }
                 else
                 {
@@ -188,7 +191,7 @@ public class HourManager extends ConnectionManager
         }
         catch (SQLException ex)
         {
-            
+
             erMan.setErrorCode(ex.getErrorCode());
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
         }
