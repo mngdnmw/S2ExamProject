@@ -16,6 +16,7 @@ import javafx.animation.FadeTransition;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.DatePicker;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -31,6 +32,7 @@ public class ModelFacade
     private final static ViewChangerModel VIEW_CHANG_MOD = new ViewChangerModel();
     private final static VolunteerDataModel VOL_DATA_MOD = new VolunteerDataModel();
     private final static GraphSorterModel GRAPH_MOD = new GraphSorterModel();
+    private final static CalendarModel CAL_MOD = new CalendarModel();
     private final static BLLFacade BLL_FAC = new BLLFacade();
 
     public static ModelFacade getModelFacade()
@@ -341,6 +343,10 @@ public class ModelFacade
     public String getErrorString()
     {
         return BLL_FAC.getErrorString();
+    }
+    
+    public void formatCalendar(DatePicker datePicker){
+        CAL_MOD.formatCalendar(datePicker);
     }
     
 }

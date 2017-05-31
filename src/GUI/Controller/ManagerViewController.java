@@ -250,8 +250,8 @@ public class ManagerViewController implements Initializable
 
             cmbGuildChooser.setEditable(true);
             new AutoCompleteComboBoxListener(cmbGuildChooser);
-            formatCalendar(datePickerPeriodOne);
-            formatCalendar(datePickerPeriodTwo);
+            MOD_FAC.formatCalendar(datePickerPeriodOne);
+            MOD_FAC.formatCalendar(datePickerPeriodTwo);
         }
         colLogEventId.setSortType(TableColumn.SortType.ASCENDING);
         tblLog.getSortOrder().add(colLogEventId);
@@ -259,65 +259,7 @@ public class ManagerViewController implements Initializable
 
     }
 
-    private void formatCalendar(DatePicker datePicker)
-    {
-        StringConverter converter = new StringConverter<LocalDate>()
-        {
-            DateTimeFormatter dateFormatter
-                    = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-            @Override
-            public String toString(LocalDate date)
-            {
-                if (date != null)
-                {
-                    return dateFormatter.format(date);
-                }
-                else
-                {
-                    return "";
-                }
-            }
-
-            @Override
-            public LocalDate fromString(String string)
-            {
-                if (string != null && !string.isEmpty())
-                {
-                    return LocalDate.parse(string, dateFormatter);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        };
-        datePicker.setConverter(converter);
-
-        // Create a day cell factory
-        datePicker.setDayCellFactory(new Callback<DatePicker, DateCell>()
-        {
-            @Override
-            public DateCell call(final DatePicker datepicker)
-            {
-                return new DateCell()
-                {
-                    @Override
-                    public void updateItem(LocalDate item, boolean empty)
-
-                    {
-                        // Must call super
-                        super.updateItem(item, empty);
-                        // Disable all future date cells
-                        if (item.isAfter(LocalDate.now()))
-                        {
-                            this.setDisable(true);
-                        }
-                    }
-                };
-            }
-        });
-    }
+   
 
     private void setTableProperties()
     {
@@ -592,7 +534,7 @@ public class ManagerViewController implements Initializable
             }
             catch (Exception e)
             {
-                System.out.println(e);
+                System.err.println(e);
             }
         }
 

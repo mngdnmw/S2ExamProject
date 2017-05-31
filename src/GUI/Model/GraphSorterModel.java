@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package GUI.Model;
 
 import BE.Guild;
@@ -15,10 +11,6 @@ import java.util.List;
 import java.util.Map;
 import javafx.scene.chart.XYChart;
 
-/**
- *
- * @author Mecaa
- */
 public class GraphSorterModel
 {
 
@@ -70,11 +62,6 @@ public class GraphSorterModel
         graphData.add(seriesVolunteer);
 
         return graphData;
-    }
-
-    public static void printMap(Map mp)
-    {
-
     }
 
 }
