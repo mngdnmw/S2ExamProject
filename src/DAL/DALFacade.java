@@ -8,7 +8,7 @@ import BE.User;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -94,9 +94,9 @@ public class DALFacade
      * @param guild
      * @return
      */
-    public List<List<Day>> getHoursForGuild(Guild guild)
+    public List<List<Day>> getHoursForGuild(Guild guild,LocalDate periodOne,LocalDate periodTwo)
     {
-        return HR_MAN.getHoursForGuild(guild);
+        return HR_MAN.getHoursForGuild(guild, periodOne, periodTwo);
     }
 
     public HashMap<String, String> loadSession()

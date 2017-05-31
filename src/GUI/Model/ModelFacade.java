@@ -9,6 +9,7 @@ import BLL.BLLFacade;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import javafx.animation.FadeTransition;
@@ -285,9 +286,9 @@ public class ModelFacade
         VOL_DATA_MOD.deleteWorkedDay(user, day);
     }
 
-    public List<XYChart.Series<Number, Number>> graphSort(Guild guild)
+    public List<XYChart.Series<String, Number>> graphSort(Guild guild, LocalDate periodOne,LocalDate periodTwo)
     {
-        return GRAPH_MOD.sortGraph(guild);
+        return GRAPH_MOD.sortGraph(guild, periodOne, periodTwo);
     }
 
     public void editHours(String username, String date, int hours, int guildId)
