@@ -65,19 +65,21 @@ public class UserInfoViewController implements Initializable
 {
 
     @FXML
-    private ImageView imgVwProfilePic;
-    @FXML
-    private JFXButton btnUpdatePhoto;
+    private AnchorPane root;
     @FXML
     private GridPane gridEdit;
     @FXML
+    private JFXDatePicker datePickerInPop;
+    @FXML
+    private StackPane stackPdeleteHours;
+    @FXML
+    private StackPane stckPaneAddHours;
+    @FXML
+    private StackPane stckPanePasswordChanger;
+    @FXML
     private JFXButton btnEditSave;
     @FXML
-    private AnchorPane root;
-    @FXML
-    private HBox hBoxInvisBtn;
-    @FXML
-    private JFXTextField txtFSearchDate;
+    private JFXButton btnUpdatePhoto;
     @FXML
     private JFXButton btnLogout;
     @FXML
@@ -89,11 +91,17 @@ public class UserInfoViewController implements Initializable
     @FXML
     private JFXButton btnCancelPW;
     @FXML
-    private JFXButton btnAddHoursPOP;
+    private JFXButton btnAddHoursPOP; //Okay does not need translating
     @FXML
     private JFXButton btnCancelPOP;
     @FXML
-    private StackPane stckPanePasswordChanger;
+    private JFXButton btnIntDown;
+    @FXML
+    private JFXButton btnIntUp;
+    @FXML
+    private JFXTextField txtFSearchDate;
+    @FXML
+    private JFXTextField txtfldHoursInPop;
     @FXML
     private JFXPasswordField txtOPassword;
     @FXML
@@ -101,7 +109,25 @@ public class UserInfoViewController implements Initializable
     @FXML
     private JFXPasswordField txtNPasswordTwo;
     @FXML
+    private ImageView imgVwProfilePic;
+    @FXML
+    private ImageView imgVwDel;
+    @FXML
+    private ImageView imgVwEdit;
+    @FXML
+    private Label lblOldPassword;
+    @FXML
+    private Label lblNewPassword;
+    @FXML
+    private Label lblNewPassword2;
+    @FXML
     private Label lblGuilds;
+    @FXML
+    private Label lblDateInPop;
+    @FXML
+    private Label lblHoursInPop;
+    @FXML
+    private Label lblGuildInPop;
     @FXML
     private TableView<Day> tableViewMain;
     @FXML
@@ -113,33 +139,13 @@ public class UserInfoViewController implements Initializable
     @FXML
     private JFXListView<Guild> listVwGuilds;
     @FXML
-    private JFXDatePicker datePickerInPop;
-    @FXML
-    private JFXButton btnIntDown;
-    @FXML
-    private JFXTextField txtfldHoursInPop;
-    @FXML
-    private JFXButton btnIntUp;
-    @FXML
     private JFXComboBox<Guild> comboboxGuildInPop;
-    @FXML
-    private Label lblDateInPop;
-    @FXML
-    private Label lblHoursInPop;
-    @FXML
-    private Label lblGuildInPop;
-    @FXML
-    private StackPane stckPaneAddHours;
     @FXML
     private HBox hBoxBtnsInPOP;
     @FXML
-    private StackPane stackPdeleteHours;
-    @FXML
-    private ImageView imgVwDel;
-    @FXML
-    private ImageView imgVwEdit;
+    private HBox hBoxInvisBtn;
 
-    //FXML Textfields
+    //FXML editable textfields
     @FXML
     TextField txtName;
     @FXML
@@ -151,37 +157,27 @@ public class UserInfoViewController implements Initializable
     @FXML
     TextField txtAddress2;
 
-    //FXML Labels
-    @FXML
-    private Label lblOldPassword;
-    @FXML
-    private Label lblNewPassword;
-    @FXML
-    private Label lblNewPassword2;
-
-    //Objects Used
+    //Objects used
     User currentUser;
     JFXPopup popup;
+    File newImg;
+    Day dayToEdit = null;
     JFXButton btnHighClearance = new JFXButton();
     JFXButton btnCancelEditInfo = new JFXButton();
-    File newImg;
     FilteredList<Day> filteredData = new FilteredList(FXCollections.observableArrayList());
-    //Variables Used
+    private static final DataFormat SERIALIZED_MIME_TYPE = new DataFormat("application/x-java-serialized-object");
+    private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
+
+    //Variables ssed
     boolean editing = false;
     boolean isIncorrect = false;
     boolean finishedService = true;
-    Day dayToEdit = null;
-    private Image profileImage;
 
-    private static final DataFormat SERIALIZED_MIME_TYPE = new DataFormat("application/x-java-serialized-object");
-
-    private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
-
-    /*
-    * Creates a service that runs in the background which contacts the database 
-    * to update the user image to one that the user has chosen. The service also
-    * records the updating of the image into the event logs stored on the 
-    * database.
+    /**
+     * Creates a service that runs in the background which contacts the database
+     * to update the user image to one that the user has chosen. The service
+     * also records the updating of the image into the event logs stored on the
+     * database.
      */
     private final Service serviceSavePicture = new Service()
     {
@@ -214,6 +210,10 @@ public class UserInfoViewController implements Initializable
         }
     };
 
+    /**
+     * Creates a service that runs in the background which contacts the database
+     * to load the days the user has worked into the filtered list.
+     */
     private final Service serviceInitializer = new Service()
     {
         @Override
@@ -254,11 +254,40 @@ public class UserInfoViewController implements Initializable
                 -> System.out.println("Error"));
 
         serviceInitializer.setOnSucceeded(e
-                -> 
-                {
-                    setupTableView(MOD_FACADE.getLang("STR_SEARCH_EMPTY"));
+                ->
+        {
+            setupTableView(MOD_FACADE.getLang("STR_SEARCH_EMPTY"));
 
         });
+
+    }
+
+    /**
+     * Sets all text to the language they are meant to be in.
+     */
+    private void setTextAll()
+    {
+        btnUpdatePhoto.setText(MOD_FACADE.getLang("BTN_UPDATEPHOTO"));
+        btnChangePassword.setText(MOD_FACADE.getLang("BTN_CHANGEPASS"));
+        btnEditSave.setText(MOD_FACADE.getLang("BTN_EDIT"));
+        btnLogout.setText(MOD_FACADE.getLang("BTN_LOGOUT"));
+
+        colDate.setText(MOD_FACADE.getLang("COL_DATE"));
+        colHours.setText(MOD_FACADE.getLang("COL_HOURS"));
+        colGuild.setText(MOD_FACADE.getLang("COL_GUILD"));
+        txtFSearchDate.setPromptText(MOD_FACADE.getLang("PROMPT_SEARCH"));
+        lblGuilds.setText(MOD_FACADE.getLang("LBL_GUILDS"));
+
+        lblNewPassword.setText(MOD_FACADE.getLang("LBL_NEW_PW"));
+        lblNewPassword2.setText(MOD_FACADE.getLang("LBL_NEW_PW2"));
+        lblOldPassword.setText(MOD_FACADE.getLang("LBL_OLD_PW"));
+        lblDateInPop.setText(MOD_FACADE.getLang("COL_DATE"));
+        lblGuildInPop.setText(MOD_FACADE.getLang("COL_GUILD"));
+        lblHoursInPop.setText(MOD_FACADE.getLang("COL_HOURS"));
+        btnCancelPW.setText(MOD_FACADE.getLang("BTN_CANCEL"));
+        btnChangePWConfirm.setText(MOD_FACADE.getLang("BTN_EDIT"));
+        btnAddHours.setText(MOD_FACADE.getLang("BTN_ADD_HOURS"));
+        btnCancelPOP.setText(MOD_FACADE.getLang("BTN_CANCEL"));
 
     }
 
@@ -271,16 +300,16 @@ public class UserInfoViewController implements Initializable
     private void setupDragDrop()
     {
         imgVwDel.setOnDragOver(event
-                -> 
-                {
-                    Dragboard db = event.getDragboard();
-                    if (db.hasContent(SERIALIZED_MIME_TYPE))
-                    {
+                ->
+        {
+            Dragboard db = event.getDragboard();
+            if (db.hasContent(SERIALIZED_MIME_TYPE))
+            {
 
-                        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
 
-                    }
-                    event.consume();
+            }
+            event.consume();
         });
 
         imgVwDel.setOnDragDropped(new EventHandler<DragEvent>()
@@ -302,16 +331,16 @@ public class UserInfoViewController implements Initializable
         });
 
         imgVwEdit.setOnDragOver(event
-                -> 
-                {
-                    Dragboard db = event.getDragboard();
-                    if (db.hasContent(SERIALIZED_MIME_TYPE))
-                    {
+                ->
+        {
+            Dragboard db = event.getDragboard();
+            if (db.hasContent(SERIALIZED_MIME_TYPE))
+            {
 
-                        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
 
-                    }
-                    event.consume();
+            }
+            event.consume();
         });
 
         imgVwEdit.setOnDragDropped(new EventHandler<DragEvent>()
@@ -350,11 +379,11 @@ public class UserInfoViewController implements Initializable
     }
 
     /**
-     * Locks buttons in the popup if set to true.
+     * Locks combobox and calendar in the popup if set to true.
      *
      * @param dis = boolean
      */
-    public void buttonsLocking(Boolean dis)
+    public void fieldsLocking(Boolean dis)
     {
         datePickerInPop.setDisable(dis);
         comboboxGuildInPop.setDisable(dis);
@@ -390,14 +419,15 @@ public class UserInfoViewController implements Initializable
                     break;
                 }
             }
-            //Locks Field
-            buttonsLocking(true);
+            //Locks fields
+            fieldsLocking(true);
 
         }
         //Cannot pick dates beyond today's date
         MOD_FACADE.formatCalendar(datePickerInPop);
 
-        //Adds a listener to the hour buttons
+        //Adds a listener to the hour text field to ensure that input does not 
+        //exceed are less than hours in a day 
         txtfldHoursInPop.textProperty().addListener(new ChangeListener<String>()
         {
             @Override
@@ -510,11 +540,23 @@ public class UserInfoViewController implements Initializable
         }
     }
 
+    /**
+     * Sets the local variable currentUser to the user that was passed through
+     * from the login view.
+     *
+     * @param currentUser
+     */
     public void setCurrentUser(User currentUser)
     {
         this.currentUser = currentUser;
     }
 
+    /**
+     * Sets up the main table view in the view which stores day objects of the
+     * days the user has worked.
+     *
+     * @param str = string placeholder in the table if there are no days loaded
+     */
     private void setupTableView(String str)
     {
 
@@ -531,79 +573,87 @@ public class UserInfoViewController implements Initializable
         tableViewMain.setItems(sortedData);
 
         tableViewMain.setRowFactory(tv
-                -> 
+                ->
+        {
+            TableRow<Day> row = new TableRow<>();
+
+            row.setOnDragDetected(event
+                    ->
+            {
+                if (!row.isEmpty())
                 {
-                    TableRow<Day> row = new TableRow<>();
+                    stackPdeleteHours.setVisible(true);
+                    MOD_FACADE.fadeInTransition(Duration.millis(250), stackPdeleteHours);
 
-                    row.setOnDragDetected(event
-                            -> 
-                            {
-                                if (!row.isEmpty())
-                                {
-                                    stackPdeleteHours.setVisible(true);
-                                    MOD_FACADE.fadeInTransition(Duration.millis(250), stackPdeleteHours);
+                    int selectedDayIndex = tableViewMain.getSelectionModel().getSelectedIndex();
 
-                                    int selectedDayIndex = tableViewMain.getSelectionModel().getSelectedIndex();
+                    Dragboard db = row.startDragAndDrop(TransferMode.MOVE);
+                    db.setDragView(row.snapshot(null, null));
+                    ClipboardContent cc = new ClipboardContent();
 
-                                    Dragboard db = row.startDragAndDrop(TransferMode.MOVE);
-                                    db.setDragView(row.snapshot(null, null));
-                                    ClipboardContent cc = new ClipboardContent();
+                    // Store row ID in order to know what is dragged.
+                    cc.put(SERIALIZED_MIME_TYPE, selectedDayIndex);
+                    db.setContent(cc);
 
-                                    // Store row ID in order to know what is dragged.
-                                    cc.put(SERIALIZED_MIME_TYPE, selectedDayIndex);
-                                    db.setContent(cc);
+                    event.consume();
+                }
+            });
+            row.setOnDragDone(new EventHandler<DragEvent>()
+            {
+                @Override
+                public void handle(DragEvent e)
+                {
+                    System.out.println("removes stackpane");
+                    MOD_FACADE.fadeOutTransition(Duration.millis(250), stackPdeleteHours).setOnFinished(ez -> stackPdeleteHours.setVisible(false));
 
-                                    event.consume();
-                                }
-                    });
-                    row.setOnDragDone(new EventHandler<DragEvent>()
-                    {
-                        @Override
-                        public void handle(DragEvent e)
-                        {
-                            System.out.println("removes stackpane");
-                            MOD_FACADE.fadeOutTransition(Duration.millis(250), stackPdeleteHours).setOnFinished(ez -> stackPdeleteHours.setVisible(false));
+                    e.consume();
+                }
+            });
 
-                            e.consume();
-                        }
-                    });
-
-                    return row;
+            return row;
         });
 
     }
 
+    /**
+     * Adds a search listener to the tableview so the user can search days
+     * worked based on date or guild.
+     */
     private void searchListener()
     {
         txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                -> 
-                {
-                    filteredData.setPredicate(day
-                            -> 
-                            {
-                                String regex = "[^a-zA-Z0-9\\s]";
-                                Boolean search
-                                        = day.dateProperty().getValue().replaceAll(regex, "")
-                                        .contains(newValue.replaceAll(regex, ""))
-                                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
-                                        contains(newValue.toLowerCase().replaceAll(regex, ""));
+                ->
+        {
+            filteredData.setPredicate(day
+                    ->
+            {
+                String regex = "[^a-zA-Z0-9\\s]";
+                Boolean search
+                        = day.dateProperty().getValue().replaceAll(regex, "")
+                                .contains(newValue.replaceAll(regex, ""))
+                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                contains(newValue.toLowerCase().replaceAll(regex, ""));
 
-                                return search;
+                return search;
 
-                    });
+            });
         });
     }
 
+    /**
+     * Fills the list view with a list of guilds the user is a part of.
+     */
     private void setupGuildList()
     {
         listVwGuilds.setItems(FXCollections.observableArrayList(currentUser.getGuildList()));
     }
 
     /**
-     * Check what type of User this is, if it's a Manager or Administrator, a
-     * button will be created.
+     * Check what type of user this is, if it's a manager or administrator, a
+     * button will be created which will give them access to other views. If the
+     * user is an administrator, the list view is removed because they have
+     * access to all guilds.
      *
-     * @param 1 = Manager, 2 = Admin
      */
     private void checkTypeOfUser()
 
@@ -625,7 +675,7 @@ public class UserInfoViewController implements Initializable
     }
 
     /**
-     * Displays additional button for Manager and Administrators.
+     * Displays additional button for managers and administrators.
      *
      * @param type 1 = Manager, 2 = Admin
      */
@@ -671,6 +721,9 @@ public class UserInfoViewController implements Initializable
 
     }
 
+    /**
+     * Sets the general information of the user.
+     */
     private void setUserInfo()
     {
         txtName.setText(currentUser.getName());
@@ -680,6 +733,12 @@ public class UserInfoViewController implements Initializable
         txtAddress2.setText(currentUser.getResidence2());
     }
 
+    /**
+     * An additional cancel button is created along with the editSaveButton,
+     * which has changed text to save rather than edit.
+     *
+     * @param event = when editSaveButton is pressed
+     */
     @FXML
     private void pressedEditSaveButton(ActionEvent event)
 
@@ -687,7 +746,7 @@ public class UserInfoViewController implements Initializable
         if (!editing)
         {
 
-            editInfo();
+            editInfo(true);
             editing = true;
             btnEditSave.setText(MOD_FACADE.getLang("BTN_SAVE"));
             checkTextFields();
@@ -705,11 +764,14 @@ public class UserInfoViewController implements Initializable
             btnEditSave.setText(MOD_FACADE.getLang("BTN_EDIT"));
             checkTextFields();
             removeCancelButton();
-            btnEditSave.setStyle("-fx-background-color:#00c4ad;");
 
         }
     }
 
+    /**
+     * Adds an event handler to the phone number textfield to ensure only
+     * numbers are inputted.
+     */
     private void createEditFields()
 
     {
@@ -727,30 +789,25 @@ public class UserInfoViewController implements Initializable
         });
     }
 
-    private void editInfo()
-    {
-        txtName.setEditable(true);
-        txtEmail.setEditable(true);
-        txtPhone.setEditable(true);
-        txtAddress.setEditable(true);
-        txtAddress2.setEditable(true);
-    }
-
+    /**
+     * Updates the user info in the database if it has been changed.
+     *
+     * @param user = currentUser
+     */
     private void saveInfo(User user)
     {
         MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPhone.getText()), user.getNote(), txtAddress.getText(), txtAddress2.getText());
         MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " edited personal information."));
         currentUser = MOD_FACADE.getUserInfo(user.getId());
-
-        txtName.setEditable(false);
-        txtEmail.setEditable(false);
-        txtPhone.setEditable(false);
-        txtAddress.setEditable(false);
-        txtAddress2.setEditable(false);
+        editInfo(false);
         setUserInfo(); //update labels
 
     }
 
+    /**
+     * Ensures all inputs of the general information edit text fields are
+     * correct.
+     */
     private void checkTextFields()
     {
         boolean success = false;
@@ -781,6 +838,73 @@ public class UserInfoViewController implements Initializable
         }
     }
 
+    /**
+     * Formatting for the cancel button, which appears when the edit general
+     * info button is pressed.
+     */
+    private void addCancelButton()
+    {
+
+        int btnSavePosCol = GridPane.getColumnIndex(btnEditSave); //Saving position
+        int btnSavePosRow = GridPane.getRowIndex(btnEditSave);
+        GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) - 1); //Moving save button one up
+
+        btnCancelEditInfo.setText(MOD_FACADE.getLang("BTN_CANCEL")); //Preparing cancel button
+        btnCancelEditInfo.setId("btnCancelGrey");
+        btnCancelEditInfo.setPrefHeight(25);
+        btnCancelEditInfo.setPrefWidth(Double.MAX_VALUE);
+        btnCancelEditInfo.setTextFill(Color.WHITE);
+        btnCancelEditInfo.setPadding(btnEditSave.getPadding());
+
+        gridEdit.add(btnCancelEditInfo, btnSavePosCol, btnSavePosRow); //Adding to the old position of save btn
+        GridPane.setValignment(btnEditSave, VPos.CENTER);
+        GridPane.setValignment(btnCancelEditInfo, VPos.CENTER);
+        btnCancelEditInfo.setOnAction(new EventHandler<ActionEvent>()
+        { //Setting onAction, nothing changed, just show old labels again
+            @Override
+            public void handle(ActionEvent event)
+            {
+                editInfo(false);
+
+                removeCancelButton(); //if Cancel button clicked, it will disappear
+                editing = false;
+                btnEditSave.setText(MOD_FACADE.getLang("BTN_EDIT"));
+
+            }
+        });
+    }
+
+    /**
+     * Makes all the general information textfields editable.
+     */
+    private void editInfo(boolean editable)
+    {
+        txtName.setEditable(editable);
+        txtEmail.setEditable(editable);
+        txtPhone.setEditable(editable);
+        txtAddress.setEditable(editable);
+        txtAddress2.setEditable(editable);
+    }
+
+    /**
+     * Removes the cancel button which was created as the result of clicking on
+     * the edit general information button.
+     */
+    private void removeCancelButton()
+    {
+        GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) + 1); //Moving save button one down
+        gridEdit.getChildren().remove(btnCancelEditInfo); //Deleting cancel button from gridpane
+        if (btnEditSave.isDisabled())
+        {
+            btnEditSave.setDisable(false);
+        }
+    }
+
+    /**
+     * Navigates to and saves a new user image.
+     *
+     * @param event = when change image button is pressed.
+     */
     @FXML
     private void pressedChangeImage(ActionEvent event)
 
@@ -797,24 +921,29 @@ public class UserInfoViewController implements Initializable
         newImg = c.showOpenDialog(btnUpdatePhoto.getScene().getWindow());
         serviceSavePicture.restart();
         serviceSavePicture.setOnSucceeded(e
-                -> 
-                {
-                    setUserImage();
+                ->
+        {
+            setUserImage();
         });
 
     }
 
+    /**
+     * Sets the user image according to what is stored on the database. A thread
+     * is created to ensure user can still use the application while the image
+     * ie being retrieved from the database.
+     */
     public void setUserImage()
     {
 
         Runnable r = ()
-                -> 
-                {
-                    Image img = new Image(MOD_FACADE.getUserImage(currentUser));
-                    if (img != null)
-                    {
-                        imgVwProfilePic.setImage(img);
-                    }
+                ->
+        {
+            Image img = new Image(MOD_FACADE.getUserImage(currentUser));
+            if (img != null)
+            {
+                imgVwProfilePic.setImage(img);
+            }
 
         };
         Thread t = new Thread(r);
@@ -822,137 +951,21 @@ public class UserInfoViewController implements Initializable
         t.start();
     }
 
-    private void addCancelButton()
-    {
-
-        int btnSavePosCol = GridPane.getColumnIndex(btnEditSave); //saving position
-        int btnSavePosRow = GridPane.getRowIndex(btnEditSave);
-        GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) - 1); //moving save button one up
-
-        btnCancelEditInfo.setText(MOD_FACADE.getLang("BTN_CANCEL")); //preparing cancel button
-        btnCancelEditInfo.setId("btnCancelGrey");
-        btnCancelEditInfo.setPrefHeight(25);
-        btnCancelEditInfo.setPrefWidth(Double.MAX_VALUE);
-        btnCancelEditInfo.setTextFill(Color.WHITE);
-        btnCancelEditInfo.setPadding(btnEditSave.getPadding());
-
-        gridEdit.add(btnCancelEditInfo, btnSavePosCol, btnSavePosRow); //adding to the old position of save btn
-        GridPane.setValignment(btnEditSave, VPos.CENTER);
-        GridPane.setValignment(btnCancelEditInfo, VPos.CENTER);
-        btnCancelEditInfo.setOnAction(new EventHandler<ActionEvent>()
-        { //setting onAction, nothing changed, just show old labels again
-            @Override
-            public void handle(ActionEvent event)
-            {
-                txtName.setEditable(false);
-                txtEmail.setEditable(false);
-                txtPhone.setEditable(false);
-                txtAddress.setEditable(false);
-                txtAddress2.setEditable(false);
-
-                removeCancelButton(); //if cancel button clicked, it will disappear
-                editing = false;
-                btnEditSave.setText(MOD_FACADE.getLang("BTN_EDIT"));
-
-            }
-        });
-    }
-
-    private void removeCancelButton()
-    {
-        GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) + 1); //moving save button one down
-        gridEdit.getChildren().remove(btnCancelEditInfo); //deleting cancel button from gridpane
-        if (btnEditSave.isDisabled())
-        {
-            btnEditSave.setDisable(false);
-        }
-    }
-
-    private void setTextAll()
-    {
-        btnUpdatePhoto.setText(MOD_FACADE.getLang("BTN_UPDATEPHOTO"));
-        btnChangePassword.setText(MOD_FACADE.getLang("BTN_CHANGEPASS"));
-        btnEditSave.setText(MOD_FACADE.getLang("BTN_EDIT"));
-        btnLogout.setText(MOD_FACADE.getLang("BTN_LOGOUT"));
-
-        colDate.setText(MOD_FACADE.getLang("COL_DATE"));
-        colHours.setText(MOD_FACADE.getLang("COL_HOURS"));
-        colGuild.setText(MOD_FACADE.getLang("COL_GUILD"));
-        txtFSearchDate.setPromptText(MOD_FACADE.getLang("PROMPT_SEARCH"));
-        lblGuilds.setText(MOD_FACADE.getLang("LBL_GUILDS"));
-
-        lblNewPassword.setText(MOD_FACADE.getLang("LBL_NEW_PW"));
-        lblNewPassword2.setText(MOD_FACADE.getLang("LBL_NEW_PW2"));
-        lblOldPassword.setText(MOD_FACADE.getLang("LBL_OLD_PW"));
-        lblDateInPop.setText(MOD_FACADE.getLang("COL_DATE"));
-        lblGuildInPop.setText(MOD_FACADE.getLang("COL_GUILD"));
-        lblHoursInPop.setText(MOD_FACADE.getLang("COL_HOURS"));
-        btnCancelPW.setText(MOD_FACADE.getLang("BTN_CANCEL"));
-        btnChangePWConfirm.setText(MOD_FACADE.getLang("BTN_EDIT"));
-        btnAddHours.setText(MOD_FACADE.getLang("BTN_ADD_HOURS"));
-        btnCancelPOP.setText(MOD_FACADE.getLang("BTN_CANCEL"));
-
-    }
-
-    @FXML
-    private void handleLogout(ActionEvent event) throws IOException
-    {
-
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/HourLoginView.fxml"));
-        StackPane page = (StackPane) loader.load();
-
-        MOD_FACADE.changeView(3);
-        Stage stage = (Stage) btnEditSave.getScene().getWindow();
-        stage.close();
-
-    }
-
-    @FXML
-
-    private void changePasswordEvent(ActionEvent event)
-    {
-        int count;
-        if (txtOPassword.getText().equals(txtNPassword.getText()))
-        {
-            count = -1;
-        }
-        else if (txtNPassword.getText().equals(txtNPasswordTwo.getText()))
-        {
-            count = MOD_FACADE.changePassword(currentUser, txtOPassword.getText(), txtNPassword.getText());
-        }
-        else
-        {
-            count = -2;
-        }
-        if (count > 0)
-        {
-            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_PASSWORD_CHANGE"), root, 5000);
-            MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), currentUser.getName() + " changed his/her password."));
-            hidePasswordChangerEvent();
-        }
-
-        else if (count == -1)
-        {
-            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_OLD_PW_MATCH_NEW"), root, 5000);
-        }
-        else if (count == -2)
-        {
-            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_PW_DOESNT_MATCH"), root, 5000);
-        }
-
-        else
-        {
-            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_OLD_PW_WRONG"), root, 5000);
-        }
-
-    }
-
+    /**
+     * Opens the add hours worked stackpane.
+     */
     @FXML
     private void openAddHoursPopup(ActionEvent event)
     {
         handleOpenAddHoursPopup();
     }
 
+    /**
+     * Saves the information in the edit or add hours worked stackpane.
+     *
+     * @param event = when add or edit button is pressed in the edit or add
+     * hours stackpane is clicked.
+     */
     @FXML
     private void handleAddEditHours(ActionEvent event)
     {
@@ -1018,10 +1031,13 @@ public class UserInfoViewController implements Initializable
 
     }
 
+    /**
+     * Closes the add or edit hours worked stackpane and clears all information.
+     */
     @FXML
     private void closeAddHoursPopup()
     {
-        buttonsLocking(false);
+        fieldsLocking(false);
         dayToEdit = null;
         //Clears everything from popup
         datePickerInPop.setValue(null);
@@ -1031,6 +1047,9 @@ public class UserInfoViewController implements Initializable
 
     }
 
+    /**
+     * Opens the password changer stackpane.
+     */
     @FXML
     private void openPasswordChangerEvent(ActionEvent event)
     {
@@ -1039,19 +1058,85 @@ public class UserInfoViewController implements Initializable
 
     }
 
+    /**
+     * Saves new password into the database.
+     *
+     * @param event = when save is pressed in the password changer stackpane.
+     */
+    @FXML
+    private void changePasswordEvent(ActionEvent event)
+    {
+        int count;
+        if (txtOPassword.getText().equals(txtNPassword.getText()))
+        {
+            count = -1;
+        }
+        else if (txtNPassword.getText().equals(txtNPasswordTwo.getText()))
+        {
+            count = MOD_FACADE.changePassword(currentUser, txtOPassword.getText(), txtNPassword.getText());
+        }
+        else
+        {
+            count = -2;
+        }
+        if (count > 0)
+        {
+            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_PASSWORD_CHANGE"), root, 5000);
+            MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), currentUser.getName() + " changed his/her password."));
+            hidePasswordChangerEvent();
+        }
+
+        else if (count == -1)
+        {
+            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_OLD_PW_MATCH_NEW"), root, 5000);
+        }
+        else if (count == -2)
+        {
+            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_PW_DOESNT_MATCH"), root, 5000);
+        }
+
+        else
+        {
+            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_OLD_PW_WRONG"), root, 5000);
+        }
+
+    }
+
+    /**
+     * Closes the password changer stackpane.
+     */
     @FXML
     private void hidePasswordChangerEvent()
 
     {
         MOD_FACADE.fadeOutTransition(Duration.millis(750), stckPanePasswordChanger)
                 .setOnFinished(e
-                        -> 
-                        {
-                            stckPanePasswordChanger.setVisible(false);
-                            txtOPassword.clear();
-                            txtNPassword.clear();
-                            txtNPasswordTwo.clear();
+                        ->
+                {
+                    stckPanePasswordChanger.setVisible(false);
+                    txtOPassword.clear();
+                    txtNPassword.clear();
+                    txtNPasswordTwo.clear();
                 });
+
+    }
+
+    /**
+     * Returns to the hour login view if log out button is pressed.
+     *
+     * @param event = logout button is pressed.
+     * @throws IOException = cannot load the right resource/view.
+     */
+    @FXML
+    private void handleLogout(ActionEvent event) throws IOException
+    {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/HourLoginView.fxml"));
+        StackPane page = (StackPane) loader.load();
+
+        MOD_FACADE.changeView(3);
+        Stage stage = (Stage) btnEditSave.getScene().getWindow();
+        stage.close();
 
     }
 }
