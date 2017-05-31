@@ -13,7 +13,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="rootPane" prefHeight="404.0" prefWidth="678.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.GuildManagementViewController">
    <children>
-      <Label fx:id="lblGuilds" layoutX="14.0" layoutY="46.0" style="-fx-background-color: #00c4ad;" text="Guilds:">
+      <Label id="lblTealBkgrnd" fx:id="lblGuilds" layoutX="14.0" layoutY="46.0" text="Guilds:">
          <font>
             <Font name="System Bold" size="15.0" />
          </font></Label>
@@ -68,5 +68,24 @@
             </VBox>
          </children>
       </StackPane>
+      <VBox layoutX="437.0" layoutY="67.0" prefHeight="290.0" prefWidth="218.0" spacing="10.0">
+         <children>
+            <JFXButton id="btnConfirmTeal" fx:id="btnModify" buttonType="RAISED" maxWidth="1.7976931348623157E308" onAction="#btnModifyPressed" text="Modify" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </JFXButton>
+            <JFXButton id="btnConfirmTeal" fx:id="btnAdd" buttonType="RAISED" maxWidth="1.7976931348623157E308" onAction="#btnAddPressed" prefWidth="218.0" text="Add New" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </JFXButton>
+            <JFXButton id="btnConfirmTeal" fx:id="btnRemove" buttonType="RAISED" maxWidth="1.7976931348623157E308" onAction="#btnRemovePressed" text="Remove" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

@@ -312,6 +312,7 @@ public class ModelFacade
         return BLL_FAC.getAllEvents();
     }
 
+
     public User getUserFromUsername(String username)
     {
         return BLL_FAC.getUserFromUsername(username);

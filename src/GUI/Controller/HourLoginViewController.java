@@ -18,7 +18,6 @@ import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -77,7 +76,7 @@ public class HourLoginViewController implements Initializable
     @FXML
     private JFXButton btnLogin;
     @FXML
-    private JFXButton btnCancel;
+    private JFXButton btnCancelLogin;
     @FXML
     private Label lblPassword;
     @FXML
@@ -188,7 +187,7 @@ public class HourLoginViewController implements Initializable
     }
 
     @FXML
-    private void LogInAction(ActionEvent event)
+    private void logInAction(ActionEvent event)
     {
         buttonsLocking(true);
         loginPopup();
@@ -287,6 +286,7 @@ public class HourLoginViewController implements Initializable
     public void loginPopup()
     {
         //popup for the login
+        btnLogin.setPrefWidth(btnCancelLogin.getWidth());
         loginWindow.visibleProperty().set(true);
         ancDarken.visibleProperty().set(true);
         MOD_FACADE.fadeInTransition(Duration.millis(500), ancDarken);
@@ -324,7 +324,7 @@ public class HourLoginViewController implements Initializable
         }
         );
 
-        btnCancel.setOnAction(
+        btnCancelLogin.setOnAction(
                 new EventHandler<ActionEvent>()
         {
             @Override
