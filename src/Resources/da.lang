@@ -52,7 +52,7 @@ LBL_GUILDS = Laug:
 
 #Manager view buttons
 BTN_ADD_HOURS = Tilføj Timer
-BTN_EDIT_INFO = Ændre Information
+BTN_EDIT_INFO = Ændre Info
 BTN_STATS = Bruger Statistikker
 BTN_CLOSE = Luk
 BTN_ADD_USER = Tilføj Bruger
@@ -79,7 +79,7 @@ TAB_GUILD = Laug Management
 
 #ErrorCode
 STR_NO_ERROR_CONTRIBUTION = Dine timer er blevet registreret! Tak for hjælpen!
-STR_ERROR_2627 = Fejl: Timer er allerede blevet tilføjet til denne guild idag.
+STR_ERROR_2627 = Fejl: Timer er allerede blevet tilføjet til dette laug idag.
 STR_FIRST_TIME_ERROR = Fejl: Ukendt Fejl
 
 STR_WRONG_PW = Du har brugt det forkerte kodeord
