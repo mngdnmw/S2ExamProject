@@ -189,7 +189,7 @@
                 </HBox>
                 <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="10.0">
                     <children>
-                      <Label fx:id="lblWrongPass" prefHeight="25.0" prefWidth="226.0" text="Incorrect Login Information" textFill="#f50505">
+                      <Label fx:id="lblWrongPass" prefHeight="25.0" prefWidth="226.0" text="Incorrect Login Information" textFill="#f50505" visible="false">
                           <font>
                               <Font name="System Bold" size="16.0" />
                           </font>

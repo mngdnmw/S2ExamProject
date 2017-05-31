@@ -4,7 +4,6 @@ import BE.Day;
 import BE.Guild;
 import BE.User;
 import BLL.BLLFacade;
-import java.sql.SQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
