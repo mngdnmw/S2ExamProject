@@ -1,7 +1,7 @@
 ﻿#Login screen buttons
 LOG_THANKS = Tak!
 LOG_CONTRIB = Du har hjulpet med at forbedre vores fælleskab!
-BTN_LOGIN = Log in
+BTN_LOGIN = Log på
 BTN_CANCEL = Annuller
 BTN_LOG_HOURS = Tilføj Timer
 BTN_SEE_INFO = Se info
@@ -45,6 +45,9 @@ COL_GUILD = Laug
 PROMPT_SEARCH = Søg
 LBL_HRS_ALL_TEXT = Timer
 LBL_GUILDS = Laug:
+LBL_OLD_PW = Nuværende adgangskode
+LBL_NEW_PW = Ny Adgangskode
+LBL_NEW_PW2 = Ny Adgangskode Igen
 
 ########
 #MANAGER VIEW
@@ -82,7 +85,7 @@ STR_NO_ERROR_CONTRIBUTION = Dine timer er blevet registreret! Tak for hjælpen!
 STR_ERROR_2627 = Fejl: Timer er allerede blevet tilføjet til dette laug idag.
 STR_FIRST_TIME_ERROR = Fejl: Ukendt Fejl
 
-STR_WRONG_PW = Du har brugt det forkerte kodeord
+STR_WRONG_PW = Du har brugt det forkerte adgangskode
 STR_MIN_HOUR = Du kan ikke logge 0 timer
 STR_MAX_HOUR = Du kan ikke logge mere end 24 timer
 STR_MORE_INFO = Indsæt venligst information i alle felter
@@ -94,10 +97,10 @@ STR_USER_TYPE_ERROR = Bruger type er ikke valgt
 STR_NEW_USER_ADD = Ny bruger er blevet tilføjet
 STR_USER_NAME_ERROR = Navn er nødvendigt
 STR_SEARCH_EMPTY = Søgning fandt ingenting
-STR_PASSWORD_CHANGE = Kodeord er blevet ændret
-STR_PW_DOESNT_MATCH = Kodeord er ikke ens
-STR_OLD_PW_MATCH_NEW = Det gamle kodeord matcher det nye
-STR_OLD_PW_WRONG = Det gamle kodeord er forkert
+STR_PASSWORD_CHANGE = Din adgangskode er blevet ændret
+STR_PW_DOESNT_MATCH = Nye adgangskode felter er ikke ens
+STR_OLD_PW_MATCH_NEW = Det gamle adgangskode matcher det nye
+STR_OLD_PW_WRONG = Det gamle adgangskode er forkert
 STR_CONTRIBUTE_DELETE = Den valgte bidrag er blevet slettet
 STR_ALL_GUILDS = Alle laug
 STR_SELECT_USER = Vælg venligst en bruger først

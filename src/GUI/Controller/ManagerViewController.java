@@ -9,7 +9,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
@@ -209,7 +208,6 @@ public class ManagerViewController implements Initializable
                     MOD_FAC.setAllAdminsIntoArray();
                     MOD_FAC.setAllManagersIntoArray();
                     MOD_FAC.setAllVolunteersIntoArray();
-                    setTableItems();
                     return null;
 
                 }
@@ -234,7 +232,13 @@ public class ManagerViewController implements Initializable
         setTableProperties();
         setupTableView("Loading Information");
         serviceInitializer.start();
-        serviceInitializer.setOnSucceeded(e -> setupTableView(MOD_FAC.getLang("STR_SEARCH_EMPTY")));
+        serviceInitializer.setOnSucceeded(e
+                -> 
+                {
+                    setTableItems();
+                    setupTableView(MOD_FAC.getLang("STR_SEARCH_EMPTY"));
+
+        });
         serviceInitializer.setOnFailed(e -> setupTableView("Error: Try Again"));
         cmbBoxListeners();
         if (MOD_FAC.getCurrentUser().getType() >= 2)

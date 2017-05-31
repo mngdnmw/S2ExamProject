@@ -177,7 +177,6 @@ public class UserInfoViewController implements Initializable
     boolean firstRun;
     boolean editPopup = false;
     private static final DataFormat SERIALIZED_MIME_TYPE = new DataFormat("application/x-java-serialized-object");
-    private Image profileImage;
     private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
 
     private final Service serviceSavePicture = new Service()
@@ -221,12 +220,7 @@ public class UserInfoViewController implements Initializable
                 @Override
                 protected Object call() throws Exception
                 {
-                    if (profileImage == null)
-                    {
-                        setUserImage();
-                    }
                     filteredData = new FilteredList<>(MOD_FACADE.getWorkedDays(currentUser), p -> true);
-                    firstRun = false;
                     return null;
 
                 }
@@ -249,6 +243,7 @@ public class UserInfoViewController implements Initializable
         setupGuildList();
         setupTableView("Looking For Data");
         searchListener();
+        setUserImage();
         setupDragDrop();
         serviceInitializer.start();
         serviceInitializer.setOnFailed(e
@@ -258,10 +253,7 @@ public class UserInfoViewController implements Initializable
                 -> 
                 {
                     setupTableView(MOD_FACADE.getLang("STR_SEARCH_EMPTY"));
-                    if (profileImage != null)
-                    {
-                        imgVwProfilePic.setImage(profileImage);
-                    }
+
         });
 
     }
@@ -269,16 +261,16 @@ public class UserInfoViewController implements Initializable
     private void setupDragDrop()
     {
         imgVwDel.setOnDragOver(event
-                ->
-        {
-            Dragboard db = event.getDragboard();
-            if (db.hasContent(SERIALIZED_MIME_TYPE))
-            {
+                -> 
+                {
+                    Dragboard db = event.getDragboard();
+                    if (db.hasContent(SERIALIZED_MIME_TYPE))
+                    {
 
-                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
 
-            }
-            event.consume();
+                    }
+                    event.consume();
         });
 
         imgVwDel.setOnDragDropped(new EventHandler<DragEvent>()
@@ -299,16 +291,16 @@ public class UserInfoViewController implements Initializable
         });
 
         imgVwEdit.setOnDragOver(event
-                ->
-        {
-            Dragboard db = event.getDragboard();
-            if (db.hasContent(SERIALIZED_MIME_TYPE))
-            {
+                -> 
+                {
+                    Dragboard db = event.getDragboard();
+                    if (db.hasContent(SERIALIZED_MIME_TYPE))
+                    {
 
-                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
 
-            }
-            event.consume();
+                    }
+                    event.consume();
         });
 
         imgVwEdit.setOnDragDropped(new EventHandler<DragEvent>()
@@ -353,44 +345,44 @@ public class UserInfoViewController implements Initializable
         tableViewMain.setItems(sortedData);
 
         tableViewMain.setRowFactory(tv
-                ->
-        {
-            TableRow<Day> row = new TableRow<>();
-
-            row.setOnDragDetected(event
-                    ->
-            {
-                if (!row.isEmpty())
+                -> 
                 {
-                    stackPdeleteHours.setVisible(true);
-                    MOD_FACADE.fadeInTransition(Duration.millis(250), stackPdeleteHours);
+                    TableRow<Day> row = new TableRow<>();
 
-                    int selectedDayIndex = tableViewMain.getSelectionModel().getSelectedIndex();
+                    row.setOnDragDetected(event
+                            -> 
+                            {
+                                if (!row.isEmpty())
+                                {
+                                    stackPdeleteHours.setVisible(true);
+                                    MOD_FACADE.fadeInTransition(Duration.millis(250), stackPdeleteHours);
 
-                    Dragboard db = row.startDragAndDrop(TransferMode.MOVE);
-                    db.setDragView(row.snapshot(null, null));
-                    ClipboardContent cc = new ClipboardContent();
+                                    int selectedDayIndex = tableViewMain.getSelectionModel().getSelectedIndex();
 
-                    // Store row ID in order to know what is dragged.
-                    cc.put(SERIALIZED_MIME_TYPE, selectedDayIndex);
-                    db.setContent(cc);
+                                    Dragboard db = row.startDragAndDrop(TransferMode.MOVE);
+                                    db.setDragView(row.snapshot(null, null));
+                                    ClipboardContent cc = new ClipboardContent();
 
-                    event.consume();
-                }
-            });
-            row.setOnDragDone(new EventHandler<DragEvent>()
-            {
-                @Override
-                public void handle(DragEvent e)
-                {
-                    System.out.println("removes stackpane");
-                    MOD_FACADE.fadeOutTransition(Duration.millis(250), stackPdeleteHours).setOnFinished(ez -> stackPdeleteHours.setVisible(false));
+                                    // Store row ID in order to know what is dragged.
+                                    cc.put(SERIALIZED_MIME_TYPE, selectedDayIndex);
+                                    db.setContent(cc);
 
-                    e.consume();
-                }
-            });
+                                    event.consume();
+                                }
+                    });
+                    row.setOnDragDone(new EventHandler<DragEvent>()
+                    {
+                        @Override
+                        public void handle(DragEvent e)
+                        {
+                            System.out.println("removes stackpane");
+                            MOD_FACADE.fadeOutTransition(Duration.millis(250), stackPdeleteHours).setOnFinished(ez -> stackPdeleteHours.setVisible(false));
 
-            return row;
+                            e.consume();
+                        }
+                    });
+
+                    return row;
         });
 
     }
@@ -398,21 +390,21 @@ public class UserInfoViewController implements Initializable
     private void searchListener()
     {
         txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                ->
-        {
-            filteredData.setPredicate(day
-                    ->
-            {
-                String regex = "[^a-zA-Z0-9\\s]";
-                Boolean search
-                        = day.dateProperty().getValue().replaceAll(regex, "")
-                                .contains(newValue.replaceAll(regex, ""))
-                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
-                                contains(newValue.toLowerCase().replaceAll(regex, ""));
+                -> 
+                {
+                    filteredData.setPredicate(day
+                            -> 
+                            {
+                                String regex = "[^a-zA-Z0-9\\s]";
+                                Boolean search
+                                        = day.dateProperty().getValue().replaceAll(regex, "")
+                                        .contains(newValue.replaceAll(regex, ""))
+                                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                        contains(newValue.toLowerCase().replaceAll(regex, ""));
 
-                return search;
+                                return search;
 
-            });
+                    });
         });
     }
 
@@ -455,7 +447,7 @@ public class UserInfoViewController implements Initializable
 
     {
 
-        btnHighClearance.setPrefWidth(160);
+        btnHighClearance.setMinWidth(175);
         btnHighClearance.setId("btnConfirmTeal");
         btnHighClearance.toFront();
         btnHighClearance.setVisible(true);
@@ -621,8 +613,7 @@ public class UserInfoViewController implements Initializable
         serviceSavePicture.setOnSucceeded(e
                 -> 
                 {
-                    profileImage = null;
-                    serviceInitializer.restart();
+                    setUserImage();
         });
 
     }
@@ -630,8 +621,19 @@ public class UserInfoViewController implements Initializable
     public void setUserImage()
     {
 
-        profileImage = new Image(MOD_FACADE.getUserImage(currentUser));
+        Runnable r = ()
+                -> 
+                {
+                    Image img = new Image(MOD_FACADE.getUserImage(currentUser));
+                    if (img != null)
+                    {
+                        imgVwProfilePic.setImage(img);
+                    }
 
+        };
+        Thread t = new Thread(r);
+        t.setDaemon(true);
+        t.start();
     }
 
     private void addCancelButton()
@@ -693,6 +695,13 @@ public class UserInfoViewController implements Initializable
         colGuild.setText(MOD_FACADE.getLang("COL_GUILD"));
         txtFSearchDate.setPromptText(MOD_FACADE.getLang("PROMPT_SEARCH"));
         lblGuilds.setText(MOD_FACADE.getLang("LBL_GUILDS"));
+
+        lblNewPassword.setText(MOD_FACADE.getLang("LBL_NEW_PW"));
+        lblNewPassword2.setText(MOD_FACADE.getLang("LBL_NEW_PW2"));
+        lblOldPassword.setText(MOD_FACADE.getLang("LBL_OLD_PW"));
+        lblDateInPop.setText(MOD_FACADE.getLang("COL_DATE"));
+        lblGuildInPop.setText(MOD_FACADE.getLang("COL_GUILD"));
+        lblHoursInPop.setText(MOD_FACADE.getLang("COL_HOURS"));
 
     }
 
@@ -849,7 +858,7 @@ public class UserInfoViewController implements Initializable
     private void setupAddHoursPopup()
     {
         formatCalendar();
-        
+
         comboboxGuildInPop.setItems(MOD_FACADE.getAllSavedGuilds());
 
         txtfldHoursInPop.textProperty().addListener(new ChangeListener<String>()
@@ -973,7 +982,6 @@ public class UserInfoViewController implements Initializable
             String date = datePickerInPop.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             int hours = Integer.parseInt(txtfldHoursInPop.getText());
             int guildID = comboboxGuildInPop.getSelectionModel().getSelectedItem().getId();
-            int errorCode = 1;
 
             if (currentUser.getEmail() != null)
             {
@@ -990,7 +998,7 @@ public class UserInfoViewController implements Initializable
                 }
                 stckLoadScreen.setVisible(false);
 
-                 MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"),root);
+                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"), root);
 
             }
             else if (currentUser.getPhone() != 0)
@@ -1028,8 +1036,7 @@ public class UserInfoViewController implements Initializable
     }
 
     @FXML
-    private void openPasswordChangerEvent(ActionEvent event
-    )
+    private void openPasswordChangerEvent(ActionEvent event)
     {
         stckPanePasswordChanger.setVisible(true);
         MOD_FACADE.fadeInTransition(Duration.millis(750), stckPanePasswordChanger);
