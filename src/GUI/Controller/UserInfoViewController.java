@@ -544,7 +544,7 @@ public class UserInfoViewController implements Initializable
      * Sets the local variable currentUser to the user that was passed through
      * from the login view.
      *
-     * @param currentUser
+     * @param currentUser = currentUser.
      */
     public void setCurrentUser(User currentUser)
     {
@@ -555,7 +555,7 @@ public class UserInfoViewController implements Initializable
      * Sets up the main table view in the view which stores day objects of the
      * days the user has worked.
      *
-     * @param str = string placeholder in the table if there are no days loaded
+     * @param str = string placeholder in the table if there are no days loaded.
      */
     private void setupTableView(String str)
     {
@@ -677,7 +677,7 @@ public class UserInfoViewController implements Initializable
     /**
      * Displays additional button for managers and administrators.
      *
-     * @param type 1 = Manager, 2 = Admin
+     * @param type 1 = Manager, 2 = Admin.
      */
     private void createHighClearanceButton(int type)
 
@@ -737,7 +737,7 @@ public class UserInfoViewController implements Initializable
      * An additional cancel button is created along with the editSaveButton,
      * which has changed text to save rather than edit.
      *
-     * @param event = when editSaveButton is pressed
+     * @param event = when editSaveButton is pressed.
      */
     @FXML
     private void pressedEditSaveButton(ActionEvent event)
@@ -792,7 +792,7 @@ public class UserInfoViewController implements Initializable
     /**
      * Updates the user info in the database if it has been changed.
      *
-     * @param user = currentUser
+     * @param user = currentUser.
      */
     private void saveInfo(User user)
     {
