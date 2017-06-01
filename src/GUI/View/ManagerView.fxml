@@ -145,8 +145,8 @@
                      <children>
                         <TableView fx:id="tblLog" layoutX="3.0" layoutY="21.0" maxWidth="1.7976931348623157E308" prefHeight="318.0" prefWidth="672.0">
                           <columns>
-                            <TableColumn fx:id="colLogEventId" editable="false" prefWidth="23.0" text="ID" />
-                            <TableColumn fx:id="colLogEventDate" editable="false" prefWidth="119.0" text="Event date" />
+                            <TableColumn fx:id="colLogEventId" editable="false" prefWidth="40.0" text="ID" />
+                            <TableColumn fx:id="colLogEventDate" editable="false" prefWidth="102.0" text="Event date" />
                               <TableColumn fx:id="colLogEventDesc" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="529.0" text="Event description" />
                           </columns>
                         </TableView>
