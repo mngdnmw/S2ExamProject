@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXPopup;
+import com.jfoenix.controls.JFXTextArea;
 
 import com.jfoenix.controls.JFXTextField;
 import java.io.File;
@@ -22,6 +23,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -35,13 +38,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -51,10 +52,8 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -68,7 +67,7 @@ public class UserInfoViewController implements Initializable
     @FXML
     private AnchorPane root;
     @FXML
-    private GridPane gridEdit;
+    private AnchorPane anchPGenInfo;
     @FXML
     private JFXDatePicker datePickerInPop;
     @FXML
@@ -77,8 +76,6 @@ public class UserInfoViewController implements Initializable
     private StackPane stckPaneAddHours;
     @FXML
     private StackPane stckPanePasswordChanger;
-    @FXML
-    private JFXButton btnEditSave;
     @FXML
     private JFXButton btnUpdatePhoto;
     @FXML
@@ -99,6 +96,10 @@ public class UserInfoViewController implements Initializable
     private JFXButton btnIntDown;
     @FXML
     private JFXButton btnIntUp;
+    @FXML
+    private JFXButton JFXBtnAccept;
+    @FXML
+    private JFXButton JFXBtnCancel;
     @FXML
     private JFXTextField txtFSearchDate;
     @FXML
@@ -145,18 +146,18 @@ public class UserInfoViewController implements Initializable
     private HBox hBoxBtnsInPOP;
     @FXML
     private HBox hBoxInvisBtn;
-
-    //FXML editable textfields
     @FXML
-    TextField txtName;
+    private JFXTextArea txtNotes;
     @FXML
-    TextField txtPhone;
+    private JFXTextField txtName;
     @FXML
-    TextField txtEmail;
+    private JFXTextField txtPhone;
     @FXML
-    TextField txtAddress;
+    private JFXTextField txtEmail;
     @FXML
-    TextField txtAddress2;
+    private JFXTextField txtAddress;
+    @FXML
+    private JFXTextField txtAddress2;
 
     //Objects used
     User currentUser;
@@ -164,15 +165,14 @@ public class UserInfoViewController implements Initializable
     File newImg;
     Day dayToEdit = null;
     JFXButton btnHighClearance = new JFXButton();
-    JFXButton btnCancelEditInfo = new JFXButton();
     FilteredList<Day> filteredData = new FilteredList(FXCollections.observableArrayList());
     private static final DataFormat SERIALIZED_MIME_TYPE = new DataFormat("application/x-java-serialized-object");
     private final static ModelFacade MOD_FAC = ModelFacade.getModelFacade();
 
-    //Variables ssed
-    boolean editing = false;
-    boolean isIncorrect = false;
+    //Variables used
     boolean finishedService = true;
+    boolean userInfoView = true;
+    boolean isIncorrect = false;
 
     /**
      * Creates a service that runs in the background which contacts the database
@@ -233,6 +233,29 @@ public class UserInfoViewController implements Initializable
         }
     };
 
+    private final Service serviceAllVolunteers = new Service()
+    {
+        @Override
+        protected Task createTask()
+        {
+            return new Task()
+            {
+                @Override
+                protected Object call() throws Exception
+                {
+
+                    MOD_FAC.updateUserInfo(currentUser.getId(), txtName.getText(), txtEmail.getText(), currentUser.getType(), Integer.parseInt(txtPhone.getText()), txtNotes.getText(), txtAddress.getText(), txtAddress2.getText());
+                    MOD_FAC.setAllVolunteersIntoArray();
+                    MOD_FAC.setAllManagersIntoArray();
+                    MOD_FAC.setAllAdminsIntoArray();
+
+                    return null;
+
+                }
+            };
+        }
+    };
+
     /**
      * Initializes the controller class.
      */
@@ -240,10 +263,18 @@ public class UserInfoViewController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
     {
 
-        setCurrentUser(MOD_FAC.getCurrentUser());
-        setUserInfo();
-        checkTypeOfUser();
-        createEditFields();
+        if (userInfoView = true)
+        {
+            setCurrentUser(MOD_FAC.getCurrentUser());
+            checkTypeOfUser();
+        }
+        else
+        //setCurrentUser();
+        //Need to do this
+
+        {
+            setUserInfo();
+        }
         setTextAll();
         setupGuildList();
         setupTableView(MOD_FAC.getLang("TBL_LOADING"));
@@ -270,7 +301,6 @@ public class UserInfoViewController implements Initializable
     {
         btnUpdatePhoto.setText(MOD_FAC.getLang("BTN_UPDATEPHOTO"));
         btnChangePassword.setText(MOD_FAC.getLang("BTN_CHANGEPASS"));
-        btnEditSave.setText(MOD_FAC.getLang("BTN_EDIT"));
         btnLogout.setText(MOD_FAC.getLang("BTN_LOGOUT"));
 
         colDate.setText(MOD_FAC.getLang("COL_DATE"));
@@ -636,7 +666,7 @@ public class UserInfoViewController implements Initializable
                                     .contains(newValue.replaceAll(regex, ""))
                             || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
                                     contains(newValue.toLowerCase().replaceAll(regex, ""));
-                    
+
                     return search;
                 }
             });
@@ -661,6 +691,8 @@ public class UserInfoViewController implements Initializable
     private void checkTypeOfUser()
 
     {
+        hBoxInvisBtn.getChildren().clear();
+        
         switch (currentUser.getType())
         {
             case 0:
@@ -690,7 +722,7 @@ public class UserInfoViewController implements Initializable
         btnHighClearance.setId("btnConfirmTeal");
         btnHighClearance.toFront();
         btnHighClearance.setVisible(true);
-        btnCancelEditInfo.setPrefHeight(25);
+        btnHighClearance.setPrefHeight(25);
 
         hBoxInvisBtn.setAlignment(Pos.CENTER);
         hBoxInvisBtn.getChildren().add(btnHighClearance);
@@ -722,185 +754,6 @@ public class UserInfoViewController implements Initializable
             }
         });
 
-    }
-
-    /**
-     * Sets the general information of the user.
-     */
-    private void setUserInfo()
-    {
-        txtName.setText(currentUser.getName());
-        txtPhone.setText(String.valueOf(currentUser.getPhone()));
-        txtEmail.setText(currentUser.getEmail());
-        txtAddress.setText(currentUser.getResidence());
-        txtAddress2.setText(currentUser.getResidence2());
-    }
-
-    /**
-     * An additional cancel button is created along with the editSaveButton,
-     * which has changed text to save rather than edit.
-     *
-     * @param event = when editSaveButton is pressed.
-     */
-    @FXML
-    private void pressedEditSaveButton(ActionEvent event)
-
-    {
-        if (!editing)
-        {
-
-            editInfo(true);
-            editing = true;
-            btnEditSave.setText(MOD_FAC.getLang("BTN_SAVE"));
-            checkTextFields();
-            addCancelButton();
-
-        }
-        else
-        {
-            if (isIncorrect && btnEditSave.isDisabled())
-            {
-                MOD_FAC.timedSnackbarPopup(MOD_FAC.getLang("STR_INVALID_INPUT"), root, 5000);
-            }
-            saveInfo(currentUser);
-            editing = false;
-            btnEditSave.setText(MOD_FAC.getLang("BTN_EDIT"));
-            checkTextFields();
-            removeCancelButton();
-
-        }
-    }
-
-    /**
-     * Adds an event handler to the phone number textfield to ensure only
-     * numbers are inputted.
-     */
-    private void createEditFields()
-
-    {
-
-        txtPhone.setOnKeyReleased(new EventHandler<KeyEvent>()
-
-        {
-            @Override
-            public void handle(KeyEvent event)
-            {
-                checkTextFields();
-
-            }
-
-        });
-    }
-
-    /**
-     * Updates the user info in the database if it has been changed.
-     *
-     * @param user = currentUser.
-     */
-    private void saveInfo(User user)
-    {
-        MOD_FAC.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPhone.getText()), user.getNote(), txtAddress.getText(), txtAddress2.getText());
-        MOD_FAC.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FAC.getCurrentUser().getName() + " edited personal information."));
-        currentUser = MOD_FAC.getUserInfo(user.getId());
-        editInfo(false);
-        setUserInfo(); //update labels
-
-    }
-
-    /**
-     * Ensures all inputs of the general information edit text fields are
-     * correct.
-     */
-    private void checkTextFields()
-    {
-        boolean success = false;
-        try
-
-        {
-            Integer.parseInt(txtPhone.getText());
-            success = true;
-        }
-        catch (NumberFormatException e)
-        {
-            success = false;
-            txtPhone.setStyle("-fx-background-color:red;");
-            btnEditSave.setDisable(true);
-        }
-        if (success)
-        {
-            btnEditSave.setDisable(false);
-            txtPhone.setStyle("");
-            isIncorrect = false;
-        }
-        else
-        {
-            txtPhone.setStyle("-fx-background-color:red;");
-            btnEditSave.setDisable(true);
-            isIncorrect = true;
-
-        }
-    }
-
-    /**
-     * Formatting for the cancel button, which appears when the edit general
-     * info button is pressed.
-     */
-    private void addCancelButton()
-    {
-
-        int btnSavePosCol = GridPane.getColumnIndex(btnEditSave); //Saving position
-        int btnSavePosRow = GridPane.getRowIndex(btnEditSave);
-        GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) - 1); //Moving save button one up
-
-        btnCancelEditInfo.setText(MOD_FAC.getLang("BTN_CANCEL")); //Preparing cancel button
-        btnCancelEditInfo.setId("btnCancelGrey");
-        btnCancelEditInfo.setPrefHeight(25);
-        btnCancelEditInfo.setPrefWidth(Double.MAX_VALUE);
-        btnCancelEditInfo.setTextFill(Color.WHITE);
-        btnCancelEditInfo.setPadding(btnEditSave.getPadding());
-
-        gridEdit.add(btnCancelEditInfo, btnSavePosCol, btnSavePosRow); //Adding to the old position of save btn
-        GridPane.setValignment(btnEditSave, VPos.CENTER);
-        GridPane.setValignment(btnCancelEditInfo, VPos.CENTER);
-        btnCancelEditInfo.setOnAction(new EventHandler<ActionEvent>()
-        { //Setting onAction, nothing changed, just show old labels again
-            @Override
-            public void handle(ActionEvent event)
-            {
-                editInfo(false);
-
-                removeCancelButton(); //if Cancel button clicked, it will disappear
-                editing = false;
-                btnEditSave.setText(MOD_FAC.getLang("BTN_EDIT"));
-
-            }
-        });
-    }
-
-    /**
-     * Makes all the general information textfields editable.
-     */
-    private void editInfo(boolean editable)
-    {
-        txtName.setEditable(editable);
-        txtEmail.setEditable(editable);
-        txtPhone.setEditable(editable);
-        txtAddress.setEditable(editable);
-        txtAddress2.setEditable(editable);
-    }
-
-    /**
-     * Removes the cancel button which was created as the result of clicking on
-     * the edit general information button.
-     */
-    private void removeCancelButton()
-    {
-        GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) + 1); //Moving save button one down
-        gridEdit.getChildren().remove(btnCancelEditInfo); //Deleting cancel button from gridpane
-        if (btnEditSave.isDisabled())
-        {
-            btnEditSave.setDisable(false);
-        }
     }
 
     /**
@@ -1138,8 +991,87 @@ public class UserInfoViewController implements Initializable
         StackPane page = (StackPane) loader.load();
 
         MOD_FAC.changeView(3);
-        Stage stage = (Stage) btnEditSave.getScene().getWindow();
+        Stage stage = (Stage) btnLogout.getScene().getWindow();
         stage.close();
 
+    }
+
+    /**
+     * Sets the edit grid into the view if it's user info view.
+     *
+     * @param event = logout button is pressed.
+     * @throws IOException = cannot load the right resource/view.
+     */
+    private void setUserInfo()
+    {
+        if (userInfoView = true)
+        {
+            try
+            {
+                AnchorPane newLoadedPane = FXMLLoader.load(getClass().getResource("/GUI/View/GuildManagementView.fxml"));
+                anchPGenInfo.getChildren().add(newLoadedPane);
+            }
+            catch (IOException ex)
+            {
+                Logger.getLogger(UserInfoViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    @FXML
+    private void checkTextFields(KeyEvent event)
+    {
+        boolean success = false;
+        try
+
+        {
+            Integer.parseInt(txtPhone.getText());
+            success = true;
+        }
+        catch (NumberFormatException e)
+        {
+            success = false;
+            txtPhone.setStyle("-fx-background-color:red;");
+            JFXBtnAccept.setDisable(true);
+        }
+        if (success)
+        {
+            JFXBtnAccept.setDisable(false);
+            txtPhone.setStyle("");
+            isIncorrect = false;
+        }
+        else
+        {
+            txtPhone.setStyle("-fx-background-color:red;");
+            JFXBtnAccept.setDisable(true);
+            isIncorrect = true;
+
+        }
+    }
+
+    @FXML
+    private void onBtnAcceptPressed(ActionEvent event)
+    {
+        StackPane stckPaneLoad = MOD_FAC.getLoadingScreen();
+        root.getChildren().add(stckPaneLoad);
+        AnchorPane.setTopAnchor(stckPaneLoad, 0.0);
+        AnchorPane.setBottomAnchor(stckPaneLoad, 0.0);
+        AnchorPane.setLeftAnchor(stckPaneLoad, 0.0);
+        AnchorPane.setRightAnchor(stckPaneLoad, 0.0);
+        serviceAllVolunteers.restart();
+        serviceAllVolunteers.setOnSucceeded(e
+                ->
+        {
+
+            Stage stage = (Stage) JFXBtnAccept.getScene().getWindow();
+            stage.close();
+        });
+    }
+
+    @FXML
+    private void onBtnCancelPressed(ActionEvent event)
+    {
+        Stage stage = (Stage) JFXBtnCancel.getScene().getWindow();
+        stage.close();
     }
 }

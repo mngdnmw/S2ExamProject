@@ -202,10 +202,7 @@ public class ManagerEditViewController implements Initializable
         setUserImage();
         serviceInitializer.setOnSucceeded(e
                 -> setupTableView(MOD_FACADE.getLang("STR_SEARCH_EMPTY")));
-//        if (selectedUser.getType() >= 1)
-//        {
-//            serviceAllVolunteers.start();
-//        }
+
     }
 
     public void setUserImage()
