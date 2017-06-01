@@ -22,6 +22,7 @@ CMB_GUILDCHOOSER_PROMPT = Choose a guild
 GUILD_TAG_TWO = guild
 LB_USERNAME = Username
 LB_PASSWORD = Password
+TBL_LOADING = Table is loading
 
 ########
 # USER INFO WINDOW

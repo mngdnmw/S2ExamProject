@@ -79,6 +79,7 @@ TAB_VOLUN_INFO = Bruger Information
 TAB_GRAPH_STATS = Graf og Statistikker
 TAB_LOG_EVENTS = Logbog
 TAB_GUILD = Laug Management
+TBL_LOADING = Tabelindlæsning
 
 #ErrorCode
 STR_NO_ERROR_CONTRIBUTION = Dine timer er blevet registreret! Tak for hjælpen!
