@@ -14,6 +14,7 @@ public class LoginModel
 
     //Stand in until we have the user passed through
     private User currentUser = null;
+    private User selectedUser = null;
 
     public void getUserFromLogin(String username, String password)
     {
@@ -33,7 +34,7 @@ public class LoginModel
 
     public void logHours(String username, String date, int hours, int guildId)
     {
-       
+
         BLL_FAC.logHours(username, date, hours, guildId);
 
     }
@@ -47,6 +48,21 @@ public class LoginModel
     public HashMap<String, String> loadSession()
     {
         return BLL_FAC.loadSession();
+    }
+
+    public User getSelectedUser()
+    {
+        return selectedUser;
+    }
+
+    public void setSelectedUser(User selectedUser)
+    {
+        this.selectedUser = selectedUser;
+    }
+
+    public void resetSelectedUser()
+    {
+        selectedUser = null;
     }
 
 }

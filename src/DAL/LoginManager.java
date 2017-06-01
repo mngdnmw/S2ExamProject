@@ -74,19 +74,21 @@ public class LoginManager extends ConnectionManager
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
                 String residence2 = rs.getString("residence2");
+                String lastWorked = rs.getString("lastWorked");
                 List<Guild> guilds = new ArrayList<>();
+                
 
                 GeneralInfoManager genInfoMan = new GeneralInfoManager();
                 switch (type)
                 {
                     case 0:
                         guilds.addAll(genInfoMan.getGuildsForUser(id));
-                        return new Volunteer(id, name, email, phone, note, residence, residence2, guilds);
+                        return new Volunteer(id, name, email, phone, note, residence, residence2, guilds, lastWorked);
                     case 1:
                         guilds.addAll(genInfoMan.getGuildsForManager(id));
-                        return new Manager(id, name, email, phone, note, residence, residence2, guilds);
+                        return new Manager(id, name, email, phone, note, residence, residence2, guilds, lastWorked);
                     case 2:
-                        return new Admin(id, name, email, phone, note, residence, residence2, guilds);
+                        return new Admin(id, name, email, phone, note, residence, residence2, guilds,lastWorked);
                 }
             }
         }

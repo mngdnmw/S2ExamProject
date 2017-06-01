@@ -50,6 +50,7 @@ public class GeneralInfoManager extends ConnectionManager
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
                 String residence2 = rs.getString("residence2");
+                String lastWorked = rs.getString("lastWorked");
 
                 List<Guild> guilds = GeneralInfoManager.this.getGuildsForUser(userId);
 
@@ -59,7 +60,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                     Volunteer volunteer = null;
                     //(id, name, email, password, type, phone, note, residence, guilds);
-                    volunteer = new Volunteer(id, name, email, phone, note, residence, residence2, guilds);
+                    volunteer = new Volunteer(id, name, email, phone, note, residence, residence2, guilds, lastWorked);
 
                     return volunteer;
                 }
@@ -70,7 +71,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                     Manager manager = null;
                     //(id, name, email, password, type, phone, note);
-                    manager = new Manager(id, name, email, phone, note, residence, residence2, guilds);
+                    manager = new Manager(id, name, email, phone, note, residence, residence2, guilds, lastWorked);
 
                     return manager;
                 }
@@ -81,7 +82,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                     Admin admin = null;
                     //(id, name, email, password, type, phone, note);
-                    admin = new Admin(id, name, email, phone, note, residence, residence2, guilds);
+                    admin = new Admin(id, name, email, phone, note, residence, residence2, guilds, lastWorked);
 
                     return admin;
                 }
@@ -116,7 +117,8 @@ public class GeneralInfoManager extends ConnectionManager
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
                 String residence2 = rs.getString("residence2");
-
+                String lastWorked = rs.getString("lastWorked");
+                
                 List<Guild> guilds = GeneralInfoManager.this.getGuildsForUser(id);
 
                 switch (type)
@@ -125,7 +127,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                         Volunteer volunteer = null;
                         //(id, name, email, password, type, phone, note);
-                        volunteer = new Volunteer(id, name, email, phone, note, residence, residence2, guilds);
+                        volunteer = new Volunteer(id, name, email, phone, note, residence, residence2, guilds, lastWorked);
                         users.add(volunteer);
 
                         break;
@@ -134,7 +136,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                         Manager manager = null;
                         //(id, name, email, password, type, phone, note);
-                        manager = new Manager(id, name, email, phone, note, residence, residence2, guilds);
+                        manager = new Manager(id, name, email, phone, note, residence, residence2, guilds, lastWorked);
                         users.add(manager);
 
                         break;
@@ -143,7 +145,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                         Admin admin = null;
                         //(id, name, email, password, type, phone, note);
-                        admin = new Admin(id, name, email, phone, note, residence, residence2, guilds);
+                        admin = new Admin(id, name, email, phone, note, residence, residence2, guilds,lastWorked);
                         users.add(admin);
 
                         break;
@@ -183,12 +185,13 @@ public class GeneralInfoManager extends ConnectionManager
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
                 String residence2 = rs.getString("residence2");
+                String lastWorked = rs.getString("lastWorked");
 
                 List<Guild> guilds = GeneralInfoManager.this.getGuildsForUser(id);
 
                 Volunteer volunteer = null;
                 //(id, name, email, password, type, phone, note);
-                volunteers.add(new Volunteer(id, name, email, phone, note, residence, residence2, guilds));
+                volunteers.add(new Volunteer(id, name, email, phone, note, residence, residence2, guilds, lastWorked));
 
             }
         }
@@ -221,12 +224,13 @@ public class GeneralInfoManager extends ConnectionManager
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
                 String residence2 = rs.getString("residence2");
+                String lastWorked = rs.getString("lastWorked");
 
                 List<Guild> guilds = GeneralInfoManager.this.getGuildsForManager(id);
 
                 Manager manager = null;
                 //(id, name, email, password, type, phone, note);
-                managers.add(new Manager(id, name, email, phone, note, residence, residence2, guilds));
+                managers.add(new Manager(id, name, email, phone, note, residence, residence2, guilds, lastWorked));
 
             }
         }
@@ -258,12 +262,14 @@ public class GeneralInfoManager extends ConnectionManager
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
                 String residence2 = rs.getString("residence2");
+                String lastWorked = rs.getString("lastWorked");
+                
 
                 List<Guild> guilds = GeneralInfoManager.this.getGuildsForUser(id);
 
                 Admin admin = null;
                 //(id, name, email, password, type, phone, note);
-                admins.add(new Admin(id, name, email, phone, note, residence, residence2, guilds));
+                admins.add(new Admin(id, name, email, phone, note, residence, residence2, guilds,lastWorked));
 
             }
         }
