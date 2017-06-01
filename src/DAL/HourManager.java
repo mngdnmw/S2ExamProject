@@ -38,7 +38,7 @@ public class HourManager extends ConnectionManager
             pstat.setInt(3, hours);
             pstat.setInt(4, guildId);
             pstat.executeUpdate();
-
+            setLastWorkedDay(userId);
         }
         catch (SQLException ex)
         {
@@ -52,13 +52,13 @@ public class HourManager extends ConnectionManager
         try (Connection con = super.getConnection())
         {
             String sqlCommand
-                    = "UPDATE [hour] SET [date] = ?, [hours] =?, [guildid]=? WHERE userid =?";
+                    = "UPDATE [hour] SET [hours] =?  WHERE userid =? AND [date] = ? AND [guildid]=?";
 
             PreparedStatement pstat = con.prepareStatement(sqlCommand);
-            pstat.setString(1, date);
-            pstat.setInt(2, hours);
-            pstat.setInt(3, guildId);
-            pstat.setInt(4, userId);
+            pstat.setInt(1, hours);
+            pstat.setInt(2, userId);
+            pstat.setString(3, date);
+            pstat.setInt(4, guildId);
             pstat.executeUpdate();
 
         }
@@ -104,22 +104,6 @@ public class HourManager extends ConnectionManager
         return workedDays;
     }
 
-    public void editWorkedDay(Day day, User user, String date, int hour, String guild)
-    {
-
-        try (Connection con = super.getConnection())
-        {
-
-        }
-        catch (SQLException ex)
-        {
-
-            erMan.setErrorCode(ex.getErrorCode());
-            Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-
     public void deleteWorkedDay(User user, Day day)
     {
         String query = "DELETE FROM [hour] WHERE [userid]=? AND [date]=? AND [guildid]=?";
@@ -163,7 +147,8 @@ public class HourManager extends ConnectionManager
         {
             String query = "SELECT * FROM hour\n"
                     + "WHERE date BETWEEN '" + periodOne + "' AND '" + periodTwo + "' \n "
-                    + "AND  guildid = ?";
+                    + "AND  guildid = ?"
+                    + " ORDER BY [date]";
             PreparedStatement pstmt = con.prepareStatement(query);
             pstmt.setInt(1, guild.getId());
             ResultSet rs = pstmt.executeQuery();
@@ -196,6 +181,30 @@ public class HourManager extends ConnectionManager
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    private void setLastWorkedDay(int userId)
+    {
+
+        try (Connection con = super.getConnection())
+        {
+            String query = "UPDATE[user]"
+                    + " SET[lastWorked] = (SELECT TOP  (1)[date] FROM[hour] WHERE[userid] = ? ORDER BY[date] DESC)"
+                    + " WHERE userid = ?";
+            String sqlCommand
+                    = "SELECT [hours] FROM [hour] WHERE [userid] = ? ORDER BY [date]";
+            PreparedStatement pstat = con.prepareStatement(query);
+            pstat.setInt(1, userId);
+            pstat.setInt(2, userId);
+            pstat.executeUpdate();
+
+        }
+        catch (SQLException ex)
+        {
+            erMan.setErrorCode(ex.getErrorCode());
+            System.out.println("" + ex.getErrorCode());
+        }
+
     }
 
 }

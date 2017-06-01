@@ -10,7 +10,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
@@ -18,13 +17,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -46,11 +42,10 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.DateCell;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -66,40 +61,23 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
-import javafx.util.Duration;
 import javafx.util.StringConverter;
 
 public class ManagerViewController implements Initializable
 {
 
     @FXML
+    private JFXComboBox<Guild> cmbGuildChooser;
+    @FXML
+    private StackPane stckPaneGraphError;
+    @FXML
     private Label lblUserName;
     @FXML
-    private JFXButton btnAddUser;
+    private Label lblNotes;
     @FXML
     private JFXTextField txtSearch;
     @FXML
     private JFXTextArea txtNotes;
-    @FXML
-    private JFXButton btnEditInfo;
-    @FXML
-    private AnchorPane root;
-    @FXML
-    private JFXButton btnClose;
-    @FXML
-    private TableView<User> tblUsers;
-    @FXML
-    private JFXComboBox<Guild> cmbGuildChooser;
-    @FXML
-    private Label lblNotes;
-    @FXML
-    private TableColumn<User, String> colName;
-    @FXML
-    private TableColumn<User, Integer> colPhone;
-    @FXML
-    private TableColumn<User, String> colEmail;
-    @FXML
-    private Tab tabVolunInfo;
     @FXML
     private JFXCheckBox chkVolunteers;
     @FXML
@@ -107,27 +85,25 @@ public class ManagerViewController implements Initializable
     @FXML
     private JFXCheckBox chkAdmins;
     @FXML
-    private Tab tabGraphStats;
-    @FXML
-    private Tab tabGuildManagement;
+    private AnchorPane root;
     @FXML
     private AnchorPane anchorPaneGuild;
     @FXML
-    private JFXTabPane tabPane;
-    @FXML
     private AnchorPane rootGraph;
     @FXML
-    private JFXButton btnAddHours;
-    @FXML
-    private JFXButton btnRefresh;
-    @FXML
     private LineChart<String, Number> lineChartGuildHours;
-
     @FXML
     private NumberAxis yAxis;
     @FXML
     private CategoryAxis xAxis;
-
+    @FXML
+    private JFXTabPane tabPane;
+    @FXML
+    private Tab tabVolunInfo;
+    @FXML
+    private Tab tabGraphStats;
+    @FXML
+    private Tab tabGuildManagement;
     @FXML
     private Tab tabLog;
     @FXML
@@ -138,23 +114,45 @@ public class ManagerViewController implements Initializable
     private TableColumn<BE.Event, String> colLogEventDate;
     @FXML
     private TableColumn<BE.Event, String> colLogEventDesc;
-
-    private Boolean hasLoadedGuild = false;
-    private static final ModelFacade MOD_FAC = ModelFacade.getModelFacade();
-    private User selectedUser;
-    private ArrayList<XYChart.Series<String, Number>> Temp = new ArrayList<>();
-    private ObservableList<User> observableUsers = FXCollections.observableArrayList();
-    private FilteredList<User> filteredData = new FilteredList<>(observableUsers);
-    private SortedList<User> sortedData = new SortedList<>(filteredData);
     @FXML
-    private StackPane stckPaneGraphError;
+    private TableView<User> tblUsers;
+    @FXML
+    private TableColumn<User, String> colName;
+    @FXML
+    private TableColumn<User, String> colStatus;
+    @FXML
+    private TableColumn<User, String> colEmail;
     @FXML
     private JFXDatePicker datePickerPeriodOne;
     @FXML
     private JFXDatePicker datePickerPeriodTwo;
     @FXML
+    private JFXButton btnClose;
+    @FXML
+    private JFXButton btnAddUser;
+    @FXML
+    private JFXButton btnEditInfo;
+    @FXML
     private JFXButton btnRefreshLog;
+    @FXML
+    private JFXButton btnRefresh;
 
+    //Variables used
+    private Boolean hasLoadedGuild = false;
+
+    //Objects used
+    private User selectedUser;
+    private User currentUser = null;
+    private static final ModelFacade MOD_FAC = ModelFacade.getModelFacade();
+    private ArrayList<XYChart.Series<String, Number>> chartArray = new ArrayList<>();
+    private ObservableList<User> observableUsers = FXCollections.observableArrayList();
+    private FilteredList<User> filteredData = new FilteredList<>(observableUsers);
+    private SortedList<User> sortedData = new SortedList<>(filteredData);
+    ObservableList guildList = FXCollections.observableArrayList();
+    /**
+     * Service that retrieves the worked days of everyone on the guild between
+     * two dates and adds it to the chartArray.
+     */
     private final Service serviceGraphStats = new Service()
     {
         @Override
@@ -167,12 +165,7 @@ public class ManagerViewController implements Initializable
                 {
                     LocalDate periodOne = datePickerPeriodOne.getValue();
                     LocalDate periodTwo = datePickerPeriodTwo.getValue();
-                    if (periodOne.getYear() <= periodTwo.getYear())
-                    {
-                        if (periodOne.getMonth().getValue() <= periodTwo.getMonth().getValue())
-                        {
-                        }
-                    }
+                   
                     if (cmbGuildChooser.getSelectionModel().getSelectedItem().getId() == -1)
                     {
                         for (Guild item : cmbGuildChooser.getItems())
@@ -180,7 +173,7 @@ public class ManagerViewController implements Initializable
                             List<XYChart.Series<String, Number>> thisList = MOD_FAC.graphSort(item, periodOne, periodTwo);
                             for (XYChart.Series<String, Number> series : thisList)
                             {
-                                Temp.add(series);
+                                chartArray.add(series);
                             }
                         }
                     }
@@ -189,7 +182,7 @@ public class ManagerViewController implements Initializable
                         List<XYChart.Series<String, Number>> thisList = MOD_FAC.graphSort(cmbGuildChooser.getSelectionModel().getSelectedItem(), periodOne, periodTwo);
                         for (XYChart.Series<String, Number> series : thisList)
                         {
-                            Temp.add(series);
+                            chartArray.add(series);
                         }
                     }
                     return null;
@@ -197,6 +190,11 @@ public class ManagerViewController implements Initializable
             };
         }
     };
+
+    /**
+     * Service that adds volunteers, managers and administrators into their
+     * respective arrays stored in the model.
+     */
     private final Service serviceInitializer = new Service()
     {
         @Override
@@ -211,7 +209,6 @@ public class ManagerViewController implements Initializable
                     MOD_FAC.setAllAdminsIntoArray();
                     MOD_FAC.setAllManagersIntoArray();
                     MOD_FAC.setAllVolunteersIntoArray();
-                    setTableItems();
                     return null;
 
                 }
@@ -228,140 +225,153 @@ public class ManagerViewController implements Initializable
         xAxis.setLabel(MOD_FAC.getLang("TAB_MONTH"));
         yAxis.setLabel(MOD_FAC.getLang("STR_AXIS_HOURS"));
         setTextAll(); //this has to run before setting currently logged in username
-        if (MOD_FAC.getCurrentUser() != null)
+        setCurrentUser();
+        guildList.add(new Guild(-1, MOD_FAC.getLang("STR_ALL_GUILDS")));
+        if (currentUser != null)
         {
-            lblUserName.setText(MOD_FAC.getLang("LBL_USERNAME") + MOD_FAC.getCurrentUser().getName());
-            cmbGuildChooser.setItems(FXCollections.observableArrayList(MOD_FAC.getCurrentUser().getGuildList()));
+            lblUserName.setText(MOD_FAC.getLang("LBL_USERNAME") + currentUser.getName());
+            if (currentUser.getType() == 1)
+            {
+                guildList.addAll(currentUser.getGuildList());
+            }
         }
         setTableProperties();
-        setupTableView("Loading Information");
+        setupTableView(MOD_FAC.getLang("TBL_LOADING"));
+        cmbBoxSetup();
+        setOrderTable();
+
         serviceInitializer.start();
-        serviceInitializer.setOnSucceeded(e -> setupTableView(MOD_FAC.getLang("STR_SEARCH_EMPTY")));
-        serviceInitializer.setOnFailed(e -> setupTableView("Error: Try Again"));
-        cmbBoxListeners();
-        if (MOD_FAC.getCurrentUser().getType() >= 2)
+        serviceInitializer.setOnSucceeded(e
+                -> 
+                {
+                    setTableItems();
+                    setupTableView(MOD_FAC.getLang("STR_SEARCH_EMPTY"));
+
+        });
+
+        serviceInitializer.setOnFailed(e -> setupTableView(MOD_FAC.getLang("TAB_ERR")));
+    }
+
+    /**
+     * Sets all text to the language they are meant to be in.
+     */
+    private void setTextAll()
+    {
+        xAxis.setLabel(MOD_FAC.getLang("TAB_MONTH"));
+        yAxis.setLabel(MOD_FAC.getLang("STR_AXIS_HOURS"));
+
+        btnAddUser.setText(MOD_FAC.getLang("BTN_ADD_USER"));
+        btnClose.setText(MOD_FAC.getLang("BTN_CLOSE"));
+        btnEditInfo.setText(MOD_FAC.getLang("BTN_EDIT_INFO"));
+        chkManagers.setText(MOD_FAC.getLang("CHK_MANAGERS"));
+        chkVolunteers.setText(MOD_FAC.getLang("CHK_VOLUNTEERS"));
+
+        lblUserName.setText(MOD_FAC.getLang("LBL_USERNAME"));
+        lblNotes.setText(MOD_FAC.getLang("LBL_NOTES"));
+        txtSearch.setPromptText(MOD_FAC.getLang("PROMPT_SEARCH_USER"));
+        cmbGuildChooser.setPromptText(MOD_FAC.getLang("PROMPT_CMB_GUILDCHOOSER"));
+        colEmail.setText(MOD_FAC.getLang("COL_EMAIL"));
+        colStatus.setText(MOD_FAC.getLang("COL_STATUS"));
+        colName.setText(MOD_FAC.getLang("COL_NAME"));
+        tabVolunInfo.setText(MOD_FAC.getLang("TAB_VOLUN_INFO"));
+        tabGraphStats.setText(MOD_FAC.getLang("TAB_GRAPH_STATS"));
+    }
+
+    /**
+     * Retrives the current user from the model.
+     */
+    private void setCurrentUser()
+    {
+        currentUser = MOD_FAC.getCurrentUser();
+        if (currentUser != null)
+        {
+            lblUserName.setText(MOD_FAC.getLang("LBL_USERNAME") + currentUser.getName());
+            cmbGuildChooser.setItems(FXCollections.observableArrayList(currentUser.getGuildList()));
+        }
+        if (currentUser.getType() >= 2)
         {
             chkAdmins.setVisible(true);
             chkManagers.setVisible(true);
             chkVolunteers.setVisible(true);
-            ObservableList guildList = FXCollections.observableArrayList();
+
             guildList.add(new Guild(-1, MOD_FAC.getLang("STR_ALL_GUILDS")));
             guildList.addAll(MOD_FAC.getAllSavedGuilds());
 
-            cmbGuildChooser.setItems(guildList);
-
             cmbGuildChooser.setEditable(true);
             new AutoCompleteComboBoxListener(cmbGuildChooser);
-            formatCalendar(datePickerPeriodOne);
-            formatCalendar(datePickerPeriodTwo);
+            MOD_FAC.formatCalendar(datePickerPeriodOne);
+            MOD_FAC.formatCalendar(datePickerPeriodTwo);
         }
         colLogEventId.setSortType(TableColumn.SortType.ASCENDING);
         tblLog.getSortOrder().add(colLogEventId);
+        cmbGuildChooser.setItems(guildList);
         cmbGuildChooser.getSelectionModel().selectFirst();
 
     }
 
-    private void formatCalendar(DatePicker datePicker)
-    {
-        StringConverter converter = new StringConverter<LocalDate>()
-        {
-            DateTimeFormatter dateFormatter
-                    = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-            @Override
-            public String toString(LocalDate date)
-            {
-                if (date != null)
-                {
-                    return dateFormatter.format(date);
-                }
-                else
-                {
-                    return "";
-                }
-            }
-
-            @Override
-            public LocalDate fromString(String string)
-            {
-                if (string != null && !string.isEmpty())
-                {
-                    return LocalDate.parse(string, dateFormatter);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        };
-        datePicker.setConverter(converter);
-
-        // Create a day cell factory
-        datePicker.setDayCellFactory(new Callback<DatePicker, DateCell>()
-        {
-            @Override
-            public DateCell call(final DatePicker datepicker)
-            {
-                return new DateCell()
-                {
-                    @Override
-                    public void updateItem(LocalDate item, boolean empty)
-
-                    {
-                        // Must call super
-                        super.updateItem(item, empty);
-                        // Disable all future date cells
-                        if (item.isAfter(LocalDate.now()))
-                        {
-                            this.setDisable(true);
-                        }
-                    }
-                };
-            }
-        });
-    }
-
+    /**
+     * Set up the properties of the user table view and the event log table
+     * view.
+     */
     private void setTableProperties()
     {
         colName.setCellValueFactory(new PropertyValueFactory("name"));
-        colPhone.setCellValueFactory(new PropertyValueFactory("phone"));
+        colStatus.setCellValueFactory(new PropertyValueFactory("phone"));
         colEmail.setCellValueFactory(new PropertyValueFactory("email"));
 
         colLogEventId.setCellValueFactory(new PropertyValueFactory("id"));
         colLogEventDate.setCellValueFactory(new PropertyValueFactory("time"));
         colLogEventDesc.setCellValueFactory(new PropertyValueFactory("description"));
+
+        colLogEventId.setSortType(TableColumn.SortType.ASCENDING);
+        tblLog.getSortOrder().add(colLogEventId);
     }
 
-    public void setTableItems()
+    /**
+     * If the user is a manager, then they will only see volunteers in their
+     * guild in the table view. If user is an administrator, they will see all
+     * users.
+     */
+    private void setTableItems()
     {
         observableUsers.clear();
 
-        if (MOD_FAC.getCurrentUser().getType() == 1)
+        if (currentUser.getType() == 1)
         {
             observableUsers.addAll(MOD_FAC.getAllSavedVolunteers());
         }
-        if (MOD_FAC.getCurrentUser().getType() == 2)
+        if (currentUser.getType() == 2)
         {
 
             observableUsers.addAll(MOD_FAC.getAllSavedUsers());
         }
-        
+
         tblLog.setItems(FXCollections.observableArrayList(MOD_FAC.getAllEvents()));
         colLogEventId.setSortType(TableColumn.SortType.ASCENDING);
         tblLog.getSortOrder().add(colLogEventId);
         //tblLog.setSortPolicy(callback);getSortPolicy();
     }
 
-    @FXML
-    private void onBtnAddUserClicked(ActionEvent event)
+    /**
+     * Sorts the event log table view according to the IDs.
+     */
+    private void setOrderTable()
     {
-        addUserPopup();
+        tblLog.setItems(FXCollections.observableArrayList(MOD_FAC.getAllEvents()));
+        colLogEventId.setSortType(TableColumn.SortType.ASCENDING);
+        tblLog.getSortOrder().add(colLogEventId);
     }
 
-    public void cmbBoxListeners()
+    /**
+     * Sets up combobox so it is searchable. And if the user selects a guild,
+     * then only users in that guild will appear in the user table view.
+     */
+    public void cmbBoxSetup()
     {
+        cmbGuildChooser.getSelectionModel().selectFirst();
         cmbGuildChooser.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>()
         {
+            @Override
             public void changed(ObservableValue ov, Number value, Number new_value)
             {
                 cmbGuildChooser.getSelectionModel().select(new_value.intValue());
@@ -376,6 +386,7 @@ public class ManagerViewController implements Initializable
                                     .contains(currentValue.replaceAll(regex, ""))
                                     || user.nameProperty().getValue().toLowerCase().replaceAll(regex, "").
                                     contains(currentValue.toLowerCase().replaceAll(regex, ""));
+
                             if (cmbGuildChooser.getSelectionModel().getSelectedItem().getId() == -1)
                             {
                                 if (textFieldContains)
@@ -436,7 +447,10 @@ public class ManagerViewController implements Initializable
 
     }
 
-    public void addUserPopup()
+    /**
+     * Opens the add user view.
+     */
+    public void handleAddUserPopup()
     {
         selectedUser = null;
 
@@ -445,12 +459,8 @@ public class ManagerViewController implements Initializable
             Stage primStage = (Stage) tblUsers.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/ManagerAddUserView.fxml"));
 
-            //ManagerViewController.setSelectedUser(selectedUser);
             Parent root = loader.load();
 
-            // Fetches controller from view
-            //ManagerViewController controller = loader.getController();
-            //controller.setController(this);
             // Sets new stage as modal window
             Stage stageView = new Stage();
             stageView.setScene(new Scene(root));
@@ -484,6 +494,62 @@ public class ManagerViewController implements Initializable
 
     }
 
+    /**
+     * Opens the add user view using the handleAddUserPopup() method.
+     */
+    @FXML
+    private void onBtnAddUserClicked(ActionEvent event)
+    {
+        handleAddUserPopup();
+    }
+
+    /**
+     * Gets the selected user and open edit user info view for that particular
+     * user.
+     */
+    private void handleEditView()
+    {
+
+        selectedUser = tblUsers.getSelectionModel().getSelectedItem();
+        if (selectedUser != null)
+        {
+            Stage primStage = (Stage) tblUsers.getScene().getWindow();
+            MOD_FAC.setSelectedUser(selectedUser);
+            MOD_FAC.changeView(2);
+
+            // Sets new stage as modal window
+            Stage stageView = MOD_FAC.getCurrentStage();
+
+            stageView.setOnHiding(new EventHandler<WindowEvent>()
+            {
+                public void handle(WindowEvent we)
+                {
+                    MOD_FAC.resetSelectedUser();
+                    setTableItems();
+                }
+            });
+
+            stageView.setOnCloseRequest(new EventHandler<WindowEvent>()
+            {
+                public void handle(WindowEvent we)
+                {
+                    MOD_FAC.resetSelectedUser();
+                    setTableItems();
+                }
+            });
+        }
+        else
+        {
+            MOD_FAC.snackbarPopup(MOD_FAC.getLang("STR_SELECT_USER"), root);
+        }
+    }
+
+    /**
+     * Uses the user selected from the user table view to open edit user info
+     * view when edit button is pressed.
+     *
+     * @param event = edit info button pressed.
+     */
     @FXML
     private void onEditInfoPressed(ActionEvent event)
     {
@@ -491,50 +557,7 @@ public class ManagerViewController implements Initializable
 
         if (tblUsers.getSelectionModel().getSelectedItem() != null)
         {
-            try
-            {
-                selectedUser = tblUsers.getSelectionModel().getSelectedItem();
-                Stage primStage = (Stage) tblUsers.getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/ManagerEditView.fxml"));
-                ManagerEditViewController.setSelectedUser(selectedUser);
-
-                Parent root = loader.load();
-
-                // Fetches controller from view
-                ManagerEditViewController controller = loader.getController();
-                controller.setController(this);
-
-                // Sets new stage as modal window
-                Stage stageView = new Stage();
-                stageView.setScene(new Scene(root));
-
-                stageView.setOnHiding(new EventHandler<WindowEvent>()
-                {
-                    public void handle(WindowEvent we)
-                    {
-
-                        setTableItems();
-                    }
-                });
-
-                stageView.setOnCloseRequest(new EventHandler<WindowEvent>()
-                {
-                    public void handle(WindowEvent we)
-                    {
-                        setTableItems();
-                    }
-                });
-
-                stageView.initModality(Modality.WINDOW_MODAL);
-                stageView.initOwner(primStage);
-
-                stageView.show();
-            }
-            catch (Exception e)
-            {
-                System.out.println(e);
-                e.printStackTrace();
-            }
+            handleEditView();
         }
         else
         {
@@ -543,6 +566,12 @@ public class ManagerViewController implements Initializable
         }
     }
 
+    /**
+     * If a user is double clicked, then it will go to the edit view; single
+     * click will just display the notes for that user.
+     *
+     * @param event = when user table view has been clicked.
+     */
     @FXML
     private void onTablePressed(MouseEvent event)
     {
@@ -556,53 +585,23 @@ public class ManagerViewController implements Initializable
         }
         else if (event.isPrimaryButtonDown() && event.getClickCount() == 2)
         {
-            try
-            {
-                selectedUser = tblUsers.getSelectionModel().getSelectedItem();
-                Stage primStage = (Stage) tblUsers.getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/ManagerEditView.fxml"));
-
-                ManagerEditViewController.setSelectedUser(selectedUser);
-
-                Parent root = loader.load();
-
-                // Fetches controller from view
-                ManagerEditViewController controller = loader.getController();
-                controller.setController(this);
-
-                // Sets new stage as modal window
-                Stage stageView = new Stage();
-                stageView.setScene(new Scene(root));
-
-                stageView.setOnHiding(new EventHandler<WindowEvent>()
-                {
-                    public void handle(WindowEvent we)
-                    {
-                        setTableItems();
-                    }
-                });
-
-                stageView.setOnCloseRequest(new EventHandler<WindowEvent>()
-                {
-                    public void handle(WindowEvent we)
-                    {
-                        setTableItems();
-                    }
-                });
-
-                stageView.initModality(Modality.WINDOW_MODAL);
-                stageView.initOwner(primStage);
-
-                stageView.show();
-            }
-            catch (Exception e)
-            {
-                System.out.println(e);
-            }
+            handleEditView();
         }
-
         selectedUser = tblUsers.getSelectionModel().getSelectedItem();
 
+        tblUsers.setContextMenu(setupContextMenu());
+
+    }
+
+    /**
+     * Sets up the listeners and items of the context menu.
+     *
+     * @return = context menu, which contains: 1. Get on user's email 2. Get all
+     * emails 3. Export all information of one user 4. Export all informations
+     * for all users of that guild
+     */
+    private ContextMenu setupContextMenu()
+    {
         ContextMenu contextMenu = new ContextMenu();
         MenuItem thisEmailItem = new MenuItem(MOD_FAC.getLang("MENU_ITEM_ONE_EMAIL"));
         contextMenu.getItems().add(thisEmailItem);
@@ -610,10 +609,8 @@ public class ManagerViewController implements Initializable
         contextMenu.getItems().add(allEmailItem);
         MenuItem exportData = new MenuItem(MOD_FAC.getLang("MENU_ITEM_EXPORT"));
         contextMenu.getItems().add(exportData);
-        MenuItem exportHours = new MenuItem("Export user hours from table");
+        MenuItem exportHours = new MenuItem(MOD_FAC.getLang("MENU_ITEM_EXPORT_USER"));
         contextMenu.getItems().add(exportHours);
-
-        tblUsers.setContextMenu(contextMenu);
 
         EventHandler thisEmailEvent = new EventHandler()
         {
@@ -626,19 +623,15 @@ public class ManagerViewController implements Initializable
                 {
                     content.putString(selectedUser.getEmail());
                 }
-
                 clipboard.setContent(content);
             }
         };
         thisEmailItem.setOnAction(thisEmailEvent);
-
         EventHandler allEmailEvent = new EventHandler()
         {
             @Override
             public void handle(Event event)
             {
-                //TableColumn<User, String> column = colEmail;
-
                 List<String> columnData = new ArrayList<>();
                 for (User item : tblUsers.getItems())
                 {
@@ -657,9 +650,7 @@ public class ManagerViewController implements Initializable
                 System.out.println("All Emails to Clipboard");
             }
         };
-
         allEmailItem.setOnAction(allEmailEvent);
-
         exportData.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -667,62 +658,57 @@ public class ManagerViewController implements Initializable
             {
                 export(ExportType.DATA);
             }
-
         });
-        
-        exportHours.setOnAction(new EventHandler<ActionEvent>() {
+        exportHours.setOnAction(new EventHandler<ActionEvent>()
+        {
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event)
+            {
                 export(ExportType.HOURS);
             }
-            
+
         });
+        return contextMenu;
     }
 
-    @FXML
-    private void onBtnClosePressed(ActionEvent event)
-    {
-        Stage stage = (Stage) btnClose.getScene().getWindow();
-        stage.close();
-    }
-    
+    /**
+     * Exports a comma separated file including hours and contact details of the
+     * individual/s selected previously.
+     *
+     * @param type = type of file that will be exported. In our case it is a
+     * comma separated file.
+     */
     private void export(ExportType type)
     {
         FileChooser chooser = new FileChooser();
-        String[] extensions = {"*.csv"};
+        String[] extensions =
+        {
+            "*.csv"
+        };
         chooser.getExtensionFilters().add(new ExtensionFilter(MOD_FAC.getLang("CSV_CH_EXT_FILTER"), extensions));
         chooser.setTitle(MOD_FAC.getLang("CSV_CH_TITLE"));
         chooser.setInitialDirectory(new File("."));
         File chose = chooser.showSaveDialog(root.getScene().getWindow());
         if (chose != null)
         {
-            if(type.equals(ExportType.DATA)) {
+            if (type.equals(ExportType.DATA))
+            {
                 MOD_FAC.writeExport(chose, MOD_FAC.parseExportUsers(tblUsers.getItems()));
-            } else if(type.equals(ExportType.HOURS)) {
+            }
+            else if (type.equals(ExportType.HOURS))
+            {
                 MOD_FAC.writeExport(chose, MOD_FAC.parseExportHours(tblUsers.getItems()));
             }
         }
     }
 
-    private void setTextAll()
-    {
-        btnAddUser.setText(MOD_FAC.getLang("BTN_ADD_USER"));
-        btnClose.setText(MOD_FAC.getLang("BTN_CLOSE"));
-        btnEditInfo.setText(MOD_FAC.getLang("BTN_EDIT_INFO"));
-        chkManagers.setText(MOD_FAC.getLang("CHK_MANAGERS"));
-        chkVolunteers.setText(MOD_FAC.getLang("CHK_VOLUNTEERS"));
-
-        lblUserName.setText(MOD_FAC.getLang("LBL_USERNAME"));
-        lblNotes.setText(MOD_FAC.getLang("LBL_NOTES"));
-        txtSearch.setPromptText(MOD_FAC.getLang("PROMPT_SEARCH_USER"));
-        cmbGuildChooser.setPromptText(MOD_FAC.getLang("PROMPT_CMB_GUILDCHOOSER"));
-        colEmail.setText(MOD_FAC.getLang("COL_EMAIL"));
-        colPhone.setText(MOD_FAC.getLang("COL_PHONE"));
-        colName.setText(MOD_FAC.getLang("COL_NAME"));
-        tabVolunInfo.setText(MOD_FAC.getLang("TAB_VOLUN_INFO"));
-        tabGraphStats.setText(MOD_FAC.getLang("TAB_GRAPH_STATS"));
-    }
-
+    /**
+     * Loads the guild management view into the tab pane in the manager view.
+     *
+     * @param event = when tabGuildManagement is pressed.
+     *
+     * @throws IOException = cannot find guild management view.
+     */
     @FXML
     private void loadGuildView(Event event) throws IOException
     {
@@ -732,12 +718,15 @@ public class ManagerViewController implements Initializable
             anchorPaneGuild.getChildren().add(newLoadedPane);
             hasLoadedGuild = true;
         }
-        else if (tabPane.getSelectionModel().getSelectedItem() == tabGraphStats)
-        {
-
-        }
     }
 
+    /**
+     * Amends the observableUsers based on what filters have been applied. I.e.
+     * volunteers, managers or administrators.
+     *
+     * @param event = when either volunteers, managers or administrators boxes
+     * have been ticked/selected.
+     */
     @FXML
     private void onCheckBoxAction(ActionEvent event)
     {
@@ -762,14 +751,68 @@ public class ManagerViewController implements Initializable
         }
     }
 
+    /**
+     * Sets up the main table view in the view which stores user objects.
+     *
+     * @param str = string placeholder in the table if no users are loaded.
+     */
     private void setupTableView(String str)
     {
 
         tblUsers.setPlaceholder(new Label(str));
         colName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        colPhone.setCellValueFactory(val -> val.getValue().phoneProperty().asObject());
+        colStatus.setCellValueFactory(cellData -> cellData.getValue().lastWorkedDayProperty());
         colEmail.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
 
+        sortedData.comparatorProperty().bind(tblUsers.comparatorProperty());
+        tblUsers.setItems(sortedData);
+
+        searchListener();
+        colStatus.setCellFactory(getCustomCellFactory());
+    }
+
+    public String getCSSClass(boolean active)
+    {
+        String cssClass = "";
+        if (active != true)
+        {
+            cssClass = "inactive";
+
+        }
+        else
+        {
+            cssClass = "active";
+        }
+        return cssClass;
+
+    }
+
+    private Callback<TableColumn<User, String>, TableCell<User, String>> getCustomCellFactory()
+    {
+        return (TableColumn<User, String> param)
+                -> 
+                {
+                    return new TableCell<User, String>()
+                    {
+                        @Override
+                        public void updateItem(final String lastWorked, boolean empty)
+                        {
+
+                            if (lastWorked != null)
+                            {
+                                setText(lastWorked);
+                                boolean active = MOD_FAC.activeLastYear(lastWorked);
+                                String warningClass = getCSSClass(active);
+                                getStyleClass().clear();
+                                getStyleClass().add(warningClass);
+                            }
+                        }
+                    };
+        };
+    }
+
+    private void searchListener()
+    {
         txtSearch.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
                 -> 
                 {
@@ -801,23 +844,31 @@ public class ManagerViewController implements Initializable
                                 return false;
                     });
         });
-
-        sortedData.comparatorProperty().bind(tblUsers.comparatorProperty());
-        tblUsers.setItems(sortedData);
-
     }
 
+    /**
+     * Calls the database and updates the event logs table view.
+     *
+     * @param event = when update log button has been pressed.
+     */
     @FXML
-    private void updateLogTable(ActionEvent event) {
+    private void updateLogTable(ActionEvent event)
+    {
         tblLog.setItems(FXCollections.observableArrayList(MOD_FAC.getAllEvents()));
         colLogEventId.setSortType(TableColumn.SortType.ASCENDING);
         tblLog.getSortOrder().clear();
         tblLog.getSortOrder().add(colLogEventId);
     }
+
+    /**
+     * Reloads the graph according to new specifications (e.g. dates).
+     *
+     * @param event = when refresh icon has been pressed.
+     */
     @FXML
     private void refreshGraph(ActionEvent event)
     {
-        Temp.clear();
+        chartArray.clear();
         lineChartGuildHours.getData().clear();
 
         if (cmbGuildChooser.getSelectionModel().getSelectedItem() != null)
@@ -833,7 +884,7 @@ public class ManagerViewController implements Initializable
             serviceGraphStats.setOnSucceeded(e
                     -> 
                     {
-                        for (XYChart.Series<String, Number> series : Temp)
+                        for (XYChart.Series<String, Number> series : chartArray)
                         {
                             lineChartGuildHours.getData().add(series);
                         }
@@ -848,5 +899,17 @@ public class ManagerViewController implements Initializable
         {
             stckPaneGraphError.setVisible(true);
         }
+    }
+
+    /**
+     * Returns to user info view by closing the manager view.
+     *
+     * @param event
+     */
+    @FXML
+    private void onBtnClosePressed(ActionEvent event)
+    {
+        Stage stage = (Stage) btnClose.getScene().getWindow();
+        stage.close();
     }
 }

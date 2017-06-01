@@ -177,3 +177,15 @@
     -fx-background-radius: 1;
 }
 
+.inactive
+{
+    -fx-background-color: #B0B0B0;
+    -fx-alignment: CENTER;
+}
+
+
+.active
+{
+    -fx-background-color: #029e99;
+    -fx-alignment: CENTER;
+}

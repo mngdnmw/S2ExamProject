@@ -23,43 +23,40 @@ public class VolunteerDataModel
     {
         workDays.clear();
         workDays.addAll(BLL_FAC.getWorkedDays(user));
-        
+
         return workDays;
     }
 
     public ObservableList<Day> deleteWorkedDay(User user, Day deleteDay)
     {
-       workDays.remove(deleteDay);
-       
-       BLL_FAC.deleteWorkedDay(user, deleteDay);
-       
-       return workDays;
-       
-    }
-    
-    
-        public void logWorkDay(String username, String date, int hours, int guildId)
-    {
-      
-      
-            BLL_FAC.logHours(username, date, hours, guildId);
-            workDays.clear();
-            workDays.addAll(BLL_FAC.getWorkedDays(BLL_FAC.getUserInfo(BLL_FAC.getUserId(username))));
-       
-       
+        workDays.remove(deleteDay);
+
+        BLL_FAC.deleteWorkedDay(user, deleteDay);
+
+        return workDays;
 
     }
 
-   public void editWorkDay(String username, String date, int hours, int guildId)
+    public ObservableList<Day> editWorkedDay(String username, String date, int hrs, int guildId)
     {
-        
-            BLL_FAC.editHours(username, date, hours, guildId);
-            workDays.clear();
-            workDays.addAll(BLL_FAC.getWorkedDays(BLL_FAC.getUserInfo(BLL_FAC.getUserId(username))));
-        
+        BLL_FAC.editHours(username, date, hrs, guildId);
+        workDays.clear();
+        workDays.addAll(BLL_FAC.getWorkedDays(BLL_FAC.getUserFromUsername(username)));
+
+        return workDays;
+
     }
-    
-    
+
+    public void logWorkDay(String username, String date, int hours, int guildId)
+    {
+
+        BLL_FAC.logHours(username, date, hours, guildId);
+        workDays.clear();
+        workDays.addAll(BLL_FAC.getWorkedDays(BLL_FAC.getUserFromUsername(username)));
+
+    }
+
+
     public void setAllVolunteersIntoArray()
     {
         allVolunters.clear();
@@ -70,7 +67,6 @@ public class VolunteerDataModel
     {
         return allVolunters;
     }
-
 
     public ObservableList<User> getAllSavedUsers()
     {

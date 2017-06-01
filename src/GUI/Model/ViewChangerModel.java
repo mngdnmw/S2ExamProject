@@ -16,13 +16,14 @@ public class ViewChangerModel
     private String ViewPath = "GUI/View/";
     private String HourLoginString = "HourLoginView.fxml";
     private String ManagerString = "ManagerView.fxml";
-    private String ManagerEditString = "ManagerEditView.fxml";
     private String UserInfoString = "UserInfoView.fxml";
     private String ManagerAddUserString = "ManagerAddUserView.fxml";
+
+    private boolean userInfoView = true;
     String title = "";
 
     private Window stage;
-
+    private Stage nxtStage;
     /**
      * Changes the view based on number. 0 goes to the UserInfoView, 1 goes to
      * ManagerView, 2 goes to ManagerEditView, 3 goes to the hourLoginView, 4
@@ -34,14 +35,16 @@ public class ViewChangerModel
     public void changeView(int GUINumb)
     {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getClassLoader().getResource(switcher(GUINumb)));
+        String Path = switcher(GUINumb);
+        loader.setLocation(getClass().getClassLoader().getResource(Path));
 
         try
         {
             Pane page = (Pane) loader.load();
-            Stage nxtStage = new Stage();
+            nxtStage = new Stage();
             nxtStage.initOwner(stage);
             nxtStage.initModality(Modality.WINDOW_MODAL);
+            setNxtStage(nxtStage);
             Scene scene = new Scene(page);
             nxtStage.setScene(scene);
             nxtStage.show();
@@ -60,13 +63,15 @@ public class ViewChangerModel
         {
             case 0:
                 title = "VMS - User Information";
+                userInfoView = true;
                 return ViewPath + UserInfoString;
             case 1:
                 title = "VMS - Manager";
                 return ViewPath + ManagerString;
             case 2:
                 title = "VMS - Manager Editing";
-                return ViewPath + ManagerEditString;
+                userInfoView = false;
+                return ViewPath + UserInfoString;
             case 3:
                 title = "VMS - Volunteer Managing System";
                 return ViewPath + HourLoginString;
@@ -77,4 +82,20 @@ public class ViewChangerModel
         }
         return null;
     }
+
+    public boolean isUserInfoView()
+    {
+        return userInfoView;
+    }
+
+    public Stage getNxtStage()
+    {
+        return nxtStage;
+    }
+
+    public void setNxtStage(Stage nxtStage)
+    {
+        this.nxtStage = nxtStage;
+    }
+
 }
