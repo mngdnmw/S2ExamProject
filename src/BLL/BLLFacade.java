@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class BLLFacade
@@ -173,7 +174,7 @@ public class BLLFacade
         DAL_FAC.deleteWorkedDay(user, day);
     }
 
-    public ArrayList<HashMap<String, Integer>> graphSorter(Guild guild, LocalDate periodOne, LocalDate periodTwo)
+    public ArrayList<LinkedHashMap<String, Integer>> graphSorter(Guild guild, LocalDate periodOne, LocalDate periodTwo)
     {
         return GRAPH_HAND.sorter(guild, periodOne, periodTwo);
     }

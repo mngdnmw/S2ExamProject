@@ -8,15 +8,11 @@ package BLL;
 import BE.Day;
 import BE.Guild;
 import DAL.DALFacade;
-import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.util.converter.LocalDateStringConverter;
 
 /**
  *
@@ -27,12 +23,12 @@ public class GraphHandler
 
     private final static DALFacade DAL_FAC = new DALFacade();
 
-    public ArrayList<HashMap<String, Integer>> sorter(Guild guild, LocalDate periodOne, LocalDate periodTwo)
+    public ArrayList<LinkedHashMap<String, Integer>> sorter(Guild guild, LocalDate periodOne, LocalDate periodTwo)
     {
-        ArrayList<HashMap<String, Integer>> sortedData = new ArrayList<>();
+        ArrayList<LinkedHashMap<String, Integer>> sortedData = new ArrayList<>();
         //creates the hashmap with all values between periodOne and periodTwo
-        HashMap<String, Integer> sortedDataVolun = periodHashMap(periodOne, periodTwo);
-        HashMap<String, Integer> sortedDataMan = periodHashMap(periodOne, periodTwo);
+        LinkedHashMap<String, Integer> sortedDataVolun = periodHashMap(periodOne, periodTwo);
+        LinkedHashMap<String, Integer> sortedDataMan = periodHashMap(periodOne, periodTwo);
 
         ArrayList<List<Day>> allHours = new ArrayList<>();
         allHours.addAll(DAL_FAC.getHoursForGuild(guild, periodOne, periodTwo));
@@ -44,7 +40,6 @@ public class GraphHandler
                 String[] daySplit = day.getDate().split("-");
                 String datePeriod = monthString(Integer.parseInt(daySplit[1]), Integer.parseInt(daySplit[0]));
                
-                System.out.println(datePeriod);
                 if (i == 0)
                 {
 
@@ -103,9 +98,9 @@ public class GraphHandler
      * @param periodTwo
      * @return 
      */
-    public HashMap<String, Integer> periodHashMap(LocalDate periodOne, LocalDate periodTwo)
+    public LinkedHashMap<String, Integer> periodHashMap(LocalDate periodOne, LocalDate periodTwo)
     {
-        HashMap<String, Integer> periodHashMap = new HashMap<>();
+        LinkedHashMap<String, Integer> periodHashMap = new LinkedHashMap<>();
         if (periodOne.getYear() < periodTwo.getYear())
         {
             for (int i = periodOne.getMonthValue(); i <= 12; i++)
@@ -140,7 +135,6 @@ public class GraphHandler
             {
                 String month = monthString(i, periodOne.getYear());
                 periodHashMap.put(month, 0);
-
             }
         }
         return periodHashMap;

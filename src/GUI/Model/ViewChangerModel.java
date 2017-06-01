@@ -35,7 +35,8 @@ public class ViewChangerModel
     public void changeView(int GUINumb)
     {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getClassLoader().getResource(switcher(GUINumb)));
+        String Path = switcher(GUINumb);
+        loader.setLocation(getClass().getClassLoader().getResource(Path));
 
         try
         {

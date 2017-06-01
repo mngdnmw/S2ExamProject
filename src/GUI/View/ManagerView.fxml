@@ -22,7 +22,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" prefHeight="529.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerViewController">
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="529.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerViewController">
     <children>
         <Label fx:id="lblUserName" layoutX="19.0" layoutY="22.0" prefHeight="19.0" prefWidth="489.0" text="Logged in as:">
          <font>
@@ -55,8 +55,8 @@
                                 <TableView fx:id="tblUsers" layoutX="2.0" layoutY="57.0" onMousePressed="#onTablePressed" prefHeight="293.0" prefWidth="451.0">
                                     <columns>
                                         <TableColumn fx:id="colName" prefWidth="148.0" text="Name" />
-                                        <TableColumn fx:id="colPhone" prefWidth="130.0" text="Phone" />
-                                        <TableColumn fx:id="colEmail" prefWidth="171.0" text="Email" />
+                                        <TableColumn fx:id="colEmail" prefWidth="191.0" text="Email" />
+                                        <TableColumn fx:id="colStatus" prefWidth="110.0" text="Status" />
                                     </columns>
                                 </TableView>
                                 <JFXCheckBox fx:id="chkVolunteers" layoutX="182.0" layoutY="27.0" onAction="#onCheckBoxAction" text="Volunteers" visible="false">
