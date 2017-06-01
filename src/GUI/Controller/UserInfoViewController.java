@@ -10,17 +10,22 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXPopup;
+import com.jfoenix.controls.JFXTextArea;
 
 import com.jfoenix.controls.JFXTextField;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -34,13 +39,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -50,10 +53,8 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -67,7 +68,7 @@ public class UserInfoViewController implements Initializable
     @FXML
     private AnchorPane root;
     @FXML
-    private GridPane gridEdit;
+    private AnchorPane anchPGenInfo;
     @FXML
     private JFXDatePicker datePickerInPop;
     @FXML
@@ -76,8 +77,6 @@ public class UserInfoViewController implements Initializable
     private StackPane stckPaneAddHours;
     @FXML
     private StackPane stckPanePasswordChanger;
-    @FXML
-    private JFXButton btnEditSave;
     @FXML
     private JFXButton btnUpdatePhoto;
     @FXML
@@ -98,6 +97,10 @@ public class UserInfoViewController implements Initializable
     private JFXButton btnIntDown;
     @FXML
     private JFXButton btnIntUp;
+    @FXML
+    private JFXButton JFXBtnAccept;
+    @FXML
+    private JFXButton JFXBtnCancel;
     @FXML
     private JFXTextField txtFSearchDate;
     @FXML
@@ -144,18 +147,18 @@ public class UserInfoViewController implements Initializable
     private HBox hBoxBtnsInPOP;
     @FXML
     private HBox hBoxInvisBtn;
-
-    //FXML editable textfields
     @FXML
-    TextField txtName;
+    private JFXTextArea txtNotes;
     @FXML
-    TextField txtPhone;
+    private JFXTextField txtName;
     @FXML
-    TextField txtEmail;
+    private JFXTextField txtPhone;
     @FXML
-    TextField txtAddress;
+    private JFXTextField txtEmail;
     @FXML
-    TextField txtAddress2;
+    private JFXTextField txtAddress;
+    @FXML
+    private JFXTextField txtAddress2;
 
     //Objects used
     User currentUser;
@@ -163,15 +166,14 @@ public class UserInfoViewController implements Initializable
     File newImg;
     Day dayToEdit = null;
     JFXButton btnHighClearance = new JFXButton();
-    JFXButton btnCancelEditInfo = new JFXButton();
     FilteredList<Day> filteredData = new FilteredList(FXCollections.observableArrayList());
     private static final DataFormat SERIALIZED_MIME_TYPE = new DataFormat("application/x-java-serialized-object");
-    private final static ModelFacade MOD_FACADE = ModelFacade.getModelFacade();
+    private final static ModelFacade MOD_FAC = ModelFacade.getModelFacade();
 
-    //Variables ssed
-    boolean editing = false;
-    boolean isIncorrect = false;
+    //Variables used
     boolean finishedService = true;
+    boolean userInfoView;
+    boolean isIncorrect = false;
 
     /**
      * Creates a service that runs in the background which contacts the database
@@ -193,14 +195,14 @@ public class UserInfoViewController implements Initializable
                     {
                         try
                         {
-                            MOD_FACADE.updateUserImage(currentUser, newImg);
-                            MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " changed his/her image."));
+                            MOD_FAC.updateUserImage(currentUser, newImg);
+                            MOD_FAC.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FAC.getCurrentUser().getName() + " changed his/her image."));
                         }
                         catch (FileNotFoundException e)
                         {
                             Alert a = new Alert(Alert.AlertType.ERROR);
-                            a.setHeaderText(MOD_FACADE.getLang("STR_ERROR_FILE_NOT_FOUND_HEAD"));
-                            a.setContentText(MOD_FACADE.getLang("STR_ERROR_FILE_NOT_FOUND"));
+                            a.setHeaderText(MOD_FAC.getLang("STR_ERROR_FILE_NOT_FOUND_HEAD"));
+                            a.setContentText(MOD_FAC.getLang("STR_ERROR_FILE_NOT_FOUND"));
                         }
                     }
                     return null;
@@ -224,7 +226,30 @@ public class UserInfoViewController implements Initializable
                 @Override
                 protected Object call() throws Exception
                 {
-                    filteredData = new FilteredList<>(MOD_FACADE.getWorkedDays(currentUser), p -> true);
+                    filteredData = new FilteredList<>(MOD_FAC.getWorkedDays(currentUser), p -> true);
+                    return null;
+
+                }
+            };
+        }
+    };
+
+    private final Service serviceAllVolunteers = new Service()
+    {
+        @Override
+        protected Task createTask()
+        {
+            return new Task()
+            {
+                @Override
+                protected Object call() throws Exception
+                {
+
+                    MOD_FAC.updateUserInfo(currentUser.getId(), txtName.getText(), txtEmail.getText(), currentUser.getType(), Integer.parseInt(txtPhone.getText()), txtNotes.getText(), txtAddress.getText(), txtAddress2.getText());
+                    MOD_FAC.setAllVolunteersIntoArray();
+                    MOD_FAC.setAllManagersIntoArray();
+                    MOD_FAC.setAllAdminsIntoArray();
+
                     return null;
 
                 }
@@ -238,25 +263,35 @@ public class UserInfoViewController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        userInfoView = MOD_FAC.isUserInfoView();
 
-        setCurrentUser(MOD_FACADE.getCurrentUser());
-        setUserInfo();
-        checkTypeOfUser();
-        createEditFields();
+        if (userInfoView)
+        {
+            setCurrentUser(MOD_FAC.getCurrentUser());
+
+            checkTypeOfUser();
+            setUserInfo();
+        }
+        else
+
+        {
+            setCurrentUser(MOD_FAC.getSelectedUser());
+            setText();
+        }
         setTextAll();
         setupGuildList();
-        setupTableView(MOD_FACADE.getLang("TBL_LOADING"));
+        setupTableView(MOD_FAC.getLang("TBL_LOADING"));
         searchListener();
         setUserImage();
         setupDragDrop();
         serviceInitializer.start();
         serviceInitializer.setOnFailed(e
-                -> System.out.println("Error"));
+                -> System.err.println("Error with service initializer"));
 
         serviceInitializer.setOnSucceeded(e
-                ->
-        {
-            setupTableView(MOD_FACADE.getLang("STR_SEARCH_EMPTY"));
+                -> 
+                {
+                    setupTableView(MOD_FAC.getLang("STR_SEARCH_EMPTY"));
 
         });
 
@@ -267,28 +302,43 @@ public class UserInfoViewController implements Initializable
      */
     private void setTextAll()
     {
-        btnUpdatePhoto.setText(MOD_FACADE.getLang("BTN_UPDATEPHOTO"));
-        btnChangePassword.setText(MOD_FACADE.getLang("BTN_CHANGEPASS"));
-        btnEditSave.setText(MOD_FACADE.getLang("BTN_EDIT"));
-        btnLogout.setText(MOD_FACADE.getLang("BTN_LOGOUT"));
+        btnUpdatePhoto.setText(MOD_FAC.getLang("BTN_UPDATEPHOTO"));
+        btnChangePassword.setText(MOD_FAC.getLang("BTN_CHANGEPASS"));
+        btnLogout.setText(MOD_FAC.getLang("BTN_LOGOUT"));
 
-        colDate.setText(MOD_FACADE.getLang("COL_DATE"));
-        colHours.setText(MOD_FACADE.getLang("COL_HOURS"));
-        colGuild.setText(MOD_FACADE.getLang("COL_GUILD"));
-        txtFSearchDate.setPromptText(MOD_FACADE.getLang("PROMPT_SEARCH"));
-        lblGuilds.setText(MOD_FACADE.getLang("LBL_GUILDS"));
+        colDate.setText(MOD_FAC.getLang("COL_DATE"));
+        colHours.setText(MOD_FAC.getLang("COL_HOURS"));
+        colGuild.setText(MOD_FAC.getLang("COL_GUILD"));
+        txtFSearchDate.setPromptText(MOD_FAC.getLang("PROMPT_SEARCH"));
+        lblGuilds.setText(MOD_FAC.getLang("LBL_GUILDS"));
 
-        lblNewPassword.setText(MOD_FACADE.getLang("LBL_NEW_PW"));
-        lblNewPassword2.setText(MOD_FACADE.getLang("LBL_NEW_PW2"));
-        lblOldPassword.setText(MOD_FACADE.getLang("LBL_OLD_PW"));
-        lblDateInPop.setText(MOD_FACADE.getLang("COL_DATE"));
-        lblGuildInPop.setText(MOD_FACADE.getLang("COL_GUILD"));
-        lblHoursInPop.setText(MOD_FACADE.getLang("COL_HOURS"));
-        btnCancelPW.setText(MOD_FACADE.getLang("BTN_CANCEL"));
-        btnChangePWConfirm.setText(MOD_FACADE.getLang("BTN_EDIT"));
-        btnAddHours.setText(MOD_FACADE.getLang("BTN_ADD_HOURS"));
-        btnCancelPOP.setText(MOD_FACADE.getLang("BTN_CANCEL"));
+        lblNewPassword.setText(MOD_FAC.getLang("LBL_NEW_PW"));
+        lblNewPassword2.setText(MOD_FAC.getLang("LBL_NEW_PW2"));
+        lblOldPassword.setText(MOD_FAC.getLang("LBL_OLD_PW"));
+        lblDateInPop.setText(MOD_FAC.getLang("COL_DATE"));
+        lblGuildInPop.setText(MOD_FAC.getLang("COL_GUILD"));
+        lblHoursInPop.setText(MOD_FAC.getLang("COL_HOURS"));
+        btnCancelPW.setText(MOD_FAC.getLang("BTN_CANCEL"));
+        btnChangePWConfirm.setText(MOD_FAC.getLang("BTN_EDIT"));
+        btnAddHours.setText(MOD_FAC.getLang("BTN_ADD_HOURS"));
+        btnCancelPOP.setText(MOD_FAC.getLang("BTN_CANCEL"));
 
+    }
+
+    public void setText()
+    {
+        if (currentUser != null)
+        {
+            txtName.setText(currentUser.getName());
+            txtAddress.setText(currentUser.getResidence());
+            txtAddress2.setText(currentUser.getResidence2());
+            txtPhone.setText(String.valueOf(currentUser.getPhone()));
+            txtEmail.setText(currentUser.getEmail());
+            txtNotes.setText(currentUser.getNote());
+        }
+        else
+        {
+        }
     }
 
     /**
@@ -300,16 +350,16 @@ public class UserInfoViewController implements Initializable
     private void setupDragDrop()
     {
         imgVwDel.setOnDragOver(event
-                ->
-        {
-            Dragboard db = event.getDragboard();
-            if (db.hasContent(SERIALIZED_MIME_TYPE))
-            {
+                -> 
+                {
+                    Dragboard db = event.getDragboard();
+                    if (db.hasContent(SERIALIZED_MIME_TYPE))
+                    {
 
-                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
 
-            }
-            event.consume();
+                    }
+                    event.consume();
         });
 
         imgVwDel.setOnDragDropped(new EventHandler<DragEvent>()
@@ -321,9 +371,9 @@ public class UserInfoViewController implements Initializable
                 if (db.hasContent(SERIALIZED_MIME_TYPE))
                 {
                     Day dayToDelete = tableViewMain.getSelectionModel().getSelectedItem();
-                    MOD_FACADE.deleteWorkedDay(currentUser, dayToDelete);
+                    MOD_FAC.deleteWorkedDay(currentUser, dayToDelete);
                     event.setDropCompleted(true);
-                    MOD_FACADE.fadeOutTransition(Duration.millis(250), stackPdeleteHours).setOnFinished(ez -> stackPdeleteHours.setVisible(false));
+                    MOD_FAC.fadeOutTransition(Duration.millis(250), stackPdeleteHours).setOnFinished(ez -> stackPdeleteHours.setVisible(false));
 
                     event.consume();
                 }
@@ -331,16 +381,16 @@ public class UserInfoViewController implements Initializable
         });
 
         imgVwEdit.setOnDragOver(event
-                ->
-        {
-            Dragboard db = event.getDragboard();
-            if (db.hasContent(SERIALIZED_MIME_TYPE))
-            {
+                -> 
+                {
+                    Dragboard db = event.getDragboard();
+                    if (db.hasContent(SERIALIZED_MIME_TYPE))
+                    {
 
-                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
 
-            }
-            event.consume();
+                    }
+                    event.consume();
         });
 
         imgVwEdit.setOnDragDropped(new EventHandler<DragEvent>()
@@ -355,7 +405,7 @@ public class UserInfoViewController implements Initializable
                     dayToEdit = tableViewMain.getItems().get(draggedIndex);
 
                     event.setDropCompleted(true);
-                    MOD_FACADE.fadeOutTransition(Duration.millis(250), stackPdeleteHours).setOnFinished(ez -> stackPdeleteHours.setVisible(false));
+                    MOD_FAC.fadeOutTransition(Duration.millis(250), stackPdeleteHours).setOnFinished(ez -> stackPdeleteHours.setVisible(false));
                     handleOpenAddHoursPopup();
                     event.consume();
                 }
@@ -371,7 +421,7 @@ public class UserInfoViewController implements Initializable
     {
 
         stckPaneAddHours.setVisible(true);
-        MOD_FACADE.fadeInTransition(Duration.millis(750), stckPaneAddHours);
+        MOD_FAC.fadeInTransition(Duration.millis(750), stckPaneAddHours);
 
         //Sets up the popup depending if it is editing or adding hours worked
         setupAddHoursPopup();
@@ -399,7 +449,7 @@ public class UserInfoViewController implements Initializable
     {
 
         //Sets all the guilds in the combobox
-        comboboxGuildInPop.setItems(MOD_FACADE.getAllSavedGuilds());
+        comboboxGuildInPop.setItems(MOD_FAC.getAllSavedGuilds());
         //If editing rather than adding new day worked
         if (dayToEdit != null)
         {
@@ -424,7 +474,7 @@ public class UserInfoViewController implements Initializable
 
         }
         //Cannot pick dates beyond today's date
-        MOD_FACADE.formatCalendar(datePickerInPop);
+        MOD_FAC.formatCalendar(datePickerInPop);
 
         //Adds a listener to the hour text field to ensure that input does not 
         //exceed are less than hours in a day 
@@ -439,13 +489,13 @@ public class UserInfoViewController implements Initializable
                     {
                         if (Integer.parseInt(newValue) >= 25)
                         {
-                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_MAX_HOUR"), root);
+                            MOD_FAC.snackbarPopup(MOD_FAC.getLang("STR_MAX_HOUR"), root);
 
                             txtfldHoursInPop.setText(oldValue);
                         }
                         else if (Integer.parseInt(newValue) <= 0)
                         {
-                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_MIN_HOUR"), root);
+                            MOD_FAC.snackbarPopup(MOD_FAC.getLang("STR_MIN_HOUR"), root);
                             txtfldHoursInPop.setText(oldValue);
                         }
                     }
@@ -528,7 +578,7 @@ public class UserInfoViewController implements Initializable
             if (txtfldHoursInPop.getText().isEmpty())
             {
 
-                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_INVALID_ACTION"), root);
+                MOD_FAC.snackbarPopup(MOD_FAC.getLang("STR_INVALID_ACTION"), root);
             }
             else
             {
@@ -573,44 +623,45 @@ public class UserInfoViewController implements Initializable
         tableViewMain.setItems(sortedData);
 
         tableViewMain.setRowFactory(tv
-                ->
-        {
-            TableRow<Day> row = new TableRow<>();
-
-            row.setOnDragDetected(event
-                    ->
-            {
-                if (!row.isEmpty())
+                -> 
                 {
-                    stackPdeleteHours.setVisible(true);
-                    MOD_FACADE.fadeInTransition(Duration.millis(250), stackPdeleteHours);
+                    TableRow<Day> row = new TableRow<>();
 
-                    int selectedDayIndex = tableViewMain.getSelectionModel().getSelectedIndex();
+                    row.setOnDragDetected(event
+                            -> 
+                            {
+                                if (!row.isEmpty())
+                                {
+                                    stackPdeleteHours.setVisible(true);
+                                    stackPdeleteHours.toFront();
+                                    MOD_FAC.fadeInTransition(Duration.millis(250), stackPdeleteHours);
 
-                    Dragboard db = row.startDragAndDrop(TransferMode.MOVE);
-                    db.setDragView(row.snapshot(null, null));
-                    ClipboardContent cc = new ClipboardContent();
+                                    int selectedDayIndex = tableViewMain.getSelectionModel().getSelectedIndex();
 
-                    // Store row ID in order to know what is dragged.
-                    cc.put(SERIALIZED_MIME_TYPE, selectedDayIndex);
-                    db.setContent(cc);
+                                    Dragboard db = row.startDragAndDrop(TransferMode.MOVE);
+                                    db.setDragView(row.snapshot(null, null));
+                                    ClipboardContent cc = new ClipboardContent();
 
-                    event.consume();
-                }
-            });
-            row.setOnDragDone(new EventHandler<DragEvent>()
-            {
-                @Override
-                public void handle(DragEvent e)
-                {
-                    System.out.println("removes stackpane");
-                    MOD_FACADE.fadeOutTransition(Duration.millis(250), stackPdeleteHours).setOnFinished(ez -> stackPdeleteHours.setVisible(false));
+                                    // Store row ID in order to know what is dragged.
+                                    cc.put(SERIALIZED_MIME_TYPE, selectedDayIndex);
+                                    db.setContent(cc);
 
-                    e.consume();
-                }
-            });
+                                    event.consume();
+                                }
+                    });
+                    row.setOnDragDone(new EventHandler<DragEvent>()
+                    {
+                        @Override
+                        public void handle(DragEvent e)
+                        {
+                            System.out.println("removes stackpane");
+                            MOD_FAC.fadeOutTransition(Duration.millis(250), stackPdeleteHours).setOnFinished(ez -> stackPdeleteHours.setVisible(false));
 
-            return row;
+                            e.consume();
+                        }
+                    });
+
+                    return row;
         });
 
     }
@@ -622,21 +673,23 @@ public class UserInfoViewController implements Initializable
     private void searchListener()
     {
         txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                ->
-        {
-            filteredData.setPredicate(day
-                    ->
-            {
-                String regex = "[^a-zA-Z0-9\\s]";
-                Boolean search
-                        = day.dateProperty().getValue().replaceAll(regex, "")
-                                .contains(newValue.replaceAll(regex, ""))
-                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
-                                contains(newValue.toLowerCase().replaceAll(regex, ""));
+                -> 
+                {
+                    filteredData.setPredicate(new Predicate<Day>()
+                    {
+                        @Override
+                        public boolean test(Day day)
+                        {
+                            String regex = "[^a-zA-Z0-9\\s]";
+                            Boolean search
+                                    = day.dateProperty().getValue().replaceAll(regex, "")
+                                    .contains(newValue.replaceAll(regex, ""))
+                                    || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                    contains(newValue.toLowerCase().replaceAll(regex, ""));
 
-                return search;
-
-            });
+                            return search;
+                        }
+                    });
         });
     }
 
@@ -658,6 +711,8 @@ public class UserInfoViewController implements Initializable
     private void checkTypeOfUser()
 
     {
+        hBoxInvisBtn.getChildren().clear();
+
         switch (currentUser.getType())
         {
             case 0:
@@ -687,7 +742,7 @@ public class UserInfoViewController implements Initializable
         btnHighClearance.setId("btnConfirmTeal");
         btnHighClearance.toFront();
         btnHighClearance.setVisible(true);
-        btnCancelEditInfo.setPrefHeight(25);
+        btnHighClearance.setPrefHeight(25);
 
         hBoxInvisBtn.setAlignment(Pos.CENTER);
         hBoxInvisBtn.getChildren().add(btnHighClearance);
@@ -699,12 +754,12 @@ public class UserInfoViewController implements Initializable
 
         if (type == 1)
         {
-            btnHighClearance.setText(MOD_FACADE.getLang("BTN_HIGHER_CLEARANCE_1"));
+            btnHighClearance.setText(MOD_FAC.getLang("BTN_HIGHER_CLEARANCE_1"));
 
         }
         else
         {
-            btnHighClearance.setText(MOD_FACADE.getLang("BTN_HIGHER_CLEARANCE_2"));
+            btnHighClearance.setText(MOD_FAC.getLang("BTN_HIGHER_CLEARANCE_2"));
 
         }
 
@@ -714,190 +769,11 @@ public class UserInfoViewController implements Initializable
             public void handle(ActionEvent event)
             {
 
-                MOD_FACADE.changeView(1);
+                MOD_FAC.changeView(1);
 
             }
         });
 
-    }
-
-    /**
-     * Sets the general information of the user.
-     */
-    private void setUserInfo()
-    {
-        txtName.setText(currentUser.getName());
-        txtPhone.setText(String.valueOf(currentUser.getPhone()));
-        txtEmail.setText(currentUser.getEmail());
-        txtAddress.setText(currentUser.getResidence());
-        txtAddress2.setText(currentUser.getResidence2());
-    }
-
-    /**
-     * An additional cancel button is created along with the editSaveButton,
-     * which has changed text to save rather than edit.
-     *
-     * @param event = when editSaveButton is pressed.
-     */
-    @FXML
-    private void pressedEditSaveButton(ActionEvent event)
-
-    {
-        if (!editing)
-        {
-
-            editInfo(true);
-            editing = true;
-            btnEditSave.setText(MOD_FACADE.getLang("BTN_SAVE"));
-            checkTextFields();
-            addCancelButton();
-
-        }
-        else
-        {
-            if (isIncorrect && btnEditSave.isDisabled())
-            {
-                MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_INVALID_INPUT"), root, 5000);
-            }
-            saveInfo(currentUser);
-            editing = false;
-            btnEditSave.setText(MOD_FACADE.getLang("BTN_EDIT"));
-            checkTextFields();
-            removeCancelButton();
-
-        }
-    }
-
-    /**
-     * Adds an event handler to the phone number textfield to ensure only
-     * numbers are inputted.
-     */
-    private void createEditFields()
-
-    {
-
-        txtPhone.setOnKeyReleased(new EventHandler<KeyEvent>()
-
-        {
-            @Override
-            public void handle(KeyEvent event)
-            {
-                checkTextFields();
-
-            }
-
-        });
-    }
-
-    /**
-     * Updates the user info in the database if it has been changed.
-     *
-     * @param user = currentUser.
-     */
-    private void saveInfo(User user)
-    {
-        MOD_FACADE.updateUserInfo(user.getId(), txtName.getText(), txtEmail.getText(), user.getType(), Integer.parseInt(txtPhone.getText()), user.getNote(), txtAddress.getText(), txtAddress2.getText());
-        MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " edited personal information."));
-        currentUser = MOD_FACADE.getUserInfo(user.getId());
-        editInfo(false);
-        setUserInfo(); //update labels
-
-    }
-
-    /**
-     * Ensures all inputs of the general information edit text fields are
-     * correct.
-     */
-    private void checkTextFields()
-    {
-        boolean success = false;
-        try
-
-        {
-            Integer.parseInt(txtPhone.getText());
-            success = true;
-        }
-        catch (NumberFormatException e)
-        {
-            success = false;
-            txtPhone.setStyle("-fx-background-color:red;");
-            btnEditSave.setDisable(true);
-        }
-        if (success)
-        {
-            btnEditSave.setDisable(false);
-            txtPhone.setStyle("");
-            isIncorrect = false;
-        }
-        else
-        {
-            txtPhone.setStyle("-fx-background-color:red;");
-            btnEditSave.setDisable(true);
-            isIncorrect = true;
-
-        }
-    }
-
-    /**
-     * Formatting for the cancel button, which appears when the edit general
-     * info button is pressed.
-     */
-    private void addCancelButton()
-    {
-
-        int btnSavePosCol = GridPane.getColumnIndex(btnEditSave); //Saving position
-        int btnSavePosRow = GridPane.getRowIndex(btnEditSave);
-        GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) - 1); //Moving save button one up
-
-        btnCancelEditInfo.setText(MOD_FACADE.getLang("BTN_CANCEL")); //Preparing cancel button
-        btnCancelEditInfo.setId("btnCancelGrey");
-        btnCancelEditInfo.setPrefHeight(25);
-        btnCancelEditInfo.setPrefWidth(Double.MAX_VALUE);
-        btnCancelEditInfo.setTextFill(Color.WHITE);
-        btnCancelEditInfo.setPadding(btnEditSave.getPadding());
-
-        gridEdit.add(btnCancelEditInfo, btnSavePosCol, btnSavePosRow); //Adding to the old position of save btn
-        GridPane.setValignment(btnEditSave, VPos.CENTER);
-        GridPane.setValignment(btnCancelEditInfo, VPos.CENTER);
-        btnCancelEditInfo.setOnAction(new EventHandler<ActionEvent>()
-        { //Setting onAction, nothing changed, just show old labels again
-            @Override
-            public void handle(ActionEvent event)
-            {
-                editInfo(false);
-
-                removeCancelButton(); //if Cancel button clicked, it will disappear
-                editing = false;
-                btnEditSave.setText(MOD_FACADE.getLang("BTN_EDIT"));
-
-            }
-        });
-    }
-
-    /**
-     * Makes all the general information textfields editable.
-     */
-    private void editInfo(boolean editable)
-    {
-        txtName.setEditable(editable);
-        txtEmail.setEditable(editable);
-        txtPhone.setEditable(editable);
-        txtAddress.setEditable(editable);
-        txtAddress2.setEditable(editable);
-    }
-
-    /**
-     * Removes the cancel button which was created as the result of clicking on
-     * the edit general information button.
-     */
-    private void removeCancelButton()
-    {
-        GridPane.setRowIndex(btnEditSave, GridPane.getRowIndex(btnEditSave) + 1); //Moving save button one down
-        gridEdit.getChildren().remove(btnCancelEditInfo); //Deleting cancel button from gridpane
-        if (btnEditSave.isDisabled())
-        {
-            btnEditSave.setDisable(false);
-        }
     }
 
     /**
@@ -910,20 +786,20 @@ public class UserInfoViewController implements Initializable
 
     {
         FileChooser c = new FileChooser();
-        c.setTitle(MOD_FACADE.getLang("IMG_CH_TITLE"));
+        c.setTitle(MOD_FAC.getLang("IMG_CH_TITLE"));
         String[] extensions
                 =
 
                 {
                     "*.jpg", "*.jpeg", "*.png"
                 };
-        c.setSelectedExtensionFilter(new ExtensionFilter(MOD_FACADE.getLang("IMG_CH_EXT_FILTER"), extensions));
+        c.setSelectedExtensionFilter(new ExtensionFilter(MOD_FAC.getLang("IMG_CH_EXT_FILTER"), extensions));
         newImg = c.showOpenDialog(btnUpdatePhoto.getScene().getWindow());
         serviceSavePicture.restart();
         serviceSavePicture.setOnSucceeded(e
-                ->
-        {
-            setUserImage();
+                -> 
+                {
+                    setUserImage();
         });
 
     }
@@ -937,13 +813,17 @@ public class UserInfoViewController implements Initializable
     {
 
         Runnable r = ()
-                ->
-        {
-            Image img = new Image(MOD_FACADE.getUserImage(currentUser));
-            if (img != null)
-            {
-                imgVwProfilePic.setImage(img);
-            }
+                -> 
+                {
+                    InputStream iS = MOD_FAC.getUserImage(currentUser);
+                    if (iS != null)
+                    {
+                        Image img = new Image(MOD_FAC.getUserImage(currentUser));
+                        if (img != null)
+                        {
+                            imgVwProfilePic.setImage(img);
+                        }
+                    }
 
         };
         Thread t = new Thread(r);
@@ -970,7 +850,7 @@ public class UserInfoViewController implements Initializable
     private void handleAddEditHours(ActionEvent event)
     {
 
-        StackPane stckLoadScreen = MOD_FACADE.getLoadingScreen();
+        StackPane stckLoadScreen = MOD_FAC.getLoadingScreen();
         root.getChildren().add(stckLoadScreen);
 
         if (datePickerInPop.getValue() != null && !txtfldHoursInPop.getText().isEmpty() && !comboboxGuildInPop.getSelectionModel().isEmpty())
@@ -984,20 +864,20 @@ public class UserInfoViewController implements Initializable
             {
                 if (dayToEdit == null)
                 {
-                    MOD_FACADE.logWorkDay(currentUser.getEmail(), date, hours, guildID);
-                    MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " added " + hours + " working hours to guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
+                    MOD_FAC.logWorkDay(currentUser.getEmail(), date, hours, guildID);
+                    MOD_FAC.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FAC.getCurrentUser().getName() + " added " + hours + " working hours to guild " + MOD_FAC.getGuild(guildID).getName() + " on " + date + "."));
 
                 }
                 else
                 {
 
-                    MOD_FACADE.editWorkedDay(currentUser.getEmail(), date, hours, guildID);
-                    MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " edited his/her working hours to " + hours + " in guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
+                    MOD_FAC.editWorkedDay(currentUser.getEmail(), date, hours, guildID);
+                    MOD_FAC.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FAC.getCurrentUser().getName() + " edited his/her working hours to " + hours + " in guild " + MOD_FAC.getGuild(guildID).getName() + " on " + date + "."));
 
                 }
                 stckLoadScreen.setVisible(false);
 
-                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"), root);
+                MOD_FAC.snackbarPopup(MOD_FAC.getLang("STR_NO_ERROR_CONTRIBUTION"), root);
 
             }
             else if (currentUser.getPhone() != 0)
@@ -1005,26 +885,26 @@ public class UserInfoViewController implements Initializable
             {
                 if (dayToEdit == null)
                 {
-                    MOD_FACADE.logWorkDay(currentUser.getPhone() + "", date, hours, guildID);
-                    MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " added " + hours + " working hours to guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
+                    MOD_FAC.logWorkDay(currentUser.getPhone() + "", date, hours, guildID);
+                    MOD_FAC.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FAC.getCurrentUser().getName() + " added " + hours + " working hours to guild " + MOD_FAC.getGuild(guildID).getName() + " on " + date + "."));
 
                 }
                 else
                 {
 
-                    MOD_FACADE.editWorkedDay(currentUser.getPhone() + "", date, hours, guildID);
-                    MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getCurrentUser().getName() + " edited his/her working hours to " + hours + " in guild " + MOD_FACADE.getGuild(guildID).getName() + " on " + date + "."));
+                    MOD_FAC.editWorkedDay(currentUser.getPhone() + "", date, hours, guildID);
+                    MOD_FAC.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FAC.getCurrentUser().getName() + " edited his/her working hours to " + hours + " in guild " + MOD_FAC.getGuild(guildID).getName() + " on " + date + "."));
 
                 }
                 stckLoadScreen.setVisible(false);
-                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"), root);
+                MOD_FAC.snackbarPopup(MOD_FAC.getLang("STR_NO_ERROR_CONTRIBUTION"), root);
 
             }
         }
 
         else
         {
-            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_INVALID_INPUT"), root, 5000);
+            MOD_FAC.timedSnackbarPopup(MOD_FAC.getLang("STR_INVALID_INPUT"), root, 5000);
         }
 
         closeAddHoursPopup();
@@ -1043,7 +923,7 @@ public class UserInfoViewController implements Initializable
         datePickerInPop.setValue(null);
         txtfldHoursInPop.clear();
         comboboxGuildInPop.setValue(null);
-        MOD_FACADE.fadeOutTransition(Duration.millis(750), stckPaneAddHours).setOnFinished(e -> stckPaneAddHours.setVisible(false));
+        MOD_FAC.fadeOutTransition(Duration.millis(750), stckPaneAddHours).setOnFinished(e -> stckPaneAddHours.setVisible(false));
 
     }
 
@@ -1054,7 +934,7 @@ public class UserInfoViewController implements Initializable
     private void openPasswordChangerEvent(ActionEvent event)
     {
         stckPanePasswordChanger.setVisible(true);
-        MOD_FACADE.fadeInTransition(Duration.millis(750), stckPanePasswordChanger);
+        MOD_FAC.fadeInTransition(Duration.millis(750), stckPanePasswordChanger);
 
     }
 
@@ -1073,7 +953,7 @@ public class UserInfoViewController implements Initializable
         }
         else if (txtNPassword.getText().equals(txtNPasswordTwo.getText()))
         {
-            count = MOD_FACADE.changePassword(currentUser, txtOPassword.getText(), txtNPassword.getText());
+            count = MOD_FAC.changePassword(currentUser, txtOPassword.getText(), txtNPassword.getText());
         }
         else
         {
@@ -1081,23 +961,23 @@ public class UserInfoViewController implements Initializable
         }
         if (count > 0)
         {
-            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_PASSWORD_CHANGE"), root, 5000);
-            MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), currentUser.getName() + " changed his/her password."));
+            MOD_FAC.timedSnackbarPopup(MOD_FAC.getLang("STR_PASSWORD_CHANGE"), root, 5000);
+            MOD_FAC.logEvent(new BE.Event(new Timestamp(new Date().getTime()), currentUser.getName() + " changed his/her password."));
             hidePasswordChangerEvent();
         }
 
         else if (count == -1)
         {
-            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_OLD_PW_MATCH_NEW"), root, 5000);
+            MOD_FAC.timedSnackbarPopup(MOD_FAC.getLang("STR_OLD_PW_MATCH_NEW"), root, 5000);
         }
         else if (count == -2)
         {
-            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_PW_DOESNT_MATCH"), root, 5000);
+            MOD_FAC.timedSnackbarPopup(MOD_FAC.getLang("STR_PW_DOESNT_MATCH"), root, 5000);
         }
 
         else
         {
-            MOD_FACADE.timedSnackbarPopup(MOD_FACADE.getLang("STR_OLD_PW_WRONG"), root, 5000);
+            MOD_FAC.timedSnackbarPopup(MOD_FAC.getLang("STR_OLD_PW_WRONG"), root, 5000);
         }
 
     }
@@ -1109,14 +989,14 @@ public class UserInfoViewController implements Initializable
     private void hidePasswordChangerEvent()
 
     {
-        MOD_FACADE.fadeOutTransition(Duration.millis(750), stckPanePasswordChanger)
+        MOD_FAC.fadeOutTransition(Duration.millis(750), stckPanePasswordChanger)
                 .setOnFinished(e
-                        ->
-                {
-                    stckPanePasswordChanger.setVisible(false);
-                    txtOPassword.clear();
-                    txtNPassword.clear();
-                    txtNPasswordTwo.clear();
+                        -> 
+                        {
+                            stckPanePasswordChanger.setVisible(false);
+                            txtOPassword.clear();
+                            txtNPassword.clear();
+                            txtNPasswordTwo.clear();
                 });
 
     }
@@ -1134,9 +1014,90 @@ public class UserInfoViewController implements Initializable
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/HourLoginView.fxml"));
         StackPane page = (StackPane) loader.load();
 
-        MOD_FACADE.changeView(3);
-        Stage stage = (Stage) btnEditSave.getScene().getWindow();
+        MOD_FAC.changeView(3);
+        Stage stage = (Stage) btnLogout.getScene().getWindow();
         stage.close();
 
+    }
+
+    /**
+     * Sets the edit grid into the view if it's user info view.
+     *
+     * @param event = logout button is pressed.
+     * @throws IOException = cannot load the right resource/view.
+     */
+    private void setUserInfo()
+    {
+
+        if (userInfoView)
+        {
+            try
+            {
+                anchPGenInfo.getChildren().clear();
+                AnchorPane newLoadedPane = FXMLLoader.load(getClass().getResource("/GUI/View/EditGrid.fxml"));
+                anchPGenInfo.getChildren().add(newLoadedPane);
+            }
+            catch (IOException ex)
+            {
+                Logger.getLogger(UserInfoViewController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    @FXML
+    private void checkTextFields(KeyEvent event)
+    {
+        boolean success = false;
+        try
+
+        {
+            Integer.parseInt(txtPhone.getText());
+            success = true;
+        }
+        catch (NumberFormatException e)
+        {
+            success = false;
+            txtPhone.setStyle("-fx-background-color:red;");
+            JFXBtnAccept.setDisable(true);
+        }
+        if (success)
+        {
+            JFXBtnAccept.setDisable(false);
+            txtPhone.setStyle("");
+            isIncorrect = false;
+        }
+        else
+        {
+            txtPhone.setStyle("-fx-background-color:red;");
+            JFXBtnAccept.setDisable(true);
+            isIncorrect = true;
+
+        }
+    }
+
+    @FXML
+    private void onBtnAcceptPressed(ActionEvent event)
+    {
+        StackPane stckPaneLoad = MOD_FAC.getLoadingScreen();
+        root.getChildren().add(stckPaneLoad);
+        AnchorPane.setTopAnchor(stckPaneLoad, 0.0);
+        AnchorPane.setBottomAnchor(stckPaneLoad, 0.0);
+        AnchorPane.setLeftAnchor(stckPaneLoad, 0.0);
+        AnchorPane.setRightAnchor(stckPaneLoad, 0.0);
+        serviceAllVolunteers.restart();
+        serviceAllVolunteers.setOnSucceeded(e
+                -> 
+                {
+
+                    Stage stage = (Stage) JFXBtnAccept.getScene().getWindow();
+                    stage.close();
+        });
+    }
+
+    @FXML
+    private void onBtnCancelPressed(ActionEvent event)
+    {
+        Stage stage = (Stage) JFXBtnCancel.getScene().getWindow();
+        stage.close();
     }
 }
