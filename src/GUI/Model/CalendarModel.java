@@ -76,32 +76,43 @@ public class CalendarModel
         });
     }
 
-    public boolean activeLastYear(String lastWorked) 
+    public boolean activeLastYear(String lastWorked)
     {
-
-        try
+        if (lastWorked.equals("Admin"))
         {
-            SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
-            
-            Date today = new Date();
-            
-            Date lastActive = myFormat.parse(lastWorked);
-            
-            long diff = today.getTime() - lastActive.getTime();
-            
-            long daysDiff = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-            
-            if (daysDiff > 366)
-            {
-                return false;
-            }
-            
             return true;
         }
-        catch (ParseException ex)
+        else if (lastWorked.equals("No Date Yet"))
         {
-            Logger.getLogger(CalendarModel.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
+        else if (!lastWorked.equals(""))
+        {
+            try
+            {
+                SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                Date today = new Date();
+
+                Date lastActive = myFormat.parse(lastWorked);
+
+                long diff = today.getTime() - lastActive.getTime();
+
+                long daysDiff = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+
+                if (daysDiff > 366)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            catch (ParseException ex)
+            {
+                Logger.getLogger(CalendarModel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
         return false;
     }
 }

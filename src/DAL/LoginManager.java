@@ -74,7 +74,7 @@ public class LoginManager extends ConnectionManager
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
                 String residence2 = rs.getString("residence2");
-                String lastWorked = rs.getString("lastWorked");
+                String lastWorked = "";
                 List<Guild> guilds = new ArrayList<>();
                 
 
@@ -83,6 +83,7 @@ public class LoginManager extends ConnectionManager
                 {
                     case 0:
                         guilds.addAll(genInfoMan.getGuildsForUser(id));
+                        
                         return new Volunteer(id, name, email, phone, note, residence, residence2, guilds, lastWorked);
                     case 1:
                         guilds.addAll(genInfoMan.getGuildsForManager(id));
