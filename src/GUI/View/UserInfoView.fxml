@@ -28,7 +28,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" maxHeight="541.0" minHeight="490.0" prefHeight="490.0" prefWidth="710.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
+<AnchorPane id="AnchorPane" fx:id="root" maxHeight="541.0" minHeight="490.0" prefHeight="490.0" prefWidth="710.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
 
 
 
@@ -69,9 +69,9 @@
                 <Font size="15.0" />
             </font>
         </JFXButton>
-        <JFXTabPane layoutX="17.0" layoutY="239.0" prefHeight="246.0" prefWidth="486.0">
+        <JFXTabPane fx:id="tabPaneInfo" layoutX="17.0" layoutY="239.0" prefHeight="246.0" prefWidth="486.0">
             <tabs>
-                <Tab text="All">
+                <Tab fx:id="tabAll" text="All">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="164.0" prefWidth="278.0">
                               <HBox prefHeight="227.0" prefWidth="491.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -96,6 +96,9 @@
                                                   <font>
                                                       <Font size="15.0" />
                                                   </font>
+                                    <padding>
+                                       <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                    </padding>
                                               </JFXButton>
                                               <JFXButton id="btnCancelGrey" fx:id="btnLogout" buttonType="RAISED" maxHeight="25.0" maxWidth="1.7976931348623157E308" minHeight="25.0" onAction="#handleLogout" prefHeight="25.0" stylesheets="@MainLayout.css" text="Log Out" textFill="WHITE">
                                                   <padding>
@@ -107,7 +110,7 @@
                                               </JFXButton>
                                           </children>
                                       </VBox>
-                                        <TableView fx:id="tableViewMain" prefHeight="227.0" prefWidth="416.0">
+                                        <TableView fx:id="tableViewMain" prefHeight="215.0" prefWidth="330.0">
                                             <columns>
                                                 <TableColumn fx:id="colDate" prefWidth="95.0" style="-fx-alignment: CENTER;" text="Date" />
                                                 <TableColumn fx:id="colHours" prefWidth="51.0" style="-fx-alignment: CENTER;" text="Hours" />
@@ -119,7 +122,7 @@
                         </AnchorPane>
                     </content>
                 </Tab>
-                <Tab text="Notes">
+                <Tab fx:id="tabNotes" text="Notes">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>

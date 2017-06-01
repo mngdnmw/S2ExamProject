@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXPopup;
+import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextArea;
 
 import com.jfoenix.controls.JFXTextField;
@@ -41,6 +42,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -256,6 +258,12 @@ public class UserInfoViewController implements Initializable
             };
         }
     };
+    @FXML
+    private JFXTabPane tabPaneInfo;
+    @FXML
+    private Tab tabAll;
+    @FXML
+    private Tab tabNotes;
 
     /**
      * Initializes the controller class.
@@ -268,7 +276,7 @@ public class UserInfoViewController implements Initializable
         if (userInfoView)
         {
             setCurrentUser(MOD_FAC.getCurrentUser());
-
+            tabPaneInfo.getTabs().remove(tabNotes);
             checkTypeOfUser();
             setUserInfo();
         }
