@@ -94,7 +94,7 @@ public class GuildManagementViewController implements Initializable
                     setListItems();
         });
         setListItems();
-
+        setTextAll();
         if (MOD_FAC.getCurrentUser().getType() != 2)
         {
             btnAdd.setVisible(false);
@@ -146,10 +146,19 @@ public class GuildManagementViewController implements Initializable
     @FXML
     private void btnChangePressed(ActionEvent event)
     {
-        MOD_FAC.updateGuild(selectedGuild.getId(), txtName.getText());
-        MOD_FAC.fadeOutTransition(Duration.millis(750), stckPaneNew);
-        stckPaneNew.setVisible(false);
-        servicegetGuilds.restart();
+        String name = txtName.getText().trim();
+        if (!name.equals(""))
+        {
+            MOD_FAC.updateGuild(selectedGuild.getId(), txtName.getText());
+            MOD_FAC.fadeOutTransition(Duration.millis(750), stckPaneNew).setOnFinished(
+                    e -> stckPaneNew.setVisible(false)
+            );
+            servicegetGuilds.restart();
+        }
+        else
+        {
+            MOD_FAC.snackbarPopup(MOD_FAC.getLang("STR_EMPTY_ERROR"), rootPane);
+        }
     }
 
     @FXML
@@ -163,15 +172,24 @@ public class GuildManagementViewController implements Initializable
     @FXML
     private void btnAddNewPressed(ActionEvent event)
     {
-        MOD_FAC.addGuild(txtName.getText());
+        String name = txtName.getText().trim();
+        if (!name.equals(""))
+        {
+            MOD_FAC.addGuild(name);
 
-        servicegetGuilds.restart();
-        MOD_FAC.fadeOutTransition(Duration.millis(750), stckPaneNew);
-        stckPaneNew.setVisible(false);
+            servicegetGuilds.restart();
+            MOD_FAC.fadeOutTransition(Duration.millis(750), stckPaneNew);
+            stckPaneNew.setVisible(false);
+        }
+         else
+        {
+            MOD_FAC.snackbarPopup(MOD_FAC.getLang("STR_EMPTY_ERROR"), rootPane);
+        }
     }
 
     @FXML
-    private void onListViewPressed(MouseEvent event)
+    private void onListViewPressed(MouseEvent event
+    )
     {
         selectedGuild = listGuilds.getSelectionModel().getSelectedItem();
     }
@@ -182,7 +200,7 @@ public class GuildManagementViewController implements Initializable
         btnAdd.setText(MOD_FAC.getLang("BTN_ADD_GUILD"));
         btnRemove.setText(MOD_FAC.getLang("BTN_REMOVE_GUILD"));
         lblGuilds.setText(MOD_FAC.getLang("GUILD_TAG_TWO"));
-        lblGuildName.setText(MOD_FAC.getLang(""));
+        lblGuildName.setText(MOD_FAC.getLang("LBL_GUILD_NAME"));
         btnChange.setText(MOD_FAC.getLang("BTN_EDIT"));
         btnCancel.setText(MOD_FAC.getLang("BTN_CANCEL"));
     }
