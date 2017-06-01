@@ -165,12 +165,7 @@ public class ManagerViewController implements Initializable
                 {
                     LocalDate periodOne = datePickerPeriodOne.getValue();
                     LocalDate periodTwo = datePickerPeriodTwo.getValue();
-                    if (periodOne.getYear() <= periodTwo.getYear())
-                    {
-                        if (periodOne.getMonth().getValue() <= periodTwo.getMonth().getValue())
-                        {
-                        }
-                    }
+                   
                     if (cmbGuildChooser.getSelectionModel().getSelectedItem().getId() == -1)
                     {
                         for (Guild item : cmbGuildChooser.getItems())
