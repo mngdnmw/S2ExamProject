@@ -53,7 +53,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
                      <children>
-                        <JFXButton fx:id="btnAddNew" buttonType="RAISED" onAction="#btnAddNewPressed" styleClass="loginbuttons" text="Add New" visible="false" />
+                        <JFXButton id="btnConfirmTeal" fx:id="btnAddNew" buttonType="RAISED" onAction="#btnAddNewPressed" styleClass="loginbuttons" text="Add New" visible="false" />
                         <JFXButton id="btnConfirmTeal" fx:id="btnChange" buttonType="RAISED" onAction="#btnChangePressed" text="Change" />
                         <JFXButton id="btnCancelGrey" fx:id="btnCancel" buttonType="RAISED" onAction="#btnCancelPressed" text="Cancel" />
                      </children>

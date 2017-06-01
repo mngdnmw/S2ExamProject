@@ -114,7 +114,7 @@
                                             <columns>
                                                 <TableColumn fx:id="colDate" prefWidth="95.0" style="-fx-alignment: CENTER;" text="Date" />
                                                 <TableColumn fx:id="colHours" prefWidth="51.0" style="-fx-alignment: CENTER;" text="Hours" />
-                                                <TableColumn fx:id="colGuild" prefWidth="240.0" style="-fx-alignment: CENTER;" text="Guild" />
+                                                <TableColumn fx:id="colGuild" maxWidth="181.0" minWidth="-1.0" prefWidth="181.0" style="-fx-alignment: CENTER;" text="Guild" />
                                             </columns>
                                         </TableView>
                                   </children>

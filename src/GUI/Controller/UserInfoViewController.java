@@ -382,6 +382,7 @@ public class UserInfoViewController implements Initializable
                 {
                     Day dayToDelete = tableViewMain.getSelectionModel().getSelectedItem();
                     MOD_FAC.deleteWorkedDay(currentUser, dayToDelete);
+                    MOD_FAC.snackbarPopup(MOD_FAC.getLang("STR_DELETE_SUCCES"), root);
                     event.setDropCompleted(true);
                     MOD_FAC.fadeOutTransition(Duration.millis(250), stackPdeleteHours).setOnFinished(ez -> stackPdeleteHours.setVisible(false));
 
@@ -759,6 +760,8 @@ public class UserInfoViewController implements Initializable
         btnHighClearance.setMinWidth(175);
         btnHighClearance.setId("btnConfirmTeal");
         btnHighClearance.toFront();
+        stckPaneAddHours.toFront();
+        stckPanePasswordChanger.toFront();
         btnHighClearance.setVisible(true);
         btnHighClearance.setPrefHeight(25);
 

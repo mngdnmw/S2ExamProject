@@ -45,6 +45,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -59,6 +60,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 public class ManagerViewController implements Initializable
@@ -117,7 +119,7 @@ public class ManagerViewController implements Initializable
     @FXML
     private TableColumn<User, String> colName;
     @FXML
-    private TableColumn<User, Integer> colPhone;
+    private TableColumn<User, String> colStatus;
     @FXML
     private TableColumn<User, String> colEmail;
     @FXML
@@ -274,7 +276,7 @@ public class ManagerViewController implements Initializable
         txtSearch.setPromptText(MOD_FAC.getLang("PROMPT_SEARCH_USER"));
         cmbGuildChooser.setPromptText(MOD_FAC.getLang("PROMPT_CMB_GUILDCHOOSER"));
         colEmail.setText(MOD_FAC.getLang("COL_EMAIL"));
-        colPhone.setText(MOD_FAC.getLang("COL_PHONE"));
+        colStatus.setText(MOD_FAC.getLang("COL_STATUS"));
         colName.setText(MOD_FAC.getLang("COL_NAME"));
         tabVolunInfo.setText(MOD_FAC.getLang("TAB_VOLUN_INFO"));
         tabGraphStats.setText(MOD_FAC.getLang("TAB_GRAPH_STATS"));
@@ -319,7 +321,7 @@ public class ManagerViewController implements Initializable
     private void setTableProperties()
     {
         colName.setCellValueFactory(new PropertyValueFactory("name"));
-        colPhone.setCellValueFactory(new PropertyValueFactory("phone"));
+        colStatus.setCellValueFactory(new PropertyValueFactory("phone"));
         colEmail.setCellValueFactory(new PropertyValueFactory("email"));
 
         colLogEventId.setCellValueFactory(new PropertyValueFactory("id"));
@@ -764,9 +766,58 @@ public class ManagerViewController implements Initializable
 
         tblUsers.setPlaceholder(new Label(str));
         colName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        colPhone.setCellValueFactory(val -> val.getValue().phoneProperty().asObject());
+        colStatus.setCellValueFactory(cellData -> cellData.getValue().lastWorkedDayProperty());
         colEmail.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
 
+        sortedData.comparatorProperty().bind(tblUsers.comparatorProperty());
+        tblUsers.setItems(sortedData);
+
+        searchListener();
+        colStatus.setCellFactory(getCustomCellFactory());
+    }
+
+    public String getCSSClass(boolean active)
+    {
+        String cssClass = "";
+        if (active != true)
+        {
+            cssClass = "inactive";
+
+        }
+        else
+        {
+            cssClass = "active";
+        }
+        return cssClass;
+
+    }
+
+    private Callback<TableColumn<User, String>, TableCell<User, String>> getCustomCellFactory()
+    {
+        return (TableColumn<User, String> param)
+                -> 
+                {
+                    return new TableCell<User, String>()
+                    {
+                        @Override
+                        public void updateItem(final String lastWorked, boolean empty)
+                        {
+
+                            if (lastWorked != null)
+                            {
+                                setText(lastWorked);
+                                boolean active = MOD_FAC.activeLastYear(lastWorked);
+                                String warningClass = getCSSClass(active);
+                                getStyleClass().clear();
+                                getStyleClass().add(warningClass);
+                            }
+                        }
+                    };
+        };
+    }
+
+    private void searchListener()
+    {
         txtSearch.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
                 -> 
                 {
@@ -798,10 +849,6 @@ public class ManagerViewController implements Initializable
                                 return false;
                     });
         });
-
-        sortedData.comparatorProperty().bind(tblUsers.comparatorProperty());
-        tblUsers.setItems(sortedData);
-
     }
 
     /**

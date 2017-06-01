@@ -64,8 +64,8 @@ CHK_VOLUNTEERS = Volunteers
 
 MENU_ITEM_ONE_EMAIL  = Kopier email til clipboard
 MENU_ITEM_ALL_EMAIL = Kopier alle emails til clipboard
-MENU_ITEM_EXPORT = Eksporter all bruger i tabellen
-MENU_ITEM_EXPORT_USER =
+MENU_ITEM_EXPORT = Eksporter alle brugere i tabellen
+MENU_ITEM_EXPORT_USER = Eksporter alle timer fra tabellen
 
 #Manager view labels
 #Remember to leave a space after LBL_USERNAME
@@ -75,6 +75,7 @@ PROMPT_CMB_GUILDCHOOSER = Vælg et Laug
 LBL_NOTES = Noter:
 COL_NAME = Navn
 COL_PHONE = Telefon
+COL_STATUS = Status
 COL_EMAIL = Email
 TAB_VOLUN_INFO = Bruger Information
 TAB_GRAPH_STATS = Graf og Statistikker
@@ -102,13 +103,13 @@ STR_USER_NAME_ERROR = Navn er nødvendigt
 STR_SEARCH_EMPTY = Søgning fandt ingenting
 STR_PASSWORD_CHANGE = Din adgangskode er blevet ændret
 STR_PW_DOESNT_MATCH = Nye adgangskode felter er ikke ens
-STR_OLD_PW_MATCH_NEW = Det gamle adgangskode matcher det nye
-STR_OLD_PW_WRONG = Det gamle adgangskode er forkert
+STR_OLD_PW_MATCH_NEW = Den gamle adgangskode matcher det nye
+STR_OLD_PW_WRONG = Den gamle adgangskode er forkert
 STR_CONTRIBUTE_DELETE = Den valgte bidrag er blevet slettet
 STR_ALL_GUILDS = Alle laug
 STR_SELECT_USER = Vælg venligst en bruger først
 STR_INVALID_INPUT = Indsæt venligst gyldig information i feltet
-
+STR_DELETE_SUCCES = Dag er blevet slettet
 IMG_CH_TITLE = Vælg et nyt billede
 IMG_CH_EXT_FILTER = Kun billede filer
 CSV_CH_TITLE = Vælg placering
