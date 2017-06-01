@@ -119,3 +119,7 @@ LBL_GUILD_NAME = Laug Navn:
 
 TXT_ADRESS = Adresse
 BTN_ADD= Tilføj
+
+
+CHART_TITLE = Bidrag af timer til 
+STR_EMPTY_ERROR = Må ikke være tom

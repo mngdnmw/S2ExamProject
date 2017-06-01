@@ -122,3 +122,5 @@ LBL_GUILD_NAME = Guild Name:
 
 TXT_ADRESS = Adress
 BTN_ADD = Add
+CHART_TITLE = Contribution hour to 
+STR_EMPTY_ERROR = Cannot be empty

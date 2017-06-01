@@ -226,10 +226,16 @@ public class ManagerViewController implements Initializable
         xAxis.setLabel(MOD_FAC.getLang("TAB_MONTH"));
         yAxis.setLabel(MOD_FAC.getLang("STR_AXIS_HOURS"));
         setTextAll(); //this has to run before setting currently logged in username
+        ObservableList guildList = FXCollections.observableArrayList();
+        guildList.add(new Guild(-1, MOD_FAC.getLang("STR_ALL_GUILDS")));
+
         if (MOD_FAC.getCurrentUser() != null)
         {
             lblUserName.setText(MOD_FAC.getLang("LBL_USERNAME") + MOD_FAC.getCurrentUser().getName());
-            cmbGuildChooser.setItems(FXCollections.observableArrayList(MOD_FAC.getCurrentUser().getGuildList()));
+            if (MOD_FAC.getCurrentUser().getType() == 1)
+            {
+                guildList.addAll(MOD_FAC.getCurrentUser().getGuildList());
+            }
         }
         setTableProperties();
         setupTableView("Loading Information");
@@ -248,11 +254,10 @@ public class ManagerViewController implements Initializable
             chkAdmins.setVisible(true);
             chkManagers.setVisible(true);
             chkVolunteers.setVisible(true);
-            ObservableList guildList = FXCollections.observableArrayList();
+
             guildList.add(new Guild(-1, MOD_FAC.getLang("STR_ALL_GUILDS")));
             guildList.addAll(MOD_FAC.getAllSavedGuilds());
-
-            cmbGuildChooser.setItems(guildList);
+            
 
             cmbGuildChooser.setEditable(true);
             new AutoCompleteComboBoxListener(cmbGuildChooser);
@@ -261,11 +266,10 @@ public class ManagerViewController implements Initializable
         }
         colLogEventId.setSortType(TableColumn.SortType.ASCENDING);
         tblLog.getSortOrder().add(colLogEventId);
+        cmbGuildChooser.setItems(guildList);
         cmbGuildChooser.getSelectionModel().selectFirst();
 
     }
-
-   
 
     private void setTableProperties()
     {
@@ -291,7 +295,7 @@ public class ManagerViewController implements Initializable
 
             observableUsers.addAll(MOD_FAC.getAllSavedUsers());
         }
-        
+
         tblLog.setItems(FXCollections.observableArrayList(MOD_FAC.getAllEvents()));
         colLogEventId.setSortType(TableColumn.SortType.ASCENDING);
         tblLog.getSortOrder().add(colLogEventId);
@@ -615,13 +619,15 @@ public class ManagerViewController implements Initializable
             }
 
         });
-        
-        exportHours.setOnAction(new EventHandler<ActionEvent>() {
+
+        exportHours.setOnAction(new EventHandler<ActionEvent>()
+        {
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event)
+            {
                 export(ExportType.HOURS);
             }
-            
+
         });
     }
 
@@ -631,20 +637,26 @@ public class ManagerViewController implements Initializable
         Stage stage = (Stage) btnClose.getScene().getWindow();
         stage.close();
     }
-    
+
     private void export(ExportType type)
     {
         FileChooser chooser = new FileChooser();
-        String[] extensions = {"*.csv"};
+        String[] extensions =
+        {
+            "*.csv"
+        };
         chooser.getExtensionFilters().add(new ExtensionFilter(MOD_FAC.getLang("CSV_CH_EXT_FILTER"), extensions));
         chooser.setTitle(MOD_FAC.getLang("CSV_CH_TITLE"));
         chooser.setInitialDirectory(new File("."));
         File chose = chooser.showSaveDialog(root.getScene().getWindow());
         if (chose != null)
         {
-            if(type.equals(ExportType.DATA)) {
+            if (type.equals(ExportType.DATA))
+            {
                 MOD_FAC.writeExport(chose, MOD_FAC.parseExportUsers(tblUsers.getItems()));
-            } else if(type.equals(ExportType.HOURS)) {
+            }
+            else if (type.equals(ExportType.HOURS))
+            {
                 MOD_FAC.writeExport(chose, MOD_FAC.parseExportHours(tblUsers.getItems()));
             }
         }
@@ -754,12 +766,14 @@ public class ManagerViewController implements Initializable
     }
 
     @FXML
-    private void updateLogTable(ActionEvent event) {
+    private void updateLogTable(ActionEvent event)
+    {
         tblLog.setItems(FXCollections.observableArrayList(MOD_FAC.getAllEvents()));
         colLogEventId.setSortType(TableColumn.SortType.ASCENDING);
         tblLog.getSortOrder().clear();
         tblLog.getSortOrder().add(colLogEventId);
     }
+
     @FXML
     private void refreshGraph(ActionEvent event)
     {

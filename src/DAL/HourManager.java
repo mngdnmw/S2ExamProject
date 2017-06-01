@@ -147,7 +147,8 @@ public class HourManager extends ConnectionManager
         {
             String query = "SELECT * FROM hour\n"
                     + "WHERE date BETWEEN '" + periodOne + "' AND '" + periodTwo + "' \n "
-                    + "AND  guildid = ?";
+                    + "AND  guildid = ?"
+                    + " ORDER BY [date]";
             PreparedStatement pstmt = con.prepareStatement(query);
             pstmt.setInt(1, guild.getId());
             ResultSet rs = pstmt.executeQuery();
