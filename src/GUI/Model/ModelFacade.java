@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javafx.animation.FadeTransition;
@@ -366,6 +367,9 @@ public class ModelFacade
     
     public void formatCalendar(DatePicker datePicker){
         CAL_MOD.formatCalendar(datePicker);
+    }
+    public boolean activeLastYear(String lastWorked){
+        return CAL_MOD.activeLastYear(lastWorked);
     }
     
     
