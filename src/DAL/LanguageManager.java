@@ -79,9 +79,9 @@ public class LanguageManager extends ConfigManager
         } catch (IOException e)
         {
             Logger.getLogger(LanguageManager.class.getName()).log(Level.SEVERE, null, e);
-            System.out.println("Language file not found or something?");
+            System.out.println("Language file not found");
         }
-        System.out.println("no language selected.");
+        System.out.println("no language selected");
         return null;
     }
 

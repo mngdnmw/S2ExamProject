@@ -16,7 +16,7 @@ public class S2ExamProject extends Application
       {
         new ConfigManager();
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/View/HourLoginView.fxml"));
-        String title = "VMS - Volunteer Maintenance System";
+        String title = "VMS - Volunteer Management System";
         Scene scene = new Scene(root);
 
         stage.setScene(scene);
