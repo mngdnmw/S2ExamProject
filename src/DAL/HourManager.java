@@ -38,7 +38,6 @@ public class HourManager extends ConnectionManager
             pstat.setInt(3, hours);
             pstat.setInt(4, guildId);
             pstat.executeUpdate();
-            setLastWorkedDay(userId);
         }
         catch (SQLException ex)
         {
@@ -183,28 +182,5 @@ public class HourManager extends ConnectionManager
         return null;
     }
 
-    private void setLastWorkedDay(int userId)
-    {
-
-        try (Connection con = super.getConnection())
-        {
-            String query = "UPDATE[user]"
-                    + " SET[lastWorked] = (SELECT TOP  (1)[date] FROM[hour] WHERE[userid] = ? ORDER BY[date] DESC)"
-                    + " WHERE userid = ?";
-            String sqlCommand
-                    = "SELECT [hours] FROM [hour] WHERE [userid] = ? ORDER BY [date]";
-            PreparedStatement pstat = con.prepareStatement(query);
-            pstat.setInt(1, userId);
-            pstat.setInt(2, userId);
-            pstat.executeUpdate();
-
-        }
-        catch (SQLException ex)
-        {
-            erMan.setErrorCode(ex.getErrorCode());
-            System.out.println("" + ex.getErrorCode());
-        }
-
-    }
-
+  
 }

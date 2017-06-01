@@ -7,7 +7,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;

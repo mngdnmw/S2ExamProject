@@ -22,7 +22,9 @@ import java.util.logging.Logger;
 
 public class GeneralInfoManager extends ConnectionManager
 {
+
     private ErrorManager erMan = new ErrorManager();
+
     /**
      * Gets user information from the database using userId. Returns volunteer,
      * manager or admin depending on type variable.
@@ -50,7 +52,7 @@ public class GeneralInfoManager extends ConnectionManager
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
                 String residence2 = rs.getString("residence2");
-                String lastWorked = rs.getString("lastWorked");
+                String lastWorked;
 
                 List<Guild> guilds = GeneralInfoManager.this.getGuildsForUser(userId);
 
@@ -60,6 +62,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                     Volunteer volunteer = null;
                     //(id, name, email, password, type, phone, note, residence, guilds);
+                    lastWorked = getLastWorkedDay(userId);
                     volunteer = new Volunteer(id, name, email, phone, note, residence, residence2, guilds, lastWorked);
 
                     return volunteer;
@@ -68,7 +71,7 @@ public class GeneralInfoManager extends ConnectionManager
                 //If it's a manager
                 if (type == 1)
                 {
-
+                    lastWorked = getLastWorkedDay(userId);
                     Manager manager = null;
                     //(id, name, email, password, type, phone, note);
                     manager = new Manager(id, name, email, phone, note, residence, residence2, guilds, lastWorked);
@@ -79,7 +82,7 @@ public class GeneralInfoManager extends ConnectionManager
                 //If it's an admin
                 if (type == 2)
                 {
-
+                    lastWorked = "Admin";
                     Admin admin = null;
                     //(id, name, email, password, type, phone, note);
                     admin = new Admin(id, name, email, phone, note, residence, residence2, guilds, lastWorked);
@@ -117,8 +120,8 @@ public class GeneralInfoManager extends ConnectionManager
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
                 String residence2 = rs.getString("residence2");
-                String lastWorked = rs.getString("lastWorked");
-                
+                String lastWorked = getLastWorkedDay(id);
+
                 List<Guild> guilds = GeneralInfoManager.this.getGuildsForUser(id);
 
                 switch (type)
@@ -145,7 +148,7 @@ public class GeneralInfoManager extends ConnectionManager
 
                         Admin admin = null;
                         //(id, name, email, password, type, phone, note);
-                        admin = new Admin(id, name, email, phone, note, residence, residence2, guilds,lastWorked);
+                        admin = new Admin(id, name, email, phone, note, residence, residence2, guilds, lastWorked);
                         users.add(admin);
 
                         break;
@@ -185,7 +188,7 @@ public class GeneralInfoManager extends ConnectionManager
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
                 String residence2 = rs.getString("residence2");
-                String lastWorked = rs.getString("lastWorked");
+                String lastWorked = getLastWorkedDay(id);
 
                 List<Guild> guilds = GeneralInfoManager.this.getGuildsForUser(id);
 
@@ -224,7 +227,7 @@ public class GeneralInfoManager extends ConnectionManager
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
                 String residence2 = rs.getString("residence2");
-                String lastWorked = rs.getString("lastWorked");
+                String lastWorked =  getLastWorkedDay(id);
 
                 List<Guild> guilds = GeneralInfoManager.this.getGuildsForManager(id);
 
@@ -262,14 +265,13 @@ public class GeneralInfoManager extends ConnectionManager
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
                 String residence2 = rs.getString("residence2");
-                String lastWorked = rs.getString("lastWorked");
-                
+                String lastWorked = "Admin";
 
                 List<Guild> guilds = GeneralInfoManager.this.getGuildsForUser(id);
 
                 Admin admin = null;
                 //(id, name, email, password, type, phone, note);
-                admins.add(new Admin(id, name, email, phone, note, residence, residence2, guilds,lastWorked));
+                admins.add(new Admin(id, name, email, phone, note, residence, residence2, guilds, lastWorked));
 
             }
         }
@@ -520,7 +522,7 @@ public class GeneralInfoManager extends ConnectionManager
         {
             System.out.println("Exception in: DataManager: updateInfo method");
             System.err.println(sqle);
-            
+
             erMan.setErrorCode(sqle.getErrorCode());
         }
     }
@@ -545,7 +547,7 @@ public class GeneralInfoManager extends ConnectionManager
         catch (SQLException ex)
         {
             Logger.getLogger(GeneralInfoManager.class.getName()).log(Level.SEVERE, null, ex);
-            
+
             erMan.setErrorCode(ex.getErrorCode());
         }
 
@@ -593,7 +595,7 @@ public class GeneralInfoManager extends ConnectionManager
         catch (SQLException e)
         {
             Logger.getLogger(GeneralInfoManager.class.getName()).log(Level.SEVERE, null, e);
-            
+
             erMan.setErrorCode(e.getErrorCode());
         }
         return null;
@@ -611,7 +613,7 @@ public class GeneralInfoManager extends ConnectionManager
         }
         catch (SQLException sqle)
         {
-            
+
             erMan.setErrorCode(sqle.getErrorCode());
             System.out.println("Exception in: GeneralInfoManager: addGuild method");
             System.err.println(sqle);
@@ -629,7 +631,7 @@ public class GeneralInfoManager extends ConnectionManager
         }
         catch (SQLException sqle)
         {
-            
+
             erMan.setErrorCode(sqle.getErrorCode());
             System.out.println("Exception in: GeneralInfoManager: deleteGuild method");
             System.err.println(sqle);
@@ -651,8 +653,34 @@ public class GeneralInfoManager extends ConnectionManager
         {
             System.out.println("Exception in: GeneralInfoManager: updateGuild method");
             System.err.println(sqle);
-            
+
             erMan.setErrorCode(sqle.getErrorCode());
         }
     }
+
+    public String getLastWorkedDay(int userId)
+    {
+
+        try (Connection con = super.getConnection())
+        {
+            String query = "SELECT TOP (1)[date] FROM[hour] WHERE[userid] = ? ORDER BY[date] DESC";
+
+            PreparedStatement pstat = con.prepareStatement(query);
+            pstat.setInt(1, userId);
+            ResultSet rs = pstat.executeQuery();
+            if (rs.next())
+            {
+                return rs.getString("date");
+            }
+
+        }
+        catch (SQLException ex)
+        {
+            erMan.setErrorCode(ex.getErrorCode());
+            System.out.println("" + ex.getErrorCode());
+        }
+        return "No Date Yet";
+
+    }
+
 }

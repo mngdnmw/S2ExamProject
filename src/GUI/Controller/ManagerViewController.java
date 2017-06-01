@@ -412,6 +412,7 @@ public class ManagerViewController implements Initializable
                 });
                 sortedData.comparatorProperty().bind(tblUsers.comparatorProperty());
                 tblUsers.setItems(sortedData);
+                colStatus.setCellFactory(getCustomCellFactory());
             }
 
         });
@@ -575,21 +576,23 @@ public class ManagerViewController implements Initializable
     private void onTablePressed(MouseEvent event)
     {
         selectedUser = null;
-
-        if (event.isPrimaryButtonDown() && event.getClickCount() == 1)
+        if (tblUsers.getSelectionModel().getSelectedItem() != null)
         {
+            if (event.isPrimaryButtonDown() && event.getClickCount() == 1)
+            {
+
+                selectedUser = tblUsers.getSelectionModel().getSelectedItem();
+
+                txtNotes.setText(selectedUser.getNote());
+            }
+            else if (event.isPrimaryButtonDown() && event.getClickCount() == 2)
+            {
+                handleEditView();
+            }
             selectedUser = tblUsers.getSelectionModel().getSelectedItem();
 
-            txtNotes.setText(selectedUser.getNote());
+            tblUsers.setContextMenu(setupContextMenu());
         }
-        else if (event.isPrimaryButtonDown() && event.getClickCount() == 2)
-        {
-            handleEditView();
-        }
-        selectedUser = tblUsers.getSelectionModel().getSelectedItem();
-
-        tblUsers.setContextMenu(setupContextMenu());
-
     }
 
     /**
@@ -762,12 +765,11 @@ public class ManagerViewController implements Initializable
         colName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
         colStatus.setCellValueFactory(cellData -> cellData.getValue().lastWorkedDayProperty());
         colEmail.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
-
+        colStatus.setCellFactory(getCustomCellFactory());
         sortedData.comparatorProperty().bind(tblUsers.comparatorProperty());
         tblUsers.setItems(sortedData);
 
         searchListener();
-        colStatus.setCellFactory(getCustomCellFactory());
     }
 
     public String getCSSClass(boolean active)
@@ -796,15 +798,16 @@ public class ManagerViewController implements Initializable
                         @Override
                         public void updateItem(final String lastWorked, boolean empty)
                         {
-
-                            if (lastWorked != null)
-                            {
-                                setText(lastWorked);
-                                boolean active = MOD_FAC.activeLastYear(lastWorked);
-                                String warningClass = getCSSClass(active);
-                                getStyleClass().clear();
-                                getStyleClass().add(warningClass);
-                            }
+                            
+                                if (lastWorked != null)
+                                {
+                                    setText(lastWorked);
+                                    boolean active = MOD_FAC.activeLastYear(lastWorked);
+                                    String warningClass = getCSSClass(active);
+                                    getStyleClass().clear();
+                                    getStyleClass().add(warningClass);
+                                }
+                            
                         }
                     };
         };
@@ -842,6 +845,7 @@ public class ManagerViewController implements Initializable
 
                                 return false;
                     });
+                    colStatus.setCellFactory(getCustomCellFactory());
         });
     }
 
