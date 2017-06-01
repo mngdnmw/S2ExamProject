@@ -1,0 +1,191 @@
+.root{
+    -fx-background-color: white;
+
+}
+
+.JFXRoundedButton
+{
+
+    -fx-background-radius: 50%;
+    -fx-orientation: vertical;
+    -fx-content-display: top;
+    -fx-background-color: #00e2c7;
+    -fx-button-type: RAISED;
+}
+.JFXButtonLogHours
+{
+    -fx-graphic:url("../Images/save-white.png");
+    -fx-background-color: #00c4ad;
+}
+.JFXButtonSeeInfo
+{
+    -fx-graphic:url("../Images/info-white.png");
+
+}
+.popup{
+
+    -fx-border-style: solid inside;
+    -fx-border-width: 3px;
+    -fx-border-color: Black;
+    -fx-border-radius:20px;
+    -fx-background-radius:20px
+}
+.text-area .content
+{
+    -fx-background-color: #FAFAFA;
+}
+
+.jfx-snackbar-content{
+    -fx-background-color:#00e2c7;
+    -fx-border-style: solid solid hidden solid ;
+    -fx-border-width: 2px;
+    -fx-border-color: Black;
+    -fx-border-radius:5 5 5 5;
+    -fx-background-radius:5 5 5 5;
+}
+.jfx-snackbar-toast{
+    -fx-font: bold 20px/30px System;
+    -fx-text-fill: #FFFFFF;
+}
+.darkenedBackground{
+    -fx-background-color: rgba(0,0,0,.5)
+}
+
+.logintextAndFontLabels{
+    -fx-font: bold 22px/30px System;
+    -fx-text-fill: #353535;
+}
+.logintextFields
+{
+    -fx-font:Bold 18px/30px System;
+    -fx-text-fill: #353535;
+}
+
+.loginwindow{
+    -fx-background-color: #ffffff;
+    -fx-border-color: #00e2c7;
+    -fx-border-radius: 19px;
+    -fx-border-width: 5px;
+    -fx-background-radius: 22px;
+}
+.loadingScreen{
+    -fx-background-color: rgba(150,150,150,0.5);
+
+}
+
+.col{
+    -fx-alignment: CENTER;
+    -fx-border-width : 0 1 0 1;
+    -fx-border-color: #404040;
+}
+
+.jfx-tab-pane .headers-region {
+    -fx-background-color: #00c4ad;
+}
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #00c4ad;
+}
+.jfx-tab-pane .tab-header-area .jfx-rippler{
+    -jfx-rippler-fill: white;
+}
+.jfx-tab-pane .tab-header-area .tab-selected-line{
+    -fx-background-color: white;
+}
+.jfx-tab-pane .tab:selected {
+    -fx-background-color: #029e99;
+}
+.tab .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #E6e6e6;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.tab:selected .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #FFFFFF;
+}
+
+#btnConfirmTeal{
+    -fx-background-color: #00c4ad;
+    -fx-text-fill: white;
+    -jfx-button-type: RAISED;
+    -fx-font: bold 15px System;
+}
+
+#btnConfirmDarkTeal{
+    -fx-background-color: #029e99;
+    -fx-text-fill: white;
+    -jfx-button-type: RAISED;
+    -fx-font: bold 15px System;
+}
+
+
+#btnCancelGrey{
+    -fx-background-color: #B0B0B0;
+    -fx-text-fill: white;
+    -jfx-button-type: RAISED;
+    -fx-font: bold 15px System;
+}
+
+#lblTealBkgrnd{
+    -fx-background-color: #00c4ad;
+    -fx-font: bold 15px System;
+    -fx-text-fill: black;
+    
+}
+.chart-series-line {    
+    -fx-stroke-width: 4px;
+}
+
+.default-color0.chart-series-line { -fx-stroke: #FF6600; }
+.default-color1.chart-series-line { -fx-stroke: #00e2c7; }
+.default-color2.chart-series-line { -fx-stroke: #dda0dd; }
+.default-color0.chart-line-symbol { -fx-background-color: #FF6600, white; }
+.default-color1.chart-line-symbol { -fx-background-color: #00e2c7, white; }
+.default-color2.chart-line-symbol { -fx-background-color: #dda0dd, white; }
+
+/*Tableview*/
+.table-view{
+    -fx-border-color: white;
+    -fx-border-width: 0px;
+}
+
+
+.table-view .column-header-background{
+    -fx-background-color: #029e99;
+}
+
+.table-view .column-header-background .label{
+    -fx-background-color: #029e99;
+    -fx-text-fill: white;
+    -fx-font-size: 15px; 
+}
+
+.table-view .column-header {
+    -fx-background-color: #029e99;
+}
+
+.table-view .table-cell{
+    -fx-alignment: center;
+}
+
+
+.table-row-cell:selected {
+    -fx-background-color: #00c4ad;
+    -fx-background-insets: 0;
+    -fx-background-radius: 1;
+}
+
+.inactive
+{
+    -fx-background-color: #B0B0B0;
+    -fx-alignment: CENTER;
+}
+
+
+.active
+{
+    -fx-background-color: #029e99;
+    -fx-alignment: CENTER;
+}

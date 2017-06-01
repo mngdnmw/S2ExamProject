@@ -1,6 +1,7 @@
-
 # Created by https://www.gitignore.io/api/java,macos,windows,netbeans
 
+###Our Files###
+*.cfg
 ### Java ###
 # Compiled class file
 *.class
@@ -15,6 +16,7 @@
 .mtj.tmp/
 
 # Package Files #
+
 *.war
 *.ear
 *.zip
@@ -81,3 +83,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/java,macos,windows,netbeans
+*.properties
+
+nbproject/*
+*.xml

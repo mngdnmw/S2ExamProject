@@ -1,0 +1,129 @@
+﻿#Login screen buttons
+LOG_THANKS = Tak!
+LOG_CONTRIB = Du har hjulpet med at forbedre vores fælleskab!
+BTN_LOGIN = Log på
+BTN_CANCEL = Annuller
+BTN_LOG_HOURS = Tilføj Timer
+BTN_SEE_INFO = Se info
+BTN_LANGUAGE = Dansk
+
+#Login screen labels
+USERNAME_TAG = Mit brugernavn er
+TXT_USERNAME_PROMPT = Telefon eller E-mail
+HOUR_TAG = Jeg har bidraget med
+TXT_HOURS_PROMPT = Number
+HOUR_TAG_TWO = timer
+GUILD_TAG = til
+CMB_GUILDCHOOSER_PROMPT = Vælg et laug
+GUILD_TAG_TWO = laug
+LB_USERNAME = Brugernavn
+LB_PASSWORD = Kodeord
+
+########
+# USER INFO WINDOW
+########
+
+#User info buttons
+BTN_UPDATEPHOTO = Opdater billede
+BTN_CHANGEPASS = Skift kodeord
+BTN_EDIT = Ændre
+BTN_SAVE = Gem
+#BTN_CANCEL = Annuller #Already exists
+BTN_DELETE = Slet
+BTN_LOGOUT = Log ud
+TAB_ALL = Alle
+TAB_MONTH = Måned
+TAB_DAY = Dag
+TAB_GRAPHS = Graf
+BTN_HIGHER_CLEARANCE_1 = Manager funktioner
+BTN_HIGHER_CLEARANCE_2 = Admin funktioner
+
+#User info labels
+COL_DATE = Dato
+COL_HOURS = Timer
+COL_GUILD = Laug
+PROMPT_SEARCH = Søg
+LBL_HRS_ALL_TEXT = Timer
+LBL_GUILDS = Laug:
+LBL_OLD_PW = Gamle kodeord
+LBL_NEW_PW = Ny kodeord
+LBL_NEW_PW2 = Ny kodeord igen
+
+########
+#MANAGER VIEW
+########
+
+#Manager view buttons
+BTN_ADD_HOURS = Tilføj Timer
+BTN_EDIT_INFO = Ændre Info
+BTN_STATS = Bruger Statistikker
+BTN_CLOSE = Luk
+BTN_ADD_USER = Tilføj Bruger
+CHK_MANAGERS = Managers
+CHK_VOLUNTEERS = Volunteers
+
+MENU_ITEM_ONE_EMAIL  = Kopier email til clipboard
+MENU_ITEM_ALL_EMAIL = Kopier alle emails til clipboard
+MENU_ITEM_EXPORT = Eksporter alle brugere i tabellen
+MENU_ITEM_EXPORT_USER = Eksporter alle timer fra tabellen
+
+#Manager view labels
+#Remember to leave a space after LBL_USERNAME
+LBL_USERNAME = Logget ind som:  
+PROMPT_SEARCH_USER = Søg
+PROMPT_CMB_GUILDCHOOSER = Vælg et Laug
+LBL_NOTES = Noter:
+COL_NAME = Navn
+COL_PHONE = Telefon
+COL_STATUS = Status
+COL_EMAIL = Email
+TAB_VOLUN_INFO = Bruger Information
+TAB_GRAPH_STATS = Graf og Statistikker
+TAB_LOG_EVENTS = Logbog
+TAB_GUILD = Laug Management
+TBL_LOADING = Tabelindlæsning
+TAB_ERR = Error: Try again
+
+#ErrorCode
+STR_NO_ERROR_CONTRIBUTION = Dine timer er blevet registreret! Tak for hjælpen!
+STR_ERROR_2627 = Fejl: Timer er allerede blevet tilføjet til dette laug idag.
+STR_FIRST_TIME_ERROR = Fejl: Ukendt Fejl
+
+STR_WRONG_PW = Du har brugt det forkerte adgangskode
+STR_MIN_HOUR = Du kan ikke logge 0 timer
+STR_MAX_HOUR = Du kan ikke logge mere end 24 timer
+STR_MORE_INFO = Indsæt venligst information i alle felter
+STR_INVALID_ACTION = Ugyldig handling
+STR_GUILD_NOT_SELECTED = Vælg et laug at ændre
+STR_PHONE_OR_EMAIL_REQUIRED = Udfyld telefon nummer ELLER email 
+STR_PHONE_ONLY = Telefon nummer må kun indeholde tal
+STR_USER_TYPE_ERROR = Bruger type er ikke valgt
+STR_NEW_USER_ADD = Ny bruger er blevet tilføjet
+STR_USER_NAME_ERROR = Navn er nødvendigt
+STR_SEARCH_EMPTY = Søgning fandt ingenting
+STR_PASSWORD_CHANGE = Din adgangskode er blevet ændret
+STR_PW_DOESNT_MATCH = Nye adgangskode felter er ikke ens
+STR_OLD_PW_MATCH_NEW = Den gamle adgangskode matcher det nye
+STR_OLD_PW_WRONG = Den gamle adgangskode er forkert
+STR_CONTRIBUTE_DELETE = Den valgte bidrag er blevet slettet
+STR_ALL_GUILDS = Alle laug
+STR_SELECT_USER = Vælg venligst en bruger først
+STR_INVALID_INPUT = Indsæt venligst gyldig information i feltet
+STR_DELETE_SUCCES = Dag er blevet slettet
+IMG_CH_TITLE = Vælg et nyt billede
+IMG_CH_EXT_FILTER = Kun billede filer
+CSV_CH_TITLE = Vælg placering
+CSV_CH_EXT_FILTER = Comma separated textfiles
+STR_ERROR_FILE_NOT_FOUND = Filen eksisterer ikke 
+STR_ERROR_FILE_NOT_FOUND_HEAD = Det valgte billede eksisterer ikke
+
+BTN_ADD_GUILD = Tilføj ny
+BTN_REMOVE_GUILD = Fjern
+LBL_GUILD_NAME = Laug Navn: 
+
+TXT_ADRESS = Adresse
+BTN_ADD= Tilføj
+
+
+CHART_TITLE = Bidrag af timer til 
+STR_EMPTY_ERROR = Må ikke være tom

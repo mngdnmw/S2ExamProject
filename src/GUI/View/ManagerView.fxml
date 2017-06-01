@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" fx:id="root" prefHeight="529.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerViewController">
+    <children>
+        <Label fx:id="lblUserName" layoutX="19.0" layoutY="22.0" prefHeight="19.0" prefWidth="489.0" text="Logged in as:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></Label>
+        <JFXComboBox fx:id="cmbGuildChooser" focusColor="#00c4ad" labelFloat="true" layoutX="517.0" layoutY="17.0" prefHeight="31.0" prefWidth="169.0" promptText="Guild Chooser" />
+        <JFXTabPane fx:id="tabPane" layoutX="11.0" layoutY="58.0" prefHeight="431.0" prefWidth="678.0" styleClass="jfx-tab-pane">
+            <tabs>
+                <Tab fx:id="tabVolunInfo" onSelectionChanged="#loadGuildView" text="User Information">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="678.0">
+                            <children>
+                                <Label id="lblTealBkgrnd" fx:id="lblNotes" layoutX="461.0" layoutY="38.0" text="Notes:">
+                  
+                                    <font>
+                                        <Font size="20.0" />
+                                    </font>
+                                </Label>
+                                <JFXTextField fx:id="txtSearch" focusColor="#00e2c7" layoutX="2.0" layoutY="15.0" prefHeight="29.0" prefWidth="171.0" promptText="Search" />
+                                <JFXButton id="btnConfirmTeal" fx:id="btnAddUser" buttonType="RAISED" layoutX="3.0" layoutY="359.0" maxHeight="31.0" onAction="#onBtnAddUserClicked" prefHeight="25.0" prefWidth="150.0" text="Add User" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="15.0" />
+                                    </font>
+                                </JFXButton>
+                                <JFXButton id="btnConfirmTeal" fx:id="btnEditInfo" buttonType="RAISED" layoutX="164.0" layoutY="359.0" maxHeight="31.0" onAction="#onEditInfoPressed" prefHeight="25.0" prefWidth="150.0" text="Edit Information" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font></JFXButton>
+                                <JFXTextArea fx:id="txtNotes" editable="false" focusColor="#00e2c7" layoutX="459.0" layoutY="57.0" prefHeight="287.0" prefWidth="220.0" stylesheets="@MainLayout.css" />
+                                <TableView fx:id="tblUsers" layoutX="2.0" layoutY="57.0" onMousePressed="#onTablePressed" prefHeight="293.0" prefWidth="451.0">
+                                    <columns>
+                                        <TableColumn fx:id="colName" prefWidth="148.0" text="Name" />
+                                        <TableColumn fx:id="colEmail" prefWidth="191.0" text="Email" />
+                                        <TableColumn fx:id="colStatus" prefWidth="110.0" text="Status" />
+                                    </columns>
+                                </TableView>
+                                <JFXCheckBox fx:id="chkVolunteers" layoutX="182.0" layoutY="27.0" onAction="#onCheckBoxAction" text="Volunteers" visible="false">
+                           <font>
+                              <Font size="12.0" />
+                           </font></JFXCheckBox>
+                                <JFXCheckBox fx:id="chkManagers" layoutX="284.0" layoutY="27.0" onAction="#onCheckBoxAction" text="Managers" visible="false">
+                           <font>
+                              <Font size="12.0" />
+                           </font></JFXCheckBox>
+                                <JFXCheckBox fx:id="chkAdmins" layoutX="372.0" layoutY="27.0" onAction="#onCheckBoxAction" text="Admins" visible="false">
+                           <font>
+                              <Font size="12.0" />
+                           </font></JFXCheckBox>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="tabGraphStats" onSelectionChanged="#loadGuildView" text="Graphs and Statistics">
+                    <content>
+                        <AnchorPane fx:id="rootGraph" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="678.0">
+                            <children>
+                                <LineChart fx:id="lineChartGuildHours" layoutX="9.0" layoutY="14.0" prefHeight="335.0" prefWidth="667.0">
+                                    <xAxis>
+                                        <CategoryAxis side="BOTTOM" fx:id="xAxis" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis fx:id="yAxis" side="LEFT" />
+                                    </yAxis>
+                                </LineChart>
+                                <StackPane fx:id="stckPaneGraphError" prefHeight="150.0" prefWidth="200.0" styleClass="loadingScreen" visible="false" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <children>
+                                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
+                                            <children>
+                                                <Label text="Please pick a guild and click refresh" textFill="WHITE">
+                                                    <font>
+                                                        <Font name="System Bold" size="32.0" />
+                                                    </font>
+                                                </Label>
+                                                <JFXButton buttonType="RAISED" onAction="#loadGuildView" prefHeight="128.0" prefWidth="134.0" styleClass="JFXRoundedButton" text="Refresh" textFill="WHITE">
+                                                    <font>
+                                                        <Font name="System Bold" size="25.0" />
+                                                    </font>
+                                                </JFXButton>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </StackPane>
+                        <JFXButton fx:id="btnRefresh" alignment="BOTTOM_CENTER" contentDisplay="CENTER" layoutX="367.0" layoutY="348.0" onAction="#refreshGraph" prefHeight="31.0" prefWidth="38.0" style="-fx-background-color: rgba(0,0,0,0); -fx-background-radius: 50%;" text=" ">
+                           <graphic>
+                              <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../Resources/RefreshIcon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                        <HBox alignment="CENTER" layoutX="20.0" layoutY="347.0" prefHeight="42.0" prefWidth="354.0">
+                           <children>
+                              <Label text="From:">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <JFXDatePicker fx:id="datePickerPeriodOne" prefHeight="30.0" prefWidth="135.0" />
+                              <Label text="To:">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <JFXDatePicker fx:id="datePickerPeriodTwo" prefHeight="30.0" prefWidth="135.0" />
+                           </children>
+                        </HBox>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="tabGuildManagement" onSelectionChanged="#loadGuildView" text="Guild Management">
+                    <content>
+                        <AnchorPane fx:id="anchorPaneGuild" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    </content>
+                </Tab>
+            <Tab fx:id="tabLog" text="Log Events">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="678.0">
+                     <children>
+                        <TableView fx:id="tblLog" layoutX="3.0" layoutY="21.0" maxWidth="1.7976931348623157E308" prefHeight="318.0" prefWidth="672.0">
+                          <columns>
+                            <TableColumn fx:id="colLogEventId" editable="false" prefWidth="40.0" text="ID" />
+                            <TableColumn fx:id="colLogEventDate" editable="false" prefWidth="102.0" text="Event date" />
+                              <TableColumn fx:id="colLogEventDesc" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="529.0" text="Event description" />
+                          </columns>
+                        </TableView>
+                        <JFXButton id="btnConfirmTeal" fx:id="btnRefreshLog" buttonType="RAISED" layoutX="4.0" layoutY="355.0" onAction="#updateLogTable" prefHeight="31.0" prefWidth="114.0" stylesheets="@MainLayout.css" text="Refresh Log" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            </tabs>
+        </JFXTabPane>
+        <JFXButton id="btnCancelGrey" fx:id="btnClose" buttonType="RAISED" layoutX="469.0" layoutY="488.0" onAction="#onBtnClosePressed" prefHeight="25.0" prefWidth="220.0" text="Close" textFill="WHITE">
+            <font>
+                <Font name="System Bold Italic" size="15.0" />
+            </font>
+        </JFXButton>
+    </children>
+</AnchorPane>
