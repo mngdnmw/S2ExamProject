@@ -42,6 +42,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -60,6 +61,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 
@@ -630,6 +632,15 @@ public class UserInfoViewController implements Initializable
         sortedData.comparatorProperty().bind(tableViewMain.comparatorProperty());
         tableViewMain.setItems(sortedData);
 
+        rowListener();
+
+    }
+
+    /**
+     * Adds a row listener to the table view.
+     */
+    private void rowListener()
+    {
         tableViewMain.setRowFactory(tv
                 -> 
                 {
@@ -671,7 +682,6 @@ public class UserInfoViewController implements Initializable
 
                     return row;
         });
-
     }
 
     /**
