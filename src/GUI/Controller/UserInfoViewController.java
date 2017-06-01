@@ -262,18 +262,20 @@ public class UserInfoViewController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        userInfoView=MOD_FAC.isUserInfoView();
 
         if (userInfoView = true)
         {
             setCurrentUser(MOD_FAC.getCurrentUser());
+            
             checkTypeOfUser();
+            setUserInfo();
         }
         else
-        //setCurrentUser();
-        //Need to do this
+        
 
         {
-            setUserInfo();
+            setCurrentUser(MOD_FAC.getSelectedUser());
         }
         setTextAll();
         setupGuildList();
@@ -614,6 +616,7 @@ public class UserInfoViewController implements Initializable
                 if (!row.isEmpty())
                 {
                     stackPdeleteHours.setVisible(true);
+                    stackPdeleteHours.toFront();
                     MOD_FAC.fadeInTransition(Duration.millis(250), stackPdeleteHours);
 
                     int selectedDayIndex = tableViewMain.getSelectionModel().getSelectedIndex();
@@ -1004,11 +1007,13 @@ public class UserInfoViewController implements Initializable
      */
     private void setUserInfo()
     {
+        
         if (userInfoView = true)
         {
             try
             {
-                AnchorPane newLoadedPane = FXMLLoader.load(getClass().getResource("/GUI/View/GuildManagementView.fxml"));
+                anchPGenInfo.getChildren().clear();
+                AnchorPane newLoadedPane = FXMLLoader.load(getClass().getResource("/GUI/View/EditGrid.fxml"));
                 anchPGenInfo.getChildren().add(newLoadedPane);
             }
             catch (IOException ex)

@@ -20,6 +20,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class ModelFacade
@@ -69,6 +70,21 @@ public class ModelFacade
     public void setCurrentUser(User currentUser)
     {
         LOG_MOD.setCurrentUser(currentUser);
+    }
+    
+    public User getSelectedUser()
+    {
+        return LOG_MOD.getSelectedUser();
+    }
+
+    public void setSelectedUser(User selectedUser)
+    {
+        LOG_MOD.setSelectedUser(selectedUser);
+    }
+
+    public void resetSelectedUser()
+    {
+        LOG_MOD.resetSelectedUser();
     }
 
     //Animation Model
@@ -202,7 +218,10 @@ public class ModelFacade
     {
         VIEW_CHANG_MOD.changeView(GUINumb);
     }
-
+    public Stage getCurrentStage()
+    {
+    return VIEW_CHANG_MOD.getNxtStage();
+    }
     //Volunteer data model
     public ObservableList<Day> getWorkedDays(User user)
     {
@@ -349,6 +368,11 @@ public class ModelFacade
         CAL_MOD.formatCalendar(datePicker);
     }
     
+    
+    public boolean isUserInfoView()
+    {
+        return VIEW_CHANG_MOD.isUserInfoView();
+    }
 
     public String parseExportHours(List<User> users) {
         return BLL_FAC.parseExportHours(users);

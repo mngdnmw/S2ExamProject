@@ -90,7 +90,6 @@ public class ManagerEditViewController implements Initializable
     @FXML
     private AnchorPane root;
     boolean editPopup = false;
-    ManagerViewController mevController;
     File newImg;
     private static ModelFacade MOD_FACADE = new ModelFacade();
     FilteredList<Day> filteredData = new FilteredList<>(FXCollections.observableArrayList());
@@ -221,11 +220,6 @@ public class ManagerEditViewController implements Initializable
         Thread t = new Thread(r);
         t.setDaemon(true);
         t.start();
-    }
-
-    public void setController(ManagerViewController c)
-    {
-        this.mevController = c;
     }
 
     public void setText()

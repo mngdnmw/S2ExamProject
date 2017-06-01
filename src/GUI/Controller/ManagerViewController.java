@@ -498,24 +498,20 @@ public class ManagerViewController implements Initializable
         {
             selectedUser = tblUsers.getSelectionModel().getSelectedItem();
             Stage primStage = (Stage) tblUsers.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/ManagerEditView.fxml"));
-            ManagerEditViewController.setSelectedUser(selectedUser);
+            
+            MOD_FAC.changeView(2);
+            MOD_FAC.setSelectedUser(selectedUser);
 
-            Parent root = loader.load();
-
-            // Fetches controller from view
-            ManagerEditViewController controller = loader.getController();
-            controller.setController(this);
-
+            
             // Sets new stage as modal window
-            Stage stageView = new Stage();
+            Stage stageView = MOD_FAC.getCurrentStage();
             stageView.setScene(new Scene(root));
 
             stageView.setOnHiding(new EventHandler<WindowEvent>()
             {
                 public void handle(WindowEvent we)
                 {
-
+                    MOD_FAC.resetSelectedUser();
                     setTableItems();
                 }
             });
@@ -524,6 +520,7 @@ public class ManagerViewController implements Initializable
             {
                 public void handle(WindowEvent we)
                 {
+                    MOD_FAC.resetSelectedUser();
                     setTableItems();
                 }
             });
