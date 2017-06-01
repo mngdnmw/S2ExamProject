@@ -54,13 +54,17 @@ public class ManagerEditViewController implements Initializable
 {
 
     @FXML
+    private JFXButton JFXBtnUpdatePhoto;
+    @FXML
+    private JFXButton btnChangePWConfirm;
+    @FXML
+    private JFXButton btnCancel;
+    @FXML
     private JFXButton JFXBtnAccept;
     @FXML
     private JFXButton JFXBtnCancel;
     @FXML
     private ImageView imgVwProfilePic;
-    @FXML
-    private JFXButton JFXBtnUpdatePhoto;
     @FXML
     private JFXTextField txtName;
     @FXML
@@ -86,7 +90,6 @@ public class ManagerEditViewController implements Initializable
     @FXML
     private AnchorPane root;
     boolean editPopup = false;
-    ManagerViewController mevController;
     File newImg;
     private static ModelFacade MOD_FACADE = new ModelFacade();
     FilteredList<Day> filteredData = new FilteredList<>(FXCollections.observableArrayList());
@@ -95,6 +98,8 @@ public class ManagerEditViewController implements Initializable
     boolean finishedService;
     @FXML
     private HBox hBoxCalAll;
+    @FXML
+    private HBox hBoxBtnsInPOP;
     @FXML
     private JFXTextField txtFSearchDate;
     @FXML
@@ -112,10 +117,6 @@ public class ManagerEditViewController implements Initializable
     private Label lblNewPassword;
     @FXML
     private Label lblNewPassword2;
-    @FXML
-    private JFXButton btnChangePWConfirm;
-    @FXML
-    private JFXButton btnCancel;
 
     private boolean isIncorrect;
 
@@ -137,8 +138,7 @@ public class ManagerEditViewController implements Initializable
     private Label lblGuildInPop;
     @FXML
     private JFXComboBox<Guild> comboboxGuild;
-    @FXML
-    private HBox hBoxBtnsInPOP;
+
     @FXML
     private JFXButton btnAddHoursPOP;
     @FXML
@@ -201,33 +201,25 @@ public class ManagerEditViewController implements Initializable
         setUserImage();
         serviceInitializer.setOnSucceeded(e
                 -> setupTableView(MOD_FACADE.getLang("STR_SEARCH_EMPTY")));
-//        if (selectedUser.getType() >= 1)
-//        {
-//            serviceAllVolunteers.start();
-//        }
+
     }
 
     public void setUserImage()
     {
         Runnable r = ()
-                -> 
-                {
-                    
-                    Image img = new Image(MOD_FACADE.getUserImage(selectedUser));
-                    if (img != null)
-                    {
-                        imgVwProfilePic.setImage(img);
-                    }
+                ->
+        {
+
+            Image img = new Image(MOD_FACADE.getUserImage(selectedUser));
+            if (img != null)
+            {
+                imgVwProfilePic.setImage(img);
+            }
 
         };
         Thread t = new Thread(r);
         t.setDaemon(true);
         t.start();
-    }
-
-    public void setController(ManagerViewController c)
-    {
-        this.mevController = c;
     }
 
     public void setText()
@@ -293,11 +285,11 @@ public class ManagerEditViewController implements Initializable
         AnchorPane.setRightAnchor(stckPaneLoad, 0.0);
         serviceAllVolunteers.restart();
         serviceAllVolunteers.setOnSucceeded(e
-                -> 
-                {
+                ->
+        {
 
-                    Stage stage = (Stage) JFXBtnAccept.getScene().getWindow();
-                    stage.close();
+            Stage stage = (Stage) JFXBtnAccept.getScene().getWindow();
+            stage.close();
         });
     }
 
@@ -369,21 +361,21 @@ public class ManagerEditViewController implements Initializable
         colGuild.setCellValueFactory(cellData -> cellData.getValue().guildProperty());
 
         txtFSearchDate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
-                -> 
-                {
-                    filteredData.setPredicate(day
-                            -> 
-                            {
-                                String regex = "[^a-zA-Z0-9\\s]";
-                                Boolean search
-                                        = day.dateProperty().getValue().replaceAll(regex, "")
-                                        .contains(newValue.replaceAll(regex, ""))
-                                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
-                                        contains(newValue.toLowerCase().replaceAll(regex, ""));
+                ->
+        {
+            filteredData.setPredicate(day
+                    ->
+            {
+                String regex = "[^a-zA-Z0-9\\s]";
+                Boolean search
+                        = day.dateProperty().getValue().replaceAll(regex, "")
+                                .contains(newValue.replaceAll(regex, ""))
+                        || day.guildProperty().getValue().toLowerCase().replaceAll(regex, "").
+                                contains(newValue.toLowerCase().replaceAll(regex, ""));
 
-                                return search;
+                return search;
 
-                    });
+            });
         });
 
         SortedList<Day> sortedData = new SortedList<>(filteredData);
