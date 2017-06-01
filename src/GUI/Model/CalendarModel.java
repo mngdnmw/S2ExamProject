@@ -1,16 +1,21 @@
 package GUI.Model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
-
 public class CalendarModel
 {
-    
+
     public void formatCalendar(DatePicker datePicker)
     {
         StringConverter converter = new StringConverter<LocalDate>()
@@ -69,5 +74,34 @@ public class CalendarModel
                 };
             }
         });
+    }
+
+    public boolean activeLastYear(String lastWorked) 
+    {
+
+        try
+        {
+            SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+            
+            Date today = new Date();
+            
+            Date lastActive = myFormat.parse(lastWorked);
+            
+            long diff = today.getTime() - lastActive.getTime();
+            
+            long daysDiff = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+            
+            if (daysDiff > 366)
+            {
+                return false;
+            }
+            
+            return true;
+        }
+        catch (ParseException ex)
+        {
+            Logger.getLogger(CalendarModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 }

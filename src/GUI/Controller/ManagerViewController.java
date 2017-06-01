@@ -45,6 +45,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -59,11 +60,12 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 public class ManagerViewController implements Initializable
 {
-
+    
     @FXML
     private JFXComboBox<Guild> cmbGuildChooser;
     @FXML
@@ -117,7 +119,7 @@ public class ManagerViewController implements Initializable
     @FXML
     private TableColumn<User, String> colName;
     @FXML
-    private TableColumn<User, Integer> colPhone;
+    private TableColumn<User, String> colPhone;
     @FXML
     private TableColumn<User, String> colEmail;
     @FXML
@@ -208,12 +210,12 @@ public class ManagerViewController implements Initializable
                 @Override
                 protected Object call() throws Exception
                 {
-
+                    
                     MOD_FAC.setAllAdminsIntoArray();
                     MOD_FAC.setAllManagersIntoArray();
                     MOD_FAC.setAllVolunteersIntoArray();
                     return null;
-
+                    
                 }
             };
         }
@@ -231,16 +233,16 @@ public class ManagerViewController implements Initializable
         setupTableView(MOD_FAC.getLang("TBL_LOADING"));
         cmbBoxSetup();
         setOrderTable();
-
+        
         serviceInitializer.start();
         serviceInitializer.setOnSucceeded(e
                 ->
         {
             setTableItems();
             setupTableView(MOD_FAC.getLang("STR_SEARCH_EMPTY"));
-
+            
         });
-
+        
         serviceInitializer.setOnFailed(e -> setupTableView(MOD_FAC.getLang("TAB_ERR")));
     }
 
@@ -251,13 +253,13 @@ public class ManagerViewController implements Initializable
     {
         xAxis.setLabel(MOD_FAC.getLang("TAB_MONTH"));
         yAxis.setLabel(MOD_FAC.getLang("STR_AXIS_HOURS"));
-
+        
         btnAddUser.setText(MOD_FAC.getLang("BTN_ADD_USER"));
         btnClose.setText(MOD_FAC.getLang("BTN_CLOSE"));
         btnEditInfo.setText(MOD_FAC.getLang("BTN_EDIT_INFO"));
         chkManagers.setText(MOD_FAC.getLang("CHK_MANAGERS"));
         chkVolunteers.setText(MOD_FAC.getLang("CHK_VOLUNTEERS"));
-
+        
         lblUserName.setText(MOD_FAC.getLang("LBL_USERNAME"));
         lblNotes.setText(MOD_FAC.getLang("LBL_NOTES"));
         txtSearch.setPromptText(MOD_FAC.getLang("PROMPT_SEARCH_USER"));
@@ -288,9 +290,9 @@ public class ManagerViewController implements Initializable
             ObservableList guildList = FXCollections.observableArrayList();
             guildList.add(new Guild(-1, MOD_FAC.getLang("STR_ALL_GUILDS")));
             guildList.addAll(MOD_FAC.getAllSavedGuilds());
-
+            
             cmbGuildChooser.setItems(guildList);
-
+            
             cmbGuildChooser.setEditable(true);
             new AutoCompleteComboBoxListener(cmbGuildChooser);
             MOD_FAC.formatCalendar(datePickerPeriodOne);
@@ -307,11 +309,11 @@ public class ManagerViewController implements Initializable
         colName.setCellValueFactory(new PropertyValueFactory("name"));
         colPhone.setCellValueFactory(new PropertyValueFactory("phone"));
         colEmail.setCellValueFactory(new PropertyValueFactory("email"));
-
+        
         colLogEventId.setCellValueFactory(new PropertyValueFactory("id"));
         colLogEventDate.setCellValueFactory(new PropertyValueFactory("time"));
         colLogEventDesc.setCellValueFactory(new PropertyValueFactory("description"));
-
+        
         colLogEventId.setSortType(TableColumn.SortType.ASCENDING);
         tblLog.getSortOrder().add(colLogEventId);
     }
@@ -324,17 +326,17 @@ public class ManagerViewController implements Initializable
     private void setTableItems()
     {
         observableUsers.clear();
-
+        
         if (currentUser.getType() == 1)
         {
             observableUsers.addAll(MOD_FAC.getAllSavedVolunteers());
         }
         if (currentUser.getType() == 2)
         {
-
+            
             observableUsers.addAll(MOD_FAC.getAllSavedUsers());
         }
-
+        
     }
 
     /**
@@ -365,13 +367,13 @@ public class ManagerViewController implements Initializable
                 {
                     String currentValue = txtSearch.getText();
                     Boolean search = false;
-
+                    
                     String regex = "[^a-zA-Z0-9\\s]";
                     Boolean textFieldContains = user.emailProperty().getValue().replaceAll(regex, "")
                             .contains(currentValue.replaceAll(regex, ""))
                             || user.nameProperty().getValue().toLowerCase().replaceAll(regex, "").
                                     contains(currentValue.toLowerCase().replaceAll(regex, ""));
-
+                    
                     if (cmbGuildChooser.getSelectionModel().getSelectedItem().getId() == -1)
                     {
                         if (textFieldContains)
@@ -392,18 +394,18 @@ public class ManagerViewController implements Initializable
                             }
                         }
                     }
-
+                    
                     return search;
-
+                    
                 });
                 sortedData.comparatorProperty().bind(tblUsers.comparatorProperty());
                 tblUsers.setItems(sortedData);
             }
-
+            
         });
         cmbGuildChooser.setConverter(new StringConverter<Guild>()
         {
-
+            
             @Override
             public String toString(Guild object)
             {
@@ -413,7 +415,7 @@ public class ManagerViewController implements Initializable
                 }
                 return object.toString();
             }
-
+            
             @Override
             public Guild fromString(String string)
             {
@@ -424,12 +426,12 @@ public class ManagerViewController implements Initializable
                     {
                         return guild;
                     }
-
+                    
                 }
                 return findGuild;
             }
         });
-
+        
     }
 
     /**
@@ -438,27 +440,27 @@ public class ManagerViewController implements Initializable
     public void handleAddUserPopup()
     {
         selectedUser = null;
-
+        
         try
         {
             Stage primStage = (Stage) tblUsers.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/View/ManagerAddUserView.fxml"));
-
+            
             Parent root = loader.load();
 
             // Sets new stage as modal window
             Stage stageView = new Stage();
             stageView.setScene(new Scene(root));
-
+            
             stageView.setOnHiding(new EventHandler<WindowEvent>()
             {
                 public void handle(WindowEvent we)
                 {
-
+                    
                     setTableItems();
                 }
             });
-
+            
             stageView.setOnCloseRequest(new EventHandler<WindowEvent>()
             {
                 public void handle(WindowEvent we)
@@ -466,17 +468,17 @@ public class ManagerViewController implements Initializable
                     setTableItems();
                 }
             });
-
+            
             stageView.initModality(Modality.WINDOW_MODAL);
             stageView.initOwner(primStage);
-
+            
             stageView.show();
         }
         catch (Exception e)
         {
             System.out.println(e);
         }
-
+        
     }
 
     /**
@@ -502,11 +504,10 @@ public class ManagerViewController implements Initializable
             MOD_FAC.changeView(2);
             MOD_FAC.setSelectedUser(selectedUser);
 
-            
             // Sets new stage as modal window
             Stage stageView = MOD_FAC.getCurrentStage();
             stageView.setScene(new Scene(root));
-
+            
             stageView.setOnHiding(new EventHandler<WindowEvent>()
             {
                 public void handle(WindowEvent we)
@@ -515,7 +516,7 @@ public class ManagerViewController implements Initializable
                     setTableItems();
                 }
             });
-
+            
             stageView.setOnCloseRequest(new EventHandler<WindowEvent>()
             {
                 public void handle(WindowEvent we)
@@ -524,10 +525,10 @@ public class ManagerViewController implements Initializable
                     setTableItems();
                 }
             });
-
+            
             stageView.initModality(Modality.WINDOW_MODAL);
             stageView.initOwner(primStage);
-
+            
             stageView.show();
         }
         catch (Exception e)
@@ -547,7 +548,7 @@ public class ManagerViewController implements Initializable
     private void onEditInfoPressed(ActionEvent event)
     {
         selectedUser = null;
-
+        
         if (tblUsers.getSelectionModel().getSelectedItem() != null)
         {
             handleEditView();
@@ -569,11 +570,11 @@ public class ManagerViewController implements Initializable
     private void onTablePressed(MouseEvent event)
     {
         selectedUser = null;
-
+        
         if (event.isPrimaryButtonDown() && event.getClickCount() == 1)
         {
             selectedUser = tblUsers.getSelectionModel().getSelectedItem();
-
+            
             txtNotes.setText(selectedUser.getNote());
         }
         else if (event.isPrimaryButtonDown() && event.getClickCount() == 2)
@@ -581,9 +582,9 @@ public class ManagerViewController implements Initializable
             handleEditView();
         }
         selectedUser = tblUsers.getSelectionModel().getSelectedItem();
-
+        
         tblUsers.setContextMenu(setupContextMenu());
-
+        
     }
 
     /**
@@ -604,7 +605,7 @@ public class ManagerViewController implements Initializable
         contextMenu.getItems().add(exportData);
         MenuItem exportHours = new MenuItem(MOD_FAC.getLang("MENU_ITEM_EXPORT_USER"));
         contextMenu.getItems().add(exportHours);
-
+        
         EventHandler thisEmailEvent = new EventHandler()
         {
             @Override
@@ -664,10 +665,10 @@ public class ManagerViewController implements Initializable
     }
 
     /**
-     * Exports a comma separated file including hours and contact details of 
-     * the individual/s selected previously.
-     * 
-     * @param type = type of file that will be exported. In our case it is a 
+     * Exports a comma separated file including hours and contact details of the
+     * individual/s selected previously.
+     *
+     * @param type = type of file that will be exported. In our case it is a
      * comma separated file.
      */
     private void export(ExportType type)
@@ -696,9 +697,9 @@ public class ManagerViewController implements Initializable
 
     /**
      * Loads the guild management view into the tab pane in the manager view.
-     * 
+     *
      * @param event = when tabGuildManagement is pressed.
-     * 
+     *
      * @throws IOException = cannot find guild management view.
      */
     @FXML
@@ -715,20 +716,20 @@ public class ManagerViewController implements Initializable
     /**
      * Amends the observableUsers based on what filters have been applied. I.e.
      * volunteers, managers or administrators.
-     * 
-     * @param event = when either volunteers, managers or administrators boxes 
+     *
+     * @param event = when either volunteers, managers or administrators boxes
      * have been ticked/selected.
      */
     @FXML
     private void onCheckBoxAction(ActionEvent event)
     {
         observableUsers.clear();
-
+        
         if (chkAdmins.selectedProperty().get() == false && chkManagers.selectedProperty().get() == false && chkVolunteers.selectedProperty().get() == false)
         {
             observableUsers.addAll(MOD_FAC.getAllSavedUsers());
         }
-
+        
         if (chkAdmins.selectedProperty().get() == true)
         {
             observableUsers.addAll(MOD_FAC.getAllSavedAdmins());
@@ -743,7 +744,6 @@ public class ManagerViewController implements Initializable
         }
     }
 
-
     /**
      * Sets up the main table view in the view which stores user objects.
      *
@@ -751,12 +751,62 @@ public class ManagerViewController implements Initializable
      */
     private void setupTableView(String str)
     {
-
+        
         tblUsers.setPlaceholder(new Label(str));
         colName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        colPhone.setCellValueFactory(val -> val.getValue().phoneProperty().asObject());
+        //colPhone.setCellValueFactory(val -> val.getValue().phoneProperty().asObject());
+        colPhone.setCellValueFactory(cellData -> cellData.getValue().lastWorkedDayProperty());
         colEmail.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
-
+        
+        sortedData.comparatorProperty().bind(tblUsers.comparatorProperty());
+        tblUsers.setItems(sortedData);
+        
+        searchListener();
+        colPhone.setCellFactory(getCustomCellFactory());
+    }
+    
+    public String getCSSClass(boolean active)
+    {
+        String cssClass = "";
+        if (active!=true)
+        {
+            cssClass = "inactive";
+            
+        }
+        else 
+        {
+            cssClass = "active";
+        }
+        return cssClass;
+        
+    }
+    
+    private Callback<TableColumn<User, String>, TableCell<User, String>> getCustomCellFactory()
+    {
+        return (TableColumn<User, String> param)
+                ->        
+        {
+            return new TableCell<User, String>()
+            {
+                @Override
+                public void updateItem(final String lastWorked, boolean empty)
+                {
+                    
+                    if (lastWorked != null)
+                    {
+                        setText(lastWorked);
+                        boolean active = MOD_FAC.activeLastYear(lastWorked);
+                        String warningClass = getCSSClass(active);
+                        getStyleClass().clear();
+                        getStyleClass().add(warningClass);
+                    }
+                }
+            };
+        };
+    }
+    
+    private void searchListener()
+    {
         txtSearch.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)
                 ->
         {
@@ -769,7 +819,7 @@ public class ManagerViewController implements Initializable
                                 .contains(newValue.replaceAll(regex, ""))
                         || user.nameProperty().getValue().toLowerCase().replaceAll(regex, "").
                                 contains(newValue.toLowerCase().replaceAll(regex, ""));
-
+                
                 if (cmbGuildChooser.getSelectionModel().getSelectedItem().getId() == -1)
                 {
                     return search;
@@ -784,19 +834,15 @@ public class ManagerViewController implements Initializable
                         }
                     }
                 }
-
+                
                 return false;
             });
         });
-
-        sortedData.comparatorProperty().bind(tblUsers.comparatorProperty());
-        tblUsers.setItems(sortedData);
-
     }
 
     /**
      * Calls the database and updates the event logs table view.
-     * 
+     *
      * @param event = when update log button has been pressed.
      */
     @FXML
@@ -807,18 +853,18 @@ public class ManagerViewController implements Initializable
         tblLog.getSortOrder().clear();
         tblLog.getSortOrder().add(colLogEventId);
     }
+
     /**
      * Reloads the graph according to new specifications (e.g. dates).
-     * 
+     *
      * @param event = when refresh icon has been pressed.
      */
-
     @FXML
     private void refreshGraph(ActionEvent event)
     {
         chartArray.clear();
         lineChartGuildHours.getData().clear();
-
+        
         if (cmbGuildChooser.getSelectionModel().getSelectedItem() != null)
         {
             stckPaneGraphError.setVisible(false);
@@ -841,7 +887,7 @@ public class ManagerViewController implements Initializable
                 stckPaneLoad.setVisible(false);
             });
             serviceGraphStats.setOnFailed(e -> stckPaneLoad.setVisible(false));
-
+            
         }
         else
         {

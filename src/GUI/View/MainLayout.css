@@ -177,3 +177,30 @@
     -fx-background-radius: 1;
 }
 
+.inactive
+{
+    -fx-background-color: #B0B0B0;
+    -fx-text-alignment: center;
+}
+
+.inactive:selected
+{
+    -fx-background-color: #00c4ad;
+    -fx-background-insets: 0;
+    -fx-background-radius: 1;
+    -fx-text-fill: white;
+    
+}
+.active
+{
+    -fx-background-color: #00c4ad;
+    -fx-text-alignment: center;
+}
+
+.active:selected
+{
+    -fx-background-color: #00c4ad;
+    -fx-background-insets: 0;
+    -fx-background-radius: 1;  
+    -fx-text-fill: white;
+}
