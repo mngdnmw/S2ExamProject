@@ -194,7 +194,10 @@ public class ManagerAddUserController implements Initializable
 
                                 try
                                 {
-                                    MOD_FAC.updateUserImage(MOD_FAC.getAllUsers().get(MOD_FAC.getAllUsers().size() - 1), newImg);
+                                    if (newImg != null)
+                                    {
+                                        MOD_FAC.updateUserImage(MOD_FAC.getAllUsers().get(MOD_FAC.getAllUsers().size() - 1), newImg);
+                                    }
                                 }
                                 catch (FileNotFoundException ex)
                                 {

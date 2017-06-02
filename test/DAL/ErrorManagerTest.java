@@ -5,6 +5,7 @@
  */
 package DAL;
 
+import BLL.ErrorManager;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

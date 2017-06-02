@@ -1,5 +1,6 @@
 package DAL;
 
+import DAL.ErrorManager;
 import BE.User;
 import BE.Volunteer;
 import BE.Admin;

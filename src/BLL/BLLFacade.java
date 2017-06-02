@@ -24,7 +24,7 @@ public class BLLFacade
     private final static LanguageHandler LANG_HAND = new LanguageHandler();
     private final static ExportParser exportParser = new ExportParser();
     private final static GraphHandler GRAPH_HAND = new GraphHandler();
-
+    
     public User getUserFromLogin(String username, String password)
     {
         return LOG_HAND.getUserFromLogin(username, password);

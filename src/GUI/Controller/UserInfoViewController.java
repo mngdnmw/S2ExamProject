@@ -283,7 +283,6 @@ public class UserInfoViewController implements Initializable
             setUserInfo();
         }
         else
-
         {
             setCurrentUser(MOD_FAC.getSelectedUser());
             setText();
@@ -848,7 +847,7 @@ public class UserInfoViewController implements Initializable
 
         };
         Thread t = new Thread(r);
-        t.setDaemon(true);
+        t.setDaemon(false);
         t.start();
     }
 

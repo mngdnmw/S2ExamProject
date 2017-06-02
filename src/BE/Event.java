@@ -1,18 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package BE;
 
 import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 
-/**
- *
- * @author Kristof
- */
 public class Event {
     private int id;
     private Timestamp timestamp;
