@@ -1,5 +1,6 @@
 package DAL;
 
+import DAL.ErrorManager;
 import BE.Day;
 import BE.EnumCache.Lang;
 import BE.Event;
