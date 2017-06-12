@@ -1,5 +1,6 @@
 package DAL;
 
+import DAL.ErrorManager;
 import BE.Day;
 import BE.EnumCache.Lang;
 import BE.Event;
@@ -23,8 +24,7 @@ public class DALFacade
     private final static EventLogger EVENT_LOGGER = new EventLogger();
 
     private final static ExportManager EXPORT_MAN = new ExportManager();
-    private final static ErrorManager ERROR_MAN = new ErrorManager();
-
+    private final static  ErrorManager ERROR_MAN = new ErrorManager();
     public void logHours(String username, String date, int hours, int guildId)
     {
         int userid = -1;

@@ -1,5 +1,6 @@
 package DAL;
 
+import DAL.ErrorManager;
 import BE.Day;
 import BE.Guild;
 import BE.User;
