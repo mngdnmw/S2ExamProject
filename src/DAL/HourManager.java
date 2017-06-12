@@ -1,21 +1,23 @@
 package DAL;
 
+import DAL.ErrorManager;
 import BE.Day;
 import BE.Guild;
 import BE.User;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class HourManager extends ConnectionManager
 {
+
+    ErrorManager erMan = new ErrorManager();
 
     /**
      * Logs hours into the database using userId, guildId, hours and date.
@@ -25,7 +27,7 @@ public class HourManager extends ConnectionManager
      * @param hours
      * @param guildId
      */
-    public void logHours(int userId, String date, int hours, int guildId) throws SQLException
+    public void logHours(int userId, String date, int hours, int guildId)
     {
         try (Connection con = super.getConnection())
         {
@@ -37,24 +39,34 @@ public class HourManager extends ConnectionManager
             pstat.setInt(3, hours);
             pstat.setInt(4, guildId);
             pstat.executeUpdate();
-
+        }
+        catch (SQLException ex)
+        {
+            erMan.setErrorCode(ex.getErrorCode());
+            System.out.println("" + ex.getErrorCode());
         }
     }
 
-    void editHours(int userId, String date, int hours, int guildId) throws SQLException
+    void editHours(int userId, String date, int hours, int guildId)
     {
         try (Connection con = super.getConnection())
         {
             String sqlCommand
-                    = "UPDATE [hour] SET [date] = ?, [hours] =?, [guildid]=? WHERE userid =?";
+                    = "UPDATE [hour] SET [hours] =?  WHERE userid =? AND [date] = ? AND [guildid]=?";
 
             PreparedStatement pstat = con.prepareStatement(sqlCommand);
-            pstat.setString(1, date);
-            pstat.setInt(2, hours);
-            pstat.setInt(3, guildId);
-            pstat.setInt(4, userId);
+            pstat.setInt(1, hours);
+            pstat.setInt(2, userId);
+            pstat.setString(3, date);
+            pstat.setInt(4, guildId);
             pstat.executeUpdate();
 
+        }
+        catch (SQLException ex)
+        {
+
+            erMan.setErrorCode(ex.getErrorCode());
+            Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -84,25 +96,12 @@ public class HourManager extends ConnectionManager
         }
         catch (SQLException ex)
         {
+
+            erMan.setErrorCode(ex.getErrorCode());
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
-            System.err.print(ex + "Can't get list of days worked!!!");
         }
 
         return workedDays;
-    }
-
-    public void editWorkedDay(Day day, User user, String date, int hour, String guild)
-    {
-
-        try (Connection con = super.getConnection())
-        {
-
-        }
-        catch (SQLException ex)
-        {
-            Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
     }
 
     public void deleteWorkedDay(User user, Day day)
@@ -122,6 +121,8 @@ public class HourManager extends ConnectionManager
 
         catch (SQLException ex)
         {
+
+            erMan.setErrorCode(ex.getErrorCode());
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Could not delete worked day");
 
@@ -135,21 +136,19 @@ public class HourManager extends ConnectionManager
      * @param guild
      * @return
      */
-    public List<List<Day>> getHoursForGuild(Guild guild)
+    public List<List<Day>> getHoursForGuild(Guild guild, LocalDate periodOne, LocalDate periodTwo)
     {
         ArrayList<List<Day>> allHours = new ArrayList<>();
         ArrayList<Day> managerHours = new ArrayList<>();
         ArrayList<Day> volunteerHours = new ArrayList<>();
         GeneralInfoManager genMan = new GeneralInfoManager();
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        String periodOne = (year) + "-01-01";
-        String periodTwo = year + "-12-31";
+
         try (Connection con = super.getConnection())
         {
             String query = "SELECT * FROM hour\n"
                     + "WHERE date BETWEEN '" + periodOne + "' AND '" + periodTwo + "' \n "
-                    + "AND  guildid = ?";
+                    + "AND  guildid = ?"
+                    + " ORDER BY [date]";
             PreparedStatement pstmt = con.prepareStatement(query);
             pstmt.setInt(1, guild.getId());
             ResultSet rs = pstmt.executeQuery();
@@ -159,9 +158,10 @@ public class HourManager extends ConnectionManager
                 String guildName = guild.getName();
                 int guildid = guild.getId();
                 int hour = rs.getInt("hours");
-                if (genMan.getUserInfo(rs.getInt("userid")).getType() >= 1)
+                if (genMan.getUserInfo(rs.getInt("userid")).getType() == 1)
                 {
                     managerHours.add(new Day(date, hour, guildName, guildid));
+
                 }
                 else
                 {
@@ -176,9 +176,12 @@ public class HourManager extends ConnectionManager
         }
         catch (SQLException ex)
         {
+
+            erMan.setErrorCode(ex.getErrorCode());
             Logger.getLogger(HourManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
 
+  
 }

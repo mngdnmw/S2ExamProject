@@ -11,7 +11,6 @@
     -fx-content-display: top;
     -fx-background-color: #00e2c7;
     -fx-button-type: RAISED;
-    /*#00c4ad*/
 }
 .JFXButtonLogHours
 {
@@ -22,7 +21,6 @@
 {
     -fx-graphic:url("../Images/info-white.png");
 
-    /*#00d8bf;*/
 }
 .popup{
 
@@ -44,7 +42,6 @@
     -fx-border-color: Black;
     -fx-border-radius:5 5 5 5;
     -fx-background-radius:5 5 5 5;
-    /* top-left, top-right, bottom-right, and bottom-left corners, in that order. */
 }
 .jfx-snackbar-toast{
     -fx-font: bold 20px/30px System;
@@ -62,16 +59,6 @@
 {
     -fx-font:Bold 18px/30px System;
     -fx-text-fill: #353535;
-}
-.loginbuttons{
-    -fx-background-radius: 5px;
-    -fx-background-color: #00e2c7;
-    -fx-font:italic bold 20px/30px System;
-    -fx-text-fill: #FFFFFF;
-}.cancelButtons{
-    -fx-background-radius: 5px;
-    -fx-background-color: #5C5858;
-    -fx-text-fill: #FFFFFF;
 }
 
 .loginwindow{
@@ -119,10 +106,33 @@
     -fx-text-fill: #FFFFFF;
 }
 
-#higherClearanceBtn{
+#btnConfirmTeal{
     -fx-background-color: #00c4ad;
-    -fx-text-fill: rgb(255, 255, 255);
+    -fx-text-fill: white;
     -jfx-button-type: RAISED;
+    -fx-font: bold 15px System;
+}
+
+#btnConfirmDarkTeal{
+    -fx-background-color: #029e99;
+    -fx-text-fill: white;
+    -jfx-button-type: RAISED;
+    -fx-font: bold 15px System;
+}
+
+
+#btnCancelGrey{
+    -fx-background-color: #B0B0B0;
+    -fx-text-fill: white;
+    -jfx-button-type: RAISED;
+    -fx-font: bold 15px System;
+}
+
+#lblTealBkgrnd{
+    -fx-background-color: #00c4ad;
+    -fx-font: bold 15px System;
+    -fx-text-fill: black;
+    
 }
 .chart-series-line {    
     -fx-stroke-width: 4px;
@@ -135,5 +145,47 @@
 .default-color1.chart-line-symbol { -fx-background-color: #00e2c7, white; }
 .default-color2.chart-line-symbol { -fx-background-color: #dda0dd, white; }
 
+/*Tableview*/
+.table-view{
+    -fx-border-color: white;
+    -fx-border-width: 0px;
+}
 
 
+.table-view .column-header-background{
+    -fx-background-color: #029e99;
+}
+
+.table-view .column-header-background .label{
+    -fx-background-color: #029e99;
+    -fx-text-fill: white;
+    -fx-font-size: 15px; 
+}
+
+.table-view .column-header {
+    -fx-background-color: #029e99;
+}
+
+.table-view .table-cell{
+    -fx-alignment: center;
+}
+
+
+.table-row-cell:selected {
+    -fx-background-color: #00c4ad;
+    -fx-background-insets: 0;
+    -fx-background-radius: 1;
+}
+
+.inactive
+{
+    -fx-background-color: #B0B0B0;
+    -fx-alignment: CENTER;
+}
+
+
+.active
+{
+    -fx-background-color: #029e99;
+    -fx-alignment: CENTER;
+}

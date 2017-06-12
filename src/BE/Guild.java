@@ -1,35 +1,51 @@
 package BE;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Guild
 {
 
-    int id;
-    String name;
+    private final IntegerProperty id = new SimpleIntegerProperty();
+
+    private final StringProperty name = new SimpleStringProperty();
 
     public Guild(int id, String name)
     {
-        this.id = id;
-        this.name = name;
-    }
-
-    public int getId()
-    {
-        return id;
+        setId(id);
+        setName(name);
     }
 
     public String getName()
     {
+        return name.get();
+    }
+
+    public void setName(String value)
+    {
+        name.set(value);
+    }
+
+    public StringProperty nameProperty()
+    {
         return name;
     }
 
-    public void setId(int id)
+    public int getId()
     {
-        this.id = id;
+        return id.get();
     }
 
-    public void setName(String name)
+    public void setId(int value)
     {
-        this.name = name;
+        id.set(value);
+    }
+
+    public IntegerProperty idProperty()
+    {
+        return id;
     }
 
     @Override
@@ -37,5 +53,6 @@ public class Guild
     {
         return getName();
     }
+    
 
 }

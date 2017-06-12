@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +42,18 @@ public class LoginManager extends ConnectionManager
         }
         return 0;
     }
+    
+    public int changePasswordAdmin(User user, String newPassword) {
+        try(Connection con = super.getConnection()) {
+            String query = "update [user] set [password] = '"+newPassword+"' where [userid] = "+user.getId();
+            Statement s = con.createStatement();
+            
+            return s.executeUpdate(query);
+        } catch (SQLException e) {
+            Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return 0;
+    }
 
     public User getUserFromLogin(int userid, String password)
     {
@@ -61,19 +74,22 @@ public class LoginManager extends ConnectionManager
                 String note = rs.getString("note");
                 String residence = rs.getString("residence");
                 String residence2 = rs.getString("residence2");
+                String lastWorked = "";
                 List<Guild> guilds = new ArrayList<>();
+                
 
                 GeneralInfoManager genInfoMan = new GeneralInfoManager();
                 switch (type)
                 {
                     case 0:
                         guilds.addAll(genInfoMan.getGuildsForUser(id));
-                        return new Volunteer(id, name, email, phone, note, residence, residence2, guilds);
+                        
+                        return new Volunteer(id, name, email, phone, note, residence, residence2, guilds, lastWorked);
                     case 1:
                         guilds.addAll(genInfoMan.getGuildsForManager(id));
-                        return new Manager(id, name, email, phone, note, residence, residence2, guilds);
+                        return new Manager(id, name, email, phone, note, residence, residence2, guilds, lastWorked);
                     case 2:
-                        return new Admin(id, name, email, phone, note, residence, residence2, guilds);
+                        return new Admin(id, name, email, phone, note, residence, residence2, guilds,lastWorked);
                 }
             }
         }
@@ -83,7 +99,7 @@ public class LoginManager extends ConnectionManager
         }
         return null;
     }
-
+    
     public void saveSession(String username, int guildid, int hours)
     {
         props.setProperty("LAST_USER", username);

@@ -1,13 +1,15 @@
 package DAL;
 
+import DAL.ErrorManager;
 import BE.Day;
 import BE.EnumCache.Lang;
+import BE.Event;
 import BE.Guild;
 import BE.User;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -19,9 +21,11 @@ public class DALFacade
     private final static LoginManager LOGIN_MAN = new LoginManager();
     private final static HourManager HR_MAN = new HourManager();
     private final static LanguageManager LANG_MAN = new LanguageManager();
-    private final static ExportManager exportMan = new ExportManager();
+    private final static EventLogger EVENT_LOGGER = new EventLogger();
 
-    public void logHours(String username, String date, int hours, int guildId) throws SQLException
+    private final static ExportManager EXPORT_MAN = new ExportManager();
+    private final static  ErrorManager ERROR_MAN = new ErrorManager();
+    public void logHours(String username, String date, int hours, int guildId)
     {
         int userid = -1;
         userid = getUserId(username);
@@ -68,6 +72,11 @@ public class DALFacade
         return LOGIN_MAN.changePassword(user, oldPassword, newPassword);
     }
 
+    public int changePasswordAdmin(User user, String newPassword)
+    {
+        return LOGIN_MAN.changePasswordAdmin(user, newPassword);
+    }
+
     public void addUser(String name, String email, String password, int type, int phone, String residence, String residence2, String note)
     {
         GEN_INFO_MAN.addUser(name, email, password, type, phone, residence, residence2, note);
@@ -85,9 +94,9 @@ public class DALFacade
      * @param guild
      * @return
      */
-    public List<List<Day>> getHoursForGuild(Guild guild)
+    public List<List<Day>> getHoursForGuild(Guild guild,LocalDate periodOne,LocalDate periodTwo)
     {
-        return HR_MAN.getHoursForGuild(guild);
+        return HR_MAN.getHoursForGuild(guild, periodOne, periodTwo);
     }
 
     public HashMap<String, String> loadSession()
@@ -162,7 +171,7 @@ public class DALFacade
 
     public void writeExport(File file, String input)
     {
-        exportMan.write(file, input);
+        EXPORT_MAN.write(file, input);
     }
 
     public void deleteWorkedDay(User user, Day day)
@@ -170,7 +179,7 @@ public class DALFacade
         HR_MAN.deleteWorkedDay(user, day);
     }
 
-    public void editHours(String username, String date, int hours, int guildId) throws SQLException
+    public void editHours(String username, String date, int hours, int guildId)
     {
         int userid = -1;
         userid = getUserId(username);
@@ -178,5 +187,31 @@ public class DALFacade
         {
             HR_MAN.editHours(userid, date, hours, guildId);
         }
+    }
+
+    public void logEvent(Event event)
+    {
+        EVENT_LOGGER.log(event);
+    }
+
+    public Event getEvent(int id)
+    {
+        return EVENT_LOGGER.get(id);
+    }
+
+    public List<Event> getAllEvents()
+    {
+        return EVENT_LOGGER.getAll();
+    }
+
+    //Error Manager Functions
+    public void setErrorCode(int eCode)
+    {
+        ERROR_MAN.setErrorCode(eCode);
+    }
+
+    public String getErrorString()
+    {
+        return ERROR_MAN.getErrorString();
     }
 }

@@ -1,11 +1,14 @@
 package GUI.Model;
 
+import com.jfoenix.controls.JFXSnackbar;
 import javafx.animation.FadeTransition;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -16,10 +19,10 @@ public class AnimationModel
 
     private final Image loaderImage = new Image("/Resources/animal.gif");
 
-    private  StackPane stackPane;
-    private  ImageView imgViewLoader;
-    private  VBox vBoxcontainer;
-    private  Label lblConnecting;
+    private StackPane stackPane;
+    private ImageView imgViewLoader;
+    private VBox vBoxcontainer;
+    private Label lblConnecting;
 
     public AnimationModel()
     {
@@ -70,7 +73,12 @@ public class AnimationModel
         stackPane.getStyleClass().add("loadingScreen");
         vBoxcontainer = new VBox();
         vBoxcontainer.alignmentProperty().set(Pos.CENTER);
-
+        
+        AnchorPane.setBottomAnchor(stackPane, 0.0);
+        AnchorPane.setLeftAnchor(stackPane, 0.0);
+        AnchorPane.setRightAnchor(stackPane, 0.0);
+        AnchorPane.setTopAnchor(stackPane, 0.0);
+        
         imgViewLoader = new ImageView(loaderImage);
         imgViewLoader.maxWidth(150);
         imgViewLoader.setPreserveRatio(true);
@@ -82,6 +90,35 @@ public class AnimationModel
 
         stackPane.getChildren().add(vBoxcontainer);
         return stackPane;
+    }
+
+    public void snackbarPopup(String str, Pane parent)
+    {
+        int time = 6000;
+        JFXSnackbar snackbar = new JFXSnackbar(parent);
+        String errorString = ModelFacade.getModelFacade().getErrorString();
+        if (errorString == null)
+        {
+            snackbar.show(str, time);
+        }
+        else
+        {
+            snackbar.show(ModelFacade.getModelFacade().getLang(errorString), time);
+        }
+    }
+
+    public void timedSnackbarPopup(String str, Pane parent, int time)
+    {
+        JFXSnackbar snackbar = new JFXSnackbar(parent);
+        String errorString = ModelFacade.getModelFacade().getErrorString();
+        if (errorString == null)
+        {
+            snackbar.show(str, time);
+        }
+        else
+        {
+            snackbar.show(ModelFacade.getModelFacade().getLang(errorString), time);
+        }
     }
 
 }

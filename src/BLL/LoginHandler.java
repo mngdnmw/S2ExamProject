@@ -18,4 +18,13 @@ public class LoginHandler
         }
         return null;
     }
+    
+    public User getUserFromUsername(String username) {
+        int id = DAL_FAC.getUserId(username);
+        
+        if(id != -1) {
+            return DAL_FAC.getUserInfo(id);
+        }
+        return null;
+    }
 }

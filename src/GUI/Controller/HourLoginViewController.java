@@ -6,30 +6,24 @@ import GUI.Model.ModelFacade;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -76,11 +70,9 @@ public class HourLoginViewController implements Initializable
     @FXML
     private JFXPasswordField txtPassword;
     @FXML
-    private Label lblWrongPass;
-    @FXML
     private JFXButton btnLogin;
     @FXML
-    private JFXButton btnCancel;
+    private JFXButton btnCancelLogin;
     @FXML
     private Label lblPassword;
     @FXML
@@ -89,10 +81,6 @@ public class HourLoginViewController implements Initializable
     private JFXButton btnIntUp;
     @FXML
     private AnchorPane ancDarken;
-    private String strLogThanks = "Thanks!";
-    private String strContribution = "Your hours have been logged. Thank you!";
-    private String strLogin = "Log In";
-    private String strCancel = "Cancel";
     private Image iconDK, iconENG;
     private final ImageView imgViewLngBut = new ImageView();
     //Models used by this Controller
@@ -148,7 +136,7 @@ public class HourLoginViewController implements Initializable
         imgViewLngBut.setImage(iconENG);
         btnLanguage.setGraphic(imgViewLngBut);
         btnLanguage.setText(MOD_FACADE.getLang("BTN_LANGUAGE"));
-        cmbGuildChooser.setItems(FXCollections.observableArrayList(MOD_FACADE.getAllSavedGuilds()));
+        cmbGuildChooser.setItems(MOD_FACADE.getAllSavedGuilds());
         ModelFacade.setModelFacade(MOD_FACADE);
         addListener();
         setTextAll();
@@ -178,7 +166,7 @@ public class HourLoginViewController implements Initializable
 
         else
         {
-            snackBarPopup("Please input information in all fields");
+            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_MORE_INFO"), root);
         }
     }
 
@@ -191,7 +179,7 @@ public class HourLoginViewController implements Initializable
     }
 
     @FXML
-    private void LogInAction(ActionEvent event)
+    private void logInAction(ActionEvent event)
     {
         buttonsLocking(true);
         loginPopup();
@@ -210,12 +198,12 @@ public class HourLoginViewController implements Initializable
                     {
                         if (Integer.parseInt(newValue) >= 25)
                         {
-                            snackBarPopup("You Cannot Exceed 24 hours");
+                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_MAX_HOUR"), root);
                             txtHours.setText(oldValue);
                         }
                         else if (Integer.parseInt(newValue) <= 0)
                         {
-                            snackBarPopup("You Cannot log 0 hours");
+                            MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_MIN_HOUR"), root);
                             txtHours.setText(oldValue);
                         }
                         else
@@ -268,28 +256,13 @@ public class HourLoginViewController implements Initializable
     }
 
     /**
-     * pops up a bordered VBox that disappear after a short moment.
-     */
-    public void snackBarPopup(String str)
-    {
-        int time = 4000;
-        JFXSnackbar snackbar = new JFXSnackbar(root);
-        snackbar.show(str, time);
-        PauseTransition pause = new PauseTransition(Duration.millis(time - 2000));
-        pause.setOnFinished(
-                e -> buttonsLocking(false)
-        );
-        pause.play();
-
-    }
-
-    /**
      * Pops up a login view that plays a short fade in transition. Contains
      * event for the buttons that are within.
      */
     public void loginPopup()
     {
         //popup for the login
+        btnLogin.setPrefWidth(btnCancelLogin.getWidth());
         loginWindow.visibleProperty().set(true);
         ancDarken.visibleProperty().set(true);
         MOD_FACADE.fadeInTransition(Duration.millis(500), ancDarken);
@@ -327,7 +300,7 @@ public class HourLoginViewController implements Initializable
         }
         );
 
-        btnCancel.setOnAction(
+        btnCancelLogin.setOnAction(
                 new EventHandler<ActionEvent>()
         {
             @Override
@@ -471,7 +444,7 @@ public class HourLoginViewController implements Initializable
                 }
                 else
                 {
-                    lblWrongPass.visibleProperty().set(true);
+                    MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_WRONG_PW"), root);
                 }
                 loadingScreen(false);
             }
@@ -485,30 +458,22 @@ public class HourLoginViewController implements Initializable
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
 
         String dateString = sdf.format(date);
-
-        int errorCode = MOD_FACADE.logHours(username, dateString, hours, guildID);
+        MOD_FACADE.setErrorCode(0);
+        MOD_FACADE.logWorkDay(username, dateString, hours, guildID);
+        MOD_FACADE.logEvent(new BE.Event(new Timestamp(new Date().getTime()), MOD_FACADE.getUserFromUsername(username).getName() + " logged " + hours + " hours to guild " + MOD_FACADE.getGuild(guildID).getName() + "."));
 
         Platform.runLater(new Runnable()
         {
             @Override
             public void run()
             {
-                switch (errorCode)
-                {
-                    case 0:
-                        snackBarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"));
-                        break;
-                    case 2627:
-                        snackBarPopup(MOD_FACADE.getLang("STR_ERROR_2627"));
-                        break;
-                    default:
-                        snackBarPopup(MOD_FACADE.getLang("STR_FIRST_TIME_ERROR" + errorCode));
-                        break;
-                }
+                MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION"), root);
+                
                 loadingScreen(false);
                 buttonsLocking(false);
             }
-        });
+        }
+        );
     }
 
     private void loadingScreen(Boolean StartLoading)
@@ -552,7 +517,7 @@ public class HourLoginViewController implements Initializable
 
             if (txtHours.getText().isEmpty())
             {
-                snackBarPopup("Invalid Action");
+                 MOD_FACADE.snackbarPopup(MOD_FACADE.getLang("STR_INVALID_ACTION"),root);
             }
             else
             {
@@ -601,7 +566,11 @@ public class HourLoginViewController implements Initializable
         btnLogHours.setText(MOD_FACADE.getLang("BTN_LOG_HOURS"));
         btnSeeInfo.setText(MOD_FACADE.getLang("BTN_SEE_INFO"));
         btnLanguage.setText(MOD_FACADE.getLang("BTN_LANGUAGE"));
-
+        lblUsername.setText(MOD_FACADE.getLang("LB_USERNAME"));
+        lblPassword.setText(MOD_FACADE.getLang("LB_PASSWORD"));
+        btnCancelLogin.setText(MOD_FACADE.getLang("BTN_CANCEL"));
+        btnLogin.setText(MOD_FACADE.getLang("BTN_LOGIN"));
+                
         if (MOD_FACADE.getLangProperty().equals(Lang.ENG))
         {
             imgViewLngBut.setImage(iconENG);
@@ -610,10 +579,5 @@ public class HourLoginViewController implements Initializable
         {
             imgViewLngBut.setImage(iconDK);
         }
-        strLogThanks = "Thanks!";
-        strContribution = MOD_FACADE.getLang("STR_NO_ERROR_CONTRIBUTION");
-        strLogin = "Log In";
-        strCancel = "Cancel";
-
     }
 }

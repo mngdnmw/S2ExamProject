@@ -5,9 +5,13 @@
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.effect.DropShadow?>
@@ -18,302 +22,364 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="root" maxHeight="490.0" minHeight="490.0" prefHeight="490.0" prefWidth="710.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
+<AnchorPane id="AnchorPane" fx:id="root" maxHeight="541.0" minHeight="490.0" prefHeight="490.0" prefWidth="710.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.UserInfoViewController">
 
 
 
     <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="216.0" layoutX="13.0" layoutY="11.0" stroke="TRANSPARENT" strokeType="INSIDE" width="491.0">
-         <effect>
-            <DropShadow />
-         </effect>
-      </Rectangle>
-      <GridPane fx:id="gridEdit" layoutX="36.0" layoutY="20.0" prefHeight="205.0" prefWidth="461.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="119.0" minWidth="0.0" prefWidth="29.141170501708984" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="408.0" minWidth="10.0" prefWidth="369.858829498291" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="64.80523681640625" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <JFXButton fx:id="btnEditSave" buttonType="RAISED" onAction="#pressedEditSaveButton" prefHeight="25.0" prefWidth="77.0" style="-fx-background-color: #029e99;" text="Edit" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
-               <padding>
-                  <Insets bottom="2.0" left="10.0" right="10.0" top="2.0" />
-               </padding>
-               <GridPane.margin>
-                  <Insets left="10.0" />
-               </GridPane.margin>
-            </JFXButton>
-            <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER">
-               <image>
-                  <Image url="@../Images/person.png" />
-               </image>
-               <GridPane.margin>
-                  <Insets right="15.0" />
-               </GridPane.margin>
-            </ImageView>
-            <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-               <image>
-                  <Image url="@../Images/phone.png" />
-               </image>
-               <GridPane.margin>
-                  <Insets right="15.0" />
-               </GridPane.margin>
-            </ImageView>
-            <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-               <image>
-                  <Image url="@../Images/email.png" />
-               </image>
-               <GridPane.margin>
-                  <Insets right="15.0" />
-               </GridPane.margin>
-            </ImageView>
-            <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="3">
-               <image>
-                  <Image url="@../Images/location.png" />
-               </image>
-               <GridPane.margin>
-                  <Insets right="15.0" />
-               </GridPane.margin>
-            </ImageView>
-            <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="4">
-               <image>
-                  <Image url="@../Images/location.png" />
-               </image>
-               <GridPane.margin>
-                  <Insets right="15.0" />
-               </GridPane.margin>
-            </ImageView>
-            <JFXTextField fx:id="txtName" editable="false" focusColor="#00c4ad" promptText="Name" GridPane.columnIndex="1" />
-            <JFXTextField fx:id="txtPhone" editable="false" focusColor="#00c4ad" promptText="Phone" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <JFXTextField fx:id="txtEmail" editable="false" focusColor="#00c4ad" promptText="Email" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <JFXTextField fx:id="txtAddress" editable="false" focusColor="#00c4ad" promptText="Address 1" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <JFXTextField fx:id="txtAddress2" editable="false" focusColor="#00c4ad" promptText="Address 2" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-         </children>
-      </GridPane>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="490.0" layoutX="514.0" stroke="TRANSPARENT" strokeType="INSIDE" width="183.0">
-         <effect>
-            <DropShadow />
-         </effect>
-      </Rectangle>
-      <ImageView fx:id="imgVwProfilePic" fitHeight="143.0" fitWidth="141.0" layoutX="527.0" layoutY="26.0" pickOnBounds="true" AnchorPane.rightAnchor="32.0">
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="216.0" layoutX="13.0" layoutY="11.0" stroke="TRANSPARENT" strokeType="INSIDE" width="491.0">
+            <effect>
+                <DropShadow />
+            </effect>
+        </Rectangle>
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="490.0" layoutX="514.0" stroke="TRANSPARENT" strokeType="INSIDE" width="183.0">
+            <effect>
+                <DropShadow />
+            </effect>
+        </Rectangle>
+        <ImageView fx:id="imgVwProfilePic" fitHeight="143.0" fitWidth="141.0" layoutX="536.0" layoutY="26.0" pickOnBounds="true" AnchorPane.rightAnchor="33.0">
 
-         <image>
-            <Image url="@../Images/labeouf.jpg" />
-         </image>
-         <effect>
-            <Reflection fraction="0.11" topOffset="-4.0" topOpacity="0.35" />
-         </effect>
-      </ImageView>
-      <JFXButton fx:id="btnUpdatePhoto" buttonType="RAISED" layoutX="528.0" layoutY="183.0" maxHeight="26.0" minHeight="19.0" onAction="#pressedChangeImage" prefHeight="26.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Update Photo" textFill="WHITE" AnchorPane.rightAnchor="31.0">
+            <image>
+                <Image url="@../Images/StandardProfile.png" />
+            </image>
+            <effect>
+                <Reflection fraction="0.11" topOffset="-4.0" topOpacity="0.35" />
+            </effect>
+        </ImageView>
+        <JFXButton id="btnConfirmDarkTeal" fx:id="btnUpdatePhoto" buttonType="RAISED" layoutX="537.0" layoutY="183.0" maxHeight="25.0" minHeight="25.0" onAction="#pressedChangeImage" prefHeight="25.0" prefWidth="141.0" stylesheets="@MainLayout.css" text="Update Photo" textFill="WHITE" AnchorPane.rightAnchor="32.0">
 
-         <padding>
-            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-         </padding>
-      </JFXButton>
-
-      <HBox fx:id="hBoxInvisBtn" layoutX="516.0" layoutY="430.0" prefHeight="45.0" prefWidth="190.0" />
-      <JFXButton fx:id="btnChangePassword" buttonType="RAISED" layoutX="528.0" layoutY="221.0" maxHeight="26.0" minHeight="19.0" onAction="#openPasswordChangerEvent" prefHeight="26.0" prefWidth="141.0" style="-fx-background-color: #029e99;" text="Change Password" textFill="WHITE" AnchorPane.rightAnchor="31.0">
-
-
-         <padding>
-            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-         </padding>
-      </JFXButton>
-
-      <Pane layoutX="13.0" layoutY="251.0" prefHeight="225.0" prefWidth="474.0">
-         <children>
-            <HBox layoutX="4.0" prefHeight="225.0" prefWidth="471.0">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="225.0" prefWidth="145.0" spacing="170.0">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                     <children>
-                        <JFXTextField fx:id="txtFSearchDate" focusColor="#00c4ad" prefHeight="26.0" prefWidth="113.0" promptText="Search ">
-                           <padding>
-                              <Insets left="5.0" right="5.0" />
-                           </padding>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </JFXTextField>
-                        <JFXButton fx:id="btnLogout" buttonType="RAISED" onAction="#handleLogout" style="-fx-background-color: #B0B0B0;" text="Log Out" textFill="WHITE">
-                           <padding>
-                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                           </padding>
-                        </JFXButton>
-                     </children>
-                  </VBox>
-                  <VBox alignment="BOTTOM_RIGHT" prefHeight="225.0" prefWidth="364.0" spacing="9.0">
-                     <children>
-                        <TableView fx:id="tableViewMain" onMouseClicked="#onTablePressed" prefHeight="225.0" prefWidth="371.0">
-                          <columns>
-                            <TableColumn fx:id="colDate" prefWidth="127.0" style="-fx-alignment: CENTER;" text="Date" />
-                            <TableColumn fx:id="colHours" prefWidth="56.0" style="-fx-alignment: CENTER;" text="Hours" />
-                              <TableColumn fx:id="colGuild" prefWidth="159.0" style="-fx-alignment: CENTER;" text="Guild" />
-                          </columns>
-                        </TableView>
-                        <JFXButton fx:id="btnAddHours" buttonType="RAISED" onAction="#openAddHoursPopup" style="-fx-background-color: #029e99;" text="Add Hours" textFill="WHITE">
-                           <padding>
-                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                           </padding>
-                           <VBox.margin>
-                              <Insets bottom="3.0" />
-                           </VBox.margin>
-                        </JFXButton>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-         </children>
-      </Pane>
-      <JFXListView fx:id="listVwGuilds" layoutX="538.0" layoutY="277.0" maxWidth="141.0" prefHeight="162.0" prefWidth="141.0" style="-fx-border-width: 0px;" />
-      <Label fx:id="lblGuilds" layoutX="538.0" layoutY="260.0" style="-fx-background-color: #00c4ad;" text="Guilds:" textFill="WHITE" />
+            <padding>
+                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+            </padding>
+            <font>
+                <Font size="15.0" />
+            </font>
+        </JFXButton>
+        <JFXButton id="btnConfirmDarkTeal" fx:id="btnChangePassword" buttonType="RAISED" layoutX="537.0" layoutY="221.0" maxHeight="25.0" minHeight="25.0" onAction="#openPasswordChangerEvent" prefHeight="25.0" prefWidth="141.0" stylesheets="@MainLayout.css" text="Change Password" textFill="WHITE" AnchorPane.rightAnchor="32.0">
+            <padding>
+                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+            </padding>
+            <font>
+                <Font size="15.0" />
+            </font>
+        </JFXButton>
+        <JFXTabPane fx:id="tabPaneInfo" layoutX="17.0" layoutY="239.0" prefHeight="246.0" prefWidth="486.0">
+            <tabs>
+                <Tab fx:id="tabAll" text="All">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="164.0" prefWidth="278.0">
+                              <HBox prefHeight="227.0" prefWidth="491.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                  <children>
+                                      <VBox alignment="CENTER" prefHeight="225.0" prefWidth="145.0" spacing="50.0">
+                                          <HBox.margin>
+                                              <Insets left="5.0" right="10.0" />
+                                          </HBox.margin>
+                                          <children>
+                                              <JFXTextField fx:id="txtFSearchDate" focusColor="#00c4ad" prefHeight="26.0" prefWidth="113.0" promptText="Search ">
+                                                  <padding>
+                                                      <Insets left="5.0" right="5.0" />
+                                                  </padding>
+                                                  <VBox.margin>
+                                                      <Insets />
+                                                  </VBox.margin>
+                                              </JFXTextField>
+                                              <JFXButton id="btnConfirmDarkTeal" fx:id="btnAddHours" buttonType="RAISED" maxHeight="25.0" maxWidth="1.7976931348623157E308" minHeight="25.0" onAction="#openAddHoursPopup" prefHeight="25.0" stylesheets="@MainLayout.css" text="Add Hours" textFill="WHITE">
+                                                  <VBox.margin>
+                                                      <Insets />
+                                                  </VBox.margin>
+                                                  <font>
+                                                      <Font size="15.0" />
+                                                  </font>
+                                    <padding>
+                                       <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                    </padding>
+                                              </JFXButton>
+                                              <JFXButton id="btnCancelGrey" fx:id="btnLogout" buttonType="RAISED" maxHeight="25.0" maxWidth="1.7976931348623157E308" minHeight="25.0" onAction="#handleLogout" prefHeight="25.0" stylesheets="@MainLayout.css" text="Log Out" textFill="WHITE">
+                                                  <padding>
+                                                      <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                                  </padding>
+                                                  <font>
+                                                      <Font size="15.0" />
+                                                  </font>
+                                              </JFXButton>
+                                          </children>
+                                      </VBox>
+                                        <TableView fx:id="tableViewMain" prefHeight="215.0" prefWidth="330.0">
+                                            <columns>
+                                                <TableColumn fx:id="colDate" prefWidth="95.0" style="-fx-alignment: CENTER;" text="Date" />
+                                                <TableColumn fx:id="colHours" prefWidth="51.0" style="-fx-alignment: CENTER;" text="Hours" />
+                                                <TableColumn fx:id="colGuild" maxWidth="181.0" minWidth="-1.0" prefWidth="181.0" style="-fx-alignment: CENTER;" text="Guild" />
+                                            </columns>
+                                        </TableView>
+                                  </children>
+                              </HBox>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="tabNotes" text="Notes">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <ScrollPane layoutX="-2.0" layoutY="-1.0" prefHeight="216.0" prefWidth="491.0" style="-fx-border-color: #ffffff;">
+                                    <content>
+                                        <JFXTextArea fx:id="txtNotes" focusColor="#00e2c7" prefHeight="209.0" prefWidth="478.0" unFocusColor="WHITE" />
+                                    </content>
+                                </ScrollPane>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </JFXTabPane>
       
-      <StackPane fx:id="stckPanePasswordChanger" layoutX="-25.0" prefHeight="510.0" prefWidth="710.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <JFXListView fx:id="listVwGuilds" layoutX="537.0" layoutY="277.0" maxWidth="141.0" prefHeight="153.0" prefWidth="141.0" style="-fx-border-width: 0px;" />
+        <Label id="lblTealBkgrnd" fx:id="lblGuilds" layoutX="537.0" layoutY="257.0" stylesheets="@MainLayout.css" text="Guilds:">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+        </Label>
+      
+        <StackPane fx:id="stckPanePasswordChanger" layoutX="-25.0" prefHeight="510.0" prefWidth="710.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <VBox alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="200.0" prefWidth="463.0" spacing="10.0" styleClass="loginwindow" stylesheets="@MainLayout.css">
+                    <children>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                            <children>
+                                <Label fx:id="lblOldPassword" text="Old Password">
+                                    <font>
+                                        <Font name="System Bold Italic" size="16.0" />
+                                    </font>
+                                </Label>
+                                <JFXPasswordField fx:id="txtOPassword" prefHeight="31.0" prefWidth="210.0" styleClass="logintextFields" />
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                            <children>
+                                <Label fx:id="lblNewPassword" text="New Password">
+                                    <font>
+                                        <Font name="System Bold Italic" size="16.0" />
+                                    </font>
+                                </Label>
+                                <JFXPasswordField fx:id="txtNPassword" focusColor="#00e2c7" styleClass="logintextFields" />
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                            <children>
+                                <Label fx:id="lblNewPassword2" text="New Password Again">
+                                    <font>
+                                        <Font name="System Bold Italic" size="16.0" />
+                                    </font>
+                                </Label>
+                                <JFXPasswordField fx:id="txtNPasswordTwo" focusColor="#00e2c7" styleClass="logintextFields" />
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
+                            <children>
+                                <JFXButton id="btnConfirmTeal" fx:id="btnChangePWConfirm" buttonType="RAISED" onAction="#changePasswordEvent" stylesheets="@MainLayout.css" text="Change" />
+                                <JFXButton id="btnCancelGrey" fx:id="btnCancelPW" buttonType="RAISED" onAction="#hidePasswordChangerEvent" text="Cancel" />
+                            </children>
+                            <padding>
+                                <Insets bottom="1.0" top="8.0" />
+                            </padding>
+                        </HBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+                    </padding>
+                </VBox>
+            </children>
+        </StackPane>
+        <StackPane fx:id="stckPaneAddHours" prefHeight="510.0" prefWidth="710.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false">
+            <children>
+                <VBox alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="200.0" prefWidth="463.0" spacing="10.0" styleClass="loginwindow" stylesheets="@MainLayout.css">
+                    <children>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="54.0" prefWidth="401.0" spacing="25.0">
+                            <children>
+                                <Label fx:id="lblDateInPop" alignment="TOP_LEFT" prefHeight="20.0" prefWidth="52.0" text="Date">
+                                    <font>
+                                        <Font name="System Bold Italic" size="16.0" />
+                                    </font>
+                                </Label>
+                                <JFXDatePicker fx:id="datePickerInPop" prefHeight="29.0" prefWidth="241.0" style="-jfx-focus-color: #00c4ad;">
+                                    <HBox.margin>
+                                        <Insets left="50.0" right="30.0" />
+                                    </HBox.margin>
+                                </JFXDatePicker>
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="363.0" spacing="10.0">
+                            <children>
+                                <Label fx:id="lblHoursInPop" prefHeight="25.0" prefWidth="73.0" text="Hours">
+                                    <font>
+                                        <Font name="System Bold Italic" size="16.0" />
+                                    </font>
+                                    <HBox.margin>
+                                        <Insets left="2.0" />
+                                    </HBox.margin>
+                                </Label>
+                                <JFXButton fx:id="btnIntDown" alignment="BOTTOM_CENTER" contentDisplay="CENTER" onAction="#setNumberOfHoursEvent" prefHeight="55.0" prefWidth="52.0" style="-fx-background-color: rgba(0,0,0,0); -fx-background-radius: 50%;" text=" ">
+                                    <graphic>
+                                        <ImageView fitHeight="40.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../Images/arrowcoloredleft.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </JFXButton>
+                                <JFXTextField fx:id="txtfldHoursInPop" prefHeight="25.0" prefWidth="220.0" style="-jfx-focus-color: #00c4ad;" />
+                                <JFXButton fx:id="btnIntUp" alignment="BOTTOM_CENTER" contentDisplay="CENTER" onAction="#setNumberOfHoursEvent" prefHeight="55.0" prefWidth="43.0" style="-fx-background-color: rgba(0,0,0,0); -fx-background-radius: 50%;" text=" ">
+                                    <graphic>
+                                        <ImageView fitHeight="40.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../Images/arrowcolored.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </JFXButton>
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="25.0">
+                            <children>
+                                <Label fx:id="lblGuildInPop" text="Guild">
+                                    <font>
+                                        <Font name="System Bold Italic" size="16.0" />
+                                    </font>
+                                </Label>
+                                <JFXComboBox fx:id="comboboxGuildInPop" editable="true" labelFloat="true" prefHeight="27.0" prefWidth="333.0" style="-jfx-focus-color: #00c4ad;">
+                                    <padding>
+                                        <Insets left="65.0" right="67.0" />
+                                    </padding>
+                                </JFXComboBox>
+                            </children>
+                        </HBox>
+                        <HBox fx:id="hBoxBtnsInPOP" alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
+                            <children>
+                                <JFXButton fx:id="btnAddHoursPOP" buttonType="RAISED" maxHeight="31.0" onAction="#handleAddEditHours" prefHeight="31.0" prefWidth="120.0" style="-fx-background-color: #029e99;" text="Okay" textFill="WHITE" />
+                                <JFXButton fx:id="btnCancelPOP" buttonType="RAISED" maxHeight="31.0" onAction="#closeAddHoursPopup" prefHeight="31.0" prefWidth="120.0" style="-fx-background-color: #B0B0B0;" text="Cancel" textFill="WHITE">
+                                    <HBox.margin>
+                                        <Insets />
+                                    </HBox.margin>
+                                </JFXButton>
+                            </children>
+                            <padding>
+                                <Insets bottom="1.0" right="20.0" top="8.0" />
+                            </padding>
+                        </HBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+                    </padding>
+                </VBox>
+            </children>
+        </StackPane>
+        <StackPane fx:id="stackPdeleteHours" alignment="BOTTOM_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="490.0" prefWidth="720.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <VBox maxHeight="246.0" maxWidth="118.0" minWidth="50.0" prefHeight="246.0" prefWidth="118.0" spacing="20.0" StackPane.alignment="BOTTOM_CENTER">
+                    <children>
+                        <ImageView fx:id="imgVwEdit" fitHeight="113.0" fitWidth="113.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../Images/edit-icon.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView fx:id="imgVwDel" fitHeight="113.0" fitWidth="113.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../Images/trash.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                    <StackPane.margin>
+                        <Insets bottom="50.0" />
+                    </StackPane.margin>
+                </VBox>
+            </children>
+        </StackPane>
+      <AnchorPane fx:id="anchPGenInfo" layoutX="13.0" layoutY="11.0" prefHeight="216.0" prefWidth="491.0">
          <children>
-            <VBox alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="200.0" prefWidth="463.0" spacing="10.0" styleClass="loginwindow" stylesheets="@MainLayout.css">
+            <GridPane prefHeight="202.0" prefWidth="464.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="119.0" minWidth="0.0" prefWidth="47.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="418.0" minWidth="10.0" prefWidth="418.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
                <children>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                     <children>
-                        <Label fx:id="lblOldPassword" text="Old Password">
-                           <font>
-                              <Font name="System Bold Italic" size="16.0" />
-                           </font>
-                        </Label>
-                        <JFXPasswordField fx:id="txtOPassword" prefHeight="31.0" prefWidth="210.0" styleClass="logintextFields" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                     <children>
-                        <Label fx:id="lblNewPassword" text="New Password">
-                           <font>
-                              <Font name="System Bold Italic" size="16.0" />
-                           </font>
-                        </Label>
-                        <JFXPasswordField fx:id="txtNPassword" focusColor="#00e2c7" styleClass="logintextFields" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                     <children>
-                        <Label fx:id="lblNewPassword2" text="New Password Again">
-                           <font>
-                              <Font name="System Bold Italic" size="16.0" />
-                           </font>
-                        </Label>
-                        <JFXPasswordField fx:id="txtNPasswordTwo" focusColor="#00e2c7" styleClass="logintextFields" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
-                     <children>
-                        <JFXButton fx:id="btnChangePWConfirm" buttonType="RAISED" onAction="#changePasswordEvent" styleClass="loginbuttons" text="Change" />
-                        <JFXButton fx:id="btnCancelPW" buttonType="RAISED" onAction="#hidePasswordChangerEvent" styleClass="loginbuttons" text="Cancel" />
-                     </children>
-                     <padding>
-                        <Insets bottom="1.0" top="8.0" />
-                     </padding>
-                  </HBox>
+                  <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER">
+                     <image>
+                        <Image url="@../Images/person.png" />
+                     </image>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@../Images/phone.png" />
+                     </image>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@../Images/email.png" />
+                     </image>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </ImageView>
+                  <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                     <image>
+                        <Image url="@../Images/location.png" />
+                     </image>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </ImageView>
+                  <JFXTextField fx:id="txtName" focusColor="#00e2c7" promptText="Name" GridPane.columnIndex="1" />
+                  <JFXTextField fx:id="txtPhone" focusColor="#00e2c7" onKeyReleased="#checkTextFields" promptText="Phone number" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <JFXTextField fx:id="txtEmail" focusColor="#00e2c7" promptText="Email" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <JFXTextField fx:id="txtAddress" focusColor="#00e2c7" promptText="Address" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <ImageView fitHeight="52.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                     <image>
+                        <Image url="@../Images/location.png" />
+                     </image>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </ImageView>
+                  <JFXTextField fx:id="txtAddress2" focusColor="#00e2c7" promptText="Address" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                </children>
-               <padding>
-                  <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
-               </padding>
-            </VBox>
-         </children>
-      </StackPane>
-      <StackPane fx:id="stckPaneAddHours" prefHeight="510.0" prefWidth="710.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false">
+            </GridPane>
+         </children></AnchorPane>
+        <HBox fx:id="hBoxInvisBtn" alignment="CENTER" layoutX="514.0" layoutY="432.0" prefHeight="45.0" prefWidth="183.0" spacing="15.0">
          <children>
-            <VBox alignment="CENTER" maxHeight="200.0" maxWidth="450.0" prefHeight="200.0" prefWidth="463.0" spacing="10.0" styleClass="loginwindow" stylesheets="@MainLayout.css">
-               <children>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="54.0" prefWidth="401.0" spacing="25.0">
-                     <children>
-                        <Label fx:id="lblDateInPop" alignment="TOP_LEFT" prefHeight="20.0" prefWidth="52.0" text="Date">
-                           <font>
-                              <Font name="System Bold Italic" size="16.0" />
-                           </font>
-                        </Label>
-                        <JFXDatePicker fx:id="datePickerInPop" prefHeight="29.0" prefWidth="241.0" style="-jfx-focus-color: #00c4ad;">
-                           <HBox.margin>
-                              <Insets left="50.0" right="30.0" />
-                           </HBox.margin></JFXDatePicker>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="363.0" spacing="10.0">
-                     <children>
-                        <Label fx:id="lblHoursInPop" prefHeight="25.0" prefWidth="73.0" text="Hours">
-                           <font>
-                              <Font name="System Bold Italic" size="16.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="2.0" />
-                           </HBox.margin>
-                        </Label>
-                        <JFXButton fx:id="btnIntDown" alignment="BOTTOM_CENTER" contentDisplay="CENTER" onAction="#setNumberOfHoursEvent" prefHeight="55.0" prefWidth="52.0" style="-fx-background-color: rgba(0,0,0,0); -fx-background-radius: 50%;" text=" ">
-                           <graphic>
-                              <ImageView fitHeight="40.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../Resources/arrowcoloredleft.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </JFXButton>
-                        <JFXTextField fx:id="txtfldHours" prefHeight="25.0" prefWidth="220.0" style="-jfx-focus-color: #00c4ad;" />
-                        <JFXButton fx:id="btnIntUp" alignment="BOTTOM_CENTER" contentDisplay="CENTER" onAction="#setNumberOfHoursEvent" prefHeight="55.0" prefWidth="43.0" style="-fx-background-color: rgba(0,0,0,0); -fx-background-radius: 50%;" text=" ">
-                           <graphic>
-                              <ImageView fitHeight="40.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../Resources/arrowcolored.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </JFXButton>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="25.0">
-                     <children>
-                        <Label fx:id="lblGuildInPop" text="Guild">
-                           <font>
-                              <Font name="System Bold Italic" size="16.0" />
-                           </font>
-                        </Label>
-                        <JFXComboBox fx:id="comboboxGuild" editable="true" labelFloat="true" prefHeight="27.0" prefWidth="333.0" style="-jfx-focus-color: #00c4ad;">
-                           <padding>
-                              <Insets left="65.0" right="67.0" />
-                           </padding>
-                        </JFXComboBox>
-                     </children>
-                  </HBox>
-                  <HBox fx:id="hBoxBtnsInPOP" alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="400.0" spacing="20.0">
-                     <children>
-                        <JFXButton fx:id="btnAddHoursPOP" buttonType="RAISED" maxHeight="30.0" onAction="#handleAddEditHours" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #029e99;" text="Okay" textFill="WHITE" />
-                        <JFXButton fx:id="btnCancelPOP" buttonType="RAISED" maxHeight="30.0" onAction="#closeAddHoursPopup" prefHeight="30.0" prefWidth="70.0" style="-fx-background-color: #B0B0B0;" text="Cancel" textFill="WHITE">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin></JFXButton>
-                     </children>
-                     <padding>
-                        <Insets bottom="1.0" right="20.0" top="8.0" />
-                     </padding>
-                  </HBox>
-               </children>
+            <JFXButton id="btnConfirmTeal" fx:id="JFXBtnAccept" buttonType="RAISED" maxHeight="25.0" maxWidth="1.7976931348623157E308" minHeight="25.0" minWidth="-Infinity" onAction="#onBtnAcceptPressed" prefHeight="25.0" prefWidth="70.0" text="Accept" textFill="WHITE">
                <padding>
-                  <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </padding>
-            </VBox>
-         </children>
-      </StackPane>
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </JFXButton>
+            <JFXButton id="btnCancelGrey" fx:id="JFXBtnCancel" buttonType="RAISED" maxHeight="25.0" maxWidth="1.7976931348623157E308" minHeight="25.0" minWidth="-Infinity" onAction="#onBtnCancelPressed" prefHeight="25.0" prefWidth="70.0" text="Cancel" textFill="WHITE">
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </padding>
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </JFXButton>
+         </children></HBox>
     </children>
 </AnchorPane>

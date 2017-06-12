@@ -14,6 +14,7 @@ public class LoginModel
 
     //Stand in until we have the user passed through
     private User currentUser = null;
+    private User selectedUser = null;
 
     public void getUserFromLogin(String username, String password)
     {
@@ -31,50 +32,37 @@ public class LoginModel
 
     }
 
-    public int logHours(String username, String date, int hours, int guildId)
+    public void logHours(String username, String date, int hours, int guildId)
     {
-        int errorCode = 0;
-        try
-        {
-            BLL_FAC.logHours(username, date, hours, guildId);
-        }
-        catch (SQLException ex)
-        {
-            errorCode = ex.getErrorCode();
 
-        }
-        finally
-        {
-            System.out.println(errorCode);
-            return errorCode;
-        }
+        BLL_FAC.logHours(username, date, hours, guildId);
 
     }
 
-    int editHours(String username, String date, int hours, int guildId)
+    public void editHours(String username, String date, int hours, int guildId)
     {
 
-        int errorCode = 0;
-        try
-        {
-            BLL_FAC.editHours(username, date, hours, guildId);
-        }
-        catch (SQLException ex)
-        {
-            errorCode = ex.getErrorCode();
-
-        }
-        finally
-        {
-            System.out.println(errorCode);
-            return errorCode;
-        }
-
+        BLL_FAC.editHours(username, date, hours, guildId);
     }
 
     public HashMap<String, String> loadSession()
     {
         return BLL_FAC.loadSession();
+    }
+
+    public User getSelectedUser()
+    {
+        return selectedUser;
+    }
+
+    public void setSelectedUser(User selectedUser)
+    {
+        this.selectedUser = selectedUser;
+    }
+
+    public void resetSelectedUser()
+    {
+        selectedUser = null;
     }
 
 }

@@ -2,6 +2,7 @@ package BLL;
 
 import BE.Day;
 import BE.EnumCache.Lang;
+import BE.Event;
 import BE.Guild;
 import BE.User;
 import DAL.DALFacade;
@@ -9,8 +10,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class BLLFacade
@@ -21,7 +24,7 @@ public class BLLFacade
     private final static LanguageHandler LANG_HAND = new LanguageHandler();
     private final static ExportParser exportParser = new ExportParser();
     private final static GraphHandler GRAPH_HAND = new GraphHandler();
-
+    
     public User getUserFromLogin(String username, String password)
     {
         return LOG_HAND.getUserFromLogin(username, password);
@@ -29,15 +32,15 @@ public class BLLFacade
 
     /**
      *
-     * @param str
+     * @param username
      * @param date
      * @param hours
      * @param guildId
      * @throws SQLException
      */
-    public void logHours(String str, String date, int hours, int guildId) throws SQLException
+    public void logHours(String username, String date, int hours, int guildId)
     {
-        DAL_FAC.logHours(str, date, hours, guildId);
+        DAL_FAC.logHours(username, date, hours, guildId);
     }
 
     public List<Guild> getAllGuilds()
@@ -58,6 +61,11 @@ public class BLLFacade
     public int changePassword(User user, String oldPassword, String newPassword)
     {
         return DAL_FAC.changePassword(user, oldPassword, newPassword);
+    }
+
+    public int changePasswordAdmin(User user, String newPass)
+    {
+        return DAL_FAC.changePasswordAdmin(user, newPass);
     }
 
     public HashMap<String, String> loadSession()
@@ -146,26 +154,69 @@ public class BLLFacade
     {
         LANG_HAND.setLang(lang);
     }
-    
-    public String parseExport(List<User> users) {
-        return exportParser.parseUsers(users);
+
+    public String parseExportUserdata(List<User> users)
+    {
+        return exportParser.parseExportUserdata(users);
     }
     
-    public void writeExport(File file,String input) {
+    public String parseExportHours(List<User> users) {
+        return exportParser.parseExportHours(users);
+    }
+
+    public void writeExport(File file, String input)
+    {
         DAL_FAC.writeExport(file, input);
     }
+
     public void deleteWorkedDay(User user, Day day)
     {
         DAL_FAC.deleteWorkedDay(user, day);
     }
 
-    public ArrayList<HashMap<Integer, Integer>> graphSorter(Guild guild)
+    public ArrayList<LinkedHashMap<String, Integer>> graphSorter(Guild guild, LocalDate periodOne, LocalDate periodTwo)
     {
-        return GRAPH_HAND.sorter(guild);
+        return GRAPH_HAND.sorter(guild, periodOne, periodTwo);
     }
 
-    public void editHours(String username, String date, int hours, int guildId) throws SQLException
+    public void editHours(String username, String date, int hours, int guildId)
     {
         DAL_FAC.editHours(username, date, hours, guildId);
+    }
+
+    public void logEvent(Event event)
+    {
+        DAL_FAC.logEvent(event);
+    }
+
+    public Event getEvent(int id)
+    {
+        return DAL_FAC.getEvent(id);
+    }
+
+    public List<Event> getAllEvents()
+    {
+        return DAL_FAC.getAllEvents();
+    }
+
+    public int getUserId(String username)
+    {
+        return DAL_FAC.getUserId(username);
+    }
+
+    public User getUserFromUsername(String username)
+    {
+        return LOG_HAND.getUserFromUsername(username);
+    }
+
+    //ErrorManager functions
+    public void setErrorCode(int eCode)
+    {
+        DAL_FAC.setErrorCode(eCode);
+    }
+
+    public String getErrorString()
+    {
+        return DAL_FAC.getErrorString();
     }
 }

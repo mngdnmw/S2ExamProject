@@ -22,6 +22,7 @@ CMB_GUILDCHOOSER_PROMPT = Choose a guild
 GUILD_TAG_TWO = guild
 LB_USERNAME = Username
 LB_PASSWORD = Password
+TBL_LOADING = Loading information
 
 ########
 # USER INFO WINDOW
@@ -48,6 +49,9 @@ COL_GUILD = Guild
 PROMPT_SEARCH = Search
 LBL_HRS_ALL_TEXT = Hours
 LBL_GUILDS = Guilds:
+LBL_OLD_PW = Old Password
+LBL_NEW_PW = New Password
+LBL_NEW_PW2 = New Password again
 
 ########
 #MANAGER VIEW
@@ -62,19 +66,65 @@ BTN_ADD_USER = Add user
 CHK_MANAGERS = Managers
 CHK_VOLUNTEERS = Volunteers
 
+MENU_ITEM_ONE_EMAIL  = Copy this email to clipboard
+MENU_ITEM_ALL_EMAIL = Copy all emails to clipboard
+MENU_ITEM_EXPORT = Export users in table
+MENU_ITEM_EXPORT_USER = Export user hours from table
+
 #Manager view labels
 #Remember to leave a space after LBL_USERNAME
 LBL_USERNAME = Logged in as: 
-PROMPT_SEARCH_USER = Search user...
+PROMPT_SEARCH_USER = Search
 PROMPT_CMB_GUILDCHOOSER = Guild Chooser
 LBL_NOTES = Notes:
 COL_NAME = Name
 COL_PHONE = Phone
+COL_STATUS = Status
 COL_EMAIL = Email
-TAB_VOLUN_INFO = Volunteer Information
-TAB_GRAPH_STATS = Graphs & statistics
+TAB_VOLUN_INFO = User Information
+TAB_GRAPH_STATS = Graphs and Statistics
+TAB_LOG_EVENTS = Log Events
+TAB_GUILD = Guild Management
+TAB_ERR = Error: Try again
 
-#ErrorCode
+#Pop up messages
 STR_NO_ERROR_CONTRIBUTION = Your hours have been logged. Thank you!
 STR_ERROR_2627 = Error: hours have already been added for this particular guild on this day.
-STR_FIRST_TIME_ERROR = Error: Unknown Error: 
+STR_FIRST_TIME_ERROR = Error: Unknown Error
+
+STR_WRONG_PW = You have entered the wrong password
+STR_MIN_HOUR = You Cannot log 0 hours
+STR_MAX_HOUR = You Cannot Exceed 24 hours
+STR_MORE_INFO = Please input information in all fields
+STR_INVALID_ACTION = Invalid Action
+STR_GUILD_NOT_SELECTED = Guild to modify not selected
+STR_PHONE_OR_EMAIL_REQUIRED = Phone number OR Email required
+STR_PHONE_ONLY = Phone number must only contain numbers
+STR_USER_TYPE_ERROR = User type not selected
+STR_NEW_USER_ADD = New user has been added
+STR_USER_NAME_ERROR = Name required
+STR_SEARCH_EMPTY = Search did not match anything
+STR_PASSWORD_CHANGE = Password has successfully changed
+STR_PW_DOESNT_MATCH = Password do not match
+STR_OLD_PW_MATCH_NEW = Old password is the same as new password
+STR_OLD_PW_WRONG = Old password is incorrect
+STR_CONTRIBUTE_DELETE = Selected contribution has been deleted
+STR_ALL_GUILDS = All Guilds
+STR_SELECT_USER = A user need to be selected first
+STR_INVALID_INPUT = Please enter valid information in the fields!
+STR_DELETE_SUCCES = Day has been deleted
+IMG_CH_TITLE = Select a new image file
+IMG_CH_EXT_FILTER = Image files only
+CSV_CH_TITLE = Choose where to export CSV file
+CSV_CH_EXT_FILTER = Comma separated textfiles
+STR_ERROR_FILE_NOT_FOUND = File not found!
+STR_ERROR_FILE_NOT_FOUND_HEAD = Selected image is not found!
+
+BTN_ADD_GUILD = Add new
+BTN_REMOVE_GUILD = Remove
+LBL_GUILD_NAME = Guild Name:
+
+TXT_ADRESS = Adress
+BTN_ADD = Add
+CHART_TITLE = Contribution hour to 
+STR_EMPTY_ERROR = Cannot be empty

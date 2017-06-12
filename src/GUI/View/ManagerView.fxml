@@ -7,6 +7,7 @@
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Label?>
@@ -16,34 +17,37 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" fx:id="root" prefHeight="529.0" prefWidth="700.0" stylesheets="@MainLayout.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Controller.ManagerViewController">
     <children>
-        <Label fx:id="lblUserName" layoutX="19.0" layoutY="22.0" prefHeight="17.0" prefWidth="508.0" text="Logged in as:" />
+        <Label fx:id="lblUserName" layoutX="19.0" layoutY="22.0" prefHeight="19.0" prefWidth="489.0" text="Logged in as:">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></Label>
         <JFXComboBox fx:id="cmbGuildChooser" focusColor="#00c4ad" labelFloat="true" layoutX="517.0" layoutY="17.0" prefHeight="31.0" prefWidth="169.0" promptText="Guild Chooser" />
         <JFXTabPane fx:id="tabPane" layoutX="11.0" layoutY="58.0" prefHeight="431.0" prefWidth="678.0" styleClass="jfx-tab-pane">
             <tabs>
-                <Tab fx:id="tabVolunInfo" onSelectionChanged="#loadGuildView" text="Volunteer Information">
+                <Tab fx:id="tabVolunInfo" onSelectionChanged="#loadGuildView" text="User Information">
                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="678.0">
                             <children>
-                                <Label fx:id="lblNotes" layoutX="461.0" layoutY="20.0" text="Notes:">
+                                <Label id="lblTealBkgrnd" fx:id="lblNotes" layoutX="461.0" layoutY="38.0" text="Notes:">
                   
                                     <font>
                                         <Font size="20.0" />
                                     </font>
                                 </Label>
-                                <JFXTextField fx:id="txtSearch" focusColor="#00e2c7" layoutX="2.0" layoutY="15.0" prefHeight="29.0" prefWidth="171.0" promptText="Search user.." />
-                                <JFXButton fx:id="btnAddUser" buttonType="RAISED" layoutX="14.0" layoutY="362.0" onAction="#onBtnAddUserClicked" prefHeight="31.0" prefWidth="119.0" style="-fx-background-color: #029E99;" text="Add User" textFill="WHITE">
+                                <JFXTextField fx:id="txtSearch" focusColor="#00e2c7" layoutX="2.0" layoutY="15.0" prefHeight="29.0" prefWidth="171.0" promptText="Search" />
+                                <JFXButton id="btnConfirmTeal" fx:id="btnAddUser" buttonType="RAISED" layoutX="3.0" layoutY="359.0" maxHeight="31.0" onAction="#onBtnAddUserClicked" prefHeight="25.0" prefWidth="150.0" text="Add User" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="15.0" />
                                     </font>
                                 </JFXButton>
-                                <JFXButton fx:id="btnAddHours" buttonType="RAISED" disable="true" layoutX="149.0" layoutY="362.0" prefWidth="120.0" style="-fx-background-color: #00c4ad;" text="Add Hours" textFill="WHITE" />
-                                <JFXButton fx:id="btnEditInfo" buttonType="RAISED" layoutX="284.0" layoutY="362.0" onAction="#onEditInfoPressed" prefHeight="31.0" prefWidth="147.0" style="-fx-background-color: #00c4ad;" text="Edit Information" textFill="WHITE">
+                                <JFXButton id="btnConfirmTeal" fx:id="btnEditInfo" buttonType="RAISED" layoutX="164.0" layoutY="359.0" maxHeight="31.0" onAction="#onEditInfoPressed" prefHeight="25.0" prefWidth="150.0" text="Edit Information" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></JFXButton>
@@ -51,8 +55,8 @@
                                 <TableView fx:id="tblUsers" layoutX="2.0" layoutY="57.0" onMousePressed="#onTablePressed" prefHeight="293.0" prefWidth="451.0">
                                     <columns>
                                         <TableColumn fx:id="colName" prefWidth="148.0" text="Name" />
-                                        <TableColumn fx:id="colPhone" prefWidth="130.0" text="Phone" />
-                                        <TableColumn fx:id="colEmail" prefWidth="171.0" text="Email" />
+                                        <TableColumn fx:id="colEmail" prefWidth="191.0" text="Email" />
+                                        <TableColumn fx:id="colStatus" prefWidth="110.0" text="Status" />
                                     </columns>
                                 </TableView>
                                 <JFXCheckBox fx:id="chkVolunteers" layoutX="182.0" layoutY="27.0" onAction="#onCheckBoxAction" text="Volunteers" visible="false">
@@ -71,13 +75,13 @@
                         </AnchorPane>
                     </content>
                 </Tab>
-                <Tab fx:id="tabGraphStats" onSelectionChanged="#loadGuildView" text="Graphs &amp; Statistics">
+                <Tab fx:id="tabGraphStats" onSelectionChanged="#loadGuildView" text="Graphs and Statistics">
                     <content>
                         <AnchorPane fx:id="rootGraph" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="678.0">
                             <children>
-                                <LineChart fx:id="lineChartGuildHours" layoutX="9.0" layoutY="14.0" prefHeight="335.0" prefWidth="661.0">
+                                <LineChart fx:id="lineChartGuildHours" layoutX="9.0" layoutY="14.0" prefHeight="335.0" prefWidth="667.0">
                                     <xAxis>
-                                        <NumberAxis side="BOTTOM" fx:id="xAxis" />
+                                        <CategoryAxis side="BOTTOM" fx:id="xAxis" />
                                     </xAxis>
                                     <yAxis>
                                         <NumberAxis fx:id="yAxis" side="LEFT" />
@@ -101,22 +105,31 @@
                                         </VBox>
                                     </children>
                                 </StackPane>
-                        <JFXDatePicker layoutX="17.0" layoutY="355.0" prefHeight="30.0" prefWidth="135.0" />
-                        <JFXDatePicker layoutX="179.0" layoutY="354.0" prefHeight="30.0" prefWidth="135.0" />
-                        <Label layoutX="153.0" layoutY="341.0" prefHeight="59.0" prefWidth="17.0" text="-">
-                           <font>
-                              <Font size="41.0" />
-                           </font>
-                        </Label>
-                        <JFXButton fx:id="btnRefresh" alignment="BOTTOM_CENTER" contentDisplay="CENTER" layoutX="332.0" layoutY="343.0" prefHeight="55.0" prefWidth="52.0" style="-fx-background-color: rgba(0,0,0,0); -fx-background-radius: 50%;" text=" ">
+                        <JFXButton fx:id="btnRefresh" alignment="BOTTOM_CENTER" contentDisplay="CENTER" layoutX="367.0" layoutY="348.0" onAction="#refreshGraph" prefHeight="31.0" prefWidth="38.0" style="-fx-background-color: rgba(0,0,0,0); -fx-background-radius: 50%;" text=" ">
                            <graphic>
-                              <ImageView fitHeight="40.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../Resources/RefreshIcon.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </JFXButton>
+                        <HBox alignment="CENTER" layoutX="20.0" layoutY="347.0" prefHeight="42.0" prefWidth="354.0">
+                           <children>
+                              <Label text="From:">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <JFXDatePicker fx:id="datePickerPeriodOne" prefHeight="30.0" prefWidth="135.0" />
+                              <Label text="To:">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <JFXDatePicker fx:id="datePickerPeriodTwo" prefHeight="30.0" prefWidth="135.0" />
+                           </children>
+                        </HBox>
                             </children>
                         </AnchorPane>
                     </content>
@@ -126,9 +139,29 @@
                         <AnchorPane fx:id="anchorPaneGuild" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                     </content>
                 </Tab>
+            <Tab fx:id="tabLog" text="Log Events">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="678.0">
+                     <children>
+                        <TableView fx:id="tblLog" layoutX="3.0" layoutY="21.0" maxWidth="1.7976931348623157E308" prefHeight="318.0" prefWidth="672.0">
+                          <columns>
+                            <TableColumn fx:id="colLogEventId" editable="false" prefWidth="40.0" text="ID" />
+                            <TableColumn fx:id="colLogEventDate" editable="false" prefWidth="102.0" text="Event date" />
+                              <TableColumn fx:id="colLogEventDesc" editable="false" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="529.0" text="Event description" />
+                          </columns>
+                        </TableView>
+                        <JFXButton id="btnConfirmTeal" fx:id="btnRefreshLog" buttonType="RAISED" layoutX="4.0" layoutY="355.0" onAction="#updateLogTable" prefHeight="31.0" prefWidth="114.0" stylesheets="@MainLayout.css" text="Refresh Log" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
             </tabs>
         </JFXTabPane>
-        <JFXButton fx:id="btnClose" buttonType="RAISED" layoutX="469.0" layoutY="488.0" onAction="#onBtnClosePressed" prefHeight="25.0" prefWidth="220.0" styleClass="cancelButtons" text="Close" textFill="WHITE">
+        <JFXButton id="btnCancelGrey" fx:id="btnClose" buttonType="RAISED" layoutX="469.0" layoutY="488.0" onAction="#onBtnClosePressed" prefHeight="25.0" prefWidth="220.0" text="Close" textFill="WHITE">
             <font>
                 <Font name="System Bold Italic" size="15.0" />
             </font>
