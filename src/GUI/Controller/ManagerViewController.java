@@ -800,13 +800,16 @@ public class ManagerViewController implements Initializable
                         public void updateItem(final String lastWorked, boolean empty)
                         {
                             
-                                if (lastWorked != null)
+                                if (!empty)
                                 {
                                     setText(lastWorked);
                                     boolean active = MOD_FAC.activeLastYear(lastWorked);
                                     String warningClass = getCSSClass(active);
                                     getStyleClass().clear();
                                     getStyleClass().add(warningClass);
+                                } else {
+                                    setText("");
+                                    getStyleClass().clear();
                                 }
                             
                         }
